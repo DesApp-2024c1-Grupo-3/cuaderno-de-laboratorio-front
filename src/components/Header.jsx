@@ -13,7 +13,7 @@ const useStyles = makeStyles(() => ({
         backgroundColor: '#c5e1a5',
         textAlign: 'center',
         justifyContent: 'space-around',
-        alignitem: 'center',
+        alignItems: 'center',
     },
 }));
 export const Header = () => {

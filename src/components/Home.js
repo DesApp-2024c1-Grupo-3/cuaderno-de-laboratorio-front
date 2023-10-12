@@ -2,10 +2,12 @@ import {
   Button,
   Card,
   CardContent,
+  Container,
   Grid,
   makeStyles,
   Typography,
 } from '@material-ui/core';
+import { Height, HeightOutlined } from '@material-ui/icons';
 import ListadoUsuarios from './ListadoUsuarios';
 import ProTip from './ProTip';
 
@@ -15,8 +17,9 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexWrap: 'nowrap',
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'stretch',
+    justifyContent: 'space-evenly',
+    height: '300px',
   }
 }));
 
@@ -28,10 +31,10 @@ export default function Home() {
     <>
       <Card className={classes.card}>
         <CardContent>
-          <container maxWidth='xl' className={classes.conteinerButton}>
+          <Container maxWidth='xl' className={classes.conteinerButton}>
             <Button variant="contained"> cuatrimestre actual</Button>
             <Button variant="contained"> cuatrimestres anteriores</Button>
-          </container>
+          </Container>
         </CardContent>
       </Card>
     </>
