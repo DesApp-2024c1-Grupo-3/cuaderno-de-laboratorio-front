@@ -5,6 +5,7 @@ import DatosUsuario from './components/DatosUsuario';
 import Home from './components/Home';
 import RecoilHome from './components-recoil/Home';
 import RecoilDatosUsuario from './components-recoil/DatosUsuario';
+import { Header } from "./components/Header"
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -23,26 +24,29 @@ export default function App() {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="xl" className={classes.root}>
-      <div className={classes.fixedHeader}>
-        Este es un texto fijo, va por afuera de las rutas.
-      </div>
-      <Router>
-        <Switch>
-          <Route path="/recoil/usuarios/:id">
-            <RecoilDatosUsuario />
-          </Route>
-          <Route path="/recoil">
-            <RecoilHome />
-          </Route>
-          <Route path="/usuarios/:id">
-            <DatosUsuario />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </Router>
-    </Container>
+    <>
+      <Container maxWidth="xl" className={classes.root}>
+
+        <Header></Header>
+
+        <Router>
+          <Switch>
+            <Route path="/recoil/usuarios/:id">
+              <RecoilDatosUsuario />
+            </Route>
+            <Route path="/recoil">
+              <RecoilHome />
+            </Route>
+            <Route path="/usuarios/:id">
+              <DatosUsuario />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </Router>
+      </Container>
+    </>
+
   );
 }

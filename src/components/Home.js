@@ -10,48 +10,30 @@ import ListadoUsuarios from './ListadoUsuarios';
 import ProTip from './ProTip';
 
 const useStyles = makeStyles(() => ({
-  card: {
-    marginTop: '20px',
-  },
+  card: {},
+  conteinerButton: {
+    display: 'flex',
+    flexWrap: 'nowrap',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 }));
 
-function EjemploApi() {
+
+export default function Home() {
   const classes = useStyles();
 
   return (
-    <Card className={classes.card}>
-      <CardContent>
-        <ListadoUsuarios />
-      </CardContent>
-    </Card>
-  );
-}
-
-function ClonarProyecto() {
-  return (
     <>
-      <ProTip />
-      <Grid container justify="center">
-        <Button
-          variant="contained"
-          color="primary"
-          href="https://github.com/unahur-desapp/react-recoil-app-seed/generate"
-        >
-          ¡Quiero crear mi proyecto!
-        </Button>
-      </Grid>
-    </>
-  );
-}
-
-export default function Home() {
-  return (
-    <>
-      <Typography variant="h4" gutterBottom>
-        Repositorio semilla React - Material UI
-      </Typography>
-      <EjemploApi />
-      <ClonarProyecto />
+      <Card className={classes.card}>
+        <CardContent>
+          <container maxWidth='xl' className={classes.conteinerButton}>
+            <Button variant="contained"> cuatrimestre actual</Button>
+            <Button variant="contained"> cuatrimestres anteriores</Button>
+          </container>
+        </CardContent>
+      </Card>
     </>
   );
 }
