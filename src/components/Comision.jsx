@@ -51,7 +51,7 @@ export default function Comision() {
             {comision.map((it) => (
                 <div key={it.id}>
             <Button variant="contained">
-                {`${it.materia}, ${it.comision}`}
+                {`${it.materia} | ${it.comision}`}
                 </Button>
                 </div>
 
