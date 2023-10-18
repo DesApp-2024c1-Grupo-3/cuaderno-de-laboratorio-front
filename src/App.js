@@ -2,7 +2,7 @@ import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
-import { Header } from "./components/Header"
+import { Header } from "./components/General/Header"
 import Comision from './components/Comision';
 
 const useStyles = makeStyles(() => ({
