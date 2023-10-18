@@ -1,11 +1,9 @@
 import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import DatosUsuario from './components/DatosUsuario';
 import Home from './components/Home';
-import RecoilHome from './components-recoil/Home';
-import RecoilDatosUsuario from './components-recoil/DatosUsuario';
 import { Header } from "./components/Header"
+import Comision from './components/Comision';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -31,15 +29,16 @@ export default function App() {
 
         <Router>
           <Switch>
-            <Route path="/recoil/usuarios/:id">
+            {
+              <Route path="/comision">
+                <Comision />
+              </Route>
+            /*<Route path="/recoil/usuarios/:id">
               <RecoilDatosUsuario />
-            </Route>
-            <Route path="/recoil">
-              <RecoilHome />
             </Route>
             <Route path="/usuarios/:id">
               <DatosUsuario />
-            </Route>
+            </Route>*/}
             <Route path="/">
               <Home />
             </Route>

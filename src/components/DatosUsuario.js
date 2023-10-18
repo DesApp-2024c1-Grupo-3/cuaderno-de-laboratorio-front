@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { Alert } from '@material-ui/lab';
 import { getUsuarioPorId } from '../services/usuarios';
 import { getUsuarioPorId as getUsuarioPorId_fake } from '../services/usuarios-fake';
-import { getDataFromBackend, usuariosFijos } from '../constants/constants';
+import { getDataFromBackend } from '../constants/constants';
 
 const useStyles = makeStyles({
   root: {
@@ -86,6 +86,6 @@ export default function DatosUsuario() {
   return hasError
     ? errorRendering()
     : usuario == null
-    ? loadingRendering()
-    : usuarioRendering();
+      ? loadingRendering()
+      : usuarioRendering();
 }
