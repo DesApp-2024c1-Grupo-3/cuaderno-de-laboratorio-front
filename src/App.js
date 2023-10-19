@@ -5,7 +5,8 @@ import DatosUsuario from './components/DatosUsuario';
 import Home from './components/Home';
 import RecoilHome from './components-recoil/Home';
 import RecoilDatosUsuario from './components-recoil/DatosUsuario';
-import { Header } from "./components/Header"
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -26,7 +27,6 @@ export default function App() {
   return (
     <>
       <Container maxWidth="xl" className={classes.root}>
-
         <Header></Header>
 
         <Router>
@@ -46,7 +46,8 @@ export default function App() {
           </Switch>
         </Router>
       </Container>
-    </>
 
+      <Footer></Footer>
+    </>
   );
 }
