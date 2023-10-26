@@ -3,18 +3,26 @@ import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
 import { Header } from './components/General/Header';
+import { Footer } from './components/General/Footer';
 import Comision from './components/Comision';
 
 const useStyles = makeStyles(() => ({
   root: {
-    marginTop: '50px',
+    marginTop: '0px',
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
   },
   fixedHeader: {
-    marginBottom: '40px',
     fontSize: '30px',
     color: 'DarkRed',
     backgroundColor: 'Khaki',
     textAlign: 'center',
+  },
+  content: {
+    flex: '1', // El contenido tomará el espacio restante
+    marginBottom: '0', // Asegura que no hay margen inferior
+    paddingBottom: '0', // Asegura que no hay relleno en la parte inferior
   },
 }));
 
@@ -23,27 +31,31 @@ export default function App() {
 
   return (
     <>
-      <Container maxWidth="xl" className={classes.root}>
+      <Container maxWidth="xxl" maxHeith="xxl" className={classes.root}>
         <Header></Header>
 
-        <Router>
-          <Switch>
-            {
-              <Route path="/comision">
-                <Comision />
+        <div className={classes.content}>
+          <Router>
+            <Switch>
+              {
+                <Route path="/comision">
+                  <Comision />
+                </Route>
+                /*<Route path="/recoil/usuarios/:id">
+                <RecoilDatosUsuario />
               </Route>
-              /*<Route path="/recoil/usuarios/:id">
-              <RecoilDatosUsuario />
-            </Route>
-            <Route path="/usuarios/:id">
-              <DatosUsuario />
-            </Route>*/
-            }
-            <Route path="/">
-              <Home />
-            </Route>
-          </Switch>
-        </Router>
+              <Route path="/usuarios/:id">
+                <DatosUsuario />
+              </Route>*/
+              }
+              <Route path="/">
+                <Home />
+              </Route>
+            </Switch>
+          </Router>
+        </div>
+
+        <Footer></Footer>
       </Container>
     </>
   );
