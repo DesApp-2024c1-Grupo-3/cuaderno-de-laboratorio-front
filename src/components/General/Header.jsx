@@ -1,5 +1,6 @@
 import {  makeStyles } from "@material-ui/core";
-import Unahur from "../Img/UNAHUR.png"
+import Unahur from "../../Img/UNAHUR.png"
+
 
 const useStyles = makeStyles(() => ({
     root: {
