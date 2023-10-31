@@ -5,6 +5,7 @@ import Home from './components/Home';
 import { Header } from './components/General/Header';
 import { Footer } from './components/General/Footer';
 import Comision from './components/Comision';
+import Tps from './components/Tps';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -41,12 +42,18 @@ export default function App() {
                 <Route path="/comision">
                   <Comision />
                 </Route>
+
                 /*<Route path="/recoil/usuarios/:id">
                 <RecoilDatosUsuario />
               </Route>
               <Route path="/usuarios/:id">
                 <DatosUsuario />
               </Route>*/
+              }
+              {
+                <Route path="/tps">
+                  <Tps />
+                </Route>
               }
               <Route path="/">
                 <Home />
