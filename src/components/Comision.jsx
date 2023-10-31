@@ -8,6 +8,7 @@ import {conteinerButton} from "../style/buttonStyle"
 import {getTodosLasCursos} from '../services/curso'
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { NavLink } from "react-router-dom/cjs/react-router-dom";
+import {SubH, SubHeader }from "./SubHeader";
 
 
 const useStyles = makeStyles(() => ({
@@ -54,12 +55,10 @@ export default function Comision() {
         <Card className={classes.card}>
           <CardContent>
           <Container className={classes.curso} maxWidth="xl">
-
-                <Container>
+          <Container>
                   {estadoCurso === 'actual' ? <Typography variant="h4" >Listado De Cursos |cuatrimestre actual </Typography>:<Typography variant="h4" >Listado De Cursos | cuatrimestre anterior </Typography> }
-                
                 </Container>
-                <Container maxWidth="xl" className={classes.conteinerButton}>
+                              <Container maxWidth="xl" className={classes.conteinerButton}>
                     
                     {comision.map((it) => (
                     <Button   variant="contained"  key={it.id}>
