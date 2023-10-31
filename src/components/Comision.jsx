@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Container, makeStyles } from "@material-ui/core";
+import { Button, Card, CardContent, Container, Typography, makeStyles } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -53,25 +53,28 @@ export default function Comision() {
         <>
         <Card className={classes.card}>
           <CardContent>
-            <Container>
-              {estadoCurso === 'actual' ? <p>Listado De Cursos |cuatrimestre actual </p>:<p>Listado De Cursos | cuatrimestre anterior </p> }
-             
-            </Container>
-            <Container maxWidth="xl" className={classes.conteinerButton}>
-            
-            {comision.map((it) => (
-                 <Container className={classes.curso} maxWidth="xl" key={it.id}>
-            <Button   variant="contained">
-                Falta Name Materia id:{`${it.idMateria} | ${it.Comision}`}
-                </Button>
-                </Container>
+          <Container className={classes.curso} maxWidth="xl">
 
-             ))} 
-            
+                <Container>
+                  {estadoCurso === 'actual' ? <Typography variant="h4" >Listado De Cursos |cuatrimestre actual </Typography>:<Typography variant="h4" >Listado De Cursos | cuatrimestre anterior </Typography> }
+                
+                </Container>
+                <Container maxWidth="xl" className={classes.conteinerButton}>
+                    
+                    {comision.map((it) => (
+                    <Button   variant="contained"  key={it.id}>
+                        Falta Name Materia id:{`${it.idMateria} | ${it.Comision}`}
+                        </Button>
+
+                    ))} 
+                
+                </Container>
             </Container>
+
             <Button color="primary" component={NavLink} to="/" key="botonVolver">
         Volver
-      </Button>,
+      </Button>
+
           </CardContent>
         </Card>
       </>

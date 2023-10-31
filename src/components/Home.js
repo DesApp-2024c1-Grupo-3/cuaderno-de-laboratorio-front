@@ -18,7 +18,7 @@ export default function Home() {
 
   return (
     <>
-      <Card className={classes.card}>
+      <Card>
         <CardContent>
           <Container maxWidth="xl" className={classes.conteinerButton}>
             <Button
