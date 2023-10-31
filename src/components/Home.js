@@ -6,14 +6,12 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { conteinerButton } from '../style/buttonStyle';
+import { NavLink } from 'react-router-dom/cjs/react-router-dom';
 
 const useStyles = makeStyles(() => ({
   card: {},
-  conteinerButton
-
-
+  conteinerButton,
 }));
-
 
 export default function Home() {
   const classes = useStyles();
@@ -22,8 +20,11 @@ export default function Home() {
     <>
       <Card className={classes.card}>
         <CardContent>
-          <Container maxWidth='xl' className={classes.conteinerButton}>
-            <Button variant="contained"> cuatrimestre actual</Button>
+          <Container maxWidth="xl" className={classes.conteinerButton}>
+            <Button component={NavLink} to={`/comision`} variant="contained">
+              {' '}
+              cuatrimestre actual
+            </Button>
             <Button variant="contained"> cuatrimestres anteriores</Button>
           </Container>
         </CardContent>
