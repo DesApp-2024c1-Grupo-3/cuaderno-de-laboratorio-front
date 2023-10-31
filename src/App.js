@@ -2,13 +2,10 @@ import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
-import { Header } from "./components/Header"
+import { Header } from './components/Header';
 import Comision from './components/Comision';
 
 const useStyles = makeStyles(() => ({
-  root: {
-    marginTop: '50px',
-  },
   fixedHeader: {
     marginBottom: '40px',
     fontSize: '30px',
@@ -23,22 +20,22 @@ export default function App() {
 
   return (
     <>
-      <Container maxWidth="xl" className={classes.root}>
-
+      <Container maxWidth="xl">
         <Header></Header>
 
         <Router>
           <Switch>
             {
-              <Route path="/comision">
+              <Route path="/comision/:estadoCurso">
                 <Comision />
               </Route>
-            /*<Route path="/recoil/usuarios/:id">
+              /*<Route path="/recoil/usuarios/:id">
               <RecoilDatosUsuario />
             </Route>
             <Route path="/usuarios/:id">
               <DatosUsuario />
-            </Route>*/}
+            </Route>*/
+            }
             <Route path="/">
               <Home />
             </Route>
@@ -46,6 +43,5 @@ export default function App() {
         </Router>
       </Container>
     </>
-
   );
 }
