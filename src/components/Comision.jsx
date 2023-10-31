@@ -2,10 +2,10 @@ import { Button, Card, CardContent, Container, makeStyles } from "@material-ui/c
 import { Alert } from "@material-ui/lab";
 import { useEffect } from "react";
 import { useState } from "react";
-import { getDataFromBackend } from "../constants/comisiones";
-import { getComisiones as getComision_fake } from '../services/comision-fake';
-import { getTodosLasComisiones} from '../services/comision'
+import { getDataFromBackend } from "../constants/curso";
+import { getCurso as getCurso_fake } from '../services/curso-fake';
 import {conteinerButton} from "../style/buttonStyle"
+import {getTodosLasCursos} from '../services/curso'
 
 
 const useStyles = makeStyles(() => ({
@@ -29,8 +29,8 @@ export default function Comision() {
 
       try {
         const getFunction = getDataFromBackend
-          ? getTodosLasComisiones
-          : getComision_fake;
+          ? getTodosLasCursos
+          : getCurso_fake;
         const commision = await getFunction();
         setComision(commision);
       } catch (err) {
@@ -51,7 +51,7 @@ export default function Comision() {
             {comision.map((it) => (
                 <div key={it.id}>
             <Button variant="contained">
-                {`${it.materia} | ${it.comision}`}
+                Falta Name Materia id:{`${it.idMateria} | ${it.Comision}`}
                 </Button>
                 </div>
 
