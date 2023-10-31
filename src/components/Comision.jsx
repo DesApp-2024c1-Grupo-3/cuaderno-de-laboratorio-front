@@ -6,17 +6,23 @@ import { getDataFromBackend } from "../constants/curso";
 import { getCurso as getCurso_fake } from '../services/curso-fake';
 import {conteinerButton} from "../style/buttonStyle"
 import {getTodosLasCursos} from '../services/curso'
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { NavLink } from "react-router-dom/cjs/react-router-dom";
 
 
 const useStyles = makeStyles(() => ({
     card: {},
-    conteinerButton
+    conteinerButton,
+    curso:{  display:'inline-grid'},
+  
 
 }));
   
   
 export default function Comision() {
+  const {estadoCurso}  = useParams();
   const classes = useStyles();
+  console.log('estado:', {estadoCurso})
 
   const [comision, setComision] = useState(null);
   const [hasError, setHasError] = useState(false);
@@ -47,17 +53,25 @@ export default function Comision() {
         <>
         <Card className={classes.card}>
           <CardContent>
-            <Container maxWidth='xl' className={classes.conteinerButton}>
+            <Container>
+              {estadoCurso === 'actual' ? <p>Listado De Cursos |cuatrimestre actual </p>:<p>Listado De Cursos | cuatrimestre anterior </p> }
+             
+            </Container>
+            <Container maxWidth="xl" className={classes.conteinerButton}>
+            
             {comision.map((it) => (
-                <div key={it.id}>
-            <Button variant="contained">
+                 <Container className={classes.curso} maxWidth="xl" key={it.id}>
+            <Button   variant="contained">
                 Falta Name Materia id:{`${it.idMateria} | ${it.Comision}`}
                 </Button>
-                </div>
+                </Container>
 
              ))} 
             
             </Container>
+            <Button color="primary" component={NavLink} to="/" key="botonVolver">
+        Volver
+      </Button>,
           </CardContent>
         </Card>
       </>

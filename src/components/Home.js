@@ -21,11 +21,22 @@ export default function Home() {
       <Card className={classes.card}>
         <CardContent>
           <Container maxWidth="xl" className={classes.conteinerButton}>
-            <Button component={NavLink} to={`/comision`} variant="contained">
+            <Button
+              component={NavLink}
+              to={`/comision/actual`}
+              variant="contained"
+            >
               {' '}
               cuatrimestre actual
             </Button>
-            <Button variant="contained"> cuatrimestres anteriores</Button>
+            <Button
+              component={NavLink}
+              to={`/comision/anterior`}
+              variant="contained"
+            >
+              {' '}
+              cuatrimestres anteriores
+            </Button>
           </Container>
         </CardContent>
       </Card>
