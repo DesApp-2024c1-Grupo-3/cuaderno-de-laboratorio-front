@@ -56,7 +56,6 @@ export default function Comision() {
           <CardContent>
           <Container className={classes.curso} maxWidth="xl">
 
-            <SubH  titulo={'hola'} />
                   <Container>
                     {estadoCurso === 'actual' ? <Typography variant="h4" >Listado De Cursos |cuatrimestre actual </Typography>:<Typography variant="h4" >Listado De Cursos | cuatrimestre anterior </Typography> }
                   </Container>
