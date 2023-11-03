@@ -14,11 +14,11 @@ const useStyles = makeStyles(() => ({
     card: {},
     conteinerButton,
     curso:{  display:'inline-grid'},
-  
+
 
 }));
-  
-  
+
+
 export default function Comision() {
   const {estadoCurso}  = useParams();
   const classes = useStyles();
@@ -34,12 +34,11 @@ export default function Comision() {
         console.log('useEfect1')
 
       try {
-        const getFunction = getDataFromBackend
-          ? getCursoPorIdProfesor()
-          : getCurso_fake;
-        const commision = await getFunction();
+        // Agregar el ID del profesor segun la informacion que tengas en tu base de datos local.
+        const commision = await getCursoPorIdProfesor("6539f56c21db6cc57698b95e");
         setComision(commision);
       } catch (err) {
+        console.log("Ocurrio este error.", err);
         setHasError(true);
       }
     }
@@ -48,7 +47,6 @@ export default function Comision() {
 
   const comisionRendering = () => {
     console.log('comisionrend')
-
     return [
         <>
         <Card className={classes.card}>
@@ -59,13 +57,12 @@ export default function Comision() {
                     {estadoCurso === 'actual' ? <Typography variant="h4" >Listado De Cursos |cuatrimestre actual </Typography>:<Typography variant="h4" >Listado De Cursos | cuatrimestre anterior </Typography> }
                   </Container>
                   <Container maxWidth="xl" className={classes.conteinerButton}>
-                    
                     {comision.map((it) => (
-                    <Button   variant="contained"  key={it.id}>
-                        Falta Name Materia id:{` ${it.Comision}`}
+                    <Button   variant="contained"  key={it._id}>
+                        Falta Name Materia id:{` ${it.comision}`}
                         </Button>
 
-                    ))} 
+                    ))}
                   </Container>
             </Container>
 
@@ -76,14 +73,14 @@ export default function Comision() {
           </CardContent>
         </Card>
       </>
-    
+
     ];
   };
 
   const loadingRendering = () => {
     return <Alert severity="info">Cargando usuarie ...</Alert>;
   };
-  
+
   const errorRendering = () => {
     return (
       <Alert severity="warning">
