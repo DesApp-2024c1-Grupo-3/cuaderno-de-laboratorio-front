@@ -1,10 +1,10 @@
-export const getDataFromBackend = false;
+export const getDataFromBackend = true;
 
 export const Curso = [
   {
     idCurso: 1,
     idMateria: 1,
-    idPersonas: [],
+    idAlumnos: [],
     Comision: 'Comision 1',
     Horario: 'Nocturno',
     FechaInicio: '',
@@ -13,7 +13,7 @@ export const Curso = [
   {
     idCurso: 2,
     idMateria: 1,
-    idPersonas: [],
+    idAlumnos: [],
     Comision: 'Comision 2',
     Horario: 'Nocturno',
     FechaInicio: '',
@@ -22,7 +22,7 @@ export const Curso = [
   {
     idCurso: 3,
     idMateria: 2,
-    idPersonas: [],
+    idAlumnos: [],
     Comision: 'Comision 1',
     Horario: 'Nocturno',
     FechaInicio: '',

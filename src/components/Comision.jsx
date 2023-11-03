@@ -5,10 +5,9 @@ import { useState } from "react";
 import { getDataFromBackend } from "../constants/curso";
 import { getCurso as getCurso_fake } from '../services/curso-fake';
 import {conteinerButton} from "../style/buttonStyle"
-import {getTodosLasCursos} from '../services/curso'
+import {getCursoPorIdProfesor, getTodosLasCursos} from '../services/curso'
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { NavLink } from "react-router-dom/cjs/react-router-dom";
-import {SubH }from "./SubHeader";
 
 
 const useStyles = makeStyles(() => ({
@@ -36,7 +35,7 @@ export default function Comision() {
 
       try {
         const getFunction = getDataFromBackend
-          ? getTodosLasCursos
+          ? getCursoPorIdProfesor()
           : getCurso_fake;
         const commision = await getFunction();
         setComision(commision);
@@ -63,7 +62,7 @@ export default function Comision() {
                     
                     {comision.map((it) => (
                     <Button   variant="contained"  key={it.id}>
-                        Falta Name Materia id:{`${it.idMateria} | ${it.Comision}`}
+                        Falta Name Materia id:{` ${it.Comision}`}
                         </Button>
 
                     ))} 
