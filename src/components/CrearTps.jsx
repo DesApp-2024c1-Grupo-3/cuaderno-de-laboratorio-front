@@ -13,6 +13,7 @@ import {
   TextField,
 } from '@material-ui/core';
 import { conteinerButton } from '../style/buttonStyle';
+import { SubHeader } from './General/SubHeader';
 
 const useStyles = makeStyles(() => ({
   card: {},
@@ -26,6 +27,7 @@ export default function CrearTps() {
     <>
       <Card className={classes.card}>
         <CardContent>
+          <SubHeader titulo={'Crear Tps'} />
           <Container maxWidth="l" className={classes.conteinerButton}>
             <Container>
               <TextField
