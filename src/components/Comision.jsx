@@ -8,7 +8,7 @@ import {conteinerButton} from "../style/buttonStyle"
 import {getCursoPorIdProfesor} from '../services/curso'
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { NavLink } from "react-router-dom/cjs/react-router-dom";
-import { SubHeader } from "./SubHeader";
+import { SubHeader } from "./General/SubHeader";
 
 
 const useStyles = makeStyles(() => ({
@@ -18,6 +18,7 @@ const useStyles = makeStyles(() => ({
 
 
 }));
+
 
 
 export default function Comision() {
@@ -63,7 +64,8 @@ export default function Comision() {
                   <Container maxWidth="xl" className={classes.conteinerButton}>
                     {comision.map((it) => (
                       //Falta Nombtr  de la  Materia 
-                    <Button   variant="contained"  key={it._id}>
+                    <Button  component={NavLink}
+                    to={`/tps/${it.idCurso}`}  variant="contained"  key={it._id}>
                         id Materia: {` ${it.idMateria}`} |{` ${it.Comision}`}
                         </Button>
 

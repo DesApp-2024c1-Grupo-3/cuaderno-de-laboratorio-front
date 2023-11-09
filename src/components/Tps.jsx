@@ -5,10 +5,14 @@ import { useState } from "react";
 import { getDataFromBackend } from "../constants/tps";
 import { conteinerButton } from "../style/buttonStyle"
 import { botonesSeleccion } from "../style/buttonStyle";
+import { botonAgregar } from "../style/buttonStyle";
 import { getTps as getTps_fake } from '../services/tps-fake';
 import { getTodosLosTps } from '../services/tps'
 import { NavLink } from 'react-router-dom';
 import { conteinerButtonSeleccionTp } from "../style/buttonStyle"
+import { SubHeader } from "./General/SubHeader";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+
 
 
 const useStyles = makeStyles(() => ({
@@ -16,17 +20,22 @@ const useStyles = makeStyles(() => ({
     conteinerButton,
     botonesSeleccion,
     conteinerButtonSeleccionTp,
-    curso: { display: 'inline-grid', }
+    botonAgregar,
+    curso: { display: 'inline-grid', },
+
 
 }));
 
 
 export default function Tps() {
+    const {idCurso}  = useParams()
+
     const classes = useStyles();
 
     const [tps, setTps] = useState(null);
     const [hasError, setHasError] = useState(false);
-
+const tituloTps = ('Tps | Comision '+ idCurso)
+console.log( {idCurso})
 
     useEffect(() => {
         console.log('useEfect')
@@ -35,7 +44,7 @@ export default function Tps() {
 
             try {
                 const getFunction = getDataFromBackend
-                    ? getTodosLosTps
+                    ? getTodosLosTps // DE COMISION IdCurso
                     : getTps_fake;
                 const getTps = await getFunction();
                 setTps(getTps);
@@ -54,35 +63,28 @@ export default function Tps() {
                 <Card className={classes.card}>
                     <CardContent  >
                         <Container maxWidth='xxl' className={classes.curso}>
+                            <SubHeader titulo={tituloTps}/>
+                                <Container maxWidth='xxl' className={classes.conteinerButton} >
+                                    {tps.map((it) => (
+                                    
+                                        <Button  key={it.id} variant="contained" maxWidth='xxl' >
+                                            {`${it.materia} `} 
 
-                            <Container maxWidth='xxl' className={classes.conteinerButtonSeleccionTp}>
-                                {tps.map((it) => (
-                                    <div key={it.id}>
-                                        <Button variant="contained" maxWidth='xxl' className={classes.botonesSeleccion}>
-                                            <div className={classes.leyendasBoton}>
-                                                <p> {`${it.materia} `} </p>
-                                            </div>
-                                            <div>
-
-                                                <p> {`| Alumnos ${it.alumnos}`} </p>
-                                            </div>
-                                            <div>
-
-                                                <p> {`| ${it.grupos} Grupos`} </p>
-                                            </div>
-
+                                                 {`| Alumnos ${it.alumnos}`}  {`| ${it.grupos} Grupos`} 
+                                    
                                         </Button>
-                                    </div>
 
-                                ))}
+                                    ))}
 
-                            </Container>
-
+                                </Container>
+                        </Container>
+                        <Container  className={classes.botonAgregar}>
+                             <Button variant="contained">
+                            Agregar TP +
+                            </Button>
                         </Container>
 
-                        <Button variant="contained">
-                            Agregar TP +
-                        </Button>
+                    
 
                         <Button color="primary" component={NavLink} to="/comision" key="botonVolver">
                             Volver

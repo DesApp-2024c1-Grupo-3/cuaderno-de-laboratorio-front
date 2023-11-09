@@ -49,7 +49,7 @@ export default function App() {
               </Route>*/
               }
               {
-                <Route path="/tps">
+                <Route path="/tps/:idCurso">
                   <Tps />
                 </Route>
               }

@@ -36,3 +36,7 @@ export const botonesSeleccion = {
 export const leyendasBoton = {
   alignItems: 'space-between',
 };
+export const botonAgregar = {
+  display: 'flex',
+  justifyContent: 'center',
+};
