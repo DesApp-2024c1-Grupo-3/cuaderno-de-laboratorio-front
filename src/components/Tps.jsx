@@ -6,14 +6,18 @@ import { getDataFromBackend } from "../constants/comisiones";
 import { getComisiones as getComision_fake } from '../services/comision-fake';
 import { getTodosLasComisiones } from '../services/comision'
 import { conteinerButton } from "../style/buttonStyle"
+import { botonesSeleccion } from "../style/buttonStyle";
 import { getTps as getTps_fake } from '../services/tps-fake';
 import { getTodosLosTps } from '../services/tps'
 import { NavLink } from 'react-router-dom';
+import { conteinerButtonSeleccionTp } from "../style/buttonStyle"
 
 
 const useStyles = makeStyles(() => ({
     card: {},
     conteinerButton,
+    botonesSeleccion,
+    conteinerButtonSeleccionTp,
     curso: { display: 'inline-grid', }
 
 }));
@@ -53,11 +57,22 @@ export default function Tps() {
                     <CardContent  >
                         <Container maxWidth='xxl' className={classes.curso}>
 
-                            <Container maxWidth='xxl' className={classes.conteinerButton}>
+                            <Container maxWidth='xxl' className={classes.conteinerButtonSeleccionTp}>
                                 {tps.map((it) => (
                                     <div key={it.id}>
-                                        <Button variant="contained">
-                                            {`${it.materia} | Alumnos ${it.alumnos} | ${it.grupos}`}
+                                        <Button variant="contained" maxWidth='xxl' className={classes.botonesSeleccion}>
+                                            <div className={classes.leyendasBoton}>
+                                                <p> {`${it.materia} `} </p>
+                                            </div>
+                                            <div>
+
+                                                <p> {`| Alumnos ${it.alumnos}`} </p>
+                                            </div>
+                                            <div>
+
+                                                <p> {`| ${it.grupos} Grupos`} </p>
+                                            </div>
+
                                         </Button>
                                     </div>
 
