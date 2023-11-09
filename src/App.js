@@ -1,5 +1,4 @@
-import { Container } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Container, makeStyles } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
 import { Header } from './components/General/Header';
@@ -29,7 +28,6 @@ const useStyles = makeStyles(() => ({
 
 export default function App() {
   const classes = useStyles();
-
   return (
     <>
       <Container maxWidth="xxl" maxHeith="xxl" className={classes.root}>
@@ -39,7 +37,7 @@ export default function App() {
           <Router>
             <Switch>
               {
-                <Route path="/comision">
+                <Route path="/comision/:estadoCurso">
                   <Comision />
                 </Route>
 
@@ -55,6 +53,7 @@ export default function App() {
                   <Tps />
                 </Route>
               }
+
               <Route path="/">
                 <Home />
               </Route>

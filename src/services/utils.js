@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = 'http://localhost:8080';
 
 export async function getJsonFromApi(path) {
   const response = await axios.get(`${apiUrl}/${path}`);

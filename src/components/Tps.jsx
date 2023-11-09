@@ -2,9 +2,7 @@ import { Button, Card, CardContent, Container, makeStyles } from "@material-ui/c
 import { Alert } from "@material-ui/lab";
 import { useEffect } from "react";
 import { useState } from "react";
-import { getDataFromBackend } from "../constants/comisiones";
-import { getComisiones as getComision_fake } from '../services/comision-fake';
-import { getTodosLasComisiones } from '../services/comision'
+import { getDataFromBackend } from "../constants/tps";
 import { conteinerButton } from "../style/buttonStyle"
 import { botonesSeleccion } from "../style/buttonStyle";
 import { getTps as getTps_fake } from '../services/tps-fake';
