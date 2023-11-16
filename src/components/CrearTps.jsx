@@ -15,31 +15,48 @@ import {
 import { conteinerButton } from '../style/buttonStyle';
 import { SubHeader } from './General/SubHeader';
 import { crearTp as postCrearTp } from '../services/tps';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+
 
 const useStyles = makeStyles(() => ({
   card: {},
   conteinerButton,
 }));
 
-const body = {
-  nombre: 'Carpinteria ',
-  calificacion: '7',
-  fechaInicio: '2023-08-30T12:00:00',
-  fechaFin: '2023-08-30T12:00:00',
-  grupal: true,
-};
-
 export default function CrearTps() {
   const classes = useStyles();
   const { idCurso, profesorId } = useParams();
 
+  const [tpData, setTpData] = useState({
+    nombre: '',
+    fechaInicio: '',
+    fechaFin: '',
+    grupal: false,
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setTpData({ ...tpData, [name]: value });
+  };
+
+  const validarDatos = () => {
+    if (!tpData.nombre || !tpData.fechaInicio || !tpData.fechaFin) {
+      window.alert('Completa todos los campos obligatorios: Nombre, Fecha Inicio, Fecha Fin');
+      return false;
+    }
+    return true;
+  };
+
   const crearTp = async () => {
+    if (!validarDatos()) {
+      return;
+    }
     try {
       // Lógica para hacer la solicitud al backend
-      const response = await postCrearTp(idCurso, profesorId, body);
+      const response = await postCrearTp(idCurso, profesorId, tpData);
       console.log(response);
-      if (response.status == 201) {
+      if (response.status === 201) {
         // Redirige a la página después de crear el TP
         window.alert('Trabajo práctico creado correctamente');
       } else {
@@ -64,6 +81,9 @@ export default function CrearTps() {
                 id="outlined-basic"
                 label="Nombre de Tp"
                 variant="outlined"
+                name="nombre"
+                value={tpData.nombre}
+                onChange={handleChange}
               />
             </Container>
             <br></br>
@@ -72,11 +92,13 @@ export default function CrearTps() {
                 id="date"
                 label="Fecha inicio"
                 type="date"
-                defaultValue="2017-05-24"
                 sx={{ width: 220 }}
                 InputLabelProps={{
                   shrink: true,
                 }}
+                name="fechaInicio"
+                value={tpData.fechaInicio}
+                onChange={handleChange}
               />
               <br></br>
               <br></br>
@@ -84,22 +106,16 @@ export default function CrearTps() {
                 id="date"
                 label="Fecha fin"
                 type="date"
-                defaultValue="2017-05-24"
                 sx={{ width: 220 }}
                 InputLabelProps={{
                   shrink: true,
                 }}
+                name="fechaFin"
+                value={tpData.fechaFin}
+                onChange={handleChange}
               />
             </Container>
             <br></br>
-            {/* <Box
-              component="form"
-              sx={{
-                '& .MuiTextField-root': { m: 1, width: '25ch' },
-              }}
-              noValidate
-              autoComplete="off"
-            ></Box> */}
             <Container>
               <FormControl>
                 <FormLabel id="demo-row-radio-buttons-group-label">
@@ -108,16 +124,14 @@ export default function CrearTps() {
                 <RadioGroup
                   row
                   aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
+                  name="grupal"
+                  value={tpData.grupal.toString()}
+                  onChange={handleChange}
                 >
-                  <FormControlLabel value="si" control={<Radio />} label="Si" />
-                  <FormControlLabel value="no" control={<Radio />} label="No" />
+                  <FormControlLabel value="true" control={<Radio />} label="Sí" />
+                  <FormControlLabel value="false" control={<Radio />} label="No" />
                 </RadioGroup>
               </FormControl>
-
-              <Button disabled>Integrantes:</Button>
-
-              <Button disabled>Minimo:</Button>
             </Container>
           </Container>
           <Button
