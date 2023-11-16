@@ -13,7 +13,7 @@ import { conteinerButton } from '../style/buttonStyle';
 import { botonesSeleccion } from '../style/buttonStyle';
 import { botonAgregar } from '../style/buttonStyle';
 import { getTps as getTps_fake } from '../services/tps-fake';
-import { getTodosLosTps } from '../services/tps';
+import { getTodosLosTps, getTpsByCursoId } from '../services/tps';
 import { NavLink } from 'react-router-dom';
 import { conteinerButtonSeleccionTp } from '../style/buttonStyle';
 import { SubHeader } from './General/SubHeader';
@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function Tps() {
-  const { idCurso } = useParams();
+  const { idCurso, profesorId} = useParams();
 
   const classes = useStyles();
 
@@ -44,10 +44,10 @@ export default function Tps() {
       console.log('useEfect1');
 
       try {
-        const getFunction = getDataFromBackend
+        /*const getFunction = getDataFromBackend
           ? getTodosLosTps // DE COMISION IdCurso
-          : getTps_fake;
-        const getTps = await getFunction();
+          : getTps_fake;*/
+        const getTps = await getTpsByCursoId(idCurso);
         setTps(getTps);
       } catch (err) {
         setHasError(true);
@@ -67,15 +67,15 @@ export default function Tps() {
               <SubHeader titulo={tituloTps} />
               <Container maxWidth="xxl" className={classes.conteinerButton}>
                 {tps.map((it) => (
-                  <Button key={it.id} variant="contained" maxWidth="xxl">
-                    {`${it.materia} `}
-                    {`| Alumnos ${it.alumnos}`} {`| ${it.grupos} Grupos`}
+                  <Button key={it._id} variant="contained" maxWidth="xxl">
+                    {`${it.nombre} `}
+                    {`| Grupal ${it.grupal ? 'Si' : 'No'}`}
                   </Button>
                 ))}
               </Container>
             </Container>
             <Container className={classes.botonAgregar}>
-              <Button component={NavLink} to="/crearTps" variant="contained">
+              <Button component={NavLink} to={`/crearTps/${idCurso}/${profesorId}`} variant="contained">
                 Agregar TP +
               </Button>
             </Container>

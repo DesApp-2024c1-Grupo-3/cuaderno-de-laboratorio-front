@@ -7,5 +7,6 @@ export async function getTodosLasCursos() {
 
 export async function getCursoPorIdProfesor(id) {
   const apiResponse = await getJsonFromApi(`profesor/${id}/cursos`);
+  console.log('Respuesta de la api: ', apiResponse);
   return apiResponse.cursos;
 }

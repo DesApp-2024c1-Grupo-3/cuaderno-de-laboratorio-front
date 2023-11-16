@@ -14,14 +14,44 @@ import {
 } from '@material-ui/core';
 import { conteinerButton } from '../style/buttonStyle';
 import { SubHeader } from './General/SubHeader';
+import { crearTp as postCrearTp } from '../services/tps';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 const useStyles = makeStyles(() => ({
   card: {},
   conteinerButton,
 }));
 
+const body = {
+  nombre: 'Carpinteria ',
+  calificacion: '7',
+  fechaInicio: '2023-08-30T12:00:00',
+  fechaFin: '2023-08-30T12:00:00',
+  grupal: true,
+};
+
 export default function CrearTps() {
   const classes = useStyles();
+  const { idCurso, profesorId } = useParams();
+
+  const crearTp = async () => {
+    try {
+      // Lógica para hacer la solicitud al backend
+      const response = await postCrearTp(idCurso, profesorId, body);
+      console.log(response);
+      if (response.status == 201) {
+        // Redirige a la página después de crear el TP
+        window.alert('Trabajo práctico creado correctamente');
+      } else {
+        console.error('Error al crear TP');
+        // Manejo de errores según sea necesario
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+      // Manejo de errores según sea necesario
+      window.alert('Error en la solicitud');
+    }
+  };
 
   return (
     <>
@@ -36,11 +66,23 @@ export default function CrearTps() {
                 variant="outlined"
               />
             </Container>
-
+            <br></br>
             <Container>
               <TextField
                 id="date"
-                label="Birthday"
+                label="Fecha inicio"
+                type="date"
+                defaultValue="2017-05-24"
+                sx={{ width: 220 }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <br></br>
+              <br></br>
+              <TextField
+                id="date"
+                label="Fecha fin"
                 type="date"
                 defaultValue="2017-05-24"
                 sx={{ width: 220 }}
@@ -49,7 +91,7 @@ export default function CrearTps() {
                 }}
               />
             </Container>
-
+            <br></br>
             {/* <Box
               component="form"
               sx={{
@@ -78,14 +120,19 @@ export default function CrearTps() {
               <Button disabled>Minimo:</Button>
             </Container>
           </Container>
-
           <Button
             color="primary"
             component={NavLink}
-            to="/src/components/Tps.jsx"
+            to={`/tps/${idCurso}/${profesorId}`}
             key="botonVolver"
           >
             Volver
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => crearTp()}
+          >
+            Crear TP
           </Button>
         </CardContent>
       </Card>

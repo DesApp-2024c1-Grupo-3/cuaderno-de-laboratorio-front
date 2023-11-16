@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
 
 }));
 
-
+const profesorId = "6555863a5c59291fc6c31604"
 
 export default function Comision() {
   const {estadoCurso}  = useParams();
@@ -32,25 +32,28 @@ export default function Comision() {
      'Listado De Cursos |cuatrimestre actual ' :
      'Listado De Cursos | cuatrimestre anterior')
 
-  
 
 
-  useEffect(() => {
-    async function fetchCommision() {
+
+     useEffect(() => {
+      async function fetchCommision() {
         const getFunction = getDataFromBackend
-        ? getCursoPorIdProfesor("6539f56c21db6cc57698b95e")
-        : getTodosLosUsuarios_fake;
-      try {
-        // Agregar el ID del profesor segun la informacion que tengas en tu base de datos local.
-        const commision = await getFunction();
-        setComision(commision);
-      } catch (err) {
-        console.log("Ocurrio este error.", err);
-        setHasError(true);
+          ? getCursoPorIdProfesor
+          : getTodosLosUsuarios_fake;
+
+        try {
+          // Agregar el ID del profesor según la información que tengas en tu base de datos local.
+          const commision = await getFunction(profesorId);
+          setComision(commision);
+        } catch (err) {
+          console.log("Ocurrió este error.", err);
+          setHasError(true);
+        }
       }
-    }
-    fetchCommision();
-  }, []);0
+
+      fetchCommision();
+    }, []);
+
 
   const comisionRendering = () => {
     console.log('comisionrend')
@@ -60,15 +63,14 @@ export default function Comision() {
           <CardContent>
           <Container className={classes.curso} maxWidth="xl">
                   <SubHeader titulo= {tituloHeader}/>
-           
+
                   <Container maxWidth="xl" className={classes.conteinerButton}>
                     {comision.map((it) => (
-                      //Falta Nombtr  de la  Materia 
+                      //Falta Nombtr  de la  Materia
                     <Button  component={NavLink}
-                    to={`/tps/${it.idCurso}`}  variant="contained"  key={it._id}>
-                        id Materia: {` ${it.idMateria}`} |{` ${it.Comision}`}
+                    to={`/tps/${it._id}/${profesorId}`}  variant="contained"  key={it._id}>
+                        {` ${it.materia.nombre}`} | {` ${it.comision}`}
                         </Button>
-
                     ))}
                   </Container>
             </Container>

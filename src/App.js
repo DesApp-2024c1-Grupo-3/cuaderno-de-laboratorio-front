@@ -50,12 +50,12 @@ export default function App() {
               </Route>*/
               }
               {
-                <Route path="/tps/:idCurso">
+                <Route path="/tps/:idCurso/:profesorId">
                   <Tps />
                 </Route>
               }
               {
-                <Route path="/crearTps">
+                <Route path="/crearTps/:idCurso/:profesorId">
                   <CrearTps />
                 </Route>
               }
