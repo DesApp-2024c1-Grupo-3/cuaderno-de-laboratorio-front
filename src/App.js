@@ -6,6 +6,7 @@ import { Footer } from './components/General/Footer';
 import Comision from './components/Comision';
 import Tps from './components/Tps';
 import CrearTps from './components/CrearTps';
+import AdministrarGrupos from './components/Profesores/AdmGrupos';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -57,6 +58,11 @@ export default function App() {
               {
                 <Route path="/crearTps">
                   <CrearTps />
+                </Route>
+              }
+              {
+                <Route path="/Administrar_Grupos">
+                  <AdministrarGrupos />
                 </Route>
               }
 

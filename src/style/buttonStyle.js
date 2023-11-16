@@ -7,6 +7,24 @@ export const conteinerButton = {
   height: '300px',
 };
 
+export const buttonGrupo = {
+  backgroundColor: '#609800',
+  borderRadius: '57px',
+  height: '40px',
+  color: 'white',
+  border: 'solid black 1px',
+};
+
+export const conteinerButtonRow = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  flexDirection: 'row',
+  alignContent: 'center',
+  alignItems: 'stretch',
+  justifyContent: 'space-evenly',
+  height: '300px',
+};
+
 export const conteinerButtonSeleccionTp = {
   display: 'flex',
   flexWrap: 'nowrap',
@@ -39,4 +57,14 @@ export const leyendasBoton = {
 export const botonAgregar = {
   display: 'flex',
   justifyContent: 'center',
+};
+export const contButtonVolver = {
+  padding: '0px',
+};
+export const buttonVolver = {
+  backgroundColor: '#444444',
+  fontSize: 'small',
+  color: 'white',
+  marginTop: '10px',
+  height: '15px',
 };
