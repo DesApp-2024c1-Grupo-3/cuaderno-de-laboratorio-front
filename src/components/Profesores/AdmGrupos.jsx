@@ -29,6 +29,7 @@ import {
   conteinerButtonRow,
   buttonGrupo,
   buttonVolver,
+  conteinerListaDeGrupos,
 } from '../../style/buttonStyle';
 import { getCursoPorIdProfesor } from '../../services/curso';
 import { SubHeader } from '../General/SubHeader';
@@ -44,6 +45,7 @@ const useStyles = makeStyles(() => ({
   buttonVolver,
   curso: { display: 'inline-grid' },
   modal: { backgroundColor: 'white' },
+  conteinerListaDeGrupos,
 }));
 
 export default function AdministrarGrupos() {
@@ -52,10 +54,7 @@ export default function AdministrarGrupos() {
 
   const [comision, setComision] = useState(null);
   const [hasError, setHasError] = useState(false);
-  const tituloHeader =
-    estadoCurso === 'actual'
-      ? 'Listado De Cursos |cuatrimestre actual '
-      : 'Listado De Cursos | cuatrimestre anterior';
+  const tituloHeader = 'Administrar Grupos';
 
   const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
@@ -89,18 +88,6 @@ export default function AdministrarGrupos() {
     fetchCommision();
   }, []);
 
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
-
   const comisionRendering = () => {
     return [
       <>
@@ -124,36 +111,37 @@ export default function AdministrarGrupos() {
                   closeModal={hideModal}
                 ></ModalCrearGrupos>
               </Container>
+              <Container>
+                <Box className={classes.conteinerListaDeGrupos}>
+                  <Grid item xs={12} md={6}>
+                    <Demo>
+                      <Typography
+                        sx={{ mt: 4, mb: 2 }}
+                        variant="h6"
+                        component="div"
+                      ></Typography>
+                      <List>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <FolderIcon />
+                          </ListItemAvatar>
 
-              <Box>
-                <Grid item xs={12} md={6}>
-                  <Demo>
-                    <Typography
-                      sx={{ mt: 4, mb: 2 }}
-                      variant="h6"
-                      component="div"
-                    ></Typography>
-                    <List>
-                      <ListItem>
-                        <ListItemAvatar>
-                          <FolderIcon />
-                        </ListItemAvatar>
-
-                        <ListItemText
-                          primary="Nombre De Grupo"
-                          secondary="nombres de integrantes"
-                        />
-                        <IconButton edge="edit" aria-label="edit">
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton edge="end" aria-label="delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItem>
-                    </List>
-                  </Demo>
-                </Grid>
-              </Box>
+                          <ListItemText
+                            primary="Nombre De Grupo"
+                            secondary="nombres de integrantes"
+                          />
+                          <IconButton edge="edit" aria-label="edit">
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton edge="end" aria-label="delete">
+                            <DeleteIcon />
+                          </IconButton>
+                        </ListItem>
+                      </List>
+                    </Demo>
+                  </Grid>
+                </Box>
+              </Container>
             </Container>
 
             <Button

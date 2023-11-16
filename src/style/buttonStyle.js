@@ -50,7 +50,12 @@ export const botonesSeleccion = {
   lineHeight: 'normal',
   alignItems: 'space-between',
 };
-
+export const conteinerListaDeGrupos = {
+  display: 'flex',
+  flexDirection: 'column',
+  flexWrap: 'nowrap',
+  alignItems: 'center',
+};
 export const leyendasBoton = {
   alignItems: 'space-between',
 };

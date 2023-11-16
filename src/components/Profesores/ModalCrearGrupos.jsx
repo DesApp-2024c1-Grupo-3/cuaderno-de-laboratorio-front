@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
 
 const style = {
   position: 'absolute',
-  top: '50%',
+  top: '75%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
@@ -74,14 +74,14 @@ export const ModalCrearGrupos = ({ show, closeModal }) => {
             <Divider></Divider>
           </Container>
 
-          <Container>
+          <Container style={{ padding: '15px' }}>
             <TextField
               id="standard-basic"
               label="Nombre del Grupo"
               variant="standard"
             />
           </Container>
-          <Container>
+          <Container style={{ padding: '15px' }}>
             <Stack spacing={3}>
               <Autocomplete
                 multiple
