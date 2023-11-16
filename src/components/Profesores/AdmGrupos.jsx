@@ -113,13 +113,15 @@ export default function AdministrarGrupos() {
               </Container>
               <Container>
                 <Box className={classes.conteinerListaDeGrupos}>
-                  <Grid item xs={12} md={6}>
+                  <Grid style={{ width: '50%', border: '1px' }}>
                     <Demo>
                       <Typography
                         sx={{ mt: 4, mb: 2 }}
                         variant="h6"
                         component="div"
-                      ></Typography>
+                      >
+                        grupos
+                      </Typography>
                       <List>
                         <ListItem>
                           <ListItemAvatar>
@@ -127,8 +129,24 @@ export default function AdministrarGrupos() {
                           </ListItemAvatar>
 
                           <ListItemText
-                            primary="Nombre De Grupo"
-                            secondary="nombres de integrantes"
+                            primary="Grupo 1"
+                            secondary=" Natalia , Pablo"
+                          />
+                          <IconButton edge="edit" aria-label="edit">
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton edge="end" aria-label="delete">
+                            <DeleteIcon />
+                          </IconButton>
+                        </ListItem>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <FolderIcon />
+                          </ListItemAvatar>
+
+                          <ListItemText
+                            primary="Grupo 2"
+                            secondary=" Carla , Agustina"
                           />
                           <IconButton edge="edit" aria-label="edit">
                             <EditIcon />
