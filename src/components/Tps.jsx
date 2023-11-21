@@ -5,6 +5,7 @@ import { useState } from "react";
 import { getDataFromBackend } from "../constants/tps";
 import { conteinerButton } from "../style/buttonStyle"
 import { botonesSeleccion } from "../style/buttonStyle";
+import { botonVolver } from "../style/buttonStyle";
 import { getTps as getTps_fake } from '../services/tps-fake';
 import { getTodosLosTps } from '../services/tps'
 import { NavLink } from 'react-router-dom';
@@ -12,11 +13,19 @@ import { conteinerButtonSeleccionTp } from "../style/buttonStyle"
 
 
 const useStyles = makeStyles(() => ({
-    card: {},
+    card: {
+        height: '100vh',
+    },
     conteinerButton,
     botonesSeleccion,
     conteinerButtonSeleccionTp,
-    curso: { display: 'inline-grid', }
+    botonVolver,
+    curso: { display: 'inline-grid', },
+    botonAgregarTp: {
+        width: '60%',
+        margin: 'auto',
+        marginTop: '450px',
+    }
 
 }));
 
@@ -58,8 +67,8 @@ export default function Tps() {
                             <Container maxWidth='xxl' className={classes.conteinerButtonSeleccionTp}>
                                 {tps.map((it) => (
                                     <div key={it.id}>
-                                        <Button variant="contained" maxWidth='xxl' className={classes.botonesSeleccion}>
-                                            <div className={classes.leyendasBoton}>
+                                        <Button variant="contained" maxWidth='xxl' className={classes.botonesSeleccion} >
+                                            <div >
                                                 <p> {`${it.materia} `} </p>
                                             </div>
                                             <div>
@@ -77,18 +86,19 @@ export default function Tps() {
                                 ))}
 
                             </Container>
-
+                            <Button variant="contained" className={classes.botonAgregarTp} maxWidth='xxl'>
+                                Agregar TP +
+                            </Button>
                         </Container>
 
-                        <Button variant="contained">
-                            Agregar TP +
-                        </Button>
 
-                        <Button color="primary" component={NavLink} to="/comision" key="botonVolver">
-                            Volver
-                        </Button>
-                    </CardContent>
-                </Card>
+
+
+                    </CardContent >
+                </Card >
+                <Button color="primary" component={NavLink} to="/comision" key="botonVolver" className={classes.botonVolver}>
+                    Volver
+                </Button>
             </>
 
         ];
