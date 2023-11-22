@@ -12,7 +12,6 @@ import {
   ListItemAvatar,
   ListItemText,
   ListSubheader,
-  Modal,
   Typography,
   makeStyles,
   styled,
@@ -23,15 +22,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Alert } from '@material-ui/lab';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { getDataFromBackend } from '../../constants/curso';
-import { getCurso as getTodosLosUsuarios_fake } from '../../services/curso-fake';
+import { getDataFromBackend } from '../../constants/Grupos';
+import { getTodosLosGrupos as getTodosLosGrupos_fake } from '../../services/Grupos_Fake';
 import {
   conteinerButtonRow,
   buttonGrupo,
   buttonVolver,
   conteinerListaDeGrupos,
 } from '../../style/buttonStyle';
-import { getCursoPorIdProfesor } from '../../services/curso';
+import { getTodosLosGrupos } from '../../services/Grupo';
 import { SubHeader } from '../General/SubHeader';
 import EditIcon from '@mui/icons-material/Edit';
 import { ModalCrearGrupos } from './ModalCrearGrupos';
@@ -52,7 +51,7 @@ export default function AdministrarGrupos() {
   const { estadoCurso } = useParams();
   const classes = useStyles();
 
-  const [comision, setComision] = useState(null);
+  const [grupos, setGrupos] = useState(null);
   const [hasError, setHasError] = useState(false);
   const tituloHeader = 'Administrar Grupos';
 
@@ -60,11 +59,9 @@ export default function AdministrarGrupos() {
     backgroundColor: theme.palette.background.paper,
   }));
 
-  const [showEdit, setShowEdit] = useState(true);
   const [show, setShow] = useState(false);
 
   const hideModal = () => {
-    setShowEdit(false);
     setShow(false);
   };
   const openModal = () => {
@@ -72,23 +69,23 @@ export default function AdministrarGrupos() {
   };
 
   useEffect(() => {
-    async function fetchCommision() {
+    async function fetchGrupos() {
       const getFunction = getDataFromBackend
-        ? getCursoPorIdProfesor('6539f56c21db6cc57698b95e')
-        : getTodosLosUsuarios_fake;
+        ? getTodosLosGrupos
+        : getTodosLosGrupos_fake;
       try {
         // Agregar el ID del profesor segun la informacion que tengas en tu base de datos local.
-        const commision = await getFunction();
-        setComision(commision);
+        const grupos = await getFunction();
+        setGrupos(grupos);
       } catch (err) {
         console.log('Ocurrio este error.', err);
         setHasError(true);
       }
     }
-    fetchCommision();
+    fetchGrupos();
   }, []);
 
-  const comisionRendering = () => {
+  const gruposRendering = () => {
     return [
       <>
         <Card className={classes.card}>
@@ -98,9 +95,7 @@ export default function AdministrarGrupos() {
               <ListSubheader>Nombre del Tp</ListSubheader>
               <Divider></Divider>
               <Container maxWidth="xl" className={classes.conteinerButtonRow}>
-                <Button onClick={openModal} className={classes.buttonGrupo}>
-                  Clonar Grupo
-                </Button>
+                <Button className={classes.buttonGrupo}>Clonar Grupo</Button>
                 <Button onClick={openModal} className={classes.buttonGrupo}>
                   Crear Grupo
                 </Button>
@@ -123,38 +118,24 @@ export default function AdministrarGrupos() {
                         grupos
                       </Typography>
                       <List>
-                        <ListItem>
-                          <ListItemAvatar>
-                            <FolderIcon />
-                          </ListItemAvatar>
+                        {grupos.map((it) => (
+                          <ListItem key={it.id}>
+                            <ListItemAvatar>
+                              <FolderIcon />
+                            </ListItemAvatar>
 
-                          <ListItemText
-                            primary="Grupo 1"
-                            secondary=" Natalia , Pablo"
-                          />
-                          <IconButton edge="edit" aria-label="edit">
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton edge="end" aria-label="delete">
-                            <DeleteIcon />
-                          </IconButton>
-                        </ListItem>
-                        <ListItem>
-                          <ListItemAvatar>
-                            <FolderIcon />
-                          </ListItemAvatar>
-
-                          <ListItemText
-                            primary="Grupo 2"
-                            secondary=" Carla , Agustina"
-                          />
-                          <IconButton edge="edit" aria-label="edit">
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton edge="end" aria-label="delete">
-                            <DeleteIcon />
-                          </IconButton>
-                        </ListItem>
+                            <ListItemText
+                              primary={`${it.nombre} `}
+                              secondary={` ${it.alumnos}`}
+                            />
+                            <IconButton edge="edit" aria-label="edit">
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton edge="end" aria-label="delete">
+                              <DeleteIcon />
+                            </IconButton>
+                          </ListItem>
+                        ))}
                       </List>
                     </Demo>
                   </Grid>
@@ -183,7 +164,7 @@ export default function AdministrarGrupos() {
   const errorRendering = () => {
     return (
       <Alert severity="warning">
-        No pudimos cargar el usuario. ¿Levantaste la API?{' '}
+        No pudimos cargar los grupos.{' '}
         <span role="img" aria-label="thinking">
           🤔
         </span>
@@ -197,7 +178,7 @@ export default function AdministrarGrupos() {
 
   return hasError
     ? errorRendering()
-    : comision == null
+    : grupos == null
     ? loadingRendering()
-    : comisionRendering();
+    : gruposRendering();
 }

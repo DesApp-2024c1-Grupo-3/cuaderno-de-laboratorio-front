@@ -1,13 +1,11 @@
-import { AlumnosFijos } from '../constants/Alumnos';
+import { getJsonFromApi } from './utils';
 
 export async function getTodosLosAlumnos() {
-  return Promise.resolve(AlumnosFijos);
+  const apiResponse = await getJsonFromApi('');
+  return apiResponse.data;
 }
 
-export async function getUsuarioPorId(id) {
-  const elUsuario = AlumnosFijos.find((usu) => usu.id === Number(id));
-  if (!elUsuario) {
-    throw new Error(`Le usuarie ${id} no existe`);
-  }
-  return Promise.resolve(elUsuario);
+export async function getAlumnoPorId(id) {
+  const apiResponse = await getJsonFromApi(`alumno/${id}`);
+  return apiResponse.cursos;
 }

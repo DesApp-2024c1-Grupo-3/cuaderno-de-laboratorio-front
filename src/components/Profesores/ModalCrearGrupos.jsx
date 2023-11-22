@@ -19,6 +19,8 @@ import {
 } from '../../style/buttonStyle';
 import PropTypes from 'prop-types';
 import { getTodosLosAlumnos } from '../../services/Alumnos';
+import { getTodosLosAlumnos as getTodosLosAlumnos_Fake } from '../../services/alumnos-fake';
+
 import { useEffect } from 'react';
 import { getDataFromBackend } from '../../constants/Alumnos';
 import { Stack } from '@mui/material';
@@ -53,7 +55,9 @@ export const ModalCrearGrupos = ({ show, closeModal }) => {
 
   useEffect(() => {
     async function fetchAlumnos() {
-      const getFunction = getDataFromBackend ? getTodosLosAlumnos : '';
+      const getFunction = getDataFromBackend
+        ? getTodosLosAlumnos
+        : getTodosLosAlumnos_Fake;
       try {
         // Agregar el ID del profesor segun la informacion que tengas en tu base de datos local.
         const alumnos = await getFunction();
@@ -87,7 +91,9 @@ export const ModalCrearGrupos = ({ show, closeModal }) => {
                 multiple
                 id="tags-outlined"
                 options={listAlumnos}
-                getOptionLabel={(option) => option.nombre}
+                getOptionLabel={(option) =>
+                  option.nombre + ' ' + option.apellido
+                }
                 filterSelectedOptions
                 renderInput={(params) => (
                   <TextField
