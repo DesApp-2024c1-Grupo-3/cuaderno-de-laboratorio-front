@@ -25,7 +25,7 @@ export const botonesSeleccion = {
   height: '60px',
   radius: '0px',
   border: '2px solid #474646',
-  width: '100%',
+  width: '95%',
   fontFamily: 'Inter',
   fontSize: '28px',
   fontWeight: 500,
