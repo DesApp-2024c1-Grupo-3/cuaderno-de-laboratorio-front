@@ -31,8 +31,15 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { margin } from '@mui/system';
 
 const useStyles = makeStyles(() => ({
+    contenedor: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '70vh', // Hace que el contenedor ocupe al menos el 100% de la altura de la pantalla
+    },
     card: {
-        height: '100vh',
+        flex: 1, // Hace que la Card ocupe el espacio restante
+        display: 'flex',
+        flexDirection: 'column',
     },
 
     conteinerButton,
@@ -116,86 +123,88 @@ export default function Tps() {
 
         return [
             <>
-                <Card className={classes.card}>
-                    <CardContent>
-                        <SubHeader titulo={tituloTps} />
+                <div className={classes.contenedor}>
+                    <Card className={classes.card}>
+                        <CardContent>
+                            <SubHeader titulo={tituloTps} />
 
-                        <Divider className={classes.divider} />
+                            <Divider className={classes.divider} />
 
-                        <Container maxWidth="xxl" className={classes.curso}>
+                            <Container maxWidth="xxl" className={classes.curso}>
 
-                            <Container maxWidth="xxl" className={classes.conteinerButtonSeleccionTp}>
-                                {tps.map((it) => (
-                                    <div key={it.id}>
+                                <Container maxWidth="xxl" className={classes.conteinerButtonSeleccionTp}>
+                                    {tps.map((it) => (
+                                        <div key={it.id}>
 
-                                        <div className={classes.filaBotones}>
+                                            <div className={classes.filaBotones}>
 
-                                            <Button key={it._id} variant="contained" maxWidth="xxl" className={classes.botonesSeleccion}>
+                                                <Button key={it._id} variant="contained" maxWidth="xxl" className={classes.botonesSeleccion}>
 
-                                                <div>
-                                                    <p> {`${it.nombre} `} </p>
+                                                    <div>
+                                                        <p> {`${it.nombre} `} </p>
+                                                    </div>
+
+                                                    <div>
+                                                        <p> {`| Grupal ${it.grupal ? 'Si' : 'No'}`} </p>
+                                                    </div>
+
+                                                </Button>
+
+                                                <div style={{ alignItems: 'center', display: 'flex' }}>
+                                                    <IconButton
+                                                        aria-label="more"
+                                                        id="long-button"
+                                                        aria-controls={open ? 'long-menu' : undefined}
+                                                        aria-expanded={open ? 'true' : undefined}
+                                                        aria-haspopup="true"
+                                                        onClick={handleClick}
+                                                    >
+                                                        <MoreVertIcon />
+                                                    </IconButton>
+                                                    <Menu
+                                                        id="long-menu"
+                                                        MenuListProps={{
+                                                            'aria-labelledby': 'long-button',
+                                                        }}
+                                                        anchorEl={anchorEl}
+                                                        open={open}
+                                                        onClose={handleClose}
+                                                        PaperProps={{
+                                                            style: {
+                                                                maxHeight: ITEM_HEIGHT * 4.5,
+                                                                width: '20ch',
+                                                            },
+                                                        }}
+                                                    >
+                                                        {options.map((option) => (
+                                                            <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+                                                                {option}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Menu>
                                                 </div>
-
-                                                <div>
-                                                    <p> {`| Grupal ${it.grupal ? 'Si' : 'No'}`} </p>
-                                                </div>
-
-                                            </Button>
-
-                                            <div style={{ alignItems: 'center', display: 'flex' }}>
-                                                <IconButton
-                                                    aria-label="more"
-                                                    id="long-button"
-                                                    aria-controls={open ? 'long-menu' : undefined}
-                                                    aria-expanded={open ? 'true' : undefined}
-                                                    aria-haspopup="true"
-                                                    onClick={handleClick}
-                                                >
-                                                    <MoreVertIcon />
-                                                </IconButton>
-                                                <Menu
-                                                    id="long-menu"
-                                                    MenuListProps={{
-                                                        'aria-labelledby': 'long-button',
-                                                    }}
-                                                    anchorEl={anchorEl}
-                                                    open={open}
-                                                    onClose={handleClose}
-                                                    PaperProps={{
-                                                        style: {
-                                                            maxHeight: ITEM_HEIGHT * 4.5,
-                                                            width: '20ch',
-                                                        },
-                                                    }}
-                                                >
-                                                    {options.map((option) => (
-                                                        <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-                                                            {option}
-                                                        </MenuItem>
-                                                    ))}
-                                                </Menu>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </Container>
+
+                                <Button component={NavLink} to={`/crearTps/${idCurso}/${profesorId}`} variant="contained" className={classes.botonAgregarTp}>
+                                    Agregar TP +
+                                </Button>
+
                             </Container>
 
-                            <Button component={NavLink} to={`/crearTps/${idCurso}/${profesorId}`} variant="contained" className={classes.botonAgregarTp}>
-                                Agregar TP +
-                            </Button>
-
-                        </Container>
-
-                    </CardContent>
-                </Card>
-                <Button
-                    color="primary"
-                    component={NavLink}
-                    to="/comision"
-                    key="botonVolver"
-                >
-                    Volver
-                </Button>
+                        </CardContent>
+                    </Card>
+                    <Button
+                        color="primary"
+                        component={NavLink}
+                        to="/comision"
+                        key="botonVolver"
+                    >
+                        Volver
+                    </Button>
+                </div>
             </>,
         ];
     };
