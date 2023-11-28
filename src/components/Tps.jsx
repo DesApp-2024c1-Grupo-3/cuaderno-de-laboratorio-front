@@ -3,6 +3,7 @@ import {
     Card,
     CardContent,
     Container,
+    Divider,
     makeStyles,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
@@ -11,6 +12,7 @@ import { useState } from 'react';
 import { getDataFromBackend } from '../constants/tps';
 import { conteinerButton } from '../style/buttonStyle';
 import { botonesSeleccion } from '../style/buttonStyle';
+import { botonVolver } from "../style/buttonStyle";
 import { botonAgregar } from '../style/buttonStyle';
 import { getTps as getTps_fake } from '../services/tps-fake';
 import { getTodosLosTps, getTpsByCursoId } from '../services/tps';
@@ -19,13 +21,48 @@ import { conteinerButtonSeleccionTp } from '../style/buttonStyle';
 import { SubHeader } from './General/SubHeader';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
+
+import * as React from 'react';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
+import { margin } from '@mui/system';
+
 const useStyles = makeStyles(() => ({
-    card: {},
+    card: {
+        height: '100vh',
+    },
+
     conteinerButton,
     botonesSeleccion,
     conteinerButtonSeleccionTp,
-    botonAgregar,
+    botonVolver,
+    filaBotones: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+    },
+    divider: {
+        marginTop: '20px',
+        marginBottom: '20px',
+    },
     curso: { display: 'inline-grid' },
+    botonAgregarTp: {
+
+        margin: 'auto',
+        marginTop: '20px',
+        backgroundColor: '#4CAF50',
+        color: 'white',
+        borderRadius: '8px',
+        padding: '10px 20px',
+        fontSize: '16px',
+        '&:hover': {
+            backgroundColor: '#45a049',
+        },
+
+    },
 }));
 
 export default function Tps() {
@@ -37,6 +74,24 @@ export default function Tps() {
     const [hasError, setHasError] = useState(false);
     const tituloTps = 'Tps | Comision ';
     console.log({ idCurso });
+
+    const options = [
+        'Eliminar',
+        'Editar',
+
+    ];
+
+    const ITEM_HEIGHT = 48;
+
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     useEffect(() => {
         console.log('useEfect');
@@ -63,33 +118,84 @@ export default function Tps() {
             <>
                 <Card className={classes.card}>
                     <CardContent>
+                        <SubHeader titulo={tituloTps} />
+
+                        <Divider className={classes.divider} />
+
                         <Container maxWidth="xxl" className={classes.curso}>
-                            <SubHeader titulo={tituloTps} />
-                            <Container maxWidth="xxl" className={classes.conteinerButton}>
+
+                            <Container maxWidth="xxl" className={classes.conteinerButtonSeleccionTp}>
                                 {tps.map((it) => (
-                                    <Button key={it._id} variant="contained" maxWidth="xxl">
-                                        {`${it.nombre} `}
-                                        {`| Grupal ${it.grupal ? 'Si' : 'No'}`}
-                                    </Button>
+                                    <div key={it.id}>
+
+                                        <div className={classes.filaBotones}>
+
+                                            <Button key={it._id} variant="contained" maxWidth="xxl" className={classes.botonesSeleccion}>
+
+                                                <div>
+                                                    <p> {`${it.nombre} `} </p>
+                                                </div>
+
+                                                <div>
+                                                    <p> {`| Grupal ${it.grupal ? 'Si' : 'No'}`} </p>
+                                                </div>
+
+                                            </Button>
+
+                                            <div style={{ alignItems: 'center', display: 'flex' }}>
+                                                <IconButton
+                                                    aria-label="more"
+                                                    id="long-button"
+                                                    aria-controls={open ? 'long-menu' : undefined}
+                                                    aria-expanded={open ? 'true' : undefined}
+                                                    aria-haspopup="true"
+                                                    onClick={handleClick}
+                                                >
+                                                    <MoreVertIcon />
+                                                </IconButton>
+                                                <Menu
+                                                    id="long-menu"
+                                                    MenuListProps={{
+                                                        'aria-labelledby': 'long-button',
+                                                    }}
+                                                    anchorEl={anchorEl}
+                                                    open={open}
+                                                    onClose={handleClose}
+                                                    PaperProps={{
+                                                        style: {
+                                                            maxHeight: ITEM_HEIGHT * 4.5,
+                                                            width: '20ch',
+                                                        },
+                                                    }}
+                                                >
+                                                    {options.map((option) => (
+                                                        <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+                                                            {option}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Menu>
+                                            </div>
+                                        </div>
+                                    </div>
                                 ))}
                             </Container>
-                        </Container>
-                        <Container className={classes.botonAgregar}>
-                            <Button component={NavLink} to={`/crearTps/${idCurso}/${profesorId}`} variant="contained">
+
+                            <Button component={NavLink} to={`/crearTps/${idCurso}/${profesorId}`} variant="contained" className={classes.botonAgregarTp}>
                                 Agregar TP +
                             </Button>
+
                         </Container>
 
-                        <Button
-                            color="primary"
-                            component={NavLink}
-                            to="/comision"
-                            key="botonVolver"
-                        >
-                            Volver
-                        </Button>
                     </CardContent>
                 </Card>
+                <Button
+                    color="primary"
+                    component={NavLink}
+                    to="/comision"
+                    key="botonVolver"
+                >
+                    Volver
+                </Button>
             </>,
         ];
     };
