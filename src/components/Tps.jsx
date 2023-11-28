@@ -35,7 +35,7 @@ export default function Tps() {
 
   const [tps, setTps] = useState(null);
   const [hasError, setHasError] = useState(false);
-  const tituloTps = 'Tps | Comision ' + idCurso;
+  const tituloTps = 'Tps | Comision ';
   console.log({ idCurso });
 
   useEffect(() => {
