@@ -59,3 +59,7 @@ export const botonVolver = {
   bottom: '0px',
   left: '0',
 };
+export const botonAgregar = {
+  display: 'flex',
+  justifyContent: 'center',
+};
