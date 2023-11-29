@@ -36,6 +36,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { ModalCrearGrupos } from './ModalCrearGrupos';
 import { useParams } from 'react-router-dom/cjs/react-router-dom';
 import { NavLink } from 'react-router-dom';
+import { ModalClonarGrupos } from './ModalClonarGrupo';
 
 const useStyles = makeStyles(() => ({
   card: {},
@@ -48,7 +49,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function AdministrarGrupos() {
-  const { estadoCurso } = useParams();
   const classes = useStyles();
 
   const [grupos, setGrupos] = useState(null);
@@ -60,6 +60,14 @@ export default function AdministrarGrupos() {
   }));
 
   const [show, setShow] = useState(false);
+
+  const [showClonar, setShowClonar] = useState(false);
+  const hideModalClonar = () => {
+    setShowClonar(false);
+  };
+  const openModalClonar = () => {
+    setShowClonar(true);
+  };
 
   const hideModal = () => {
     setShow(false);
@@ -95,7 +103,12 @@ export default function AdministrarGrupos() {
               <ListSubheader>Nombre del Tp</ListSubheader>
               <Divider></Divider>
               <Container maxWidth="xl" className={classes.conteinerButtonRow}>
-                <Button className={classes.buttonGrupo}>Clonar Grupo</Button>
+                <Button
+                  onClick={openModalClonar}
+                  className={classes.buttonGrupo}
+                >
+                  Clonar Grupo
+                </Button>
                 <Button onClick={openModal} className={classes.buttonGrupo}>
                   Crear Grupo
                 </Button>
@@ -105,6 +118,10 @@ export default function AdministrarGrupos() {
                   show={show}
                   closeModal={hideModal}
                 ></ModalCrearGrupos>
+                <ModalClonarGrupos
+                  show={showClonar}
+                  closeModal={hideModalClonar}
+                ></ModalClonarGrupos>
               </Container>
               <Container>
                 <Box className={classes.conteinerListaDeGrupos}>
