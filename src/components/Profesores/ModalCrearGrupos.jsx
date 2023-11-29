@@ -25,6 +25,7 @@ import { useEffect } from 'react';
 import { getDataFromBackend } from '../../constants/Alumnos';
 import { Stack } from '@mui/material';
 import { Height } from '@material-ui/icons';
+import { postCrearGrupo } from '../../services/Grupo';
 
 const useStyles = makeStyles(() => ({
   contButtonVolver,
@@ -51,6 +52,59 @@ export const ModalCrearGrupos = ({ show, closeModal }) => {
 
   const onClose = () => {
     closeModal();
+  };
+  const [nombreGrupo, setNombreGrupo] = useState('');
+  const [alumnosGrupo, setAlumnosGrupo] = useState([]);
+
+  const [grupoData, setGrupoData] = useState({
+    nombre: '',
+    alumnos: [],
+  });
+
+  const guardarAlumnos = (event, value) => {
+    setAlumnosGrupo(value);
+  };
+  const guardarNombre = (event) => {
+    setNombreGrupo(event.target.value);
+  };
+  const handleChange = (event) => {
+    setGrupoData({
+      ...grupoData,
+      nombre: { nombreGrupo },
+      alumnos: { alumnosGrupo },
+    });
+    crearGrupo();
+    onClose();
+  };
+
+  const validarDatos = () => {
+    if (!grupoData.nombre || grupoData.alumnos.length > 0) {
+      window.alert('Completa todos los campos obligatorios: Nombre, alumnos');
+      return false;
+    }
+    return true;
+  };
+
+  const crearGrupo = async () => {
+    if (!validarDatos()) {
+      return;
+    }
+    try {
+      // Lógica para hacer la solicitud al backend
+      const response = await postCrearGrupo();
+      console.log(response);
+      if (response.status === 201) {
+        // Redirige a la página después de crear el TP
+        window.alert('Grupo creado correctamente');
+      } else {
+        console.error('Error al crear grupo');
+        // Manejo de errores según sea necesario
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+      // Manejo de errores según sea necesario
+      window.alert('Error en la solicitud');
+    }
   };
 
   useEffect(() => {
@@ -83,6 +137,8 @@ export const ModalCrearGrupos = ({ show, closeModal }) => {
               id="standard-basic"
               label="Nombre del Grupo"
               variant="standard"
+              value={nombreGrupo}
+              onChange={guardarNombre}
             />
           </Container>
           <Container style={{ padding: '15px' }}>
@@ -94,7 +150,9 @@ export const ModalCrearGrupos = ({ show, closeModal }) => {
                 getOptionLabel={(option) =>
                   option.nombre + ' ' + option.apellido
                 }
+                value={alumnosGrupo}
                 filterSelectedOptions
+                onChange={guardarAlumnos}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -115,7 +173,7 @@ export const ModalCrearGrupos = ({ show, closeModal }) => {
             <Button
               className={classes.buttonVolver}
               style={{ backgroundColor: 'green' }}
-              onClick={onClose}
+              onClick={handleChange}
             >
               Crear
             </Button>
