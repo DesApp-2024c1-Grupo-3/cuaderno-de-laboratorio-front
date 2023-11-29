@@ -10,7 +10,7 @@ export async function getGrupoPorId(id) {
     return apiResponse.grupo;
 }
 
-export async function postCrearGrupo() {
+export async function postCrearGrupo(data) {
     const apiResponse = await getJsonFromApi(`grupo/${data}`);
     return apiResponse.grupo;
 }
