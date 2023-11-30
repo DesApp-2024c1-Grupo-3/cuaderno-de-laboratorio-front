@@ -51,7 +51,7 @@ const useStyles = makeStyles(() => ({
 export default function AdministrarGrupos() {
   const classes = useStyles();
 
-  const [gruposTp, setGrupos] = useState({});
+  const [grupos, setGrupos] = useState([]);
   const [hasError, setHasError] = useState(false);
   const [show, setShow] = useState(false);
   const [showClonar, setShowClonar] = useState(false);
@@ -76,10 +76,13 @@ export default function AdministrarGrupos() {
 
   useEffect(() => {
     async function fetchGrupos() {
-      const getFunction = getDataFromBackend ? getTodosLosGrupos : '';
+      const getFunction = getTodosLosGrupos;
+      // const getFunction = getDataFromBackend
+      //   ? getTodosLosGrupos
+      //   : getTodosLosGrupos_fake;
       try {
-        const gruposdeTp = await getFunction();
-        setGrupos(gruposdeTp);
+        const grupos = await getFunction();
+        setGrupos(grupos);
       } catch (err) {
         console.log('Ocurrio este error.', err);
         setHasError(true);
@@ -130,7 +133,7 @@ export default function AdministrarGrupos() {
                         grupos
                       </Typography>
                       <List>
-                        {gruposTp.map((it) => (
+                        {grupos.map((it) => (
                           <ListItem key={it._id}>
                             <ListItemAvatar>
                               <FolderIcon />
@@ -190,7 +193,7 @@ export default function AdministrarGrupos() {
 
   return hasError
     ? errorRendering()
-    : gruposTp == null
+    : grupos == null
     ? loadingRendering()
     : gruposRendering();
 }
