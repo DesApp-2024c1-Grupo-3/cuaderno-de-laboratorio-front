@@ -36,7 +36,7 @@ const useStyles = makeStyles(() => ({
   botonesSeleccion: {
     margin: '5px',
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   botonAgregarTp: {
     margin: 'auto',
@@ -109,16 +109,17 @@ export default function Tps() {
         <CardContent>
           <SubHeader titulo={`Tps | Comision ${idCurso}`} />
           <Divider />
-          <Container maxWidth="xxl" className={classes.conteinerButtonSeleccionTp}>
+          <Container
+            maxWidth="xxl"
+            className={classes.conteinerButtonSeleccionTp}
+          >
             {tps.map((tp) => (
               <div key={tp.id} className={classes.botonesSeleccion}>
-                <Button variant="contained" maxWidth="xxl" className={classes.botonesSeleccion}>
-                  <div>
-                    <p>{`${tp.nombre} `}</p>
-                  </div>
-                  <div>
-                    <p>{`| Grupal ${tp.grupal ? 'Si' : 'No'}`}</p>
-                  </div>
+                <Button
+                  variant="contained"
+                  style={{ width: '90%', padding: '0%' }}
+                >
+                  {` ${tp.nombre}`} | Grupal : {` ${tp.grupal ? 'Si' : 'No'}`}
                 </Button>
                 <IconButton
                   aria-label="more"
@@ -172,5 +173,9 @@ export default function Tps() {
     </Alert>
   );
 
-  return hasError ? errorRendering() : tps == null ? loadingRendering() : tpsRendering();
+  return hasError
+    ? errorRendering()
+    : tps == null
+    ? loadingRendering()
+    : tpsRendering();
 }

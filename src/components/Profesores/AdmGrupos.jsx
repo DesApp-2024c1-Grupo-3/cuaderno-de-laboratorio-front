@@ -141,12 +141,7 @@ export default function AdministrarGrupos() {
                               <FolderIcon />
                             </ListItemAvatar>
 
-                            <ListItemText
-                              primary={`${it.nombre} `}
-                              secondary={` ${it.alumnos.map(
-                                (alum) => alum.nombre
-                              )}`}
-                            />
+                            <ListItemText primary={`${it.nombre} `} />
                             <IconButton edge="edit" aria-label="edit">
                               <EditIcon />
                             </IconButton>
