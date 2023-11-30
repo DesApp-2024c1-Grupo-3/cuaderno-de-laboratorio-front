@@ -1,7 +1,7 @@
 import { getJsonFromApi } from './utils';
 
-export async function getTodosLosAlumnos() {
-  const apiResponse = await getJsonFromApi('');
+export async function getTodosLosAlumnos(idCurso) {
+  const apiResponse = await getJsonFromApi(`curso/${idCurso}/alumnos`);
   return apiResponse.data;
 }
 

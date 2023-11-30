@@ -1,4 +1,4 @@
-export const getDataFromBackend = true;
+export const getDataFromBackend = false;
 
 export const AlumnosFijos = [
   {
