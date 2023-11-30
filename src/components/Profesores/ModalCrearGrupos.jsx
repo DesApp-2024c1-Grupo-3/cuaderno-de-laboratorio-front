@@ -45,33 +45,35 @@ const style = {
   p: 4,
 };
 
-export const ModalCrearGrupos = ({ show, closeModal }) => {
+export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
   const classes = useStyles();
-  const [listAlumnos, setListAlumnos] = useState();
+  const [listAlumnos, setListAlumnos] = useState([]);
   const [hasError, setHasError] = useState(false);
 
   const onClose = () => {
     closeModal();
   };
   const [nombreGrupo, setNombreGrupo] = useState('');
-  const [alumnosGrupo, setAlumnosGrupo] = useState([]);
 
   const [grupoData, setGrupoData] = useState({
     nombre: '',
     alumnos: [],
   });
 
+  const [alumnosSeleccionados, setAlumnosSeleccionados] = useState([]);
+
   const guardarAlumnos = (event, value) => {
-    setAlumnosGrupo(value);
+    setAlumnosSeleccionados(value);
   };
+
+  console.log(alumnosSeleccionados, 'alumnGrrup');
   const guardarNombre = (event) => {
     setNombreGrupo(event.target.value);
   };
   const handleChange = (event) => {
     setGrupoData({
-      ...grupoData,
       nombre: { nombreGrupo },
-      alumnos: { alumnosGrupo },
+      alumnos: { alumnosSeleccionados },
     });
     crearGrupo();
     onClose();
@@ -91,7 +93,7 @@ export const ModalCrearGrupos = ({ show, closeModal }) => {
     }
     try {
       // Lógica para hacer la solicitud al backend
-      const response = await postCrearGrupo();
+      const response = await postCrearGrupo(grupoData);
       console.log(response);
       if (response.status === 201) {
         // Redirige a la página después de crear el TP
@@ -109,12 +111,8 @@ export const ModalCrearGrupos = ({ show, closeModal }) => {
 
   useEffect(() => {
     async function fetchAlumnos() {
-      const getFunction = getDataFromBackend
-        ? getTodosLosAlumnos
-        : getTodosLosAlumnos_Fake;
       try {
-        // Agregar el ID del profesor segun la informacion que tengas en tu base de datos local.
-        const alumnos = await getFunction();
+        const alumnos = await getTodosLosAlumnos(idCurso);
         setListAlumnos(alumnos);
       } catch (err) {
         console.log('Ocurrio este error.', err);
@@ -122,7 +120,7 @@ export const ModalCrearGrupos = ({ show, closeModal }) => {
       }
     }
     fetchAlumnos();
-  }, []);
+  }, [show]);
   return (
     <>
       <Modal show={show} onHide={onClose}>
@@ -150,9 +148,9 @@ export const ModalCrearGrupos = ({ show, closeModal }) => {
                 getOptionLabel={(option) =>
                   option.nombre + ' ' + option.apellido
                 }
-                value={alumnosGrupo}
                 filterSelectedOptions
                 onChange={guardarAlumnos}
+                value={alumnosSeleccionados}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -187,5 +185,5 @@ export const ModalCrearGrupos = ({ show, closeModal }) => {
 ModalCrearGrupos.propTypes = {
   show: PropTypes.bool.isRequired,
   closeModal: PropTypes.bool.isRequired, // Ajusta el tipo y la obligatoriedad según tu lógica de uso
-  // Ajusta el tipo y la obligatoriedad según tu lógica de uso
+  idCurso: PropTypes.string.isRequired,
 };

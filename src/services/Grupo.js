@@ -1,4 +1,4 @@
-import { getJsonFromApi } from './utils';
+import { getJsonFromApi, postJsonToApi } from './utils';
 
 export async function getTodosLosGrupos() {
     const apiResponse = await getJsonFromApi('grupos/');
@@ -14,7 +14,12 @@ export async function getGrupoPorId(id) {
 }
 
 export async function postCrearGrupo(data) {
-    const apiResponse = await getJsonFromApi(`grupo/${data}`);
-    return apiResponse.grupo;
+
+    console.log(data)
+
+    const apiResponse = await postJsonToApi(
+        `grupo/${data}`);
+    return apiResponse;
+
 }
 

@@ -30,7 +30,7 @@ export default function App() {
   const classes = useStyles();
   return (
     <>
-      <Container maxWidth="xxl" maxHeith="xxl" className={classes.root}>
+      <Container maxWidth="xxl" maxHeigth="xxl" className={classes.root}>
         <Header></Header>
 
         <div className={classes.content}>
@@ -59,7 +59,7 @@ export default function App() {
                 </Route>
               }
               {
-                <Route path="/Administrar_Grupos">
+                <Route path="/Administrar_Grupos/:idCurso">
                   <AdministrarGrupos />
                 </Route>
               }

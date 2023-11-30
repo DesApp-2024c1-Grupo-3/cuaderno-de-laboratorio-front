@@ -190,7 +190,7 @@ export default function CrearTps() {
                 <Button
                   variant="contained"
                   component={NavLink}
-                  to={`/Administrar_Grupos`}
+                  to={`/Administrar_Grupos/${idCurso}`}
                   className={classes.button}
                 >
                   Administar Grupos

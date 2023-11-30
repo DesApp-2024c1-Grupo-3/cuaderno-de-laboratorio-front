@@ -50,6 +50,7 @@ const useStyles = makeStyles(() => ({
 
 export default function AdministrarGrupos() {
   const classes = useStyles();
+  const { idCurso } = useParams();
 
   const [grupos, setGrupos] = useState([]);
   const [hasError, setHasError] = useState(false);
@@ -115,6 +116,7 @@ export default function AdministrarGrupos() {
                 <ModalCrearGrupos
                   show={show}
                   closeModal={hideModal}
+                  idCurso={idCurso}
                 ></ModalCrearGrupos>
                 <ModalClonarGrupos
                   show={showClonar}
@@ -141,7 +143,9 @@ export default function AdministrarGrupos() {
 
                             <ListItemText
                               primary={`${it.nombre} `}
-                              secondary={` ${it.alumnos}`}
+                              secondary={` ${it.alumnos.map(
+                                (alum) => alum.nombre
+                              )}`}
                             />
                             <IconButton edge="edit" aria-label="edit">
                               <EditIcon />
