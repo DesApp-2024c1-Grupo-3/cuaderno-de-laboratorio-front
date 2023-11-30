@@ -51,16 +51,9 @@ const useStyles = makeStyles(() => ({
 export default function AdministrarGrupos() {
   const classes = useStyles();
 
-  const [grupos, setGrupos] = useState(null);
+  const [gruposTp, setGrupos] = useState({});
   const [hasError, setHasError] = useState(false);
-  const tituloHeader = 'Administrar Grupos';
-
-  const Demo = styled('div')(({ theme }) => ({
-    backgroundColor: theme.palette.background.paper,
-  }));
-
   const [show, setShow] = useState(false);
-
   const [showClonar, setShowClonar] = useState(false);
   const hideModalClonar = () => {
     setShowClonar(false);
@@ -75,16 +68,18 @@ export default function AdministrarGrupos() {
   const openModal = () => {
     setShow(true);
   };
+  const tituloHeader = 'Administrar Grupos';
+
+  const Demo = styled('div')(({ theme }) => ({
+    backgroundColor: theme.palette.background.paper,
+  }));
 
   useEffect(() => {
     async function fetchGrupos() {
-      const getFunction = getDataFromBackend
-        ? getTodosLosGrupos
-        : getTodosLosGrupos_fake;
+      const getFunction = getDataFromBackend ? getTodosLosGrupos : '';
       try {
-        // Agregar el ID del profesor segun la informacion que tengas en tu base de datos local.
-        const grupos = await getFunction();
-        setGrupos(grupos);
+        const gruposdeTp = await getFunction();
+        setGrupos(gruposdeTp);
       } catch (err) {
         console.log('Ocurrio este error.', err);
         setHasError(true);
@@ -135,8 +130,8 @@ export default function AdministrarGrupos() {
                         grupos
                       </Typography>
                       <List>
-                        {grupos.map((it) => (
-                          <ListItem key={it.id}>
+                        {gruposTp.map((it) => (
+                          <ListItem key={it._id}>
                             <ListItemAvatar>
                               <FolderIcon />
                             </ListItemAvatar>
@@ -195,7 +190,7 @@ export default function AdministrarGrupos() {
 
   return hasError
     ? errorRendering()
-    : grupos == null
+    : gruposTp == null
     ? loadingRendering()
     : gruposRendering();
 }

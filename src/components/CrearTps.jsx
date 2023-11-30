@@ -189,6 +189,14 @@ export default function CrearTps() {
                 </Button>
                 <Button
                   variant="contained"
+                  component={NavLink}
+                  to={`/Administrar_Grupos`}
+                  className={classes.button}
+                >
+                  Administar Grupos
+                </Button>
+                <Button
+                  variant="contained"
                   onClick={() => crearTp()}
                   className={classes.button}
                 >
