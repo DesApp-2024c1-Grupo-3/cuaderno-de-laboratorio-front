@@ -23,8 +23,6 @@ const useStyles = makeStyles(() => ({
   },
   content: {
     flex: '1', // El contenido tomará el espacio restante
-    marginBottom: '0', // Asegura que no hay margen inferior
-    paddingBottom: '0', // Asegura que no hay relleno en la parte inferior
   },
 }));
 

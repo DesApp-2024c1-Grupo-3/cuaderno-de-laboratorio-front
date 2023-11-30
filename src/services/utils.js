@@ -21,3 +21,18 @@ export async function postJsonToApi(path, data) {
     throw error; // Puedes manejar el error según tus necesidades
   }
 }
+
+export async function deleteFromApi(path) {
+  try {
+    const response = await axios.delete(`${apiUrl}/${path}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        // Puedes agregar otros encabezados según sea necesario
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Error en la solicitud DELETE:', error);
+    throw error; // Puedes manejar el error según tus necesidades
+  }
+}
