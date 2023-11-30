@@ -1,8 +1,11 @@
 import { getJsonFromApi } from './utils';
 
 export async function getTodosLosGrupos() {
-    const apiResponse = await getJsonFromApi('');
-    return apiResponse.data;
+    const apiResponse = await getJsonFromApi('grupos/');
+    console.log(apiResponse.arrayGrupos)
+
+
+    return apiResponse.arrayGrupos;
 }
 
 export async function getGrupoPorId(id) {

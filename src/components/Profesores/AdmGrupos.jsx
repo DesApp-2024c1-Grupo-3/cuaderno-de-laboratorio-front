@@ -51,7 +51,7 @@ const useStyles = makeStyles(() => ({
 export default function AdministrarGrupos() {
   const classes = useStyles();
 
-  const [grupos, setGrupos] = useState(null);
+  const [grupos, setGrupos] = useState([]);
   const [hasError, setHasError] = useState(false);
   const tituloHeader = 'Administrar Grupos';
 
@@ -78,11 +78,11 @@ export default function AdministrarGrupos() {
 
   useEffect(() => {
     async function fetchGrupos() {
-      const getFunction = getDataFromBackend
-        ? getTodosLosGrupos
-        : getTodosLosGrupos_fake;
+      const getFunction = getTodosLosGrupos;
+      // const getFunction = getDataFromBackend
+      //   ? getTodosLosGrupos
+      //   : getTodosLosGrupos_fake;
       try {
-        // Agregar el ID del profesor segun la informacion que tengas en tu base de datos local.
         const grupos = await getFunction();
         setGrupos(grupos);
       } catch (err) {
@@ -136,7 +136,7 @@ export default function AdministrarGrupos() {
                       </Typography>
                       <List>
                         {grupos.map((it) => (
-                          <ListItem key={it.id}>
+                          <ListItem key={it._id}>
                             <ListItemAvatar>
                               <FolderIcon />
                             </ListItemAvatar>

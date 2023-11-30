@@ -1,4 +1,4 @@
-export const getDataFromBackend = false;
+export const getDataFromBackend = true;
 
 
 export const Grupos = [
