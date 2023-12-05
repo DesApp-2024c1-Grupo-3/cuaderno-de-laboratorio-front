@@ -6,6 +6,7 @@ import {
   Button,
   Container,
   Divider,
+  FormControl,
   TextField,
   makeStyles,
 } from '@material-ui/core';
@@ -23,7 +24,13 @@ import { getTodosLosAlumnos as getTodosLosAlumnos_Fake } from '../../services/al
 
 import { useEffect } from 'react';
 import { getDataFromBackend } from '../../constants/Alumnos';
-import { Stack } from '@mui/material';
+import {
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  Stack,
+} from '@mui/material';
 import { Height } from '@material-ui/icons';
 import { postCrearGrupo } from '../../services/Grupo';
 
@@ -49,6 +56,7 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
   const classes = useStyles();
   const [listAlumnos, setListAlumnos] = useState([]);
   const [hasError, setHasError] = useState(false);
+  const [personName, setPersonName] = React.useState([]);
 
   const onClose = () => {
     closeModal();
@@ -60,51 +68,51 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
     alumnos: [],
   });
 
-  const [alumnosSeleccionados, setAlumnosSeleccionados] = useState([]);
-
-  const guardarAlumnos = (event, value) => {
-    setAlumnosSeleccionados(value);
-  };
-
-  console.log(alumnosSeleccionados, 'alumnGrrup');
   const guardarNombre = (event) => {
-    setNombreGrupo(event.target.value);
+    const nombreG = event.target.value;
+    setNombreGrupo(nombreG);
+    setGrupoData({ ...grupoData, nombre: nombreG });
   };
   const handleChange = (event) => {
-    setGrupoData({
-      nombre: { nombreGrupo },
-      alumnos: { alumnosSeleccionados },
-    });
-    crearGrupo();
+    if (validarDatos()) {
+      crearGrupo();
+    } else {
+      window.alert('Completa todos los campos obligatorios: Nombre, alumnos');
+    }
+
     onClose();
   };
 
+  const handleChangeAlumnos = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value
+    );
+
+    setGrupoData({ ...grupoData, alumnos: personName });
+    console.log('PName', personName);
+  };
+
   const validarDatos = () => {
-    if (!grupoData.nombre || grupoData.alumnos.length > 0) {
-      window.alert('Completa todos los campos obligatorios: Nombre, alumnos');
+    if (grupoData.nombre == '' || grupoData.alumnos <= 0) {
       return false;
     }
     return true;
   };
 
   const crearGrupo = async () => {
-    if (!validarDatos()) {
-      return;
-    }
     try {
-      // Lógica para hacer la solicitud al backend
       const response = await postCrearGrupo(grupoData);
-      console.log(response);
       if (response.status === 201) {
-        // Redirige a la página después de crear el TP
         window.alert('Grupo creado correctamente');
       } else {
         console.error('Error al crear grupo');
-        // Manejo de errores según sea necesario
       }
     } catch (error) {
       console.error('Error en la solicitud:', error);
-      // Manejo de errores según sea necesario
       window.alert('Error en la solicitud');
     }
   };
@@ -139,28 +147,30 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
               onChange={guardarNombre}
             />
           </Container>
+
           <Container style={{ padding: '15px' }}>
-            <Stack spacing={3}>
-              <Autocomplete
+            <FormControl sx={{ m: 1 }}>
+              <InputLabel id="demo-multiple-name-label">
+                Lista de Alumnos
+              </InputLabel>
+              <Select
+                labelId="demo-multiple-name-label"
+                id="demo-multiple-name"
                 multiple
-                id="tags-outlined"
-                options={listAlumnos}
-                getOptionLabel={(option) =>
-                  option.nombre + ' ' + option.apellido
-                }
-                filterSelectedOptions
-                onChange={guardarAlumnos}
-                value={alumnosSeleccionados}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Alumnos"
-                    placeholder="seleccionar"
-                  />
-                )}
-              />
-            </Stack>
+                value={personName}
+                onChange={handleChangeAlumnos}
+                input={<OutlinedInput label="Name" />}
+                style={{ width: '300px' }}
+              >
+                {listAlumnos.map((name) => (
+                  <MenuItem key={name._id} value={name._id}>
+                    {name.nombre} {name.apellido}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Container>
+
           <Container
             style={{ maxHeight: '10px', padding: '15px' }}
             className={classes.conteinerButtonRow}
