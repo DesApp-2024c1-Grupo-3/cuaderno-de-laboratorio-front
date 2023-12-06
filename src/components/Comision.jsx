@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
   curso: { display: 'inline-grid' },
 }));
 
-const profesorId = '6568b1c3cd65168f1a42693f';
+const profesorId = '656ffe488c93ceb592d1f466';
 
 export default function Comision() {
   const { estadoCurso } = useParams();

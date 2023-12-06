@@ -108,7 +108,8 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
 
   const crearGrupo = async () => {
     try {
-      const response = await postCrearGrupo(grupoData);
+      console.log('idCursoCrear', idCurso);
+      const response = await postCrearGrupo(grupoData, idCurso);
       if (response.status === 201) {
         window.alert('Grupo creado correctamente');
         closeModal();

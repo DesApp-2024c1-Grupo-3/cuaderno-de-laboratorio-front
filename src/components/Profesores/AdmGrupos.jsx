@@ -30,7 +30,11 @@ import {
   buttonVolver,
   conteinerListaDeGrupos,
 } from '../../style/buttonStyle';
-import { getTodosLosGrupos } from '../../services/Grupo';
+import {
+  getGrupoByCursoId,
+  getTodosLosGrupos,
+  postEliminarGrupo,
+} from '../../services/Grupo';
 import { SubHeader } from '../General/SubHeader';
 import EditIcon from '@mui/icons-material/Edit';
 import { ModalCrearGrupos } from './ModalCrearGrupos';
@@ -75,14 +79,23 @@ export default function AdministrarGrupos() {
     backgroundColor: theme.palette.background.paper,
   }));
 
+  const deleteGrup = (event, id) => {
+    console.log('deleteeee id', id);
+    console.log('deleteeee event', event);
+    postEliminarGrupo(event);
+  };
+
   useEffect(() => {
+    console.log(idCurso, 'useeffect');
     async function fetchGrupos() {
-      const getFunction = getTodosLosGrupos;
-      // const getFunction = getDataFromBackend
-      //   ? getTodosLosGrupos
-      //   : getTodosLosGrupos_fake;
+      console.log(idCurso, 'curso');
+      const getFunction = getGrupoByCursoId(idCurso);
+      console.log(getFunction, 'getFunction');
+
       try {
-        const grupos = await getFunction();
+        const grupos = await getFunction;
+        console.log(grupos, 'grupos');
+
         setGrupos(grupos);
       } catch (err) {
         console.log('Ocurrio este error.', err);
@@ -90,7 +103,7 @@ export default function AdministrarGrupos() {
       }
     }
     fetchGrupos();
-  }, []);
+  }, [idCurso, show]);
 
   const gruposRendering = () => {
     return [
@@ -141,11 +154,19 @@ export default function AdministrarGrupos() {
                               <FolderIcon />
                             </ListItemAvatar>
 
-                            <ListItemText primary={`${it.nombre} `} />
+                            <ListItemText
+                              primary={`${it.nombre} [${it.alumnos
+                                .map((alu) => `${alu.nombre} ${alu.apellido} ,`)
+                                .join(' ')}]`}
+                            />
                             <IconButton edge="edit" aria-label="edit">
                               <EditIcon />
                             </IconButton>
-                            <IconButton edge="end" aria-label="delete">
+                            <IconButton
+                              edge="end"
+                              aria-label="delete"
+                              onClick={() => deleteGrup(it._id)}
+                            >
                               <DeleteIcon />
                             </IconButton>
                           </ListItem>
