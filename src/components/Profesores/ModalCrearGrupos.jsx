@@ -84,17 +84,20 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
   };
 
   const handleChangeAlumnos = (event) => {
+    console.log('event', event);
+    console.log('event', event.target.value);
+
     const {
       target: { value },
     } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
+    console.log('value', value);
 
-    setGrupoData({ ...grupoData, alumnos: personName });
+    setPersonName(event.target.value);
+
+    setGrupoData({ ...grupoData, alumnos: event.target.value });
     console.log('PName', personName);
   };
+  console.log('PNameF', personName);
 
   const validarDatos = () => {
     if (grupoData.nombre == '' || grupoData.alumnos <= 0) {
@@ -108,6 +111,7 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
       const response = await postCrearGrupo(grupoData);
       if (response.status === 201) {
         window.alert('Grupo creado correctamente');
+        closeModal();
       } else {
         console.error('Error al crear grupo');
       }
