@@ -12,19 +12,14 @@ import {
   FormControlLabel,
   Radio,
   TextField,
-  ListItem,
-  List,
-  ListSubheader,
 } from '@material-ui/core';
-import ReactQuill from 'react-quill'; // Importa ReactQuill
-import 'react-quill/dist/quill.snow.css'; // Estilo de ReactQuill
-import { conteinerButton } from '../style/buttonStyle';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import { SubHeader } from './General/SubHeader';
 import { crearTp as postCrearTp } from '../services/tps';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import ListaDeGrupos from './Profesores/ListaDeGrupos';
 import { useEffect } from 'react';
-import { ListItemText } from '@mui/material';
 
 const useStyles = makeStyles(() => ({
   card: {},
@@ -32,7 +27,7 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    margin: 'auto', // Centro el formulario
+    margin: 'auto',
   },
   conteinerButton: {
     // ... (resto de estilos)
@@ -42,11 +37,11 @@ const useStyles = makeStyles(() => ({
   },
   buttonContainer: {
     display: 'flex',
-    justifyContent: 'left', // Alinea los botones a la izquierda
+    justifyContent: 'left',
     marginTop: 16,
   },
   button: {
-    marginLeft: 8, // Espacio entre los botones
+    marginLeft: 8,
   },
 }));
 
@@ -54,18 +49,7 @@ export default function CrearTps() {
   const classes = useStyles();
   const { idCurso, profesorId } = useParams();
   const [show, setShow] = useState(false);
-
   const [gruposParaTrabajo, setGruposParaTrabajo] = useState([]);
-
-  console.log(gruposParaTrabajo, 'grupoParatp');
-
-  const hideModal = () => {
-    setShow(false);
-  };
-
-  const openModal = () => {
-    setShow(true);
-  };
   const [tpData, setTpData] = useState({
     nombre: '',
     fechaInicio: '',
@@ -77,11 +61,12 @@ export default function CrearTps() {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setTpData({ ...tpData, [name]: value });
-    if (value) {
-      openModal;
+
+    if (name === 'grupal') {
+      setTpData({ ...tpData, [name]: value === 'true' });
+      setShow(value === 'true');
     } else {
-      hideModal;
+      setTpData({ ...tpData, [name]: value });
     }
   };
 
@@ -91,48 +76,41 @@ export default function CrearTps() {
 
   const validarDatos = () => {
     if (!tpData.nombre || !tpData.fechaInicio || !tpData.fechaFin) {
-      console.log(tpData.nombre, tpData.fechaInicio, tpData.fechaFin);
-      window.alert(
-        'Completa todos los campos obligatorios: Nombre, Fecha Inicio, Fecha Fin'
-      );
+      window.alert('Completa todos los campos obligatorios: Nombre, Fecha Inicio, Fecha Fin');
       return false;
     }
     return true;
   };
+
   const agregarGrupo = () => {
-    //setea el valor de la tabla de lista de grupos -> en tpData
     setTpData({ ...tpData, grupo: gruposParaTrabajo });
   };
+
   const crearTp = async () => {
     agregarGrupo();
 
     if (!validarDatos()) {
       return;
     }
+
     try {
-      // Lógica para hacer la solicitud al backend
       const response = await postCrearTp(idCurso, profesorId, tpData);
       if (response.status === 201) {
-        // Redirige a la página después de crear el TP
         window.alert('Trabajo práctico creado correctamente');
       } else {
         console.error('Error al crear TP');
-        // Manejo de errores según sea necesario
       }
     } catch (error) {
       console.error('Error en la solicitud:', error);
-      // Manejo de errores según sea necesario
       window.alert('Error en la solicitud');
     }
   };
 
   useEffect(() => {
     setShow(tpData.grupal);
-    console.log('useEfect', tpData);
-  }, [tpData, show, setShow, setTpData]);
+  }, [tpData]);
 
   useEffect(() => {
-    console.log('useEfct2');
     agregarGrupo();
   }, [gruposParaTrabajo, setGruposParaTrabajo]);
 
@@ -145,7 +123,7 @@ export default function CrearTps() {
             <Container>
               <Container style={{ display: 'flex' }}>
                 <Container
-                  style={{ width: ' 50%', margin: '2% 0%' }}
+                  style={{ width: '50%', margin: '2% 0%' }}
                   maxWidth="l"
                   className={classes.conteinerButton}
                 >
@@ -159,7 +137,7 @@ export default function CrearTps() {
                       onChange={handleChange}
                     />
                   </Container>
-                  <br></br>
+                  <br />
                   <Container>
                     <TextField
                       id="date"
@@ -173,8 +151,8 @@ export default function CrearTps() {
                       value={tpData.fechaInicio}
                       onChange={handleChange}
                     />
-                    <br></br>
-                    <br></br>
+                    <br />
+                    <br />
                     <TextField
                       id="date"
                       label="Fecha fin"
@@ -188,12 +166,10 @@ export default function CrearTps() {
                       onChange={handleChange}
                     />
                   </Container>
-                  <br></br>
+                  <br />
                   <Container>
                     <FormControl>
-                      <FormLabel id="demo-row-radio-buttons-group-label">
-                        Grupal
-                      </FormLabel>
+                      <FormLabel id="demo-row-radio-buttons-group-label">Grupal</FormLabel>
                       <RadioGroup
                         row
                         aria-labelledby="demo-row-radio-buttons-group-label"
@@ -201,35 +177,28 @@ export default function CrearTps() {
                         value={tpData.grupal.toString()}
                         onChange={handleChange}
                       >
-                        <FormControlLabel
-                          value="true"
-                          control={<Radio />}
-                          label="Sí"
-                        />
-                        <FormControlLabel
-                          value="false"
-                          control={<Radio />}
-                          label="No"
-                        />
+                        <FormControlLabel value="true" control={<Radio />} label="Sí" />
+                        <FormControlLabel value="false" control={<Radio />} label="No" />
                       </RadioGroup>
                     </FormControl>
                   </Container>
                 </Container>
                 <Container
                   style={{
-                    width: ' 50%',
+                    width: '50%',
                     padding: '2% 0%',
+                    display: show ? 'block' : 'none',
                   }}
                 >
                   <ListaDeGrupos
                     idCurso={idCurso}
                     show={show}
-                    closeModal={hideModal}
+                    closeModal={() => setShow(false)}
                     setGruposParaTrabajo={setGruposParaTrabajo}
                   ></ListaDeGrupos>
                 </Container>
               </Container>
-              <br></br>
+              <br />
               <Container className={classes.quillContainer}>
                 <FormLabel>Consigna</FormLabel>
                 <ReactQuill
@@ -237,7 +206,6 @@ export default function CrearTps() {
                   onChange={(value) => handleConsignaChange(value)}
                 />
               </Container>
-
               <Container id="botones" className={classes.buttonContainer}>
                 <Button
                   color="primary"
@@ -256,11 +224,7 @@ export default function CrearTps() {
                 >
                   Administar Grupos
                 </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => crearTp()}
-                  className={classes.button}
-                >
+                <Button variant="contained" onClick={() => crearTp()} className={classes.button}>
                   Crear TP
                 </Button>
               </Container>

@@ -61,6 +61,7 @@ export default function ListaDeGrupos({
     }
     fetchGrupos();
   }, [idCurso, show]);
+
   const agregarGrupo = () => {
     setGruposParaTrabajo(gruposParaTp.map((g) => `${g._id}`));
     onClose();
@@ -101,7 +102,7 @@ export default function ListaDeGrupos({
     setGruposDeCurso([]);
   };
 
-  const customList = (items) => (
+  const customList = (items, title) => (
     <Paper
       sx={{
         width: 200,
@@ -112,8 +113,7 @@ export default function ListaDeGrupos({
     >
       <List dense component="div" role="list">
         <ListItem>
-          {' '}
-          <ListItemText primary={'Grupos'}></ListItemText>
+          <ListItemText primary={title}></ListItemText>
         </ListItem>
         <Divider></Divider>
         {items.map((value) => {
@@ -143,6 +143,7 @@ export default function ListaDeGrupos({
       </List>
     </Paper>
   );
+
   const style = {
     position: 'fixed',
     top: '35%',
@@ -158,7 +159,7 @@ export default function ListaDeGrupos({
   return (
     <>
       <Grid container spacing={2} justifyContent="center" alignItems="center">
-        <Grid item>{customList(gruposParaTp)}</Grid>
+        <Grid item>{customList(gruposParaTp, 'Grupos para crear TP')}</Grid>
         <Grid item>
           <Grid container direction="column" alignItems="center">
             <Button
@@ -203,7 +204,7 @@ export default function ListaDeGrupos({
             </Button>
           </Grid>
         </Grid>
-        <Grid item>{customList(gruposDeCurso)}</Grid>
+        <Grid item>{customList(gruposDeCurso, 'Grupos del Curso')}</Grid>
       </Grid>
       <Container
         style={{
@@ -220,6 +221,7 @@ export default function ListaDeGrupos({
     </>
   );
 }
+
 ListaDeGrupos.propTypes = {
   idCurso: PropTypes.string.isRequired,
   show: PropTypes.bool.isRequired,

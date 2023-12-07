@@ -79,8 +79,28 @@ export default function AdministrarGrupos() {
     backgroundColor: theme.palette.background.paper,
   }));
 
-  const deleteGrup = (event, id) => {
-    postEliminarGrupo(event);
+  const deleteGrup = async (id) => {
+    try {
+      // Eliminar el grupo
+      await postEliminarGrupo(id);
+
+      // Volver a cargar la lista actualizada
+      const gruposActualizados = await getGrupoByCursoId(idCurso);
+      setGrupos(gruposActualizados);
+    } catch (error) {
+      console.error('Error al eliminar el grupo:', error);
+      // Manejo de errores según sea necesario
+    }
+  };
+
+  const actualizarListaGrupos = async () => {
+    try {
+      const gruposActualizados = await getGrupoByCursoId(idCurso);
+      setGrupos(gruposActualizados);
+    } catch (error) {
+      console.error('Error al actualizar la lista de grupos:', error);
+      // Manejo de errores según sea necesario
+    }
   };
 
   useEffect(() => {
@@ -124,6 +144,7 @@ export default function AdministrarGrupos() {
                   show={show}
                   closeModal={hideModal}
                   idCurso={idCurso}
+                  actualizarListaGrupos={actualizarListaGrupos}
                 ></ModalCrearGrupos>
                 <ModalClonarGrupos
                   show={showClonar}

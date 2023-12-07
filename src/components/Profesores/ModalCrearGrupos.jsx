@@ -52,15 +52,28 @@ const style = {
   p: 4,
 };
 
-export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
+export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGrupos }) => {
   const classes = useStyles();
   const [listAlumnos, setListAlumnos] = useState([]);
   const [hasError, setHasError] = useState(false);
   const [personName, setPersonName] = React.useState([]);
 
+
+  const resetModal = () => {
+    setNombreGrupo('');
+    setPersonName([]);
+    setGrupoData({
+      nombre: '',
+      alumnos: [],
+    });
+  };
+
   const onClose = () => {
+    resetModal();
     closeModal();
   };
+
+
   const [nombreGrupo, setNombreGrupo] = useState('');
 
   const [grupoData, setGrupoData] = useState({
@@ -73,9 +86,11 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
     setNombreGrupo(nombreG);
     setGrupoData({ ...grupoData, nombre: nombreG });
   };
-  const handleChange = (event) => {
+  const handleChange = async () => {
     if (validarDatos()) {
-      crearGrupo();
+      await crearGrupo();
+      actualizarListaGrupos(); // Llamamos a la función de actualización
+      onClose();
     } else {
       window.alert('Completa todos los campos obligatorios: Nombre, alumnos');
     }
@@ -192,6 +207,7 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
 
 ModalCrearGrupos.propTypes = {
   show: PropTypes.bool.isRequired,
-  closeModal: PropTypes.bool.isRequired, // Ajusta el tipo y la obligatoriedad según tu lógica de uso
+  closeModal: PropTypes.func.isRequired, // Cambié 'bool' a 'func' ya que closeModal es una función
   idCurso: PropTypes.string.isRequired,
+  actualizarListaGrupos: PropTypes.func.isRequired,
 };
