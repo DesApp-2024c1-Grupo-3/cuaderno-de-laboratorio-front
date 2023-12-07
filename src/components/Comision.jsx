@@ -56,7 +56,6 @@ export default function Comision() {
   }, []);
 
   const comisionRendering = () => {
-    console.log('comisionrend');
     return [
       <>
         <Card className={classes.card}>

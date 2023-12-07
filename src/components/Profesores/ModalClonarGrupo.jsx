@@ -92,7 +92,6 @@ export const ModalClonarGrupos = ({ show, closeModal }) => {
     try {
       // Lógica para hacer la solicitud al backend
       const response = await postCrearGrupo(grupoData);
-      console.log(response);
       if (response.status === 201) {
         // Redirige a la página después de crear el TP
         window.alert('Trabajo práctico creado correctamente');

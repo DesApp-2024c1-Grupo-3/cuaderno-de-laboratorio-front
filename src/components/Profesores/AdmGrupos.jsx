@@ -80,21 +80,15 @@ export default function AdministrarGrupos() {
   }));
 
   const deleteGrup = (event, id) => {
-    console.log('deleteeee id', id);
-    console.log('deleteeee event', event);
     postEliminarGrupo(event);
   };
 
   useEffect(() => {
-    console.log(idCurso, 'useeffect');
     async function fetchGrupos() {
-      console.log(idCurso, 'curso');
       const getFunction = getGrupoByCursoId(idCurso);
-      console.log(getFunction, 'getFunction');
 
       try {
         const grupos = await getFunction;
-        console.log(grupos, 'grupos');
 
         setGrupos(grupos);
       } catch (err) {

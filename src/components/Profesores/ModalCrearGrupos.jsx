@@ -84,20 +84,14 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
   };
 
   const handleChangeAlumnos = (event) => {
-    console.log('event', event);
-    console.log('event', event.target.value);
-
     const {
       target: { value },
     } = event;
-    console.log('value', value);
 
     setPersonName(event.target.value);
 
     setGrupoData({ ...grupoData, alumnos: event.target.value });
-    console.log('PName', personName);
   };
-  console.log('PNameF', personName);
 
   const validarDatos = () => {
     if (grupoData.nombre == '' || grupoData.alumnos <= 0) {
@@ -108,7 +102,6 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
 
   const crearGrupo = async () => {
     try {
-      console.log('idCursoCrear', idCurso);
       const response = await postCrearGrupo(grupoData, idCurso);
       if (response.status === 201) {
         window.alert('Grupo creado correctamente');

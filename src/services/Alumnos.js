@@ -2,8 +2,7 @@ import { getJsonFromApi } from './utils';
 
 export async function getTodosLosAlumnos(idCurso) {
   const apiResponse = await getJsonFromApi(`curso/${idCurso}/alumnos`);
-  console.log(apiResponse)
-  console.log(apiResponse.alumnos)
+
 
   return apiResponse.alumnos;
 }
