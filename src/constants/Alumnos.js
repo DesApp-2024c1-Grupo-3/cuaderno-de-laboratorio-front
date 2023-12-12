@@ -1,6 +1,6 @@
-export const getDataFromBackend = true;
+export const getDataFromBackend = false;
 
-export const usuariosFijos = [
+export const AlumnosFijos = [
   {
     id: 1,
     nombre: 'Juana',
