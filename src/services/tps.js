@@ -4,10 +4,50 @@ export async function getTodosLosTps() {
   const apiResponse = await getJsonFromApi('usuarios');
   return apiResponse.data;
 }
-
+/*
 export async function getTpPorId(id) {
   const apiResponse = await getJsonFromApi(`usuarios/${id}`);
   return apiResponse.data;
+}*/
+
+export async function getTpPorId(idCurso, tpId) {
+  try {
+    const tps = await getTpsByCursoId(idCurso);
+    const tpSeleccionado = tps.find((tp) => tp._id === tpId);
+    return tpSeleccionado;
+  } catch (error) {
+    console.error('Error en la solicitud:', error);
+    // Manejo de errores según sea necesario
+  }
+}
+
+export async function getCursoPorId(idCurso) {
+  try {
+    const apiResponse = await getJsonFromApi('cursos');
+
+    // Verificar si la respuesta es un objeto con la propiedad arrayCursos
+    if (
+      apiResponse &&
+      apiResponse.arrayCursos &&
+      Array.isArray(apiResponse.arrayCursos)
+    ) {
+      // Buscar el curso por su ID
+      const cursoSeleccionado = apiResponse.arrayCursos.find(
+        (curso) => curso._id === idCurso
+      );
+
+      // Devolver el curso encontrado
+      return cursoSeleccionado;
+    } else {
+      console.error('La respuesta no es un objeto válido:', apiResponse);
+      // Puedes manejar este caso según tus necesidades
+      return null;
+    }
+  } catch (error) {
+    // Manejo de errores según sea necesario
+    console.error('Error al obtener el curso por ID:', error);
+    throw error;
+  }
 }
 
 export async function getTpsByCursoId(id) {

@@ -64,6 +64,7 @@ export default function ListaDeGrupos({
 
   const agregarGrupo = () => {
     setGruposParaTrabajo(gruposParaTp.map((g) => `${g._id}`));
+    window.alert('Se agregaron los grupos para crear el trabajo practico correctamente.');
     onClose();
   };
 

@@ -107,7 +107,7 @@ export default function Tps() {
     <div className={classes.contenedor}>
       <Card className={classes.card}>
         <CardContent>
-          <SubHeader titulo={`Tps | Comision ${idCurso}`} />
+          <SubHeader titulo={`Trabajos Prácticos`} />
           <Divider />
           <Container
             maxWidth="xxl"
@@ -115,12 +115,18 @@ export default function Tps() {
           >
             {tps.map((tp) => (
               <div key={tp.id} className={classes.botonesSeleccion}>
-                <Button
-                  variant="contained"
-                  style={{ width: '90%', padding: '0%' }}
+                {/* Usamos NavLink para redireccionar al detalle del TP */}
+                <NavLink
+                  to={`/tp/${idCurso}/${profesorId}/${tp._id}`}
+                  style={{ textDecoration: 'none' }}
                 >
-                  {` ${tp.nombre}`} | Grupal : {` ${tp.grupal ? 'Si' : 'No'}`}
-                </Button>
+                  <Button
+                    variant="contained"
+                    style={{ width: '900px', padding: '10px' }}
+                  >
+                    {` ${tp.nombre}`} | Grupal : {` ${tp.grupal ? 'Si' : 'No'}`}
+                  </Button>
+                </NavLink>
                 <IconButton
                   aria-label="more"
                   onClick={(event) => handleClick(event, tp)}

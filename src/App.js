@@ -7,6 +7,7 @@ import Comision from './components/Comision';
 import Tps from './components/Tps';
 import CrearTps from './components/CrearTps';
 import AdministrarGrupos from './components/Profesores/AdmGrupos';
+import TpDetalle from './components/TpDetalle';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -62,6 +63,12 @@ export default function App() {
                 <Route path="/Administrar_Grupos/:idCurso">
                   <AdministrarGrupos />
                 </Route>
+              }
+              {
+                <Route
+                  path="/tp/:idCurso/:profesorId/:tpId"
+                  component={TpDetalle}
+                />
               }
 
               <Route path="/">
