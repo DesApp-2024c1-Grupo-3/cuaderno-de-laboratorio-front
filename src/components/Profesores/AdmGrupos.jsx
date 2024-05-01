@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   Box,
   Button,
@@ -13,46 +15,24 @@ import {
   ListItemText,
   ListSubheader,
   Typography,
-  makeStyles,
   styled,
-} from '@material-ui/core';
-import PropTypes from 'prop-types';
+} from '@mui/material'; // Importa los componentes de Material-UI v5
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Alert } from '@material-ui/lab';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { getDataFromBackend } from '../../constants/Grupos';
-import { getTodosLosGrupos as getTodosLosGrupos_fake } from '../../services/Grupos_Fake';
-import {
-  conteinerButtonRow,
-  buttonGrupo,
-  buttonVolver,
-  conteinerListaDeGrupos,
-} from '../../style/buttonStyle';
-import {
-  getGrupoByCursoId,
-  getTodosLosGrupos,
-  postEliminarGrupo,
-} from '../../services/Grupo';
-import { SubHeader } from '../General/SubHeader';
 import EditIcon from '@mui/icons-material/Edit';
+import { Alert } from '@mui/material';
 import { ModalCrearGrupos } from './ModalCrearGrupos';
-import { useParams } from 'react-router-dom/cjs/react-router-dom';
-import { NavLink } from 'react-router-dom';
 import { ModalClonarGrupos } from './ModalClonarGrupo';
+import { useParams } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { getGrupoByCursoId, postEliminarGrupo } from '../../services/Grupo';
+import { SubHeader } from '../General/SubHeader';
 
-const useStyles = makeStyles(() => ({
-  card: {},
-  conteinerButtonRow,
-  buttonGrupo,
-  buttonVolver,
-  curso: { display: 'inline-grid' },
-  modal: { backgroundColor: 'white' },
-  conteinerListaDeGrupos,
+const Demo = styled('div')(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
 }));
 
-export default function AdministrarGrupos() {
+const AdministrarGrupos = () => {
   const classes = useStyles();
   const { idCurso } = useParams();
 
@@ -60,6 +40,7 @@ export default function AdministrarGrupos() {
   const [hasError, setHasError] = useState(false);
   const [show, setShow] = useState(false);
   const [showClonar, setShowClonar] = useState(false);
+
   const hideModalClonar = () => {
     setShowClonar(false);
   };
@@ -74,10 +55,6 @@ export default function AdministrarGrupos() {
     setShow(true);
   };
   const tituloHeader = 'Administrar Grupos';
-
-  const Demo = styled('div')(({ theme }) => ({
-    backgroundColor: theme.palette.background.paper,
-  }));
 
   const deleteGrup = async (id) => {
     try {
@@ -105,14 +82,11 @@ export default function AdministrarGrupos() {
 
   useEffect(() => {
     async function fetchGrupos() {
-      const getFunction = getGrupoByCursoId(idCurso);
-
       try {
-        const grupos = await getFunction;
-
+        const grupos = await getGrupoByCursoId(idCurso);
         setGrupos(grupos);
       } catch (err) {
-        console.log('Ocurrio este error.', err);
+        console.log('Ocurrió este error:', err);
         setHasError(true);
       }
     }
@@ -120,7 +94,7 @@ export default function AdministrarGrupos() {
   }, [idCurso, show]);
 
   const gruposRendering = () => {
-    return [
+    return (
       <>
         <Card className={classes.card}>
           <CardContent>
@@ -203,8 +177,8 @@ export default function AdministrarGrupos() {
             </Button>
           </CardContent>
         </Card>
-      </>,
-    ];
+      </>
+    );
   };
 
   const loadingRendering = () => {
@@ -222,13 +196,11 @@ export default function AdministrarGrupos() {
     );
   };
 
-  AdministrarGrupos.propTypes = {
-    titulo: PropTypes.string.isRequired, // Asegura que 'titulo' sea una cadena (string) y es requerido.
-  };
-
   return hasError
     ? errorRendering()
     : grupos == null
     ? loadingRendering()
     : gruposRendering();
-}
+};
+
+export default AdministrarGrupos;

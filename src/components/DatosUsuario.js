@@ -1,26 +1,18 @@
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
-import { Button } from '@material-ui/core';
-import { useEffect, useState } from 'react';
-import { Alert } from '@material-ui/lab';
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { Button } from '@mui/material';
+import { Alert } from '@mui/material';
 import { getUsuarioPorId } from '../services/usuarios';
 import { getUsuarioPorId as getUsuarioPorId_fake } from '../services/usuarios-fake';
 import { getDataFromBackend } from '../constants/constants';
 
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 345,
-  },
-});
-
 export default function DatosUsuario() {
   const { id } = useParams();
-  const classes = useStyles();
 
   const [usuario, setUsuario] = useState(null);
   const [hasError, setHasError] = useState(false);
@@ -41,8 +33,8 @@ export default function DatosUsuario() {
   }, [id]);
 
   const usuarioRendering = () => {
-    return [
-      <Card className={classes.root} key="datosUsuario">
+    return (
+      <Card style={{ maxWidth: 345 }}>
         <CardActionArea>
           <CardMedia
             component="img"
@@ -52,7 +44,7 @@ export default function DatosUsuario() {
             title="Avatar"
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
+            <Typography gutterBottom variant="h5" component="div">
               {`${usuario.nombre} ${usuario.apellido}`}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
@@ -61,11 +53,8 @@ export default function DatosUsuario() {
             </Typography>
           </CardContent>
         </CardActionArea>
-      </Card>,
-      <Button color="primary" component={Link} to="/" key="botonVolver">
-        Volver
-      </Button>,
-    ];
+      </Card>
+    );
   };
 
   const errorRendering = () => {
@@ -80,12 +69,19 @@ export default function DatosUsuario() {
   };
 
   const loadingRendering = () => {
-    return <Alert severity="info">Cargando usuarie ...</Alert>;
+    return <Alert severity="info">Cargando usuario...</Alert>;
   };
 
   return hasError
     ? errorRendering()
     : usuario == null
     ? loadingRendering()
-    : usuarioRendering();
+    : (
+        <>
+          {usuarioRendering()}
+          <Button color="primary" component={Link} to="/">
+            Volver
+          </Button>
+        </>
+      );
 }

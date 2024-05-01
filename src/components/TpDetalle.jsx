@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useHistory, useParams } from 'react-router-dom';
-import {
-  Card,
-  CardContent,
-  Container,
-  Divider,
-  makeStyles,
-  Button
-} from '@material-ui/core';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import Button from '@mui/material/Button';
 import { getTpPorId, getCursoPorId } from '../services/tps';
 
-const useStyles = makeStyles(() => ({
+const styles = {
   contenedor: {
     // Tus estilos aquí...
   },
@@ -18,11 +15,10 @@ const useStyles = makeStyles(() => ({
     // Tus estilos aquí...
   },
   // Agrega más estilos según sea necesario...
-}));
+};
 
 export default function TpDetalle() {
   const { idCurso, profesorId, tpId } = useParams();
-  const classes = useStyles();
   const [tp, setTp] = useState(null);
   const [curso, setCurso] = useState(null);
   const [hasError, setHasError] = useState(false);
@@ -48,8 +44,8 @@ export default function TpDetalle() {
   }, [idCurso, tpId]);
 
   const tpRendering = () => (
-    <div className={classes.contenedor}>
-      <Card className={classes.card}>
+    <div style={styles.contenedor}>
+      <Card style={styles.card}>
         <CardContent>
           <Divider />
           <Container maxWidth="xxl">
@@ -80,5 +76,5 @@ export default function TpDetalle() {
 
   const errorRendering = () => <div>Error al cargar los detalles del Tp</div>;
 
-  return hasError ? errorRendering() : !tp ? loadingRendering() : tpRendering();
+      return hasError ? errorRendering() : !tp ? loadingRendering() : tpRendering();
 }

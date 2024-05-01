@@ -1,64 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Divider,
-  makeStyles,
-} from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
-import { NavLink } from 'react-router-dom';
+import { Alert } from '@mui/lab';
+import { NavLink, useHistory, useParams } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { getTpsByCursoId, deleteTp } from '../services/tps';
 import { SubHeader } from './General/SubHeader';
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
-
-const useStyles = makeStyles(() => ({
-  contenedor: {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '70vh',
-  },
-  card: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  conteinerButtonSeleccionTp: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginTop: '20px',
-  },
-  botonesSeleccion: {
-    margin: '5px',
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  botonAgregarTp: {
-    margin: 'auto',
-    marginTop: '20px',
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    borderRadius: '8px',
-    padding: '10px 20px',
-    fontSize: '16px',
-    '&:hover': {
-      backgroundColor: '#45a049',
-    },
-  },
-}));
 
 export default function Tps() {
   const { idCurso, profesorId } = useParams();
-  const classes = useStyles();
   const [tps, setTps] = useState(null);
   const [hasError, setHasError] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedTp, setSelectedTp] = useState(null);
+  const history = useHistory();
 
   const handleClick = (event, tp) => {
     setAnchorEl(event.currentTarget);
@@ -104,17 +60,17 @@ export default function Tps() {
   }, [idCurso]);
 
   const tpsRendering = () => (
-    <div className={classes.contenedor}>
-      <Card className={classes.card}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '70vh' }}>
+      <Card style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <CardContent>
           <SubHeader titulo={`Trabajos Prácticos`} />
           <Divider />
           <Container
             maxWidth="xxl"
-            className={classes.conteinerButtonSeleccionTp}
+            style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}
           >
             {tps.map((tp) => (
-              <div key={tp.id} className={classes.botonesSeleccion}>
+              <div key={tp.id} style={{ display: 'flex', justifyContent: 'center', margin: '5px' }}>
                 {/* Usamos NavLink para redireccionar al detalle del TP */}
                 <NavLink
                   to={`/tp/${idCurso}/${profesorId}/${tp._id}`}
@@ -140,13 +96,21 @@ export default function Tps() {
             component={NavLink}
             to={`/crearTps/${idCurso}/${profesorId}`}
             variant="contained"
-            className={classes.botonAgregarTp}
+            style={{
+              margin: 'auto',
+              marginTop: '20px',
+              backgroundColor: '#4CAF50',
+              color: 'white',
+              borderRadius: '8px',
+              padding: '10px 20px',
+              fontSize: '16px',
+            }}
           >
             Agregar TP +
           </Button>
         </CardContent>
       </Card>
-      <Button color="primary" component={NavLink} to="/comision">
+      <Button color="primary" component={NavLink} to="/comision" style={{ margin: '20px auto' }}>
         Volver
       </Button>
       <Menu

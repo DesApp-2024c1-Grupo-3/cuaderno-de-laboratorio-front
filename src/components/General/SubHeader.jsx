@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Divider, Typography } from '@material-ui/core';
+import { Divider, Typography } from '@mui/material';
 
 export function SubHeader({ titulo }) {
   return (
     <>
       <Typography variant="h4">{titulo}</Typography>
-      <Divider/>
+      <Divider />
     </>
   );
 }

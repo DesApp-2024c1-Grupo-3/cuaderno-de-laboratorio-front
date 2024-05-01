@@ -5,47 +5,22 @@ import {
   Card,
   CardContent,
   Container,
-  makeStyles,
   FormControl,
   FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
   TextField,
-} from '@material-ui/core';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+} from '@mui/material'; // Cambio en la importación
+
 import { SubHeader } from './General/SubHeader';
 import { crearTp as postCrearTp } from '../services/tps';
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { useParams } from 'react-router-dom';
 import ListaDeGrupos from './Profesores/ListaDeGrupos';
 import { useEffect } from 'react';
+import ReactQuill from 'react-quill'; // Debes importar ReactQuill si aún no lo has hecho
 
-const useStyles = makeStyles(() => ({
-  card: {},
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    margin: 'auto',
-  },
-  conteinerButton: {
-    // ... (resto de estilos)
-  },
-  quillContainer: {
-    marginTop: 16,
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'left',
-    marginTop: 16,
-  },
-  button: {
-    marginLeft: 8,
-  },
-}));
-
-export default function CrearTps() {
+const CrearTps = () => { // Cambio en la declaración de la función
   const classes = useStyles();
   const { idCurso, profesorId } = useParams();
   const [show, setShow] = useState(false);
@@ -76,7 +51,9 @@ export default function CrearTps() {
 
   const validarDatos = () => {
     if (!tpData.nombre || !tpData.fechaInicio || !tpData.fechaFin) {
-      window.alert('Completa todos los campos obligatorios: Nombre, Fecha Inicio, Fecha Fin');
+      window.alert(
+        'Completa todos los campos obligatorios: Nombre, Fecha Inicio, Fecha Fin'
+      );
       return false;
     }
     return true;
@@ -169,7 +146,9 @@ export default function CrearTps() {
                   <br />
                   <Container>
                     <FormControl>
-                      <FormLabel id="demo-row-radio-buttons-group-label">Grupal</FormLabel>
+                      <FormLabel id="demo-row-radio-buttons-group-label">
+                        Grupal
+                      </FormLabel>
                       <RadioGroup
                         row
                         aria-labelledby="demo-row-radio-buttons-group-label"
@@ -177,8 +156,16 @@ export default function CrearTps() {
                         value={tpData.grupal.toString()}
                         onChange={handleChange}
                       >
-                        <FormControlLabel value="true" control={<Radio />} label="Sí" />
-                        <FormControlLabel value="false" control={<Radio />} label="No" />
+                        <FormControlLabel
+                          value="true"
+                          control={<Radio />}
+                          label="Sí"
+                        />
+                        <FormControlLabel
+                          value="false"
+                          control={<Radio />}
+                          label="No"
+                        />
                       </RadioGroup>
                     </FormControl>
                   </Container>
@@ -224,7 +211,11 @@ export default function CrearTps() {
                 >
                   Administar Grupos
                 </Button>
-                <Button variant="contained" onClick={() => crearTp()} className={classes.button}>
+                <Button
+                  variant="contained"
+                  onClick={() => crearTp()}
+                  className={classes.button}
+                >
                   Crear TP
                 </Button>
               </Container>
@@ -235,3 +226,5 @@ export default function CrearTps() {
     </>
   );
 }
+
+export default CrearTps; // Exporta la función al final

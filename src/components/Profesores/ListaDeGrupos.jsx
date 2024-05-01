@@ -15,7 +15,8 @@ import { Container } from '@mui/system';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from 'react-bootstrap/Modal';
-import { Divider } from '@material-ui/core';
+import Divider from '@mui/material/Divider';
+
 
 function not(a, b) {
   return a.filter((value) => b.indexOf(value) === -1);
