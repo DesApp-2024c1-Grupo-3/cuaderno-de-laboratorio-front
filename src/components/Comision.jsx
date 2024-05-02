@@ -9,7 +9,15 @@ import { useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { SubHeader } from './General/SubHeader';
 
-const profesorId = '6615da7e626c2f5017d64216';
+const profesorId = '661b0339aca97bd9f01f737a';
+
+const loadingRendering = () => {
+  return (
+    <div>
+      <p>Cargando...</p>
+    </div>
+  );
+};
 
 export default function Comision() {
   const { estadoCurso } = useParams();
@@ -40,15 +48,16 @@ export default function Comision() {
     fetchCommision();
   }, []);
 
+  
   const comisionRendering = () => {
     return (
       <>
         <Card>
           <CardContent>
-            <Container maxWidth="xl">
+            <Container >
               <SubHeader titulo={tituloHeader} />
 
-              <Container maxWidth="xl" sx={conteinerButton}>
+              <Container sx={conteinerButton}>
                 {comision.map((it) => (
                   //Falta Nombre de la Materia
                   <Button

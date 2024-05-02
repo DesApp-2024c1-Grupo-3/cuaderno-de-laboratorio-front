@@ -129,7 +129,7 @@ export const ModalClonarGrupos = ({ show, closeModal }) => {
             />
           </Container>
 
-          <Container style={{ maxHeight: '10px', padding: '15px' }}>
+          <Container style={{ maxheight: '10px', padding: '15px' }}>
             <Button onClick={onClose}>Close</Button>
             <Button
               style={{ backgroundColor: 'green' }}

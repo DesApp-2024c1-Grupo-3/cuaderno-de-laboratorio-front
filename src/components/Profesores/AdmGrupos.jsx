@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useStyles } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -16,6 +16,7 @@ import {
   ListSubheader,
   Typography,
   styled,
+  makeStyles
 } from '@mui/material'; // Importa los componentes de Material-UI v5
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -33,7 +34,6 @@ const Demo = styled('div')(({ theme }) => ({
 }));
 
 const AdministrarGrupos = () => {
-  const classes = useStyles();
   const { idCurso } = useParams();
 
   const [grupos, setGrupos] = useState([]);
@@ -96,24 +96,23 @@ const AdministrarGrupos = () => {
   const gruposRendering = () => {
     return (
       <>
-        <Card className={classes.card}>
+        <Card>
           <CardContent>
-            <Container className={classes.curso} maxWidth="xl">
+            <Container maxWidth="xl">
               <SubHeader titulo={tituloHeader} />
               <ListSubheader>Nombre del Tp</ListSubheader>
               <Divider></Divider>
-              <Container maxWidth="xl" className={classes.conteinerButtonRow}>
+              <Container maxWidth="xl">
                 <Button
                   onClick={openModalClonar}
-                  className={classes.buttonGrupo}
                 >
                   Clonar Grupo
                 </Button>
-                <Button onClick={openModal} className={classes.buttonGrupo}>
+                <Button onClick={openModal}>
                   Crear Grupo
                 </Button>
               </Container>
-              <Container className={classes.modal}>
+              <Container>
                 <ModalCrearGrupos
                   show={show}
                   closeModal={hideModal}
@@ -126,7 +125,7 @@ const AdministrarGrupos = () => {
                 ></ModalClonarGrupos>
               </Container>
               <Container>
-                <Box className={classes.conteinerListaDeGrupos}>
+                <Box>
                   <Grid style={{ width: '50%', border: '1px' }}>
                     <Demo>
                       <Typography
@@ -168,7 +167,6 @@ const AdministrarGrupos = () => {
             </Container>
 
             <Button
-              className={classes.buttonVolver}
               component={NavLink}
               to="/"
               key="botonVolver"

@@ -124,7 +124,7 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
             </FormControl>
           </Container>
 
-          <Container style={{ maxHeight: '10px', padding: '15px' }}>
+          <Container style={{ maxheight: '10px', padding: '15px' }}>
             <Button onClick={onClose}>Close</Button>
             <Button
               style={{ backgroundColor: 'green' }}

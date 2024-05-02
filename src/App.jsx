@@ -12,7 +12,7 @@ import TpDetalle from './components/TpDetalle';
 const App = () => {
   return (
     <Router>
-      <Container maxWidth="xxl" maxHeight="xxl" sx={{ // Utiliza sx prop para estilos en línea
+      <Container maxWidth="xxl" maxheight="xxl" sx={{ // Utiliza sx prop para estilos en línea
         marginTop: '0px',
         minHeight: '100vh',
         display: 'flex',
