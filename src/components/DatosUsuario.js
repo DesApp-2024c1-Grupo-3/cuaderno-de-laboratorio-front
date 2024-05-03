@@ -6,7 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
-import { Alert } from '@mui/material';
+import { Alert } from '@mui/material/Alert';
 import { getUsuarioPorId } from '../services/usuarios';
 import { getUsuarioPorId as getUsuarioPorId_fake } from '../services/usuarios-fake';
 import { getDataFromBackend } from '../constants/constants';

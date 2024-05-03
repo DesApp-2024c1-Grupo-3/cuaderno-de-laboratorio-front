@@ -10,7 +10,7 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
 } from '@mui/material';
-import { Alert } from '@mui/material';
+import { Alert } from '@mui/material/Alert';
 import { DateTime } from 'luxon';
 import { Face } from '@mui/icons-material';
 import { Link } from 'react-router-dom';

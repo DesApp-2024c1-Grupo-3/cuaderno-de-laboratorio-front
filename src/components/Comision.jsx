@@ -10,6 +10,13 @@ import { NavLink } from 'react-router-dom';
 import { SubHeader } from './General/SubHeader';
 
 const profesorId = '6615da7e626c2f5017d64216';
+const loadingRendering = () => {
+  return (
+    <div>
+      <p>Cargando...</p>
+    </div>
+  );
+};
 
 export default function Comision() {
   const { estadoCurso } = useParams();
@@ -45,10 +52,10 @@ export default function Comision() {
       <>
         <Card>
           <CardContent>
-            <Container maxWidth="xl">
+            <Container >
               <SubHeader titulo={tituloHeader} />
 
-              <Container maxWidth="xl" sx={conteinerButton}>
+              <Container  sx={conteinerButton}>
                 {comision.map((it) => (
                   //Falta Nombre de la Materia
                   <Button
@@ -72,10 +79,7 @@ export default function Comision() {
     );
   };
 
-  const loadingRendering = () => {
-    return <Alert severity="info">Cargando usuarie ...</Alert>;
-  };
-
+ 
   const errorRendering = () => {
     return (
       <Alert severity="warning">
