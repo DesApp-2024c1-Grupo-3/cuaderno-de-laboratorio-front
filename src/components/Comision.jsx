@@ -47,11 +47,13 @@ export default function Comision() {
     fetchCommision();
   }, []);
 
+  
   const comisionRendering = () => {
     return (
       <>
         <Card>
           <CardContent>
+            <Container >
             <Container >
               <SubHeader titulo={tituloHeader} />
 

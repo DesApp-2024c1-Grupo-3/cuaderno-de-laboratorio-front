@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useStyles } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -16,6 +16,7 @@ import {
   ListSubheader,
   Typography,
   styled,
+  makeStyles
 } from '@mui/material'; // Importa los componentes de Material-UI v5
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -113,7 +114,7 @@ const AdministrarGrupos = () => {
                   Crear Grupo
                 </Button>
               </Container>
-              <Container >
+              <Container className={classes.modal}>
                 <ModalCrearGrupos
                   show={show}
                   closeModal={hideModal}
