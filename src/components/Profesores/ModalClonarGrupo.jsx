@@ -8,11 +8,12 @@ import {
   Divider,
   TextField,
 } from '@mui/material';
-import { Autocomplete } from '@mui/lab';
+import { Autocomplete } from '@mui/material';
 import PropTypes from 'prop-types';
 import { getTodosLosAlumnos } from '../../services/Alumnos';
 import { getTodosLosAlumnos as getTodosLosAlumnos_Fake } from '../../services/alumnos-fake';
 import { postCrearGrupo } from '../../services/Grupo';
+import { getDataFromBackend } from '../../constants/Alumnos';
 
 const style = {
   position: 'fixed',
@@ -129,7 +130,7 @@ export const ModalClonarGrupos = ({ show, closeModal }) => {
             />
           </Container>
 
-          <Container style={{ maxHeight: '10px', padding: '15px' }}>
+          <Container style={{ maxheight: '10px', padding: '15px' }}>
             <Button onClick={onClose}>Close</Button>
             <Button
               style={{ backgroundColor: 'green' }}

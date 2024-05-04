@@ -9,7 +9,7 @@ import {
   FormControl,
   TextField,
 } from '@mui/material';
-import { Autocomplete } from '@mui/lab';
+import { Autocomplete } from '@mui/material';
 import PropTypes from 'prop-types';
 import { getTodosLosAlumnos } from '../../services/Alumnos';
 import { postCrearGrupo } from '../../services/Grupo';
@@ -98,7 +98,6 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
             <Typography>materia|cuatrimestre|comision</Typography>
             <Divider />
           </Container>
-
           <Container style={{ padding: '15px' }}>
             <TextField
               id="standard-basic"
@@ -108,7 +107,6 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
               onChange={guardarNombre}
             />
           </Container>
-
           <Container style={{ padding: '15px' }}>
             <FormControl sx={{ m: 1 }}>
               <Autocomplete
@@ -123,9 +121,12 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
               />
             </FormControl>
           </Container>
-
-          <Container style={{ maxHeight: '10px', padding: '15px' }}>
-            <Button onClick={onClose}>Close</Button>
+          <Container style={{ maxheight: '10px', padding: '15px' }}>
+            <Button 
+              onClick={onClose}
+            >
+              Close
+            </Button>
             <Button
               style={{ backgroundColor: 'green' }}
               onClick={crearGrupo}

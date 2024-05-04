@@ -227,6 +227,6 @@ export default function ListaDeGrupos({
 ListaDeGrupos.propTypes = {
   idCurso: PropTypes.string.isRequired,
   show: PropTypes.bool.isRequired,
-  closeModal: PropTypes.element.isRequired,
-  setGruposParaTrabajo: PropTypes.element.isRequired, // Ajusta el tipo y la obligatoriedad según tu lógica de uso
+  closeModal: PropTypes.func.isRequired,// Cambia el tipo a func
+  setGruposParaTrabajo: PropTypes.func.isRequired, // Ajusta el tipo y la obligatoriedad según tu lógica de uso
 };

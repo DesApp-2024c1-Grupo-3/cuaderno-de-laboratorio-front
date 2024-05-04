@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Alert } from '@mui/lab';
+import { Alert, Button, Card, Container, Divider, CardContent } from '@mui/material';
 import { NavLink, useHistory, useParams } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -31,7 +31,7 @@ export default function Tps() {
 
       if (response.status === 200) {
         // Elimina el TP de la lista local
-        setTps((prevTps) => prevTps.filter((tp) => tp.id !== selectedTp._id));
+        setTps((prevTps) => prevTps.filter((tp) => tp._id !== selectedTp._id));
         handleClose();
 
         // Vuelve a obtener la lista actualizada de TPs
@@ -70,7 +70,7 @@ export default function Tps() {
             style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}
           >
             {tps.map((tp) => (
-              <div key={tp.id} style={{ display: 'flex', justifyContent: 'center', margin: '5px' }}>
+              <div key={tp._id} style={{ display: 'flex', justifyContent: 'center', margin: '5px' }}>
                 {/* Usamos NavLink para redireccionar al detalle del TP */}
                 <NavLink
                   to={`/tp/${idCurso}/${profesorId}/${tp._id}`}

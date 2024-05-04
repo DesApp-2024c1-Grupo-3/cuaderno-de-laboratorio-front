@@ -12,16 +12,17 @@ import {
   Radio,
   TextField,
 } from '@mui/material'; // Cambio en la importación
-
+import ReactQuill from 'react-quill'; 
+import 'react-quill/dist/quill.snow.css';
 import { SubHeader } from './General/SubHeader';
 import { crearTp as postCrearTp } from '../services/tps';
 import { useParams } from 'react-router-dom';
 import ListaDeGrupos from './Profesores/ListaDeGrupos';
 import { useEffect } from 'react';
-import ReactQuill from 'react-quill'; // Debes importar ReactQuill si aún no lo has hecho
+
 
 const CrearTps = () => { // Cambio en la declaración de la función
-  const classes = useStyles();
+  
   const { idCurso, profesorId } = useParams();
   const [show, setShow] = useState(false);
   const [gruposParaTrabajo, setGruposParaTrabajo] = useState([]);
@@ -93,16 +94,16 @@ const CrearTps = () => { // Cambio en la declaración de la función
 
   return (
     <>
-      <Card className={classes.card}>
+      <Card >
         <CardContent>
           <SubHeader titulo={'Crear Tps'} />
-          <form className={classes.form}>
+          <form >
             <Container>
               <Container style={{ display: 'flex' }}>
                 <Container
                   style={{ width: '50%', margin: '2% 0%' }}
-                  maxWidth="l"
-                  className={classes.conteinerButton}
+                  maxWidth="xl"
+                
                 >
                   <Container>
                     <TextField
@@ -172,7 +173,7 @@ const CrearTps = () => { // Cambio en la declaración de la función
                 </Container>
                 <Container
                   style={{
-                    width: '50%',
+                    width: '25%',
                     padding: '2% 0%',
                     display: show ? 'block' : 'none',
                   }}
@@ -186,20 +187,22 @@ const CrearTps = () => { // Cambio en la declaración de la función
                 </Container>
               </Container>
               <br />
-              <Container className={classes.quillContainer}>
-                <FormLabel>Consigna</FormLabel>
+              <Container style={{ marginTop: '20px', marginBottom: '20px' }}>
+                <FormLabel >Consigna</FormLabel>
                 <ReactQuill
                   value={tpData.consigna}
                   onChange={(value) => handleConsignaChange(value)}
+                 
                 />
               </Container>
-              <Container id="botones" className={classes.buttonContainer}>
+
+              <Container id="botones" >
                 <Button
                   color="primary"
                   component={NavLink}
                   to={`/tps/${idCurso}/${profesorId}`}
                   key="botonVolver"
-                  className={classes.button}
+                  
                 >
                   Volver
                 </Button>
@@ -207,14 +210,14 @@ const CrearTps = () => { // Cambio en la declaración de la función
                   variant="contained"
                   component={NavLink}
                   to={`/Administrar_Grupos/${idCurso}`}
-                  className={classes.button}
+                  
                 >
                   Administar Grupos
                 </Button>
                 <Button
                   variant="contained"
                   onClick={() => crearTp()}
-                  className={classes.button}
+                  
                 >
                   Crear TP
                 </Button>

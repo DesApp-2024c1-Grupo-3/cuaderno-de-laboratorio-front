@@ -5,7 +5,12 @@ import { Divider, Typography } from '@mui/material';
 export function SubHeader({ titulo }) {
   return (
     <>
-      <Typography variant="h4">{titulo}</Typography>
+      <Typography 
+        variant="h4"    
+        align="center" // centrado 
+        fontWeight="bold"   // Negrita
+                        >{titulo}
+      </Typography>
       <Divider />
     </>
   );
