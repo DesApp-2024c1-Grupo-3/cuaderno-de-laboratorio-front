@@ -17,7 +17,6 @@ const loadingRendering = () => {
     </div>
   );
 };
-
 export default function Comision() {
   const { estadoCurso } = useParams();
 
@@ -53,7 +52,7 @@ export default function Comision() {
       <>
         <Card>
           <CardContent>
-            <Container >
+            
             <Container >
               <SubHeader titulo={tituloHeader} />
 

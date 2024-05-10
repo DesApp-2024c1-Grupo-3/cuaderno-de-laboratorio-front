@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useStyles } from 'react';
 import PropTypes from 'prop-types';
+
 import {
   Box,
   Button,
@@ -15,9 +16,11 @@ import {
   ListItemText,
   ListSubheader,
   Typography,
-  styled,
-  makeStyles
+  Avatar // Agregamos Avatar 
 } from '@mui/material'; // Importa los componentes de Material-UI v5
+
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -29,14 +32,20 @@ import { NavLink } from 'react-router-dom';
 import { getGrupoByCursoId, postEliminarGrupo } from '../../services/Grupo';
 import { SubHeader } from '../General/SubHeader';
 
-const Demo = styled('div')(({ theme }) => ({
+/* const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
-}));
-
+})); */
+// 
+const theme = createTheme({
+  palette:{
+    background:{
+      default: '#fff',
+      paper:'#fff'
+    }, 
+  },
+});
 const AdministrarGrupos = () => {
-  
   const { idCurso } = useParams();
-
   const [grupos, setGrupos] = useState([]);
   const [hasError, setHasError] = useState(false);
   const [show, setShow] = useState(false);
@@ -104,17 +113,14 @@ const AdministrarGrupos = () => {
               <ListSubheader>Nombre del Tp</ListSubheader>
               <Divider></Divider>
               <Container maxWidth="xl" >
-                <Button
-                  onClick={openModalClonar}
-                  
-                >
+                <Button onClick={openModalClonar}>
                   Clonar Grupo
                 </Button>
-                <Button onClick={openModal} >
+                <Button onClick={openModal}>
                   Crear Grupo
                 </Button>
               </Container>
-              <Container className={classes.modal}>
+              <Container >
                 <ModalCrearGrupos
                   show={show}
                   closeModal={hideModal}
@@ -129,7 +135,7 @@ const AdministrarGrupos = () => {
               <Container>
                 <Box >
                   <Grid style={{ width: '50%', border: '1px' }}>
-                    <Demo>
+                    <ThemeProvider theme={theme}>
                       <Typography
                         sx={{ mt: 4, mb: 2 }}
                         variant="h6"
@@ -138,36 +144,43 @@ const AdministrarGrupos = () => {
                         grupos
                       </Typography>
                       <List>
-                        {grupos.map((it) => (
-                          <ListItem key={it._id}>
+                        {grupos.map((grupo) => (
+                          <ListItem key={grupo._id}>
+                            {/* Icono de grupo */}
                             <ListItemAvatar>
-                              <FolderIcon />
+                              {/* Aquí puedes colocar el icono que prefieras para representar un grupo */}
+                              <Avatar>
+                                {/* Por ejemplo, un icono de grupo */}
+                                <FolderIcon />
+                              </Avatar>
                             </ListItemAvatar>
-
-                            <ListItemText
-                              primary={`${it.nombre} [${it.alumnos.map((alu) => `${alu.nombre} ${alu.apellido} ,`).join(' ')}]`}
-                            />
+                            {/* Nombre del grupo */}
+                            <ListItemText primary={grupo.nombre} />
+                            {/* Botones de edición y eliminación (si lo deseas) */}
                             <IconButton edge="start" aria-label="edit">
                               <EditIcon />
                             </IconButton>
-                            <IconButton
-                              edge="end"
-                              aria-label="delete"
-                              onClick={() => deleteGrup(it._id)}
-                            >
+                            <IconButton edge="end" aria-label="delete" onClick={() => deleteGrup(grupo._id)}>
                               <DeleteIcon />
                             </IconButton>
+                            {/* Lista de integrantes */}
+                            <List>
+                              {grupo.alumnos.map((alumno) => (
+                                <ListItem key={alumno.id}>
+                                  <ListItemText primary={`${alumno.nombre} ${alumno.apellido}`} />
+                                </ListItem>
+                              ))}
+                            </List>
                           </ListItem>
                         ))}
                       </List>
-                    </Demo>
+                    </ThemeProvider>
                   </Grid>
                 </Box>
               </Container>
             </Container>
 
-            <Button
-             
+            <Button             
               component={NavLink}
               to="/"
               key="botonVolver"

@@ -4,10 +4,12 @@ import Home from './components/Home';
 import { Header } from './components/General/Header';
 import { Footer } from './components/General/Footer';
 import Comision from './components/Comision';
+import TpsBeta from './components/TpsBeta';
 import Tps from './components/Tps';
 import CrearTps from './components/CrearTps';
 import AdministrarGrupos from './components/Profesores/AdmGrupos';
 import TpDetalle from './components/TpDetalle';
+import TpDetalleBeta from './components/TpDetalleBeta';
 
 const App = () => {
   return (
@@ -22,11 +24,13 @@ const App = () => {
 
         <div sx={{ flex: '1' }}> {/* Utiliza sx prop para estilos en línea */}
           <Switch>
-            <Route path="/comision/:estadoCurso" component={Comision} />
+            <Route path="/comision/actual" component={Comision} />
+            {/*<Route path="/comision/anterior" component={Comision} />*/} 
+            {/*<Route path="/tps/:idCurso/:profesorId" component={TpsBeta} />*/}
             <Route path="/tps/:idCurso/:profesorId" component={Tps} />
             <Route path="/crearTps/:idCurso/:profesorId" component={CrearTps} />
             <Route path="/Administrar_Grupos/:idCurso" component={AdministrarGrupos} />
-            <Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalle} />
+            <Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />
             <Route path="/" component={Home} />
           </Switch>
         </div>

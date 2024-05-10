@@ -70,7 +70,7 @@ export default function Tps() {
             style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}
           >
             {tps.map((tp) => (
-              <div key={tp._id} style={{ display: 'flex', justifyContent: 'center', margin: '5px' }}>
+              <div key={tp._id} style={{ display: 'flex', justifyContent: 'right', margin: '5px' }}>
                 {/* Usamos NavLink para redireccionar al detalle del TP */}
                 <NavLink
                   to={`/tp/${idCurso}/${profesorId}/${tp._id}`}
@@ -106,11 +106,12 @@ export default function Tps() {
               fontSize: '16px',
             }}
           >
-            Agregar TP +
+            Agregar TP 
           </Button>
         </CardContent>
       </Card>
-      <Button color="primary" component={NavLink} to="/comision" style={{ margin: '20px auto' }}>
+      <Button color="primary" 
+        component={NavLink} to="/comision" style={{ margin: '20px auto' }}>
         Volver
       </Button>
       <Menu
