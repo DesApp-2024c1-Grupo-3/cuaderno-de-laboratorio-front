@@ -1,5 +1,6 @@
 import { Container} from  '@mui/material'; // Importa Container desde @mui/material;
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
 import Home from './components/Home';
 import { Header } from './components/General/Header';
 import { Footer } from './components/General/Footer';
@@ -27,7 +28,7 @@ const App = () => {
             <Route path="/comision/actual" component={Comision} />
             {/*<Route path="/comision/anterior" component={Comision} />*/} 
             {/*<Route path="/tps/:idCurso/:profesorId" component={TpsBeta} />*/}
-            <Route path="/tps/:idCurso/:profesorId" component={Tps} />
+            <Route path="/tps/:idCurso/:profesorId" component={TpsBeta} />
             <Route path="/crearTps/:idCurso/:profesorId" component={CrearTps} />
             <Route path="/Administrar_Grupos/:idCurso" component={AdministrarGrupos} />
             <Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />

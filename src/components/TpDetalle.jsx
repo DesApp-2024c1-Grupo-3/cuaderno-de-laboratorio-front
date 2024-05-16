@@ -7,15 +7,6 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import { getTpPorId, getCursoPorId } from '../services/tps';
 
-const styles = {
-  contenedor: {
-    // Tus estilos aquí...
-  },
-  card: {
-    // Tus estilos aquí...
-  },
-  // Agrega más estilos según sea necesario...
-};
 
 export default function TpDetalle() {
   const { idCurso, profesorId, tpId } = useParams();

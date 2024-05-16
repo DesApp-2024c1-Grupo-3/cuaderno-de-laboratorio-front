@@ -7,11 +7,11 @@ export function SubHeader({ titulo }) {
     <>
       <Typography 
         variant="h4"    
-        align="center" // centrado 
-        fontWeight="bold"   // Negrita
-                        >{titulo}
+        align="left" 
+      >
+        {titulo}
       </Typography>
-      <Divider />
+  
     </>
   );
 }

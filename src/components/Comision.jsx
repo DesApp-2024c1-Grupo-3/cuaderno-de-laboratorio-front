@@ -52,7 +52,6 @@ export default function Comision() {
       <>
         <Card>
           <CardContent>
-            
             <Container >
               <SubHeader titulo={tituloHeader} />
 
@@ -70,7 +69,6 @@ export default function Comision() {
                 ))}
               </Container>
             </Container>
-
             <Button color="primary" component={NavLink} to="/">
               Volver
             </Button>
