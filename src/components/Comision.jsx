@@ -1,39 +1,30 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Button, Card, CardContent, Container } from '@mui/material';
+import { Alert } from '@mui/material';
 import { getDataFromBackend } from '../constants/curso';
 import { getCurso as getTodosLosUsuarios_fake } from '../services/curso-fake';
 import { conteinerButton } from '../style/buttonStyle';
 import { getCursoPorIdProfesor } from '../services/curso';
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
-import { NavLink } from 'react-router-dom/cjs/react-router-dom';
+import { useParams } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { SubHeader } from './General/SubHeader';
 
-const useStyles = makeStyles(() => ({
-  card: {},
-  conteinerButton,
-  curso: { display: 'inline-grid' },
-}));
-
-const profesorId = '6571f6148974a06492853d7c';
-
+const profesorId = '6615da7e626c2f5017d64216';
+const loadingRendering = () => {
+  return (
+    <div>
+      <p>Cargando...</p>
+    </div>
+  );
+};
 export default function Comision() {
   const { estadoCurso } = useParams();
-  const classes = useStyles();
 
   const [comision, setComision] = useState(null);
   const [hasError, setHasError] = useState(false);
   const tituloHeader =
     estadoCurso === 'actual'
-      ? 'Listado De Cursos |cuatrimestre actual '
+      ? 'Listado De Cursos | cuatrimestre actual '
       : 'Listado De Cursos | cuatrimestre anterior';
 
   useEffect(() => {
@@ -55,47 +46,39 @@ export default function Comision() {
     fetchCommision();
   }, []);
 
+  
   const comisionRendering = () => {
-    return [
+    return (
       <>
-        <Card className={classes.card}>
+        <Card>
           <CardContent>
-            <Container className={classes.curso} maxWidth="xl">
+            <Container >
               <SubHeader titulo={tituloHeader} />
 
-              <Container maxWidth="xl" className={classes.conteinerButton}>
+              <Container  sx={conteinerButton}>
                 {comision.map((it) => (
-                  //Falta Nombtr  de la  Materia
+                  //Falta Nombre de la Materia
                   <Button
                     component={NavLink}
                     to={`/tps/${it._id}/${profesorId}`}
                     variant="contained"
                     key={it._id}
                   >
-                    {` ${it.materia.nombre}`} | {` ${it.comision}`}
+                    {`${it.materia.nombre}`} | {`${it.comision}`}
                   </Button>
                 ))}
               </Container>
             </Container>
-
-            <Button
-              color="primary"
-              component={NavLink}
-              to="/"
-              key="botonVolver"
-            >
+            <Button color="primary" component={NavLink} to="/">
               Volver
             </Button>
           </CardContent>
         </Card>
-      </>,
-    ];
+      </>
+    );
   };
 
-  const loadingRendering = () => {
-    return <Alert severity="info">Cargando usuarie ...</Alert>;
-  };
-
+ 
   const errorRendering = () => {
     return (
       <Alert severity="warning">

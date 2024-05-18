@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from 'react-bootstrap/Modal';
@@ -8,60 +8,23 @@ import {
   Divider,
   FormControl,
   TextField,
-  makeStyles,
-} from '@material-ui/core';
-import { useState } from 'react';
-import { SubHeader } from '../General/SubHeader';
-import { Autocomplete } from '@material-ui/lab';
-import {
-  buttonVolver,
-  contButtonVolver,
-  conteinerButtonRow,
-} from '../../style/buttonStyle';
+} from '@mui/material';
+import { Autocomplete } from '@mui/material';
 import PropTypes from 'prop-types';
 import { getTodosLosAlumnos } from '../../services/Alumnos';
-import { getTodosLosAlumnos as getTodosLosAlumnos_Fake } from '../../services/alumnos-fake';
-
-import { useEffect } from 'react';
-import { getDataFromBackend } from '../../constants/Alumnos';
-import {
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  Stack,
-} from '@mui/material';
-import { Height } from '@material-ui/icons';
 import { postCrearGrupo } from '../../services/Grupo';
 
-const useStyles = makeStyles(() => ({
-  contButtonVolver,
-  buttonVolver,
-  conteinerButtonRow,
-}));
-
-const style = {
-  position: 'fixed',
-  top: '35%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
 export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGrupos }) => {
-  const classes = useStyles();
   const [listAlumnos, setListAlumnos] = useState([]);
   const [hasError, setHasError] = useState(false);
-  const [personName, setPersonName] = React.useState([]);
-
+  const [nombreGrupo, setNombreGrupo] = useState('');
+  const [grupoData, setGrupoData] = useState({
+    nombre: '',
+    alumnos: [],
+  });
 
   const resetModal = () => {
     setNombreGrupo('');
-    setPersonName([]);
     setGrupoData({
       nombre: '',
       alumnos: [],
@@ -73,46 +36,18 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
     closeModal();
   };
 
-
-  const [nombreGrupo, setNombreGrupo] = useState('');
-
-  const [grupoData, setGrupoData] = useState({
-    nombre: '',
-    alumnos: [],
-  });
-
   const guardarNombre = (event) => {
     const nombreG = event.target.value;
     setNombreGrupo(nombreG);
     setGrupoData({ ...grupoData, nombre: nombreG });
   };
-  const handleChange = async () => {
-    if (validarDatos()) {
-      await crearGrupo();
-      actualizarListaGrupos(); // Llamamos a la función de actualización
-      onClose();
-    } else {
-      window.alert('Completa todos los campos obligatorios: Nombre, alumnos');
-    }
 
-    onClose();
-  };
-
-  const handleChangeAlumnos = (event) => {
-    const {
-      target: { value },
-    } = event;
-
-    setPersonName(event.target.value);
-
-    setGrupoData({ ...grupoData, alumnos: event.target.value });
+  const handleChangeAlumnos = (event, value) => {
+    setGrupoData({ ...grupoData, alumnos: value });
   };
 
   const validarDatos = () => {
-    if (grupoData.nombre == '' || grupoData.alumnos <= 0) {
-      return false;
-    }
-    return true;
+    return grupoData.nombre !== '' && grupoData.alumnos.length > 0;
   };
 
   const crearGrupo = async () => {
@@ -142,15 +77,27 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
     }
     fetchAlumnos();
   }, [show]);
+
   return (
     <>
       <Modal show={show} onHide={onClose}>
-        <Box sx={style}>
-          <Container className={classes.contButtonVolver}>
+        <Box
+          sx={{
+            position: 'fixed',
+            top: '35%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Container>
             <Typography>materia|cuatrimestre|comision</Typography>
-            <Divider></Divider>
+            <Divider />
           </Container>
-
           <Container style={{ padding: '15px' }}>
             <TextField
               id="standard-basic"
@@ -160,41 +107,30 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
               onChange={guardarNombre}
             />
           </Container>
-
           <Container style={{ padding: '15px' }}>
             <FormControl sx={{ m: 1 }}>
-              <InputLabel id="demo-multiple-name-label">
-                Lista de Alumnos
-              </InputLabel>
-              <Select
-                labelId="demo-multiple-name-label"
-                id="demo-multiple-name"
+              <Autocomplete
                 multiple
-                value={personName}
+                id="combo-box-demo"
+                options={listAlumnos}
+                getOptionLabel={(option) => `${option.nombre} ${option.apellido}`}
                 onChange={handleChangeAlumnos}
-                input={<OutlinedInput label="Name" />}
-                style={{ width: '300px' }}
-              >
-                {listAlumnos.map((name) => (
-                  <MenuItem key={name._id} value={name._id}>
-                    {name.nombre} {name.apellido}
-                  </MenuItem>
-                ))}
-              </Select>
+                renderInput={(params) => (
+                  <TextField {...params} label="Lista de Alumnos" variant="outlined" />
+                )}
+              />
             </FormControl>
           </Container>
-
-          <Container
-            style={{ maxHeight: '10px', padding: '15px' }}
-            className={classes.conteinerButtonRow}
-          >
-            <Button className={classes.buttonVolver} onClick={onClose}>
+          <Container style={{ maxheight: '10px', padding: '15px' }}>
+            <Button 
+              onClick={onClose}
+            >
               Close
             </Button>
             <Button
-              className={classes.buttonVolver}
               style={{ backgroundColor: 'green' }}
-              onClick={handleChange}
+              onClick={crearGrupo}
+              disabled={!validarDatos()}
             >
               Crear
             </Button>
@@ -207,7 +143,7 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
 
 ModalCrearGrupos.propTypes = {
   show: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired, // Cambié 'bool' a 'func' ya que closeModal es una función
+  closeModal: PropTypes.func.isRequired,
   idCurso: PropTypes.string.isRequired,
   actualizarListaGrupos: PropTypes.func.isRequired,
 };

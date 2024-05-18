@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from 'react-bootstrap/Modal';
@@ -7,31 +7,13 @@ import {
   Container,
   Divider,
   TextField,
-  makeStyles,
-} from '@material-ui/core';
-import { useState } from 'react';
-import { SubHeader } from '../General/SubHeader';
-import { Autocomplete } from '@material-ui/lab';
-import {
-  buttonVolver,
-  contButtonVolver,
-  conteinerButtonRow,
-} from '../../style/buttonStyle';
+} from '@mui/material';
+import { Autocomplete } from '@mui/material';
 import PropTypes from 'prop-types';
 import { getTodosLosAlumnos } from '../../services/Alumnos';
 import { getTodosLosAlumnos as getTodosLosAlumnos_Fake } from '../../services/alumnos-fake';
-
-import { useEffect } from 'react';
-import { getDataFromBackend } from '../../constants/Alumnos';
-import { Stack } from '@mui/material';
-import { Height } from '@material-ui/icons';
 import { postCrearGrupo } from '../../services/Grupo';
-
-const useStyles = makeStyles(() => ({
-  contButtonVolver,
-  buttonVolver,
-  conteinerButtonRow,
-}));
+import { getDataFromBackend } from '../../constants/Alumnos';
 
 const style = {
   position: 'fixed',
@@ -46,43 +28,31 @@ const style = {
 };
 
 export const ModalClonarGrupos = ({ show, closeModal }) => {
-  const classes = useStyles();
-  const [listAlumnos, setListAlumnos] = useState();
+  const [listAlumnos, setListAlumnos] = useState([]);
   const [hasError, setHasError] = useState(false);
+  const [nombreGrupo, setNombreGrupo] = useState('');
+  const [alumnosGrupo, setAlumnosGrupo] = useState([]);
 
   const onClose = () => {
     closeModal();
   };
-  const [nombreGrupo, setNombreGrupo] = useState('');
-  const [alumnosGrupo, setAlumnosGrupo] = useState([]);
-
-  const [grupoData, setGrupoData] = useState({
-    nombre: '',
-    alumnos: [],
-  });
 
   const guardarAlumnos = (event, value) => {
     setAlumnosGrupo(value);
   };
+
   const guardarNombre = (event) => {
     setNombreGrupo(event.target.value);
   };
-  const handleChange = (event) => {
-    setGrupoData({
-      ...grupoData,
-      nombre: { nombreGrupo },
-      alumnos: { alumnosGrupo },
-    });
+
+  const handleChange = () => {
+    // Lógica para manejar el cambio
     crearGrupo();
     onClose();
   };
 
   const validarDatos = () => {
-    if (!grupoData.nombre || grupoData.alumnos.length <= 0) {
-      window.alert('Completa todos los campos obligatorios: Nombre, alumnos');
-      return false;
-    }
-    return true;
+    return nombreGrupo !== '' && alumnosGrupo.length > 0;
   };
 
   const crearGrupo = async () => {
@@ -91,12 +61,15 @@ export const ModalClonarGrupos = ({ show, closeModal }) => {
     }
     try {
       // Lógica para hacer la solicitud al backend
-      const response = await postCrearGrupo(grupoData);
+      const response = await postCrearGrupo({
+        nombre: nombreGrupo,
+        alumnos: alumnosGrupo,
+      });
       if (response.status === 201) {
-        // Redirige a la página después de crear el TP
-        window.alert('Trabajo práctico creado correctamente');
+        // Redirige a la página después de crear el grupo
+        window.alert('Grupo creado correctamente');
       } else {
-        console.error('Error al crear TP');
+        console.error('Error al crear grupo');
         // Manejo de errores según sea necesario
       }
     } catch (error) {
@@ -112,7 +85,7 @@ export const ModalClonarGrupos = ({ show, closeModal }) => {
         ? getTodosLosAlumnos
         : getTodosLosAlumnos_Fake;
       try {
-        // Agregar el ID del profesor segun la informacion que tengas en tu base de datos local.
+        // Lógica para obtener la lista de alumnos
         const alumnos = await getFunction();
         setListAlumnos(alumnos);
       } catch (err) {
@@ -122,13 +95,14 @@ export const ModalClonarGrupos = ({ show, closeModal }) => {
     }
     fetchAlumnos();
   }, []);
+
   return (
     <>
       <Modal show={show} onHide={onClose}>
         <Box sx={style}>
-          <Container className={classes.contButtonVolver}>
+          <Container>
             <Typography>materia|cuatrimestre|comision</Typography>
-            <Divider></Divider>
+            <Divider />
           </Container>
 
           <Container style={{ padding: '15px' }}>
@@ -140,39 +114,28 @@ export const ModalClonarGrupos = ({ show, closeModal }) => {
               onChange={guardarNombre}
             />
           </Container>
+
           <Container style={{ padding: '15px' }}>
-            <Stack spacing={3}>
-              <Autocomplete
-                multiple
-                id="tags-outlined"
-                options={listAlumnos}
-                getOptionLabel={(option) =>
-                  option.nombre + ' ' + option.apellido
-                }
-                value={alumnosGrupo}
-                filterSelectedOptions
-                onChange={guardarAlumnos}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Alumnos"
-                    placeholder="seleccionar"
-                  />
-                )}
-              />
-            </Stack>
+            <Autocomplete
+              multiple
+              id="tags-outlined"
+              options={listAlumnos}
+              getOptionLabel={(option) => option.nombre + ' ' + option.apellido}
+              value={alumnosGrupo}
+              filterSelectedOptions
+              onChange={guardarAlumnos}
+              renderInput={(params) => (
+                <TextField {...params} label="Alumnos" placeholder="Seleccionar" />
+              )}
+            />
           </Container>
-          <Container
-            style={{ maxHeight: '10px', padding: '15px' }}
-            className={classes.conteinerButtonRow}
-          >
-            <Button className={classes.buttonVolver} onClick={onClose}>
-              Close
-            </Button>
+
+          <Container style={{ maxheight: '10px', padding: '15px' }}>
+            <Button onClick={onClose}>Close</Button>
             <Button
-              className={classes.buttonVolver}
               style={{ backgroundColor: 'green' }}
               onClick={handleChange}
+              disabled={!validarDatos()}
             >
               Crear
             </Button>
@@ -185,6 +148,5 @@ export const ModalClonarGrupos = ({ show, closeModal }) => {
 
 ModalClonarGrupos.propTypes = {
   show: PropTypes.bool.isRequired,
-  closeModal: PropTypes.bool.isRequired, // Ajusta el tipo y la obligatoriedad según tu lógica de uso
-  // Ajusta el tipo y la obligatoriedad según tu lógica de uso
+  closeModal: PropTypes.func.isRequired,
 };

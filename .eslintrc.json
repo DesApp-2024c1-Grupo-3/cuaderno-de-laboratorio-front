@@ -27,10 +27,12 @@
     }
   },
   "globals": {
-    "process": "readonly"
+    "process": "readonly"   
   },
   "rules": {
-    "react/react-in-jsx-scope": "off",
-    "no-unused-vars": "warn"
+    "react/react-in-jsx-scope": "warn",
+    "no-unused-vars": "warn",
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error"
   }
 }

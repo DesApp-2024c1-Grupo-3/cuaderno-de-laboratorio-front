@@ -7,8 +7,7 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import { getTpPorId, getCursoPorId } from '../services/tps';
 
-
-export default function TpDetalle() {
+const TpDetalle = () => {
   const { idCurso, profesorId, tpId } = useParams();
   const [tp, setTp] = useState(null);
   const [curso, setCurso] = useState(null);
@@ -34,25 +33,35 @@ export default function TpDetalle() {
     fetchTp();
   }, [idCurso, tpId]);
 
+  const formatFecha = (fechaHora) => {
+    const fecha = fechaHora.split('T')[0]; // Divide la fecha y la hora y toma solo la parte de la fecha
+    return fecha;
+  };
+
   const tpRendering = () => (
-    <div style={styles.contenedor}>
-      <Card style={styles.card}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Card sx={{ '&:nth-of-type(odd)': { backgroundColor: 'rgba(0, 0, 0, 0.05)' } }}>
         <CardContent>
           <Divider />
-          <Container maxWidth="xxl">
+          <Container maxWidth="xl">
             {tp && curso && (
               <div>
                 <h2>{tp.nombre}</h2>
-                <h3>fechaInicio: {tp.fechaInicio}</h3>
-                <h3>fechaFin: {tp.fechaFin}</h3>
+                <h3>fechaInicio: {formatFecha(tp.fechaInicio)}</h3> {/* Muestra solo la fecha */}
+                <h3>fechaFin: {formatFecha(tp.fechaFin)}</h3> {/* Muestra solo la fecha */}
                 {curso.alumnos && (
                   <h3>Cantidad alumnos: {curso.alumnos.length}</h3>
                 )}
                 {tp.grupos && (
                   <h3>Cantidad grupos: {tp.grupos.length}</h3>
                 )}
-                {tp.consigna && (<h4>Consigna: {tp.consigna}</h4>)}
-              </div>
+                {tp.consigna && (
+                  <div>
+                    <h3>Consigna:</h3>
+                    <div dangerouslySetInnerHTML={{ __html: tp.consigna }} />
+                  </div>                    
+                )}
+                </div>
             )}
           </Container>
         </CardContent>
@@ -67,5 +76,7 @@ export default function TpDetalle() {
 
   const errorRendering = () => <div>Error al cargar los detalles del Tp</div>;
 
-      return hasError ? errorRendering() : !tp ? loadingRendering() : tpRendering();
-}
+  return hasError ? errorRendering() : !tp ? loadingRendering() : tpRendering();
+};
+
+export default TpDetalle;

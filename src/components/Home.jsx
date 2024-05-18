@@ -1,26 +1,14 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
+import React from 'react';
+import { Button, Card, CardContent, Container } from '@mui/material';
 import { conteinerButton } from '../style/buttonStyle';
-import { NavLink } from 'react-router-dom/cjs/react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-const useStyles = makeStyles(() => ({
-  card: {},
-  conteinerButton,
-}));
-
-export default function Home() {
-  const classes = useStyles();
-
+const Home = () => {
   return (
     <>
       <Card>
         <CardContent>
-          <Container maxWidth="xl" className={classes.conteinerButton}>
+          <Container maxWidth="xl" sx={conteinerButton}>
             <Button
               component={NavLink}
               to={`/comision/actual`}
@@ -43,3 +31,5 @@ export default function Home() {
     </>
   );
 }
+
+export default Home;
