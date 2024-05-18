@@ -43,7 +43,7 @@ const TpDetalle = () => {
       <Card sx={{ '&:nth-of-type(odd)': { backgroundColor: 'rgba(0, 0, 0, 0.05)' } }}>
         <CardContent>
           <Divider />
-          <Container maxWidth="xxl">
+          <Container maxWidth="xl">
             {tp && curso && (
               <div>
                 <h2>{tp.nombre}</h2>

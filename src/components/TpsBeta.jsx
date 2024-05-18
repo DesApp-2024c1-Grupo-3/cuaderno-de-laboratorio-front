@@ -44,6 +44,7 @@ export default function Tps() {
 
   const handleAdministrarGrupo = () => {
     // Lógica para administrar grupo
+    history.push(`/Administrar_Grupos/${idCurso}`)
   };
 
   const handleNuevoTp = () => {

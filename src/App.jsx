@@ -8,6 +8,7 @@ import Comision from './components/Comision';
 import TpsBeta from './components/TpsBeta';
 import Tps from './components/Tps';
 import CrearTps from './components/CrearTps';
+import CrearTpsBeta from './components/CrearTpsBeta';
 import AdministrarGrupos from './components/Profesores/AdmGrupos';
 import TpDetalle from './components/TpDetalle';
 import TpDetalleBeta from './components/TpDetalleBeta';
@@ -25,11 +26,13 @@ const App = () => {
 
         <div sx={{ flex: '1' }}> {/* Utiliza sx prop para estilos en línea */}
           <Switch>
-            <Route path="/comision/actual" component={Comision} />
             {/*<Route path="/comision/anterior" component={Comision} />*/} 
-            {/*<Route path="/tps/:idCurso/:profesorId" component={TpsBeta} />*/}
+            {/*<Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalle} />*/}
+            {/*<Route path="/tps/:idCurso/:profesorId" component={Tps} />*/}
+            {/*<Route path="/crearTps/:idCurso/:profesorId" component={CrearTps} />*/}
+            <Route path="/comision/actual" component={Comision} />
             <Route path="/tps/:idCurso/:profesorId" component={TpsBeta} />
-            <Route path="/crearTps/:idCurso/:profesorId" component={CrearTps} />
+            <Route path="/crearTps/:idCurso/:profesorId" component={CrearTpsBeta} />
             <Route path="/Administrar_Grupos/:idCurso" component={AdministrarGrupos} />
             <Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />
             <Route path="/" component={Home} />
