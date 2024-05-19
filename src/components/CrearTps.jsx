@@ -1,52 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useStyles } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   Button,
   Card,
   CardContent,
   Container,
-  makeStyles,
   FormControl,
   FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
   TextField,
-} from '@material-ui/core';
-import ReactQuill from 'react-quill';
+ 
+} from '@mui/material'; // Cambio en la importación
+import ReactQuill from 'react-quill'; 
 import 'react-quill/dist/quill.snow.css';
 import { SubHeader } from './General/SubHeader';
 import { crearTp as postCrearTp } from '../services/tps';
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { useParams } from 'react-router-dom';
 import ListaDeGrupos from './Profesores/ListaDeGrupos';
 import { useEffect } from 'react';
 
-const useStyles = makeStyles(() => ({
-  card: {},
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    margin: 'auto',
-  },
-  conteinerButton: {
-    // ... (resto de estilos)
-  },
-  quillContainer: {
-    marginTop: 16,
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'left',
-    marginTop: 16,
-  },
-  button: {
-    marginLeft: 8,
-  },
-}));
 
-export default function CrearTps() {
-  const classes = useStyles();
+const CrearTps = () => { // Cambio en la declaración de la función
+  
   const { idCurso, profesorId } = useParams();
   const [show, setShow] = useState(false);
   const [gruposParaTrabajo, setGruposParaTrabajo] = useState([]);
@@ -76,7 +53,9 @@ export default function CrearTps() {
 
   const validarDatos = () => {
     if (!tpData.nombre || !tpData.fechaInicio || !tpData.fechaFin) {
-      window.alert('Completa todos los campos obligatorios: Nombre, Fecha Inicio, Fecha Fin');
+      window.alert(
+        'Completa todos los campos obligatorios: Nombre, Fecha Inicio, Fecha Fin'
+      );
       return false;
     }
     return true;
@@ -116,16 +95,16 @@ export default function CrearTps() {
 
   return (
     <>
-      <Card className={classes.card}>
+      <Card >
         <CardContent>
           <SubHeader titulo={'Crear Tps'} />
-          <form className={classes.form}>
+          <form >
             <Container>
               <Container style={{ display: 'flex' }}>
                 <Container
                   style={{ width: '50%', margin: '2% 0%' }}
-                  maxWidth="l"
-                  className={classes.conteinerButton}
+                  maxWidth="xl"
+                
                 >
                   <Container>
                     <TextField
@@ -169,7 +148,9 @@ export default function CrearTps() {
                   <br />
                   <Container>
                     <FormControl>
-                      <FormLabel id="demo-row-radio-buttons-group-label">Grupal</FormLabel>
+                      <FormLabel id="demo-row-radio-buttons-group-label">
+                        Grupal
+                      </FormLabel>
                       <RadioGroup
                         row
                         aria-labelledby="demo-row-radio-buttons-group-label"
@@ -177,15 +158,23 @@ export default function CrearTps() {
                         value={tpData.grupal.toString()}
                         onChange={handleChange}
                       >
-                        <FormControlLabel value="true" control={<Radio />} label="Sí" />
-                        <FormControlLabel value="false" control={<Radio />} label="No" />
+                        <FormControlLabel
+                          value="true"
+                          control={<Radio />}
+                          label="Sí"
+                        />
+                        <FormControlLabel
+                          value="false"
+                          control={<Radio />}
+                          label="No"
+                        />
                       </RadioGroup>
                     </FormControl>
                   </Container>
                 </Container>
                 <Container
                   style={{
-                    width: '50%',
+                    width: '25%',
                     padding: '2% 0%',
                     display: show ? 'block' : 'none',
                   }}
@@ -199,20 +188,22 @@ export default function CrearTps() {
                 </Container>
               </Container>
               <br />
-              <Container className={classes.quillContainer}>
-                <FormLabel>Consigna</FormLabel>
+              <Container style={{ marginTop: '20px', marginBottom: '20px' }}>
+                <FormLabel >Consigna</FormLabel>
                 <ReactQuill
                   value={tpData.consigna}
                   onChange={(value) => handleConsignaChange(value)}
+                 
                 />
               </Container>
-              <Container id="botones" className={classes.buttonContainer}>
+
+              <Container id="botones" >
                 <Button
                   color="primary"
                   component={NavLink}
                   to={`/tps/${idCurso}/${profesorId}`}
                   key="botonVolver"
-                  className={classes.button}
+                  
                 >
                   Volver
                 </Button>
@@ -220,11 +211,15 @@ export default function CrearTps() {
                   variant="contained"
                   component={NavLink}
                   to={`/Administrar_Grupos/${idCurso}`}
-                  className={classes.button}
+                  
                 >
                   Administar Grupos
                 </Button>
-                <Button variant="contained" onClick={() => crearTp()} className={classes.button}>
+                <Button
+                  variant="contained"
+                  onClick={() => crearTp()}
+                  
+                >
                   Crear TP
                 </Button>
               </Container>
@@ -235,3 +230,5 @@ export default function CrearTps() {
     </>
   );
 }
+
+export default CrearTps; // Exporta la función al final

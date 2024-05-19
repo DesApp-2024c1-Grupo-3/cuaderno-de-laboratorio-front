@@ -1,8 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-
+import React, { useEffect, useState } from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import {
   Avatar,
   Divider,
@@ -10,28 +9,14 @@ import {
   IconButton,
   ListItemAvatar,
   ListItemSecondaryAction,
-} from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+} from '@mui/material';
+import { Alert } from '@mui/material/Alert';
 import { DateTime } from 'luxon';
-import { Face } from '@material-ui/icons';
+import { Face } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-
 import { getTodosLosUsuarios } from '../services/usuarios';
 import { getTodosLosUsuarios as getTodosLosUsuarios_fake } from '../services/usuarios-fake';
 import { getDataFromBackend } from '../constants/constants';
-
-const useStyles = makeStyles(() => ({
-  root: {
-    flexGrow: 1,
-  },
-  alert: {
-    width: '100%',
-  },
-  title: {
-    fontSize: 15,
-  },
-}));
 
 function fechaFormatoHumano(fecha) {
   return DateTime.fromISO(fecha)
@@ -40,7 +25,6 @@ function fechaFormatoHumano(fecha) {
 }
 
 export default function ListadoUsuarios() {
-  const classes = useStyles();
   const [usuarios, setUsuarios] = useState(null);
   const [hasError, setHasError] = useState(false);
 
@@ -61,12 +45,12 @@ export default function ListadoUsuarios() {
 
   const usuariosRendering = () => {
     return [
-      <Alert severity="info" className={classes.alert} key="alert">
+      <Alert severity="info" key="alert">
         {getDataFromBackend
           ? 'Los usuarios que están más abajo vienen de la API.'
           : 'Estos usuarios son fijos'}
       </Alert>,
-      <List className={classes.root} key="usuarios">
+      <List key="usuarios">
         {usuarios.map((it, index) => (
           <div key={it.id}>
             <ListItem alignItems="flex-start">
@@ -93,9 +77,7 @@ export default function ListadoUsuarios() {
               </ListItemSecondaryAction>
             </ListItem>
             {/* Hack para que no muestre el divider en el último elemento */}
-            {index !== usuarios.length - 1 && (
-              <Divider variant="inset" component="li" />
-            )}
+            {index !== usuarios.length - 1 && <Divider />}
           </div>
         ))}
       </List>,

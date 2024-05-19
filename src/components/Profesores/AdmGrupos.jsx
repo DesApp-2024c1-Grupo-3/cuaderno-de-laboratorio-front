@@ -1,3 +1,6 @@
+import React, { useEffect, useState, useStyles } from 'react';
+import PropTypes from 'prop-types';
+
 import {
   Box,
   Button,
@@ -13,53 +16,41 @@ import {
   ListItemText,
   ListSubheader,
   Typography,
-  makeStyles,
-  styled,
-} from '@material-ui/core';
-import PropTypes from 'prop-types';
+  Avatar // Agregamos Avatar 
+} from '@mui/material'; // Importa los componentes de Material-UI v5
+
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Alert } from '@material-ui/lab';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { getDataFromBackend } from '../../constants/Grupos';
-import { getTodosLosGrupos as getTodosLosGrupos_fake } from '../../services/Grupos_Fake';
-import {
-  conteinerButtonRow,
-  buttonGrupo,
-  buttonVolver,
-  conteinerListaDeGrupos,
-} from '../../style/buttonStyle';
-import {
-  getGrupoByCursoId,
-  getTodosLosGrupos,
-  postEliminarGrupo,
-} from '../../services/Grupo';
-import { SubHeader } from '../General/SubHeader';
 import EditIcon from '@mui/icons-material/Edit';
+import { Alert } from '@mui/material';
 import { ModalCrearGrupos } from './ModalCrearGrupos';
-import { useParams } from 'react-router-dom/cjs/react-router-dom';
-import { NavLink } from 'react-router-dom';
 import { ModalClonarGrupos } from './ModalClonarGrupo';
+import { useParams } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { getGrupoByCursoId, postEliminarGrupo } from '../../services/Grupo';
+import { SubHeader } from '../General/SubHeader';
 
-const useStyles = makeStyles(() => ({
-  card: {},
-  conteinerButtonRow,
-  buttonGrupo,
-  buttonVolver,
-  curso: { display: 'inline-grid' },
-  modal: { backgroundColor: 'white' },
-  conteinerListaDeGrupos,
-}));
-
-export default function AdministrarGrupos() {
-  const classes = useStyles();
+/* const Demo = styled('div')(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
+})); */
+// 
+const theme = createTheme({
+  palette:{
+    background:{
+      default: '#fff',
+      paper:'#fff'
+    }, 
+  },
+});
+const AdministrarGrupos = () => {
   const { idCurso } = useParams();
-
   const [grupos, setGrupos] = useState([]);
   const [hasError, setHasError] = useState(false);
   const [show, setShow] = useState(false);
   const [showClonar, setShowClonar] = useState(false);
+
   const hideModalClonar = () => {
     setShowClonar(false);
   };
@@ -74,10 +65,6 @@ export default function AdministrarGrupos() {
     setShow(true);
   };
   const tituloHeader = 'Administrar Grupos';
-
-  const Demo = styled('div')(({ theme }) => ({
-    backgroundColor: theme.palette.background.paper,
-  }));
 
   const deleteGrup = async (id) => {
     try {
@@ -105,14 +92,11 @@ export default function AdministrarGrupos() {
 
   useEffect(() => {
     async function fetchGrupos() {
-      const getFunction = getGrupoByCursoId(idCurso);
-
       try {
-        const grupos = await getFunction;
-
+        const grupos = await getGrupoByCursoId(idCurso);
         setGrupos(grupos);
       } catch (err) {
-        console.log('Ocurrio este error.', err);
+        console.log('Ocurrió este error:', err);
         setHasError(true);
       }
     }
@@ -120,26 +104,23 @@ export default function AdministrarGrupos() {
   }, [idCurso, show]);
 
   const gruposRendering = () => {
-    return [
+    return (
       <>
-        <Card className={classes.card}>
+        <Card >
           <CardContent>
-            <Container className={classes.curso} maxWidth="xl">
+            <Container  maxWidth="xl">
               <SubHeader titulo={tituloHeader} />
               <ListSubheader>Nombre del Tp</ListSubheader>
               <Divider></Divider>
-              <Container maxWidth="xl" className={classes.conteinerButtonRow}>
-                <Button
-                  onClick={openModalClonar}
-                  className={classes.buttonGrupo}
-                >
+              <Container maxWidth="xl" >
+                <Button onClick={openModalClonar}>
                   Clonar Grupo
                 </Button>
-                <Button onClick={openModal} className={classes.buttonGrupo}>
+                <Button onClick={openModal}>
                   Crear Grupo
                 </Button>
               </Container>
-              <Container className={classes.modal}>
+              <Container >
                 <ModalCrearGrupos
                   show={show}
                   closeModal={hideModal}
@@ -152,9 +133,9 @@ export default function AdministrarGrupos() {
                 ></ModalClonarGrupos>
               </Container>
               <Container>
-                <Box className={classes.conteinerListaDeGrupos}>
+                <Box >
                   <Grid style={{ width: '50%', border: '1px' }}>
-                    <Demo>
+                    <ThemeProvider theme={theme}>
                       <Typography
                         sx={{ mt: 4, mb: 2 }}
                         variant="h6"
@@ -163,38 +144,43 @@ export default function AdministrarGrupos() {
                         grupos
                       </Typography>
                       <List>
-                        {grupos.map((it) => (
-                          <ListItem key={it._id}>
+                        {grupos.map((grupo) => (
+                          <ListItem key={grupo._id}>
+                            {/* Icono de grupo */}
                             <ListItemAvatar>
-                              <FolderIcon />
+                              {/* Aquí puedes colocar el icono que prefieras para representar un grupo */}
+                              <Avatar>
+                                {/* Por ejemplo, un icono de grupo */}
+                                <FolderIcon />
+                              </Avatar>
                             </ListItemAvatar>
-
-                            <ListItemText
-                              primary={`${it.nombre} [${it.alumnos
-                                .map((alu) => `${alu.nombre} ${alu.apellido} ,`)
-                                .join(' ')}]`}
-                            />
-                            <IconButton edge="edit" aria-label="edit">
+                            {/* Nombre del grupo */}
+                            <ListItemText primary={grupo.nombre} />
+                            {/* Botones de edición y eliminación (si lo deseas) */}
+                            <IconButton edge="start" aria-label="edit">
                               <EditIcon />
                             </IconButton>
-                            <IconButton
-                              edge="end"
-                              aria-label="delete"
-                              onClick={() => deleteGrup(it._id)}
-                            >
+                            <IconButton edge="end" aria-label="delete" onClick={() => deleteGrup(grupo._id)}>
                               <DeleteIcon />
                             </IconButton>
+                            {/* Lista de integrantes */}
+                            <List>
+                              {grupo.alumnos.map((alumno) => (
+                                <ListItem key={alumno.id}>
+                                  <ListItemText primary={`${alumno.nombre} ${alumno.apellido}`} />
+                                </ListItem>
+                              ))}
+                            </List>
                           </ListItem>
                         ))}
                       </List>
-                    </Demo>
+                    </ThemeProvider>
                   </Grid>
                 </Box>
               </Container>
             </Container>
 
-            <Button
-              className={classes.buttonVolver}
+            <Button             
               component={NavLink}
               to="/"
               key="botonVolver"
@@ -203,8 +189,8 @@ export default function AdministrarGrupos() {
             </Button>
           </CardContent>
         </Card>
-      </>,
-    ];
+      </>
+    );
   };
 
   const loadingRendering = () => {
@@ -222,13 +208,11 @@ export default function AdministrarGrupos() {
     );
   };
 
-  AdministrarGrupos.propTypes = {
-    titulo: PropTypes.string.isRequired, // Asegura que 'titulo' sea una cadena (string) y es requerido.
-  };
-
   return hasError
     ? errorRendering()
     : grupos == null
     ? loadingRendering()
     : gruposRendering();
-}
+};
+
+export default AdministrarGrupos;
