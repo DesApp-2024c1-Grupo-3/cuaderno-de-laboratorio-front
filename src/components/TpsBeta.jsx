@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, NavLink } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
@@ -38,10 +38,6 @@ export default function Tps() {
     fetchData();
   }, [idCurso]);
 
-  const handleVolver = () => {
-    history.push(`/comision`);
-  };
-
   const handleAdministrarGrupo = () => {
     // Lógica para administrar grupo
     history.push(`/Administrar_Grupos/${idCurso}`)
@@ -56,7 +52,7 @@ export default function Tps() {
     <Box display="flex" flexDirection="column">
       <Card sx={{ mb: 2 }}>
         <CardContent>
-          <SubHeader titulo="Matematicas" />
+          <SubHeader titulo={`${idCurso.nombre}`} />
          
           <Container
             maxWidth="xl"
@@ -116,7 +112,8 @@ export default function Tps() {
               <Grid item>
                 <Button variant="contained"
                   sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={handleVolver}>Volver</Button>
+                  component={NavLink}
+                      to={`/comision/actual`}>Volver</Button>
               </Grid>
               <Grid item>
                 <Button variant="contained"
@@ -125,7 +122,7 @@ export default function Tps() {
               </Grid>
               <Grid item>
                 <Button variant="contained"
-                  sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
                   onClick={handleNuevoTp}>Nuevo TP</Button>
               </Grid>
             </Grid>

@@ -33,6 +33,10 @@ const TpDetalle = () => {
     fetchTp();
   }, [idCurso, tpId]);
 
+  const handleVolver = () => {
+    history.goBack();
+  };
+
   const formatFecha = (fechaHora) => {
     const fecha = fechaHora.split('T')[0]; // Divide la fecha y la hora y toma solo la parte de la fecha
     return fecha;
@@ -66,7 +70,7 @@ const TpDetalle = () => {
           </Container>
         </CardContent>
       </Card>
-      <Button color="primary" onClick={() => history.goBack()}>
+      <Button variant="contained" sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }} onClick={handleVolver}>
         Volver
       </Button>
     </div>

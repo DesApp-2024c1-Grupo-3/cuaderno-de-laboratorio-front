@@ -3,7 +3,7 @@ import Unahur from '../../Img/UNAHUR.png';
 
 // Define los estilos utilizando @emotion/styled
 const FixedHeader = styled.div`
- 
+  
   display: flex;  
   font-size: 3vw; /* Usar un tamaño de fuente relativo */
   color: rgba(0, 0, 0, 0.7);
@@ -14,6 +14,7 @@ const FixedHeader = styled.div`
   padding: 5px; /* Espacio interno */
   font-weight: 900; /* Hace que el texto sea más grueso */
   font-family: roboto /* Utiliza la fuente Roboto */
+  
 `;
 const Logo = styled.img`
   width: 80%; /* Utilizar un ancho relativo */
