@@ -57,23 +57,23 @@ export default function Tps() {
       <Card sx={{ mb: 2 }}>
         <CardContent>
           <SubHeader titulo="Matematicas" />
-         
+
           <Container
             maxWidth="xl"
-            sx={{ 
-              mt: 1, 
-              mb: 1, 
-              border: 'solid', 
-              borderWidth: '10px 20px 20px 10px', 
+            sx={{
+              mt: 1,
+              mb: 1,
+              border: 'solid',
+              borderWidth: '10px 20px 20px 10px',
               borderColor: 'rgba(0, 0, 0, 0.08)',
-              borderRadius: '1%' 
+              borderRadius: '1%'
             }}
           >
             <Typography variant="h6" component="div" gutterBottom>
               Tps - Comision
             </Typography>
             <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650, backgroundColor:'rgba(0, 0, 0, 0.08)'}} aria-label="simple table">
+              <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     <TableCell style={{ width: '35%', fontSize: '15px' }}>Nombre del TP</TableCell>
@@ -86,21 +86,21 @@ export default function Tps() {
                   {tps.map((tp, index) => (
                     <TableRow
                       key={tp._id}
-                      sx={{ backgroundColor: index % 2 === 0 ?'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)'}}
+                      sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                     >
-                      <TableCell>{tp.nombre}</TableCell>                      
+                      <TableCell>{tp.nombre}</TableCell>
                       <TableCell>{tp.estado}</TableCell>
                       <TableCell>{tp.finalizacion}</TableCell>
                       <TableCell>
-                        
-                        <Button variant="contained"  
-                          sx={{ 
+
+                        <Button variant="contained"
+                          sx={{
                             backgroundColor: '#c5e1a5',
                             color: '#000000',
-                            fontSize: '10px', 
+                            fontSize: '10px',
                             borderRadius: '30%',
-                            '&:hover': { backgroundColor: '#b0d38a'}
-                            }} 
+                            '&:hover': { backgroundColor: '#b0d38a' }
+                          }}
                           onClick={() => history.push(`/tp/${idCurso}/${profesorId}/${tp._id}`)}>Detalles</Button>
                       </TableCell>
                     </TableRow>
@@ -108,11 +108,11 @@ export default function Tps() {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Grid container 
-              spacing={2} 
+            <Grid container
+              spacing={2}
               justifyContent="space-between"
-              marginTop= '20px'
-              >
+              marginTop='20px'
+            >
               <Grid item>
                 <Button variant="contained"
                   sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
@@ -146,6 +146,10 @@ export default function Tps() {
   return hasError
     ? errorRendering()
     : !tps
-    ? loadingRendering()
-    : tpsRendering();
+      ? loadingRendering()
+      : tpsRendering();
 }
+
+
+
+//onClick={() => history.push(`/tp/${idCurso}/${profesorId}/${tp._id}`)}>Detalles</Button>

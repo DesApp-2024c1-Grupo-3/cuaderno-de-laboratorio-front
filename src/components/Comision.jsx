@@ -24,8 +24,8 @@ export default function Comision() {
   const [hasError, setHasError] = useState(false);
   const tituloHeader =
     estadoCurso === 'actual'
-      ? 'Listado De Cursos | cuatrimestre actual '
-      : 'Listado De Cursos | cuatrimestre anterior';
+      ? 'Listado De Cursos '
+      : 'Listado De Cursos ';
 
   useEffect(() => {
     async function fetchCommision() {
