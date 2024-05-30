@@ -37,6 +37,7 @@ const TpDetalle = () => {
     const fecha = fechaHora.split('T')[0]; // Divide la fecha y la hora y toma solo la parte de la fecha
     return fecha;
   };
+  //const cambioEstado= ()
 
   const tpRendering = () => (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -48,7 +49,7 @@ const TpDetalle = () => {
               <div>
                 <h2>{tp.nombre}</h2>
                 <h3>fechaInicio: {formatFecha(tp.fechaInicio)}</h3> {/* Muestra solo la fecha */}
-                <h3>fechaFin: {formatFecha(tp.fechaFin)}</h3> {/* Muestra solo la fecha */}
+               {/* <h3>fechaFin: {formatFecha(tp.fechaFin)}</h3>  Muestra solo la fecha */}
                 {curso.alumnos && (
                   <h3>Cantidad alumnos: {curso.alumnos.length}</h3>
                 )}

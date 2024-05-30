@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from 'react-bootstrap/Modal';
 import {
   Button,
   Container,
   Divider,
   FormControl,
+  Box,
   TextField,
+  Typography,
+  Autocomplete
 } from '@mui/material';
-import { Autocomplete } from '@mui/material';
 import PropTypes from 'prop-types';
 import { getTodosLosAlumnos } from '../../services/Alumnos';
 import { postCrearGrupo } from '../../services/Grupo';
@@ -87,7 +87,7 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
             top: '35%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 400,
+            width: 600,
             bgcolor: 'background.paper',
             border: '2px solid #000',
             boxShadow: 24,
@@ -96,11 +96,11 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
         >
           <Container>
             <Typography>materia|cuatrimestre|comision</Typography>
-            <Divider />
+            <Divider sx={{ my: 2 }} />
           </Container>
           <Container style={{ padding: '15px' }}>
             <TextField
-              id="standard-basic"
+              fullWidth
               label="Nombre del Grupo"
               variant="standard"
               value={nombreGrupo}
@@ -111,7 +111,6 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
             <FormControl sx={{ m: 1 }}>
               <Autocomplete
                 multiple
-                id="combo-box-demo"
                 options={listAlumnos}
                 getOptionLabel={(option) => `${option.nombre} ${option.apellido}`}
                 onChange={handleChangeAlumnos}

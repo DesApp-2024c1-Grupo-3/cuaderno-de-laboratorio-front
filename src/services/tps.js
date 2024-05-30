@@ -55,6 +55,12 @@ export async function getTpsByCursoId(id) {
   return apiResponse.tps;
 }
 
+// Creada para traer los datos del curso
+export async function getCursoById(id) {
+  const apiResponse = await getJsonFromApi(`curso/${id}`);
+  return apiResponse;
+}
+
 export async function crearTp(idCurso, profesorId, body) {
   const apiResponse = await postJsonToApi(
     `profesor/${profesorId}/curso/${idCurso}/tp`,

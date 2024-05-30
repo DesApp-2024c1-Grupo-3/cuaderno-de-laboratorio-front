@@ -34,6 +34,7 @@ const CrearTps = () => { // Cambio en la declaración de la función
     grupal: false,
     grupo: [],
     consigna: '',
+    cuatrimestre: false,
   });
 
   const handleChange = (event) => {
