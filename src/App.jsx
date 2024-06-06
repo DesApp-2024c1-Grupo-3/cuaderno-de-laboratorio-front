@@ -4,15 +4,13 @@ import Home from './components/Home';
 import { Header } from './components/General/Header';
 import { Footer } from './components/General/Footer';
 import Comision from './components/Comision';
-import ComisionBeta from './components/ComisionBeta';
 import TpsBeta from './components/TpsBeta';
-import Tps from './components/Tps';
-import CrearTps from './components/CrearTps';
 import CrearTpsBeta from './components/CrearTpsBeta';
 import AdministrarGrupos from './components/Profesores/AdmGrupoBeta';
-//import AdministrarGrupos from './components/Profesores/AdmGrupos';
-import TpDetalle from './components/TpDetalle';
+import MostrarTpsAlumno from './components/MostrarTpsAlumno'
+import CursoAlumno from './components/CursoAlumno';
 import TpDetalleBeta from './components/TpDetalleBeta';
+import TpEntrega from './components/TpEntrega'
 
 const App = () => {
   return (
@@ -27,16 +25,16 @@ const App = () => {
 
         <div sx={{ flex: '1' }}> {/* Utiliza sx prop para estilos en línea */}
           <Switch>
-            {/*<Route path="/comision/anterior" component={Comision} />*/} 
-            {/*<Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalle} />*/}
-            {/*<Route path="/tps/:idCurso/:profesorId" component={Tps} />*/}
-            {/*<Route path="/crearTps/:idCurso/:profesorId" component={CrearTps} />*/}
-           
+                   
             <Route path="/comision/actual" component={Comision} />
             <Route path="/tps/:idCurso/:profesorId" component={TpsBeta} />
             <Route path="/crearTps/:idCurso/:profesorId" component={CrearTpsBeta} />
             <Route path="/Administrar_Grupos/:idCurso" component={AdministrarGrupos} />
             <Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />
+            <Route path="/alumno/curso" component={CursoAlumno} /> {/* Nueva ruta para CursoAlumno */}
+            <Route path="/tpsAlumno/:idCurso/" component={MostrarTpsAlumno} /> {/* Nueva ruta para MostrarTpsAlumno */}
+            <Route path="/entregaGrupo/:idEntrega" component={TpEntrega} />
+            <Route path="/entregaAlumno/:idEntrega" component={TpEntrega}  />
             <Route path="/" component={Home} />
           </Switch>
         </div>

@@ -1,63 +1,74 @@
 import React, { useEffect, useState } from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import Modal from 'react-bootstrap/Modal';
 import {
   Button,
   Container,
   Divider,
-  FormControl,
-  Box,
   TextField,
-  Typography,
-  Autocomplete
 } from '@mui/material';
+import { Autocomplete } from '@mui/material';
 import PropTypes from 'prop-types';
 import { getTodosLosAlumnos } from '../../services/Alumnos';
+import { getTodosLosAlumnos as getTodosLosAlumnos_Fake } from '../../services/alumnos-fake';
 import { postCrearGrupo } from '../../services/Grupo';
+import { getDataFromBackend } from '../../constants/Alumnos';
 
-export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGrupos }) => {
+const style = {
+  position: 'fixed',
+  top: '35%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
+export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGrupos, alumnosDisponibles }) => {
   const [listAlumnos, setListAlumnos] = useState([]);
   const [hasError, setHasError] = useState(false);
   const [nombreGrupo, setNombreGrupo] = useState('');
-  const [grupoData, setGrupoData] = useState({
-    nombre: '',
-    alumnos: [],
-  });
-
-  const resetModal = () => {
-    setNombreGrupo('');
-    setGrupoData({
-      nombre: '',
-      alumnos: [],
-    });
-  };
+  const [alumnosGrupo, setAlumnosGrupo] = useState([]);
 
   const onClose = () => {
-    resetModal();
     closeModal();
   };
 
-  const guardarNombre = (event) => {
-    const nombreG = event.target.value;
-    setNombreGrupo(nombreG);
-    setGrupoData({ ...grupoData, nombre: nombreG });
+  const guardarAlumnos = (event, value) => {
+    setAlumnosGrupo(value);
   };
 
-  const handleChangeAlumnos = (event, value) => {
-    setGrupoData({ ...grupoData, alumnos: value });
+  const guardarNombre = (event) => {
+    setNombreGrupo(event.target.value);
+  };
+
+  const handleChange = () => {
+    crearGrupo();
+    onClose();
   };
 
   const validarDatos = () => {
-    return grupoData.nombre !== '' && grupoData.alumnos.length > 0;
+    return nombreGrupo !== '' && alumnosGrupo.length > 0;
   };
 
   const crearGrupo = async () => {
+    if (!validarDatos()) {
+      return;
+    }
     try {
-      const response = await postCrearGrupo(grupoData, idCurso);
+      const response = await postCrearGrupo({
+        nombre: nombreGrupo,
+        alumnos: alumnosGrupo,
+      });
       if (response.status === 201) {
         window.alert('Grupo creado correctamente');
-        closeModal();
+        actualizarListaGrupos(); // Actualiza la lista de grupos después de crear uno nuevo
       } else {
         console.error('Error al crear grupo');
+        window.alert('Error al crear grupo');
       }
     } catch (error) {
       console.error('Error en la solicitud:', error);
@@ -66,69 +77,64 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
   };
 
   useEffect(() => {
-    async function fetchAlumnos() {
-      try {
-        const alumnos = await getTodosLosAlumnos(idCurso);
-        setListAlumnos(alumnos);
-      } catch (err) {
-        console.log('Ocurrio este error.', err);
-        setHasError(true);
+    if (alumnosDisponibles.length) {
+      setListAlumnos(alumnosDisponibles);
+    } else {
+      async function fetchAlumnos() {
+        const getFunction = getDataFromBackend
+          ? getTodosLosAlumnos
+          : getTodosLosAlumnos_Fake;
+        try {
+          const alumnos = await getFunction();
+          setListAlumnos(alumnos);
+        } catch (err) {
+          console.log('Ocurrió este error.', err);
+          setHasError(true);
+        }
       }
+      fetchAlumnos();
     }
-    fetchAlumnos();
-  }, [show]);
+  }, [alumnosDisponibles]);
 
   return (
     <>
       <Modal show={show} onHide={onClose}>
-        <Box
-          sx={{
-            position: 'fixed',
-            top: '35%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 600,
-            bgcolor: 'background.paper',
-            border: '2px solid #000',
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
+        <Box sx={style}>
           <Container>
             <Typography>materia|cuatrimestre|comision</Typography>
-            <Divider sx={{ my: 2 }} />
+            <Divider />
           </Container>
+
           <Container style={{ padding: '15px' }}>
             <TextField
-              fullWidth
+              id="standard-basic"
               label="Nombre del Grupo"
               variant="standard"
               value={nombreGrupo}
               onChange={guardarNombre}
             />
           </Container>
+
           <Container style={{ padding: '15px' }}>
-            <FormControl sx={{ m: 1 }}>
-              <Autocomplete
-                multiple
-                options={listAlumnos}
-                getOptionLabel={(option) => `${option.nombre} ${option.apellido}`}
-                onChange={handleChangeAlumnos}
-                renderInput={(params) => (
-                  <TextField {...params} label="Lista de Alumnos" variant="outlined" />
-                )}
-              />
-            </FormControl>
+            <Autocomplete
+              multiple
+              id="tags-outlined"
+              options={listAlumnos}
+              getOptionLabel={(option) => option.nombre + ' ' + option.apellido}
+              value={alumnosGrupo}
+              filterSelectedOptions
+              onChange={guardarAlumnos}
+              renderInput={(params) => (
+                <TextField {...params} label="Alumnos" placeholder="Seleccionar" />
+              )}
+            />
           </Container>
+
           <Container style={{ maxheight: '10px', padding: '15px' }}>
-            <Button 
-              onClick={onClose}
-            >
-              Close
-            </Button>
+            <Button onClick={onClose}>Close</Button>
             <Button
               style={{ backgroundColor: 'green' }}
-              onClick={crearGrupo}
+              onClick={handleChange}
               disabled={!validarDatos()}
             >
               Crear
@@ -145,4 +151,5 @@ ModalCrearGrupos.propTypes = {
   closeModal: PropTypes.func.isRequired,
   idCurso: PropTypes.string.isRequired,
   actualizarListaGrupos: PropTypes.func.isRequired,
+  alumnosDisponibles: PropTypes.array.isRequired,
 };

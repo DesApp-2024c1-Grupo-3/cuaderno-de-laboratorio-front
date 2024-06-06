@@ -55,21 +55,37 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
       window.alert('Error en la solicitud');
     }
   };
+  const fetchAlumnos = async () => {
+    try {
+      const alumnos = await getTodosLosAlumnos(idCurso);
+      setListAlumnos(alumnos);
+    } catch (err) {
+      console.log('Ocurrió este error:', err);
+      setHasError(true);
+    }
+  };
+  const fetchGrupos = async () => {
+    try {
+      const grupos = await getGruposPorCurso(idCurso); // Supongamos que tienes esta función
+      const alumnosAsignados = grupos.reduce((acc, grupo) => {
+        return acc.concat(grupo.alumnos);
+      }, []);
+      const alumnosDisponibles = listAlumnos.filter(
+        (alumno) => !alumnosAsignados.some((a) => a.id === alumno.id)
+      );
+      setListAlumnos(alumnosDisponibles);
+    } catch (err) {
+      console.log('Ocurrió este error:', err);
+      setHasError(true);
+    }
+  };
 
   useEffect(() => {
-    async function fetchAlumnos() {
-      try {
-        const alumnos = await getTodosLosAlumnos(idCurso);
-        setListAlumnos(alumnos);
-      } catch (err) {
-        console.log('Ocurrió este error:', err);
-        setHasError(true);
-      }
-    }
     if (show) {
       fetchAlumnos();
+      fetchGrupos();
     }
-  }, [show, idCurso]);
+  }, [show]);
 
   return (
     <Modal open={show} onClose={onClose}>

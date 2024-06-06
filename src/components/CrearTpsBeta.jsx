@@ -57,6 +57,20 @@ const CrearTpsBeta = () => {
     try {
       const response = await postCrearTp(idCurso, profesorId, tpData);
       if (response.status === 201) {
+        const tpId = response.data._id;
+
+        // Actualizar alumnos con el nuevo TP y curso
+        const alumnosIds = gruposParaTrabajo.flatMap(grupo => grupo.alumnos);
+        await Promise.all(alumnosIds.map(alumnoId =>
+          fetch(`/api/alumno/${alumnoId}/addTpAndCurso`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ tpId, cursoId: idCurso }),
+          }
+        )
+      ));
         window.alert('Trabajo práctico creado correctamente');
       } else {
         console.error('Error al crear TP');

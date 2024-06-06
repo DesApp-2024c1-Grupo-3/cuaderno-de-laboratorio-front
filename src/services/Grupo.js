@@ -15,7 +15,7 @@ export async function getGrupoByCursoId(id) {
 
 export async function getGrupoPorId(id) {
   const apiResponse = await getJsonFromApi(`grupo/${id}`);
-  return apiResponse.grupo;
+  return apiResponse.alumnos;
 }
 
 export async function postCrearGrupo(data, idCurso) {
@@ -27,4 +27,14 @@ export async function postEliminarGrupo(id) {
   const apiResponse = await deleteFromApi(`grupo/${id}`);
   console.log('Delete grupo; ', apiResponse);
   return apiResponse;
+}
+
+export async function getArchivoEntrega(id) {
+  const apiResponse = await getJsonFromApi(`grupo/${id}`);
+  return apiResponse.alumnos;
+}
+
+export async function updateNotaEntrega(id) {
+  const apiResponse = await getJsonFromApi(`grupo/${id}`);
+  return apiResponse.alumnos;
 }

@@ -4,11 +4,11 @@ export async function getTodosLosTps() {
   const apiResponse = await getJsonFromApi('usuarios');
   return apiResponse.data;
 }
-/*
-export async function getTpPorId(id) {
-  const apiResponse = await getJsonFromApi(`usuarios/${id}`);
-  return apiResponse.data;
-}*/
+
+export async function getGruposByTpId(id) {
+  const apiResponse = await getJsonFromApi(`tp/${id}/grupos`);
+  return apiResponse.grupos;
+}
 
 export async function getTpPorId(idCurso, tpId) {
   try {

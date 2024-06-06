@@ -15,15 +15,15 @@ const Home = () => {
               variant="contained"
             >
               {' '}
-              cuatrimestre actual
+              cuatrimestre actual Profesor
             </Button>
             <Button
               component={NavLink}
-              to={`/comision/anterior`}
+              to={`/alumno/curso`}
               variant="contained"
             >
               {' '}
-              cuatrimestres anteriores
+              cuatrimestre actual Alumno
             </Button>
           </Container>
         </CardContent>

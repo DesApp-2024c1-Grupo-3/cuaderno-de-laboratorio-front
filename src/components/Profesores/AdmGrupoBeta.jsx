@@ -1,29 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Grid,
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  List,
-  ListItem,
-  ListItemText,
-  TextField,
-  Checkbox
-} from '@mui/material';
+  Box, Button, Card, CardContent, Container, Grid, IconButton, Table, TableBody, TableCell,
+  TableContainer, TableHead, TableRow, Paper, Dialog, DialogTitle, DialogContent, DialogActions,
+  List, ListItem, ListItemText, TextField, Checkbox
+  } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -31,7 +11,7 @@ import { ModalCrearGrupos } from './ModalCrearGrupoBeta';
 import { ModalClonarGrupos } from './ModalClonarGrupo';
 import { useParams, useHistory } from 'react-router-dom';
 import { getGrupoByCursoId, postEliminarGrupo } from '../../services/Grupo';
-import { getAlumnosByCursoId } from '../../services/Alumnos'; // Asegúrate de que este archivo exista
+import { getAlumnosByCursoId } from '../../services/Alumnos'; 
 import { SubHeader } from '../General/SubHeader';
 
 const AdministrarGrupos = () => {
@@ -73,8 +53,9 @@ const AdministrarGrupos = () => {
 
   const handleEditOpen = async (group) => {
     setSelectedGroup(group);
-    setOpenEdit(true);
     await fetchAlumnos(idCurso);
+    setSelectedAlumnos(group.alumnos.map(alumno => alumno.id)); // Inicializa selectedAlumnos con los IDs de los alumnos del grupo seleccionado
+    setOpenEdit(true);
   };
 
   const handleEditClose = () => {
@@ -114,7 +95,9 @@ const AdministrarGrupos = () => {
   const fetchAlumnos = async (cursoId) => {
     try {
       const alumnos = await getAlumnosByCursoId(cursoId);
-      setAlumnos(alumnos);
+      const alumnosEnGrupos = grupos.flatMap(grupo => grupo.alumnos.map(alumno => alumno.id));
+      const alumnosDisponibles = alumnos.filter(alumno => !alumnosEnGrupos.includes(alumno.id));
+      setAlumnos(alumnosDisponibles);
     } catch (error) {
       console.error('Error al obtener la lista de alumnos:', error);
     }
@@ -200,18 +183,9 @@ const AdministrarGrupos = () => {
                 <Button
                   variant="contained"
                   sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={() => history.push(`/comision`)}
+                  onClick={() => history.goBack()}
                 >
                   Volver
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={openModalClonar}
-                >
-                  Clonar Grupo
                 </Button>
               </Grid>
               <Grid item>
@@ -229,6 +203,7 @@ const AdministrarGrupos = () => {
               closeModal={hideModal}
               idCurso={idCurso}
               actualizarListaGrupos={actualizarListaGrupos}
+              alumnosDisponibles={alumnos} // Pasamos los alumnos disponibles al modal de creación
             />
             <ModalClonarGrupos
               show={showClonar}
@@ -242,13 +217,19 @@ const AdministrarGrupos = () => {
       <Dialog open={openView} onClose={handleViewClose}>
         <DialogTitle>Integrantes del Grupo</DialogTitle>
         <DialogContent>
-          <List>
-            {selectedGroup?.alumnos.map((alumno) => (
-              <ListItem key={alumno.id}>
-                <ListItemText primary={`${alumno.nombre} ${alumno.apellido}`} />
+        {selectedGroup && (
+            <List>
+              <ListItem>
+                <ListItemText primary="Nombre" secondary={selectedGroup.nombre} />
               </ListItem>
-            ))}
-          </List>
+              <ListItem>
+                <ListItemText
+                  primary="Alumnos"
+                  secondary={selectedGroup.alumnos.map((alumno) => `${alumno.nombre} ${alumno.apellido}`).join(', ')}
+                />
+              </ListItem>
+            </List>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleViewClose} color="primary">Cerrar</Button>
@@ -259,26 +240,37 @@ const AdministrarGrupos = () => {
       <Dialog open={openEdit} onClose={handleEditClose}>
         <DialogTitle>Modificar Grupo</DialogTitle>
         <DialogContent>
-          <TextField
-            margin="dense"
-            label="Nombre del Grupo"
-            type="text"
-            fullWidth
-            variant="outlined"
-            value={selectedGroup?.nombre || ''}
-            onChange={(e) => setSelectedGroup({ ...selectedGroup, nombre: e.target.value })}
-          />
-          <List>
-            {alumnos.map((alumno) => (
-              <ListItem key={alumno.id}>
-                <Checkbox
-                  checked={selectedAlumnos.includes(alumno.id)}
-                  onChange={() => handleAlumnoSelection(alumno.id)}
-                />
-                <ListItemText primary={`${alumno.nombre} ${alumno.apellido}`} />
+        {selectedGroup && (
+            <List>
+              <ListItem>
+                <ListItemText primary="Nombre" secondary={selectedGroup.nombre} />
               </ListItem>
-            ))}
-          </List>
+              <ListItem>
+                <TextField
+                  fullWidth
+                  label="Nombre del Grupo"
+                  value={selectedGroup.nombre}
+                  onChange={(e) => setSelectedGroup({ ...selectedGroup, nombre: e.target.value })}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary="Alumnos" />
+                <List>
+                  {alumnos.map((alumno) => (
+                    <ListItem key={alumno.id}  onClick={() => handleAlumnoSelection(alumno.id)}>
+                      <Checkbox
+                        edge="start"
+                        checked={selectedAlumnos.includes(alumno.id)}
+                        tabIndex={-1}
+                        disableRipple
+                      />
+                      <ListItemText primary={`${alumno.nombre} ${alumno.apellido}`} />
+                    </ListItem>
+                  ))}
+                </List>
+              </ListItem>
+            </List>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleEditClose} color="primary">Cancelar</Button>

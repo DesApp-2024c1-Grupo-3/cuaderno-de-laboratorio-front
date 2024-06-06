@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { SubHeader } from './General/SubHeader';
 
-const profesorId = '66562adbae5dabcbce08acec';
+const profesorId = '665de481ea2f98169d8086c0';
 const loadingRendering = () => {
   return (
     <div>
@@ -59,7 +59,6 @@ export default function Comision() {
 
               <Container  sx={conteinerButton}>
                 {comision.map((it) => (
-                  //Falta Nombre de la Materia
                   <Button
                     component={NavLink}
                     to={`/tps/${it._id}/${profesorId}`}
