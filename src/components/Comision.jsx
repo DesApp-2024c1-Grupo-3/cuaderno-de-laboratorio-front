@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { SubHeader } from './General/SubHeader';
 
-const profesorId = '66185bbf137a18b481db71d2';
+const profesorId = '661b0339aca97bd9f01f737a';
 const loadingRendering = () => {
   return (
     <div>

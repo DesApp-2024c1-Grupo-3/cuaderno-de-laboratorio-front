@@ -32,10 +32,7 @@ import { NavLink } from 'react-router-dom';
 import { getGrupoByCursoId, postEliminarGrupo } from '../../services/Grupo';
 import { SubHeader } from '../General/SubHeader';
 
-/* const Demo = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
-})); */
-// 
+
 const theme = createTheme({
   palette:{
     background:{
@@ -45,7 +42,7 @@ const theme = createTheme({
   },
 });
 const AdministrarGrupos = () => {
-  const { idCurso } = useParams();
+  const { idCurso, profesorId } = useParams();
   const [grupos, setGrupos] = useState([]);
   const [hasError, setHasError] = useState(false);
   const [show, setShow] = useState(false);
@@ -102,6 +99,7 @@ const AdministrarGrupos = () => {
     }
     fetchGrupos();
   }, [idCurso, show]);
+  
 
   const gruposRendering = () => {
     return (
@@ -141,7 +139,7 @@ const AdministrarGrupos = () => {
                         variant="h6"
                         component="div"
                       >
-                        grupos
+                        Grupos
                       </Typography>
                       <List>
                         {grupos.map((grupo) => (
@@ -181,9 +179,10 @@ const AdministrarGrupos = () => {
             </Container>
 
             <Button             
+              variant="contained"
+              sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
               component={NavLink}
-              to="/"
-              key="botonVolver"
+              to={`/tps/${idCurso}/${profesorId}`}
             >
               Volver
             </Button>
