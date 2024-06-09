@@ -10,8 +10,8 @@ import AdministrarGrupos from './components/Profesores/AdmGrupoBeta';
 import MostrarTpsAlumno from './components/MostrarTpsAlumno'
 import CursoAlumno from './components/CursoAlumno';
 import TpDetalleBeta from './components/TpDetalleBeta';
-import TpEntrega from './components/TpEntrega'
-
+import TpEntregaGrupal from './components/TpEntregaGrupal'
+import TpEntregaAlumno from './components/TpEntregaAlumno'
 const App = () => {
   return (
     <Router>
@@ -33,8 +33,8 @@ const App = () => {
             <Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />
             <Route path="/alumno/curso" component={CursoAlumno} /> {/* Nueva ruta para CursoAlumno */}
             <Route path="/tpsAlumno/:idCurso/" component={MostrarTpsAlumno} /> {/* Nueva ruta para MostrarTpsAlumno */}
-            <Route path="/entregaGrupo/:idEntrega" component={TpEntrega} />
-            <Route path="/entregaAlumno/:idEntrega" component={TpEntrega}  />
+            <Route path="/entregaGrupo/:idEntregaGrupal/:idCurso/:tpId/" component={TpEntregaGrupal} />
+            <Route path="/entregaAlumno/:idEntregaAlumno/:idCurso/:tpId/" component={TpEntregaAlumno} />
             <Route path="/" component={Home} />
           </Switch>
         </div>

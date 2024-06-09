@@ -3,31 +3,46 @@ import { NavLink, useHistory, useParams } from 'react-router-dom';
 import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
  } from '@mui/material';
+import { getAlumnoById } from '../services/Alumnos';
+import { getTpPorId} from '../services/tps';
 import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
 import { SubHeader } from './General/SubHeader';
 
 const TpEntrega = () => {
-  const { idEntrega} = useParams();
-  
+  const { idEntrega, idCurso, tpId} = useParams();
+
+  console.log(idEntrega);
+  console.log(idCurso);
+  console.log(tpId);
+  const [tp, setTp] = useState(null);
   const [grupo, setGrupo] = useState([]);
   const [nota, setNota] = useState('');
+  const [alumno, setAlumno] = useState(null);
   const [comentario, setComentario] = useState('');
   const [archivo, setArchivo] = useState(null);
   const [hasError, setHasError] = useState(false);
+  
   const history = useHistory();
-
+ 
   useEffect(() => {
     async function fetchTp() {
       try {
-        const gruposData = await getGrupoPorId(idEntrega); 
-        const notaData = await updateNotaEntrega(idEntrega)
+        const tpData = await getTpPorId(idCurso, tpId);
+        console.log(tpData),
+        setTp(tpData);
         
-        console.log(gruposData)
+        const gruposData = await getGrupoPorId(idEntrega); 
         setGrupo(gruposData);
+        setComentario(gruposData.comentario || '');
 
+        const notaData = await updateNotaEntrega(idEntrega)
         setNota(notaData.nota || '');
         
-        setComentario(gruposData.comentario || '');
+        const alumnoData = await getAlumnoById(idEntrega);
+        console.log(alumnoData);
+        setAlumno(alumnoData);
+      
+                
         const archivoData = await getArchivoEntrega(idEntrega);
         setArchivo(archivoData);
       } catch (err) {
@@ -35,7 +50,10 @@ const TpEntrega = () => {
       }
     }
     fetchTp();
-  }, [idEntrega]);
+  }, [idCurso, tpId, idEntrega]);
+  console.log(alumno);
+  //console.log(alumno.nombre);
+
   const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
 
@@ -56,6 +74,9 @@ const TpEntrega = () => {
     link.click();
     document.body.removeChild(link);
   };
+  const handleEntrega = () => {
+    history.push(`/calificaion/${idEntrega}/${profesorId}`);
+  };
 
   const tpRendering = () => (
     <Box>
@@ -74,7 +95,7 @@ const TpEntrega = () => {
               }}
             >
             <Typography variant="h6" component="div" gutterBottom>
-            Tp {grupo.tipo === 'grupo' ? 'Grupal' : 'Individual'}
+            Tp Moderno
             </Typography>  
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
@@ -86,7 +107,8 @@ const TpEntrega = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {grupo ? (
+                  {tp? (
+                    console.log(tp.grupal),
                     grupo.map((integrante, index) => (
                       <TableRow
                         key={integrante.id}
@@ -99,27 +121,28 @@ const TpEntrega = () => {
                       </TableRow>
                     ))
                   ) : (
-                    alumnos.map((alumno, index) => (
+                    alumno && (
+                    
                       <TableRow
-                        key={alumno.id}
-                        sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
+                        
+                        sx={{ backgroundColor:'rgba(0, 0, 0, 0)' }}
                       >
-                        <TableCell>{alumno.nombre} {alumno.apellido}</TableCell>
-                        <TableCell>{alumno.estado || 'Desconocido'}</TableCell>
-                        <TableCell>{""}</TableCell>
+                        <TableCell>{alumno.nombre} </TableCell>
+                        <TableCell>{alumno.apellido}</TableCell>
+                        <TableCell>{alumno.dni}</TableCell>
                         <TableCell>
                           
                           
                         </TableCell>
                       </TableRow>
-                    ))
+                    )
                   )}
                 </TableBody> 
               </Table>
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                Archivo Entregado:
+                Documento Entregado
               </Typography>
               {archivo && (
                 <Button variant="contained" onClick={handleDownload}>
@@ -151,7 +174,7 @@ const TpEntrega = () => {
               spacing={2} 
               justifyContent="space-between"
               marginTop='20px'
-            >
+            > 
               <Grid item>
                 <Button
                   variant="contained"
@@ -161,12 +184,19 @@ const TpEntrega = () => {
                   Volver
                 </Button>
               </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  onClick={handleEntrega}
+                >
+                  Enviar Calificacion
+                </Button>
+              </Grid>              
             </Grid>
           </Container>
         </CardContent>
-      </Card>
-
-      
+      </Card>      
     </Box>
   );
 

@@ -32,6 +32,7 @@ const TpDetalle = () => {
       try {
         if (tpId) {
           const tpData = await getTpPorId(idCurso, tpId);
+          console.log(tpData);
           setTp(tpData);
           const cursoData = await getCursoPorId(idCurso);
           setCurso(cursoData);
@@ -52,7 +53,7 @@ const TpDetalle = () => {
     }
     fetchTp();
   }, [idCurso, tpId]);
-
+ 
   const formatFecha = (fechaHora) => {
     const fecha = fechaHora.split('T')[0]; // Divide la fecha y la hora y toma solo la parte de la fecha
     return fecha;
@@ -90,6 +91,7 @@ const TpDetalle = () => {
                 </TableHead>
                 <TableBody>
                   {tp.grupal ? (
+                    console.log(tp.grupal),
                     grupos.map((grupo, index) => (
                       <TableRow
                         key={grupo.id}
@@ -108,7 +110,7 @@ const TpDetalle = () => {
                               borderRadius: '30%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/entregaGrupo/${grupo._id}`)}
+                            onClick={() => history.push(`/entregaGrupo/${grupo._id}/${idCurso}/${tpId} `)}
                           >
                             Ver entrega
                           </Button>
@@ -117,13 +119,14 @@ const TpDetalle = () => {
                     ))
                   ) : (
                     alumnos.map((alumno, index) => (
+                      console.log(alumno._id),
                       <TableRow
                         key={alumno.id}
                         sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                       >
                         <TableCell>{alumno.nombre} {alumno.apellido}</TableCell>
                         <TableCell>{alumno.estado || 'Desconocido'}</TableCell>
-                        <TableCell>{tp.calificacion}/ 10</TableCell>
+                        <TableCell>{}/ 10</TableCell>
                         <TableCell>
                           <Button
                             variant="contained"
@@ -134,7 +137,7 @@ const TpDetalle = () => {
                               borderRadius: '30%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/entregaAlumno/${alumno._id}`)}
+                            onClick={() => history.push(`/entregaAlumno/${alumno._id}/${idCurso}/${tpId}`)}
                           >
                             Ver entrega
                           </Button>

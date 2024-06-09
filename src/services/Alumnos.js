@@ -23,3 +23,7 @@ export async function getTpsDelCursosByAlumnoId(alumnoId) {
   const apiResponse = await getJsonFromApi(`alumno/${alumnoId}`);
   return apiResponse.Tps;
 }
+export async function getAlumnoById(alumnoId) {
+  const apiResponse = await getJsonFromApi(`alumnoSolo/${alumnoId}`);
+  return apiResponse;
+}
