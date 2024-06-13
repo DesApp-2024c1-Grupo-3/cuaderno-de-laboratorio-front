@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Divider, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 export function SubHeader({ titulo }) {
   return (

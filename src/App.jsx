@@ -1,18 +1,20 @@
 import { Container} from  '@mui/material'; // Importa Container desde @mui/material;
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-
 import Home from './components/Home';
 import { Header } from './components/General/Header';
 import { Footer } from './components/General/Footer';
 import Comision from './components/Comision';
 import ComisionBeta from './components/ComisionBeta';
 import TpsBeta from './components/TpsBeta';
-import Tps from './components/Tps';
-import CrearTps from './components/CrearTps';
 import CrearTpsBeta from './components/CrearTpsBeta';
-import AdministrarGrupos from './components/Profesores/AdmGrupos';
-import TpDetalle from './components/TpDetalle';
+import AdministrarGrupos from './components/Profesores/AdmGrupoBeta';
+import MostrarTpsAlumno from './components/MostrarTpsAlumno'
+import CursoAlumno from './components/CursoAlumno';
 import TpDetalleBeta from './components/TpDetalleBeta';
+import TpEntregaGrupal from './components/TpEntregaGrupal';
+import TpEntregaAlumno from './components/TpEntregaAlumno';
+import CalificarGrupo from './components/CalificarGrupo';
+import CalificarAlumno from './components/CalificarAlumno';
 
 const App = () => {
   return (
@@ -27,15 +29,18 @@ const App = () => {
 
         <div sx={{ flex: '1' }}> {/* Utiliza sx prop para estilos en línea */}
           <Switch>
-            {/*<Route path="/comision/anterior" component={Comision} />*/} 
-            {/*<Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalle} />*/}
-            {/*<Route path="/tps/:idCurso/:profesorId" component={Tps} />*/}
-            {/*<Route path="/crearTps/:idCurso/:profesorId" component={CrearTps} />*/}
-            <Route path="/comision/actual" component={ComisionBeta} />
+                   
+            <Route path="/comision/actual" component={Comision} />
             <Route path="/tps/:idCurso/:profesorId" component={TpsBeta} />
             <Route path="/crearTps/:idCurso/:profesorId" component={CrearTpsBeta} />
             <Route path="/Administrar_Grupos/:idCurso" component={AdministrarGrupos} />
             <Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />
+            <Route path="/alumno/curso" component={CursoAlumno} /> {/* Nueva ruta para CursoAlumno */}
+            <Route path="/tpsAlumno/:idCurso/:alumnoId" component={MostrarTpsAlumno} /> {/* Nueva ruta para MostrarTpsAlumno */}
+            <Route path="/entregaGrupo/:idEntregaGrupal/:tpId" component={TpEntregaGrupal} />
+            <Route path="/entregaAlumno/:idEntregaAlumno/:tpId" component={TpEntregaAlumno} />
+            <Route path="/calificarGrupo/:idEntregaGrupal/:tpId" component={CalificarGrupo} />
+            <Route path="/calificarAlumno/:idEntregaAlumno/:tpId" component={CalificarAlumno} />
             <Route path="/" component={Home} />
           </Switch>
         </div>

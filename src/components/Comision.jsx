@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { SubHeader } from './General/SubHeader';
 
-const profesorId = '661b0339aca97bd9f01f737a';
+const profesorId = '665de481ea2f98169d8086c0';
 const loadingRendering = () => {
   return (
     <div>
@@ -23,13 +23,15 @@ export default function Comision() {
   const [comision, setComision] = useState(null);
   const [hasError, setHasError] = useState(false);
   const tituloHeader =
+   // console.log( estadoCurso )
     estadoCurso === 'actual'
-      ? 'Listado De Cursos | cuatrimestre actual '
-      : 'Listado De Cursos | cuatrimestre anterior';
+      ? 'Listado De Cursos | cuatrimestre  '
+      : 'Listado De Cursos | cuatrimestre actual';
+
 
   useEffect(() => {
     async function fetchCommision() {
-      const getFunction = getDataFromBackend
+      const getFunction = getDataFromBackend   
         ? getCursoPorIdProfesor
         : getTodosLosUsuarios_fake;
 
@@ -57,7 +59,6 @@ export default function Comision() {
 
               <Container  sx={conteinerButton}>
                 {comision.map((it) => (
-                  //Falta Nombre de la Materia
                   <Button
                     component={NavLink}
                     to={`/tps/${it._id}/${profesorId}`}

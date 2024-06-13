@@ -1,6 +1,4 @@
-import React, { useEffect, useState, useStyles } from 'react';
-import PropTypes from 'prop-types';
-
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,

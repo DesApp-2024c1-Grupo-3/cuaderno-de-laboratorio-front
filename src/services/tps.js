@@ -1,5 +1,15 @@
 import { getJsonFromApi, postJsonToApi, deleteFromApi } from './utils';
 
+export async function getTodosLosTps() {
+  const apiResponse = await getJsonFromApi('usuarios');
+  return apiResponse.data;
+}
+
+export async function getGruposByTpId(id) {
+  const apiResponse = await getJsonFromApi(`tp/${id}/grupos`);
+  return apiResponse.grupos;
+}
+
 export async function getTpPorId(idCurso, tpId) {
   try {
     const tps = await getTpsByCursoId(idCurso);
@@ -43,6 +53,12 @@ export async function getCursoPorId(idCurso) {
 export async function getTpsByCursoId(id) {
   const apiResponse = await getJsonFromApi(`curso/${id}/tps`);
   return apiResponse.tps;
+}
+
+// Creada para traer los datos del curso
+export async function getCursoById(id) {
+  const apiResponse = await getJsonFromApi(`curso/${id}`);
+  return apiResponse;
 }
 
 export async function crearTp(idCurso, profesorId, body) {
