@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { SubHeader } from './General/SubHeader';
 
-const profesorId = '6615da7e626c2f5017d64216';
+const profesorId = '661b0339aca97bd9f01f737a';
 const loadingRendering = () => {
   return (
     <div>
@@ -69,7 +69,7 @@ export default function Comision() {
                 ))}
               </Container>
             </Container>
-            <Button color="primary" component={NavLink} to="/">
+            <Button variant="contained" sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }} component={NavLink} to="/">
               Volver
             </Button>
           </CardContent>

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, NavLink } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -16,7 +15,9 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import { getTpsByCursoId } from '../services/tps';
+//import { getMateriaPorIdCurso } from '../services/materia'; //AGREGADO PARA TRAER LA MATERIA ACTUAL EN APARTADO DE TPS
 import { SubHeader } from './General/SubHeader';
+
 
 export default function Tps() {
   const { idCurso, profesorId } = useParams();
@@ -38,9 +39,6 @@ export default function Tps() {
     fetchData();
   }, [idCurso]);
 
-  const handleVolver = () => {
-    history.push(`/comision`);
-  };
 
   const handleAdministrarGrupo = () => {
     // Lógica para administrar grupo
@@ -51,13 +49,41 @@ export default function Tps() {
     // Lógica para crear un nuevo TP
     history.push(`/crearTps/${idCurso}/${profesorId}`)
   };
+  
+  
+
+  /*const Materia = () : void => { //AGREGADO PARA TRAER LA MATERIA ACTUAL EN APARTADO DE TPS
+    
+    const [hasError, setHasError] = useState(false);
+    const [show, setShow] = useState(false);
+
+    useEffect(() => {
+      async function fetchMaterias() {
+        try {
+          const materias = await getMateriaPorIdCurso(idCurso);
+          setMaterias(materias);
+        } catch (err) {
+          console.log('Ocurrió este error:', err);
+          setHasError(true);
+        }
+      }
+      fetchMaterias();
+    }, [idCurso, show]);
+
+      {materias.map((materia) => (
+      key={materia}
+    ),  
+  };*/
+  //const materias = getMateriaPorIdCurso(idCurso);
+  //const tituloHeader = {materias};
+  
 
   const tpsRendering = () => (
     <Box display="flex" flexDirection="column">
       <Card sx={{ mb: 2 }}>
         <CardContent>
-          <SubHeader titulo="Matematicas" />
-         
+          <SubHeader titulo='lal'/>
+            
           <Container
             maxWidth="xl"
             sx={{ 
@@ -116,7 +142,8 @@ export default function Tps() {
               <Grid item>
                 <Button variant="contained"
                   sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={handleVolver}>Volver</Button>
+                  component={NavLink}
+                      to={`/comision/actual`}>Volver</Button>
               </Grid>
               <Grid item>
                 <Button variant="contained"
@@ -125,7 +152,7 @@ export default function Tps() {
               </Grid>
               <Grid item>
                 <Button variant="contained"
-                  sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
                   onClick={handleNuevoTp}>Nuevo TP</Button>
               </Grid>
             </Grid>

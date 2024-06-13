@@ -5,6 +5,7 @@ import Home from './components/Home';
 import { Header } from './components/General/Header';
 import { Footer } from './components/General/Footer';
 import Comision from './components/Comision';
+import ComisionBeta from './components/ComisionBeta';
 import TpsBeta from './components/TpsBeta';
 import Tps from './components/Tps';
 import CrearTps from './components/CrearTps';
@@ -30,7 +31,7 @@ const App = () => {
             {/*<Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalle} />*/}
             {/*<Route path="/tps/:idCurso/:profesorId" component={Tps} />*/}
             {/*<Route path="/crearTps/:idCurso/:profesorId" component={CrearTps} />*/}
-            <Route path="/comision/actual" component={Comision} />
+            <Route path="/comision/actual" component={ComisionBeta} />
             <Route path="/tps/:idCurso/:profesorId" component={TpsBeta} />
             <Route path="/crearTps/:idCurso/:profesorId" component={CrearTpsBeta} />
             <Route path="/Administrar_Grupos/:idCurso" component={AdministrarGrupos} />

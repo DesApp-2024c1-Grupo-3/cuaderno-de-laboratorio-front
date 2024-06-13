@@ -9,6 +9,10 @@ const FixedFooter = styled.div`
   background-color: #424242;
   text-align: center;
   padding: 0 10px;
+  font: small-caps normal 13px/150% Roboto;
+  left:0;
+  bottom:0;
+  right:0;
 `;
 
 const CenteredElement = styled.div`
@@ -26,7 +30,7 @@ export const Footer = () => {
 
             <CenteredElement>
                 <p>
-                    UNaHur
+                    UNAHUR
                 </p>
             </CenteredElement>
 
