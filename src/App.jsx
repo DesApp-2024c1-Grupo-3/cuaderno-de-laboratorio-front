@@ -10,8 +10,11 @@ import AdministrarGrupos from './components/Profesores/AdmGrupoBeta';
 import MostrarTpsAlumno from './components/MostrarTpsAlumno'
 import CursoAlumno from './components/CursoAlumno';
 import TpDetalleBeta from './components/TpDetalleBeta';
-import TpEntregaGrupal from './components/TpEntregaGrupal'
-import TpEntregaAlumno from './components/TpEntregaAlumno'
+import TpEntregaGrupal from './components/TpEntregaGrupal';
+import TpEntregaAlumno from './components/TpEntregaAlumno';
+import CalificarGrupo from './components/CalificarGrupo';
+import CalificarAlumno from './components/CalificarAlumno';
+
 const App = () => {
   return (
     <Router>
@@ -32,9 +35,11 @@ const App = () => {
             <Route path="/Administrar_Grupos/:idCurso" component={AdministrarGrupos} />
             <Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />
             <Route path="/alumno/curso" component={CursoAlumno} /> {/* Nueva ruta para CursoAlumno */}
-            <Route path="/tpsAlumno/:idCurso/" component={MostrarTpsAlumno} /> {/* Nueva ruta para MostrarTpsAlumno */}
-            <Route path="/entregaGrupo/:idEntregaGrupal/:idCurso/:tpId/" component={TpEntregaGrupal} />
-            <Route path="/entregaAlumno/:idEntregaAlumno/:idCurso/:tpId/" component={TpEntregaAlumno} />
+            <Route path="/tpsAlumno/:idCurso/:alumnoId" component={MostrarTpsAlumno} /> {/* Nueva ruta para MostrarTpsAlumno */}
+            <Route path="/entregaGrupo/:idEntregaGrupal/:tpId" component={TpEntregaGrupal} />
+            <Route path="/entregaAlumno/:idEntregaAlumno/:tpId" component={TpEntregaAlumno} />
+            <Route path="/calificarGrupo/:idEntregaGrupal/:tpId" component={CalificarGrupo} />
+            <Route path="/calificarAlumno/:idEntregaAlumno/:tpId" component={CalificarAlumno} />
             <Route path="/" component={Home} />
           </Switch>
         </div>

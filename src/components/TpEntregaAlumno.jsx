@@ -4,20 +4,16 @@ import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
  } from '@mui/material';
 import { getAlumnoById } from '../services/Alumnos';
-import { getTpPorId} from '../services/tps';
-import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
+import {crearCalificacion} from '../services/Calificacion';
 import { SubHeader } from './General/SubHeader';
 
 const TpEntrega = () => {
-  const { idEntrega, idCurso, tpId} = useParams();
-
-  console.log(idEntrega);
-  console.log(idCurso);
+  const { idEntregaAlumno, tpId} = useParams();
+  console.log(idEntregaAlumno);
+  
   console.log(tpId);
-  const [tp, setTp] = useState(null);
-  const [grupo, setGrupo] = useState([]);
   const [nota, setNota] = useState('');
-  const [alumno, setAlumno] = useState(null);
+  const [alumno, setAlumno] = useState([]);
   const [comentario, setComentario] = useState('');
   const [archivo, setArchivo] = useState(null);
   const [hasError, setHasError] = useState(false);
@@ -27,45 +23,38 @@ const TpEntrega = () => {
   useEffect(() => {
     async function fetchTp() {
       try {
-        const tpData = await getTpPorId(idCurso, tpId);
-        console.log(tpData),
-        setTp(tpData);
-        
-        const gruposData = await getGrupoPorId(idEntrega); 
-        setGrupo(gruposData);
-        setComentario(gruposData.comentario || '');
-
-        const notaData = await updateNotaEntrega(idEntrega)
-        setNota(notaData.nota || '');
-        
-        const alumnoData = await getAlumnoById(idEntrega);
-        console.log(alumnoData);
+        const alumnoData = await getAlumnoById(idEntregaAlumno);
         setAlumno(alumnoData);
-      
-                
-        const archivoData = await getArchivoEntrega(idEntrega);
-        setArchivo(archivoData);
+              
       } catch (err) {
         setHasError(true);
       }
+
     }
     fetchTp();
-  }, [idCurso, tpId, idEntrega]);
-  console.log(alumno);
-  //console.log(alumno.nombre);
+  }, [idEntregaAlumno]);
 
   const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
 
   const handleSave = async () => {
+    const calificacionData = {
+      archivosSubidos: [], // Ajustar según tus necesidades
+      comentarioAlumno: '',
+      devolucionProf: comentario,
+      calificacion: parseFloat(nota),
+      tpId: tpId, // Proporcionar el ID del Trabajo Práctico si está disponible
+      alumnoId: idEntregaAlumno,
+      grupoId: '', // Proporcionar el ID del grupo si está disponible
+    };
     try {
-      await updateNotaEntrega(idEntrega, { nota, comentario });
-      alert('Nota guardada con éxito');
+      await crearCalificacion(idEntregaAlumno, calificacionData);
+      alert('Calificación guardada con éxito');
+      history.goBack();
     } catch (err) {
-      console.error('Error al guardar la nota', err);
+      console.error('Error al guardar la calificación', err);
     }
   };
-
   const handleDownload = () => {
     const link = document.createElement('a');
     link.href = archivo.url;
@@ -82,7 +71,7 @@ const TpEntrega = () => {
     <Box>
       <Card sx={{ mb:2}}>
         <CardContent>
-          <SubHeader titulo="Tp sucio" />
+          <SubHeader titulo="Ver entrega" />
           <Container 
             maxWidth="xl"
             sx={{ 
@@ -107,42 +96,23 @@ const TpEntrega = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {tp? (
-                    console.log(tp.grupal),
-                    grupo.map((integrante, index) => (
-                      <TableRow
-                        key={integrante.id}
-                        sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
-                      >
-                        <TableCell>{integrante.nombre}</TableCell>
-                        <TableCell>{integrante.apellido }</TableCell>
-                        <TableCell>{integrante.dni}</TableCell>
-                        
-                      </TableRow>
-                    ))
-                  ) : (
+                  {
                     alumno && (
-                    
                       <TableRow
-                        
-                        sx={{ backgroundColor:'rgba(0, 0, 0, 0)' }}
+                        sx={{ backgroundColor:'rgba(0, 0, 0, 0.08)' }}
                       >
                         <TableCell>{alumno.nombre} </TableCell>
                         <TableCell>{alumno.apellido}</TableCell>
                         <TableCell>{alumno.dni}</TableCell>
-                        <TableCell>
-                          
-                          
-                        </TableCell>
                       </TableRow>
                     )
-                  )}
+                  }
                 </TableBody> 
               </Table>
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                Documento Entregado
+              Entrega de Trabajo Practico
               </Typography>
               {archivo && (
                 <Button variant="contained" onClick={handleDownload}>
@@ -188,9 +158,9 @@ const TpEntrega = () => {
                 <Button
                   variant="contained"
                   sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={handleEntrega}
+                  onClick={handleSave}
                 >
-                  Enviar Calificacion
+                  Cargar Entrega
                 </Button>
               </Grid>              
             </Grid>
@@ -200,11 +170,11 @@ const TpEntrega = () => {
     </Box>
   );
 
-  const loadingRendering = () => <div>Cargando detalles del Tp...</div>;
+  const loadingRendering = () => <div>Cargando datos del Alumno...</div>;
 
-  const errorRendering = () => <div>Error al cargar los detalles del Tp</div>;
+  const errorRendering = () => <div>Error al cargar los datos del Alumno</div>;
 
-  return hasError ? errorRendering() : !grupo ? loadingRendering() : tpRendering();
+  return hasError ? errorRendering() : !alumno ? loadingRendering() : tpRendering();
 };
 
 export default TpEntrega;

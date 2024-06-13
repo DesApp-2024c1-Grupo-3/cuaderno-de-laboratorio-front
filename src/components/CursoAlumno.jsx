@@ -19,13 +19,11 @@ const AlumnoCursos = () => {
     const fetchCurso = async () => {
       try {
         const response = await getCursosByAlumnoId(alumnoId);
-        console.log("Datos obtenidos:", response);  // Verifica la estructura de los datos obtenidos
         setDato(response || []);
-      } catch (error) {
+      }catch (error) {
         console.error('Error al obtener los cursos:', error);
       }
     };
-
     if (alumnoId) {
       fetchCurso();
     }
@@ -77,7 +75,7 @@ const AlumnoCursos = () => {
                             borderRadius: '30%',
                             '&:hover': { backgroundColor: '#b0d38a' }
                           }}
-                          onClick={() => history.push(`/tpsAlumno/${curso._id}`)}
+                          onClick={() => history.push(`/tpsAlumno/${curso._id}/${alumnoId}`)}
                         >
                           Ir al Curso
                         </Button>

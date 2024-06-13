@@ -26,7 +26,7 @@ const CrearTps = () => { // Cambio en la declaración de la función
   
   const { idCurso, profesorId } = useParams();
   const [show, setShow] = useState(false);
-  const [gruposParaTrabajo, setGruposParaTrabajo] = useState([]);
+  const [gruposParaTrabajo,  ] = useState([]);
   const [tpData, setTpData] = useState({
     nombre: '',
     fechaInicio: '',

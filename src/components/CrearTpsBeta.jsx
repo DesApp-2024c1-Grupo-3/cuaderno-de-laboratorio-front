@@ -232,7 +232,7 @@ const CrearTpsBeta = () => {
                     variant="contained"
                     sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
                     onClick={crearTp}
-                  >Nuevo TP
+                  >Grabar TP
                   </Button>
                 </Box>
               </Box>

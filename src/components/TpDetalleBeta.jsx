@@ -39,7 +39,7 @@ const TpDetalle = () => {
           const alumnos = await getAlumnosByCursoId(idCurso);
           setAlumnos(alumnos);
           if (tpData.grupal) {
-            // Suponiendo que tienes un servicio para obtener los grupos por TP
+          // Suponiendo que tienes un servicio para obtener los grupos por TP
             const gruposData = await getGruposByTpId(tpId); 
             setGrupos(gruposData);
           }
@@ -91,7 +91,7 @@ const TpDetalle = () => {
                 </TableHead>
                 <TableBody>
                   {tp.grupal ? (
-                    console.log(tp.grupal),
+                  
                     grupos.map((grupo, index) => (
                       <TableRow
                         key={grupo.id}
@@ -110,7 +110,7 @@ const TpDetalle = () => {
                               borderRadius: '30%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/entregaGrupo/${grupo._id}/${idCurso}/${tpId} `)}
+                            onClick={() => history.push(`/calificarGrupo/${grupo._id}/${tpId} `)}
                           >
                             Ver entrega
                           </Button>
@@ -119,7 +119,7 @@ const TpDetalle = () => {
                     ))
                   ) : (
                     alumnos.map((alumno, index) => (
-                      console.log(alumno._id),
+                      
                       <TableRow
                         key={alumno.id}
                         sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
@@ -137,7 +137,7 @@ const TpDetalle = () => {
                               borderRadius: '30%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/entregaAlumno/${alumno._id}/${idCurso}/${tpId}`)}
+                            onClick={() => history.push(`/CalificarAlumno/${alumno._id}/${tpId}`)}
                           >
                             Ver entrega
                           </Button>

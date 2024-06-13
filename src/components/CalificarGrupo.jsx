@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useHistory, useParams } from 'react-router-dom';
+import {  useHistory, useParams } from 'react-router-dom';
 import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
  } from '@mui/material';
- import { getGrupoPorId } from '../services/Grupo';
-import { getGruposByTpId } from '../services/tps';
+
+
+import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
 import { SubHeader } from './General/SubHeader';
 
 const TpEntrega = () => {
-  const { idEntregaGrupal, tpId} = useParams();  
-  const [grupo, setGrupo] = useState([]);
-  const [alumnos, setAlumnos] = useState([])
+  const { idEntregaGrupal, tpId} = useParams();
+
+  console.log(idEntregaGrupal);
+
+  
+  const [grupo, setGrupo] = useState(null);
   const [nota, setNota] = useState('');
+
   const [comentario, setComentario] = useState('');
   const [archivo, setArchivo] = useState(null);
   const [hasError, setHasError] = useState(false);
@@ -21,35 +26,26 @@ const TpEntrega = () => {
   useEffect(() => {
     async function fetchTp() {
       try {
-        // Obtener la lista de grupos y verificar si el alumno pertenece a algún grupo
-        const grupos = await getGruposByTpId(tpId);
-        console.log('Grupos obtenidos:', grupos);
-            
-        if (grupos) {
-          const grupoEncontrado = grupos.find(grupo => 
-            grupo.alumnos.some(alumno => alumno._id === idEntregaGrupal)
-          );
-          console.log('Grupo encontrado:', grupoEncontrado);
+                
+        const gruposData = await getGrupoPorId(idEntregaGrupal); 
+        setGrupo(gruposData);
 
-          if (grupoEncontrado) {
-            setGrupo(grupoEncontrado);
-            const alumnosData= await getGrupoPorId(grupoEncontrado._id);
-            console.log('Grupo obtenido:', grupo._id);
-            setAlumnos(alumnosData);
-          } else {
-            console.log('No se encontró un grupo para el alumno:', idEntregaGrupal);
-          }
-        }
+        setComentario(gruposData.comentario || '');
+
+        const notaData = await updateNotaEntrega(idEntregaGrupal)
+        setNota(notaData.nota || '');
+        
+        const archivoData = await getArchivoEntrega(idEntregaGrupal);
+        setArchivo(archivoData);
       } catch (err) {
         setHasError(true);
       }
     }
     fetchTp();
-  }, [tpId, idEntregaGrupal]);
+  }, [idEntregaGrupal]);
 
   const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
-  const handleArchivoChange = (e) => setArchivoSubido(e.target.files[0]);
 
   const handleSave = async () => {
     const calificacionData = {
@@ -59,18 +55,13 @@ const TpEntrega = () => {
       calificacion: parseFloat(nota),
       tpId: tpId, // Proporcionar el ID del Trabajo Práctico si está disponible
       alumnoId: '',
-      grupoId: grupo._id, // Proporcionar el ID del grupo si está disponible
+      grupoId: idEntregaGrupal, // Proporcionar el ID del grupo si está disponible
     };
     try {
-      if (archivoSubido) {
-        const formData = new FormData();
-        formData.append('file', archivoSubido);
-        await subirArchivo(formData);
-      }
       await crearCalificacion(idEntregaAlumno, calificacionData);
       alert('Calificación guardada con éxito');
       history.goBack();
-    }catch (err) {
+    } catch (err) {
       console.error('Error al guardar la calificación', err);
     }
   };
@@ -83,11 +74,15 @@ const TpEntrega = () => {
     link.click();
     document.body.removeChild(link);
   };
-  const entregaRendering = () => (
+  const handleEntrega = () => {
+    history.push(`/calificaion/${idEntrega}/${profesorId}`);
+  };
+
+  const tpRendering = () => (
     <Box>
       <Card sx={{ mb:2}}>
         <CardContent>
-          <SubHeader titulo="TP grupal" />
+          <SubHeader titulo="Calificar Trabajo Práctico" />
           <Container 
             maxWidth="xl"
             sx={{ 
@@ -100,7 +95,7 @@ const TpEntrega = () => {
               }}
             >
             <Typography variant="h6" component="div" gutterBottom>
-               Tp Moderno
+               Tp Grupal
             </Typography>  
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
@@ -113,7 +108,7 @@ const TpEntrega = () => {
                 </TableHead>
                 <TableBody>
                   {
-                    alumnos.map((integrante, index) => (
+                    grupo.map((integrante, index) => (
                       <TableRow
                         key={integrante.id}
                         sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
@@ -130,8 +125,7 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                Entrega de documento - Un solo integrante del grupo puede hacer la carga.
-                                      
+                Documento Entregado
               </Typography>
               {archivo && (
                 <Button variant="contained" onClick={handleDownload}>
@@ -179,7 +173,7 @@ const TpEntrega = () => {
                   sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
                   onClick={handleSave}
                 >
-                  Cargar TP
+                  Enviar Calificacion
                 </Button>
               </Grid>              
             </Grid>
@@ -189,11 +183,11 @@ const TpEntrega = () => {
     </Box>
   );
 
-  const loadingRendering = () => <div>Cargando detalles de entrega...</div>;
+  const loadingRendering = () => <div>Cargando detalles del Tp...</div>;
 
-  const errorRendering = () => <div>Error al cargar los datos de entrega</div>;
+  const errorRendering = () => <div>Error al cargar los detalles del Tp</div>;
 
-  return hasError ? errorRendering() : !grupo ? loadingRendering() : entregaRendering();
+  return hasError ? errorRendering() : !grupo ? loadingRendering() : tpRendering();
 };
 
 export default TpEntrega;

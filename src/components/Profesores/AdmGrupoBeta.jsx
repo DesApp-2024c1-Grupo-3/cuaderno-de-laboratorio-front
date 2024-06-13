@@ -8,7 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { ModalCrearGrupos } from './ModalCrearGrupoBeta';
-import { ModalClonarGrupos } from './ModalClonarGrupo';
+import { ModalClonarGrupos } from './ModalClonarGrupoBeta';
 import { useParams, useHistory } from 'react-router-dom';
 import { getGrupoByCursoId, postEliminarGrupo } from '../../services/Grupo';
 import { getAlumnosByCursoId } from '../../services/Alumnos'; 
@@ -53,9 +53,11 @@ const AdministrarGrupos = () => {
 
   const handleEditOpen = async (group) => {
     setSelectedGroup(group);
+   
     await fetchAlumnos(idCurso);
     setSelectedAlumnos(group.alumnos.map(alumno => alumno.id)); // Inicializa selectedAlumnos con los IDs de los alumnos del grupo seleccionado
     setOpenEdit(true);
+   
   };
 
   const handleEditClose = () => {
@@ -115,12 +117,13 @@ const AdministrarGrupos = () => {
     }
     fetchGrupos();
   }, [idCurso, show]);
-
+  
   const handleAlumnoSelection = (alumnoId) => {
     if (selectedAlumnos.includes(alumnoId)) {
       setSelectedAlumnos(selectedAlumnos.filter((id) => id !== alumnoId));
     } else {
       setSelectedAlumnos([...selectedAlumnos, alumnoId]);
+      console.log(setSelectedAlumnos)
     }
   };
 
@@ -257,10 +260,10 @@ const AdministrarGrupos = () => {
                 <ListItemText primary="Alumnos" />
                 <List>
                   {alumnos.map((alumno) => (
-                    <ListItem key={alumno.id}  onClick={() => handleAlumnoSelection(alumno.id)}>
+                    <ListItem key={alumno._id}  onClick={() => handleAlumnoSelection(alumno._id)}>
                       <Checkbox
                         edge="start"
-                        checked={selectedAlumnos.includes(alumno.id)}
+                        checked={selectedAlumnos.includes(alumno._id)}
                         tabIndex={-1}
                         disableRipple
                       />

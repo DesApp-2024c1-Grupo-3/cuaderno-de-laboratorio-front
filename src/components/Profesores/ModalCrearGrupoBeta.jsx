@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Box, Container, Typography, Divider, TextField, FormControl, Button, Autocomplete } from '@mui/material';
 import PropTypes from 'prop-types';
 import { getTodosLosAlumnos } from '../../services/Alumnos';
-import { postCrearGrupo } from '../../services/Grupo';
+import { postCrearGrupo, getGrupoByCursoId } from '../../services/Grupo';
 
 export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGrupos }) => {
   const [listAlumnos, setListAlumnos] = useState([]);
@@ -66,7 +66,7 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
   };
   const fetchGrupos = async () => {
     try {
-      const grupos = await getGruposPorCurso(idCurso); // Supongamos que tienes esta función
+      const grupos = await getGrupoPorCurso(idCurso); 
       const alumnosAsignados = grupos.reduce((acc, grupo) => {
         return acc.concat(grupo.alumnos);
       }, []);
