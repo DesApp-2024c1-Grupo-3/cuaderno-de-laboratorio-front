@@ -1,30 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  Button, 
-  Card, 
-  CardContent, 
-  Container, 
-  Box,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  Paper,
-  Alert
+import { Button, Card, CardContent, Container, Box, Grid, Table, TableBody, TableCell,
+  TableContainer, TableHead, TableRow, Typography, Paper, Alert
 } from '@mui/material';
 import { getDataFromBackend } from '../constants/curso';
 import { getCurso as getTodosLosUsuarios_fake } from '../services/curso-fake';
 import { getCursoPorIdProfesor } from '../services/curso';
 import {  useParams, NavLink } from 'react-router-dom';
-import { SubHeader } from './General/SubHeader';
 import { getProfesorPorId } from '../services/Profesor';
-import { fontStyle } from '@mui/system';
 
-const profesorId = '661b0339aca97bd9f01f737a';
+
+const profesorId = '665de481ea2f98169d8086c0';
 const loadingRendering = () => {
   return (
     <div>
@@ -55,7 +40,7 @@ export default function Comision() {
         setComision(comision);
         const data = await getProfesorPorId(profesorId);
         setProfesor(data);
-        console.log("Datos obtenidos:", data.apellido);
+        
       } catch (err) {
         console.log('Ocurrió este error.', err);
         setHasError(true);
