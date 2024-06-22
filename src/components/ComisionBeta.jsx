@@ -24,7 +24,27 @@ import { SubHeader } from './General/SubHeader';
 import { getProfesorPorId } from '../services/Profesor';
 
 
-const profesorId = '6649226549ae2f87255cc248';
+const profesorId = '667759deca2ecc5c938c2c46';
+
+// define el cuatrimestre y el año
+const getCuatrimestreYAnio = () => {
+  const fecha = new Date();
+  const mes = fecha.getMonth() + 1; // Los meses en JavaScript son de 0 a 11
+  const anio = fecha.getFullYear();
+  let cuatrimestre = '';
+
+  if (mes >= 3 && mes <= 7) {
+    cuatrimestre = `Primer Cuatrimestre ${anio}`;
+  } else if (mes >= 8 && mes <= 12) {
+    cuatrimestre = `Segundo Cuatrimestre ${anio}`;
+  } else {
+    cuatrimestre = `Fuera de período de cuatrimestre ${anio}`;
+  }
+
+  return cuatrimestre;
+}
+
+
 const loadingRendering = () => {
   return (
     <div>
@@ -38,10 +58,12 @@ export default function Comision() {
   const [comision, setComision] = useState(null);
   const [profesor, setProfesor] = useState([]);
   const [hasError, setHasError] = useState(false);
-  const tituloHeader =
-    estadoCurso === 'actual'
-      ? 'Listado De Cursos | cuatrimestre actual '
-      : 'Listado De Cursos | cuatrimestre anterior';
+
+  // Obtener el cuatrimestre actual
+  const cuatrimestreActual = getCuatrimestreYAnio();
+
+
+  const tituloHeader = `Listado De Cursos | ${cuatrimestreActual}`;
 
   useEffect(() => {
     async function fetchCommision() {
