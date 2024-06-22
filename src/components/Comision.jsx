@@ -9,7 +9,8 @@ import { useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { SubHeader } from './General/SubHeader';
 
-const profesorId = '665de481ea2f98169d8086c0';
+const profesorId = '6649226549ae2f87255cc248';
+
 const loadingRendering = () => {
   return (
     <div>
@@ -17,26 +18,45 @@ const loadingRendering = () => {
     </div>
   );
 };
+
+// Definir la función getCuatrimestreYAnio
+const getCuatrimestreYAnio = () => {
+  const fecha = new Date();
+  const mes = fecha.getMonth() + 1; // Los meses en JavaScript son de 0 a 11
+  const anio = fecha.getFullYear();
+  let cuatrimestre = '';
+
+  if (mes >= 3 && mes <= 7) {
+    cuatrimestre = `Primer Cuatrimestre ${anio}`;
+  } else if (mes >= 8 && mes <= 12) {
+    cuatrimestre = `Segundo Cuatrimestre ${anio}`;
+  } else {
+    cuatrimestre = `Fuera de período de cuatrimestre ${anio}`;
+  }
+
+  return cuatrimestre;
+}
+
 export default function Comision() {
   const { estadoCurso } = useParams();
-
   const [comision, setComision] = useState(null);
   const [hasError, setHasError] = useState(false);
-  const tituloHeader =
-   // console.log( estadoCurso )
-    estadoCurso === 'actual'
-      ? 'Listado De Cursos | cuatrimestre  '
-      : 'Listado De Cursos | cuatrimestre actual';
 
+  // Obtener el cuatrimestre actual
+  const cuatrimestreActual = getCuatrimestreYAnio();
+
+  const tituloHeader =
+    estadoCurso === 'actual'
+      ? `Listado De Cursos | ${cuatrimestreActual}`
+      : 'Listado De Cursos | cuatrimestre actual';
 
   useEffect(() => {
     async function fetchCommision() {
-      const getFunction = getDataFromBackend   
+      const getFunction = getDataFromBackend
         ? getCursoPorIdProfesor
         : getTodosLosUsuarios_fake;
 
       try {
-        // Agregar el ID del profesor según la información que tengas en tu base de datos local.
         const commision = await getFunction(profesorId);
         setComision(commision);
       } catch (err) {
@@ -48,16 +68,15 @@ export default function Comision() {
     fetchCommision();
   }, []);
 
-  
   const comisionRendering = () => {
     return (
       <>
         <Card>
           <CardContent>
-            <Container >
+            <Container>
               <SubHeader titulo={tituloHeader} />
 
-              <Container  sx={conteinerButton}>
+              <Container sx={conteinerButton}>
                 {comision.map((it) => (
                   <Button
                     component={NavLink}
@@ -70,7 +89,12 @@ export default function Comision() {
                 ))}
               </Container>
             </Container>
-            <Button variant="contained" sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }} component={NavLink} to="/">
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+              component={NavLink}
+              to="/"
+            >
               Volver
             </Button>
           </CardContent>
@@ -79,7 +103,6 @@ export default function Comision() {
     );
   };
 
- 
   const errorRendering = () => {
     return (
       <Alert severity="warning">
@@ -94,6 +117,6 @@ export default function Comision() {
   return hasError
     ? errorRendering()
     : comision == null
-    ? loadingRendering()
-    : comisionRendering();
+      ? loadingRendering()
+      : comisionRendering();
 }
