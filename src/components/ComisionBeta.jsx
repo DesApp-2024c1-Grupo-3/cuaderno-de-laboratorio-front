@@ -22,7 +22,7 @@ import { getCursoPorIdProfesor } from '../services/curso';
 import { useParams, NavLink } from 'react-router-dom';
 import { SubHeader } from './General/SubHeader';
 import { getProfesorPorId } from '../services/Profesor';
-import { fontStyle } from '@mui/system';
+
 
 const profesorId = '6649226549ae2f87255cc248';
 const loadingRendering = () => {
@@ -55,7 +55,7 @@ export default function Comision() {
         setComision(comision);
         const data = await getProfesorPorId(profesorId);
         setProfesor(data);
-        console.log("Datos obtenidos:", data.apellido);
+
       } catch (err) {
         console.log('Ocurrió este error.', err);
         setHasError(true);

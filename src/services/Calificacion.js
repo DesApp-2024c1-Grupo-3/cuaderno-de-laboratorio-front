@@ -1,6 +1,6 @@
-import { postJsonToApi } from './utils';
+import { postMultipartToApi } from './utils';
 
 export async function crearCalificacion(body) {
-  const apiResponse = await postJsonToApi(`calificacion/`, body);
+  const apiResponse = await postMultipartToApi(`calificacion/`, body);
   return apiResponse;
 }
