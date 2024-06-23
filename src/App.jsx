@@ -1,6 +1,7 @@
 import { Container } from '@mui/material'; // Importa Container desde @mui/material;
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
+import LogIn from './components/LogIn';
 import { Header } from './components/General/Header';
 import { Footer } from './components/General/Footer';
 //import Comision from './components/Comision';
@@ -44,7 +45,12 @@ const App = () => {
             <Route path="/entregaAlumno/:idEntregaAlumno/:tpId" component={TpEntregaAlumno} />
             <Route path="/calificarGrupo/:idEntregaGrupal/:tpId" component={CalificarGrupo} />
             <Route path="/calificarAlumno/:idEntregaAlumno/:tpId" component={CalificarAlumno} />
+            {/*
+            Ruta home original
             <Route path="/" component={Home} />
+            */}
+            <Route path="/" component={LogIn} />
+            
           </Switch>
         </div>
 
