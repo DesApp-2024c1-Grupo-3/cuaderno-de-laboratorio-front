@@ -3,7 +3,7 @@ import {
   Box, Button, Card, CardContent, Container, Grid, IconButton, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Paper, Dialog, DialogTitle, DialogContent, DialogActions,
   List, ListItem, ListItemText, TextField, Checkbox
-  } from '@mui/material';
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -11,7 +11,7 @@ import { ModalCrearGrupos } from './ModalCrearGrupoBeta';
 import { ModalClonarGrupos } from './ModalClonarGrupoBeta';
 import { useParams, useHistory } from 'react-router-dom';
 import { getGrupoByCursoId, postEliminarGrupo } from '../../services/Grupo';
-import { getAlumnosByCursoId } from '../../services/Alumnos'; 
+import { getAlumnosByCursoId } from '../../services/Alumnos';
 import { SubHeader } from '../General/SubHeader';
 
 const AdministrarGrupos = () => {
@@ -53,11 +53,11 @@ const AdministrarGrupos = () => {
 
   const handleEditOpen = async (group) => {
     setSelectedGroup(group);
-   
+
     await fetchAlumnos(idCurso);
     setSelectedAlumnos(group.alumnos.map(alumno => alumno.id)); // Inicializa selectedAlumnos con los IDs de los alumnos del grupo seleccionado
     setOpenEdit(true);
-   
+
   };
 
   const handleEditClose = () => {
@@ -117,7 +117,7 @@ const AdministrarGrupos = () => {
     }
     fetchGrupos();
   }, [idCurso, show]);
-  
+
   const handleAlumnoSelection = (alumnoId) => {
     if (selectedAlumnos.includes(alumnoId)) {
       setSelectedAlumnos(selectedAlumnos.filter((id) => id !== alumnoId));
@@ -134,13 +134,13 @@ const AdministrarGrupos = () => {
           <SubHeader titulo="Administrar Grupos" />
           <Container
             maxWidth="xl"
-            sx={{ 
-              mt: 1, 
-              mb: 1, 
-              border: 'solid', 
-              borderWidth: '10px 20px 20px 10px', 
+            sx={{
+              mt: 1,
+              mb: 1,
+              border: 'solid',
+              borderWidth: '10px 20px 20px 10px',
               borderColor: 'rgba(0, 0, 0, 0.08)',
-              borderRadius: '1%' 
+              borderRadius: '1%'
             }}
           >
             <TableContainer component={Paper} sx={{ marginTop: '20px' }}>
@@ -177,8 +177,8 @@ const AdministrarGrupos = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Grid container 
-              spacing={2} 
+            <Grid container
+              spacing={2}
               justifyContent="space-between"
               marginTop='20px'
             >
@@ -220,7 +220,7 @@ const AdministrarGrupos = () => {
       <Dialog open={openView} onClose={handleViewClose}>
         <DialogTitle>Integrantes del Grupo</DialogTitle>
         <DialogContent>
-        {selectedGroup && (
+          {selectedGroup && (
             <List>
               <ListItem>
                 <ListItemText primary="Nombre" secondary={selectedGroup.nombre} />
@@ -243,7 +243,7 @@ const AdministrarGrupos = () => {
       <Dialog open={openEdit} onClose={handleEditClose}>
         <DialogTitle>Modificar Grupo</DialogTitle>
         <DialogContent>
-        {selectedGroup && (
+          {selectedGroup && (
             <List>
               <ListItem>
                 <ListItemText primary="Nombre" secondary={selectedGroup.nombre} />
@@ -260,7 +260,7 @@ const AdministrarGrupos = () => {
                 <ListItemText primary="Alumnos" />
                 <List>
                   {alumnos.map((alumno) => (
-                    <ListItem key={alumno._id}  onClick={() => handleAlumnoSelection(alumno._id)}>
+                    <ListItem key={alumno._id} onClick={() => handleAlumnoSelection(alumno._id)}>
                       <Checkbox
                         edge="start"
                         checked={selectedAlumnos.includes(alumno._id)}
@@ -294,8 +294,8 @@ const AdministrarGrupos = () => {
   return hasError
     ? errorRendering()
     : !grupos
-    ? loadingRendering()
-    : gruposRendering();
+      ? loadingRendering()
+      : gruposRendering();
 };
 
 export default AdministrarGrupos;

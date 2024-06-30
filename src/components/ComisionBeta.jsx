@@ -38,7 +38,7 @@ const getCuatrimestreYAnio = () => {
   } else if (mes >= 8 && mes <= 12) {
     cuatrimestre = `Segundo Cuatrimestre ${anio}`;
   } else {
-    cuatrimestre = `Fuera de período de cuatrimestre ${anio}`;
+    cuatrimestre = `Anterior ${anio}`;
   }
 
   return cuatrimestre;
