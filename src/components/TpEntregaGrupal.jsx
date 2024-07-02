@@ -16,17 +16,17 @@ const TpEntrega = () => {
   const [alumnos, setAlumnos] = useState([])
   const [nota, setNota] = useState('');
   const [comentario, setComentario] = useState('');
-  const [archivo, setArchivo] = useState(null);
+  const [archivos, setArchivos] = useState([]);
   const [hasError, setHasError] = useState(false);
-
+  const history = useHistory();
+ 
 /*   const [calificacionData, setCalificacionData] = useState({
     nota: '',
     comentario: '',
     archivo: null,
   }); */
   
-  const history = useHistory();
- 
+
 
  /*  useEffect(() => {
     const fetchCalificacion = async () => {
@@ -83,9 +83,9 @@ const TpEntrega = () => {
     }
   }; */
 
-
+  const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
-  const handleArchivoChange = (e) => setArchivo(e.target.files[0]);
+  const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
    /*
     = (e) =>  {  if (archivoCargado) {
       alert('Ya se ha cargado un archivo para este grupo');
@@ -97,7 +97,10 @@ const TpEntrega = () => {
   const handleSave = async () => {
     try {
       const formData = new FormData();
-      formData.append('file', archivo);
+      //formData.append('file', archivo);
+      archivos.forEach((archivo, index) => {
+        formData.append('file', archivo);
+      });
       formData.append('comentarioAlum', comentario);
       formData.append('tpId', tpId);
       formData.append('alumnoId', idEntregaGrupal);
@@ -107,7 +110,7 @@ const TpEntrega = () => {
       alert('Calificación guardada con éxito');
       history.goBack();
     } catch (err) {
-      console.error('Error al guardar la calificación', err);
+      console.error('Error al guardar', err);
     }
   };
   const entregaRendering = () => (
@@ -162,12 +165,22 @@ const TpEntrega = () => {
                 Entrega de documento - Un solo integrante del grupo puede hacer la carga.
               </Typography>
               <Button variant="contained" component="label">
-                Subir archivo
-                <input type="file" hidden onChange={handleArchivoChange} />
+                Subir archivos
+                <input type="file" hidden multiple onChange={handleArchivoChange} />
               </Button>
-              {archivo && <Typography variant="body2">{archivo.name}</Typography>}
+              {archivos && archivos.map((archivo, index) => (
+                <Typography variant="body2" key={index}>{archivo.name}</Typography>
+              ))}
             </Box>
             <Box mt={2}>
+         ||   {nota && <TextField
+                label="Nota"
+                value={nota}
+                onChange={handleNotaChange}
+                variant="outlined"
+                fullWidth
+                margin="normal"
+              />}
               <TextField
                 label="Comentario"
                 value={comentario}

@@ -5,7 +5,6 @@ import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
  } from '@mui/material';
 import { getAlumnoById } from '../services/Alumnos';
 import {crearCalificacion} from '../services/Calificacion';
-import { SubHeader } from './General/SubHeader';
 
 const TpEntrega = () => {
   const { idEntregaAlumno, tpId} = useParams();
@@ -15,7 +14,7 @@ const TpEntrega = () => {
   const [nota, setNota] = useState('');
   const [alumno, setAlumno] = useState([]);
   const [comentario, setComentario] = useState('');
-  const [archivo, setArchivo] = useState(null);
+  const [archivos, setArchivos] = useState([]);
   const [hasError, setHasError] = useState(false);
   
   const history = useHistory();
@@ -36,42 +35,35 @@ const TpEntrega = () => {
 
   const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
+  const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
 
   const handleSave = async () => {
-    const calificacionData = {
-      archivosSubidos: [], // Ajustar según tus necesidades
-      comentarioAlumno: '',
-      devolucionProf: comentario,
-      calificacion: parseFloat(nota),
-      tpId: tpId, // Proporcionar el ID del Trabajo Práctico si está disponible
-      alumnoId: idEntregaAlumno,
-      grupoId: '', // Proporcionar el ID del grupo si está disponible
-    };
     try {
-      await crearCalificacion(idEntregaAlumno, calificacionData);
+      const formData = new FormData();
+      //formData.append('file', archivo);
+      archivos.forEach((archivo, index) => {
+        formData.append('file', archivo);
+      });
+      formData.append('comentarioAlum', comentario);
+      formData.append('tpId', tpId);
+      formData.append('alumnoId', idEntregaGrupal);
+      formData.append('grupoId', grupo._id);
+
+      await crearCalificacion(formData);
       alert('Calificación guardada con éxito');
       history.goBack();
     } catch (err) {
-      console.error('Error al guardar la calificación', err);
+      console.error('Error al guardar', err);
     }
   };
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = archivo.url;
-    link.download = archivo.nombre;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-  const handleEntrega = () => {
-    history.push(`/calificaion/${idEntrega}/${profesorId}`);
-  };
-
+  
   const tpRendering = () => (
     <Box>
       <Card sx={{ mb:2}}>
         <CardContent>
-          <SubHeader titulo="Ver entrega" />
+          <Typography variant="h6" component="div" gutterBottom>
+              Entrega Individual
+          </Typography> 
           <Container 
             maxWidth="xl"
             sx={{ 
@@ -112,23 +104,25 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-              Entrega de Trabajo Practico
+                Entrega de documento 
               </Typography>
-              {archivo && (
-                <Button variant="contained" onClick={handleDownload}>
-                  Descargar {archivo.nombre}
-                </Button>
-              )}
+              <Button variant="contained" component="label">
+                Subir archivos
+                <input type="file" hidden multiple onChange={handleArchivoChange} />
+              </Button>
+              {archivos && archivos.map((archivo, index) => (
+                <Typography variant="body2" key={index}>{archivo.name}</Typography>
+              ))}
             </Box>
             <Box mt={2}>
-              <TextField
+              {nota && <TextField
                 label="Nota"
                 value={nota}
                 onChange={handleNotaChange}
                 variant="outlined"
                 fullWidth
                 margin="normal"
-              />
+              />}
               <TextField
                 label="Comentario"
                 value={comentario}
@@ -160,7 +154,7 @@ const TpEntrega = () => {
                   sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
                   onClick={handleSave}
                 >
-                  Cargar Entrega
+                  Cargar TP
                 </Button>
               </Grid>              
             </Grid>
