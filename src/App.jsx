@@ -1,4 +1,4 @@
-import { Container} from  '@mui/material'; // Importa Container desde @mui/material;
+import { Container } from '@mui/material'; // Importa Container desde @mui/material;
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
 import { Header } from './components/General/Header';
@@ -23,7 +23,7 @@ import TpEntregaAlumno from './components/TpEntregaAlumno';
 const App = () => {
   return (
     <Router>
-      <Container  sx={{ // Utiliza sx prop para estilos en línea
+      <Container sx={{ // Utiliza sx prop para estilos en línea
         marginTop: '0px',
         minHeight: '100vh',
         display: 'flex',
@@ -32,14 +32,14 @@ const App = () => {
         <Header />
         <div sx={{ flex: '1' }}> {/* Utiliza sx prop para estilos en línea */}
           <Switch>
-                   
+
             <Route path="/comision/actual" component={ComisionBeta} />
             <Route path="/tps/:idCurso/:profesorId" component={TpsBeta} />
             <Route path="/crearTps/:idCurso/:profesorId" component={CrearTpsBeta} />
             <Route path="/Administrar_Grupos/:idCurso" component={AdministrarGrupos} />
             <Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />
-            <Route path="/alumno/curso" component={CursoAlumno} />  
-            <Route path="/tpsAlumno/:idCurso/:alumnoId" component={MostrarTpsAlumno} /> 
+            <Route path="/alumno/curso" component={CursoAlumno} />
+            <Route path="/tpsAlumno/:idCurso/:alumnoId" component={MostrarTpsAlumno} />
             <Route path="/entregaGrupo/:idEntregaGrupal/:tpId" component={TpEntregaGrupal} />
             <Route path="/entregaAlumno/:idEntregaAlumno/:tpId" component={TpEntregaAlumno} />
             <Route path="/calificarGrupo/:idEntregaGrupal/:tpId" component={CalificarGrupo} />

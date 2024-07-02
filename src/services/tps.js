@@ -86,3 +86,9 @@ export async function deleteTp(tpId) {
     // Manejo de errores según sea necesario
   }
 }
+
+// Creada para traer los datos del tp
+export async function getTpId(id) {
+  const apiResponse = await getJsonFromApi(`tps/${id}`);
+  return apiResponse;
+}
