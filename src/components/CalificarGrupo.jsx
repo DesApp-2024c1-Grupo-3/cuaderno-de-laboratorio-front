@@ -205,11 +205,11 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                Documento {comAlumno !== 'El Trabajo practico no fue entregado' ? 'Entregado' : 'no Entregado'}
+                Documento {comAlumno !== 'El Trabajo practico no fue entregado' ? 'entregado' : 'no entregado'}
               </Typography>
 
               <Typography variant="h6">
-                Comentario grupal: {comAlumno}
+                {comAlumno !== 'El Trabajo practico no fue entregado' ? "Comentario grupal: " + comAlumno : 'El trabajo practico no fue entregado'}
               </Typography>
 
               {archivo && (
