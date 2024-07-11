@@ -31,8 +31,15 @@ const TpEntrega = () => {
         const gruposData = await getGrupoPorId(idEntregaGrupal);
         setGrupo(gruposData);
 
-        const califData = await getComAlumnByCalifId(idEntregaGrupal,tpId);
-        setComentarioAlumno(califData);
+        try {
+          const califData = await getComAlumnByCalifId(idEntregaGrupal, tpId);
+          setComentarioAlumno(califData || 'El Trabajo practico no fue entregado');
+        } catch (error) {
+          if (error.response && error.response.status === 404 || error.response.status === 500) {
+            setComentarioAlumno('El Trabajo practico no fue entregado');
+          }
+        }
+        console.log(comAlumno)
 
         setComentario(gruposData.comentario || '');
 
@@ -107,7 +114,7 @@ const TpEntrega = () => {
     return new Date(fecha).toLocaleDateString('es-ES', options);
   };
   const titulo = tp ? `${tp.nombre}` : 'Cargando...';
-  
+
 
 
 
@@ -198,14 +205,20 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                Documento Entregado
+                Documento {comAlumno !== 'El Trabajo practico no fue entregado' ? 'Entregado' : 'no Entregado'}
               </Typography>
+
               <Typography variant="h6">
-                  Comentario grupal: {comAlumno}
+                Comentario grupal: {comAlumno}
               </Typography>
+
               {archivo && (
-                <Button variant="contained" onClick={handleDownload}>
-                  Descargar {archivo.nombre}
+                <Button
+                  variant="contained"
+                  onClick={handleDownload}
+                  disabled={!archivo || comAlumno === 'El Trabajo practico no fue entregado'}
+                >
+                  Descargar {archivo ? archivo.nombre : ''}
                 </Button>
               )}
             </Box>

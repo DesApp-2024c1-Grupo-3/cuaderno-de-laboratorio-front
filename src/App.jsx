@@ -12,7 +12,7 @@ import CrearTpsBeta from './components/CrearTpsBeta';
 import AdministrarGrupos from './components/Profesores/AdmGrupoBeta';
 import TpDetalleBeta from './components/TpDetalleBeta';
 
-import CalificarGrupo from './components/CalificarGrupoBeta';
+import CalificarGrupo from './components/CalificarGrupo';
 import CalificarAlumno from './components/CalificarAlumno';
 //---------------------------Componentes Alumno---------------------------------------
 import MostrarTpsAlumno from './components/MostrarTpsAlumno'
@@ -50,7 +50,7 @@ const App = () => {
             <Route path="/" component={Home} />
             */}
             <Route path="/" component={LogIn} />
-            
+
           </Switch>
         </div>
 
