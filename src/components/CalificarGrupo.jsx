@@ -8,17 +8,17 @@ import {
 
 import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
 import { getTpId } from '../services/tps';
+import { getComAlumnByCalifId } from '../services/Calificacion';
 
 const TpEntrega = () => {
   const { idEntregaGrupal, tpId } = useParams();
   const [tp, setTp] = useState(null);
 
-  const [nombreGrupo, setNombreGrupo] = useState(null);
-
   const [grupo, setGrupo] = useState(null);
   const [nota, setNota] = useState('');
 
   const [comentario, setComentario] = useState('');
+  const [comAlumno, setComentarioAlumno] = useState('');
   const [archivo, setArchivo] = useState(null);
   const [hasError, setHasError] = useState(false);
 
@@ -28,10 +28,11 @@ const TpEntrega = () => {
     async function fetchTp() {
       try {
 
-
         const gruposData = await getGrupoPorId(idEntregaGrupal);
         setGrupo(gruposData);
 
+        const califData = await getComAlumnByCalifId(idEntregaGrupal,tpId);
+        setComentarioAlumno(califData);
 
         setComentario(gruposData.comentario || '');
 
@@ -62,7 +63,6 @@ const TpEntrega = () => {
   const handleSave = async () => {
     const calificacionData = {
       archivosSubidos: [], // Ajustar según tus necesidades
-      comentarioAlumno: '',
       devolucionProf: comentario,
       calificacion: parseFloat(nota),
       tpId: tpId, // Proporcionar el ID del Trabajo Práctico si está disponible
@@ -107,6 +107,7 @@ const TpEntrega = () => {
     return new Date(fecha).toLocaleDateString('es-ES', options);
   };
   const titulo = tp ? `${tp.nombre}` : 'Cargando...';
+  
 
 
 
@@ -198,6 +199,9 @@ const TpEntrega = () => {
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
                 Documento Entregado
+              </Typography>
+              <Typography variant="h6">
+                  Comentario grupal: {comAlumno}
               </Typography>
               {archivo && (
                 <Button variant="contained" onClick={handleDownload}>
