@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
+import {
+  Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 } from '@mui/material';
-import { getGrupoPorId, getCalificacionById } from '../services/Grupo'; // Asegúrate de que esta función esté implementada en el servicio
-import { crearCalificacion } from '../services/Calificacion';
+import { getGrupoPorId } from '../services/Grupo'; // Asegúrate de que esta función esté implementada en el servicio
+import { crearCalificacion, getCalificacionDetails  } from '../services/Calificacion';
 import { SubHeader } from './General/SubHeader';
 
 const TpEntrega = () => {
@@ -22,10 +23,10 @@ const TpEntrega = () => {
         const grupoData = await getGrupoPorId(idEntregaGrupal);
         setGrupo(grupoData);
 
-        const calificacionData = await getCalificacionById(tpId);
+        const calificacionData = await getCalificacionDetails(tpId, idEntregaGrupal);
         if (calificacionData) {
           setComentario(calificacionData.comentarioAlum || '');
-          setNota(calificacionData.calificacion || '');
+        
           if (calificacionData.file && calificacionData.file.length > 0) {
             setArchivo(calificacionData.file[0]); // Asumimos que solo hay un archivo
           }
@@ -42,16 +43,11 @@ const TpEntrega = () => {
 
   const handleSave = async () => {
     const calificacionData = {
-      archivosSubidos: [],
-      comentarioAlumno: '',
       devolucionProf: comentario,
       calificacion: parseFloat(nota),
-      tpId: tpId,
-      alumnoId: '',
-      grupoId: idEntregaGrupal,
     };
     try {
-      await crearCalificacion(idEntregaGrupal, calificacionData);
+      await postNotaCalificacion(idCalificacion);
       alert('Calificación guardada con éxito');
       history.goBack();
     } catch (err) {
@@ -61,7 +57,7 @@ const TpEntrega = () => {
 
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = `http://localhost:8080/uploads/${archivo}`; // Ajustar la URL según la configuración del backend
+    link.href = `http://localhost:8080/download/${archivo}`;
     link.download = archivo;
     document.body.appendChild(link);
     link.click();

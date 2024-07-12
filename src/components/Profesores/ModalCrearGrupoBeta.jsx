@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { getTodosLosAlumnos } from '../../services/Alumnos';
 import { postCrearGrupo, getGrupoByCursoId } from '../../services/Grupo';
 
-export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGrupos }) => {
+export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
   const [listAlumnos, setListAlumnos] = useState([]);
   const [hasError, setHasError] = useState(false);
   const [nombreGrupo, setNombreGrupo] = useState('');
@@ -45,7 +45,7 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
       const response = await postCrearGrupo(grupoData, idCurso);
       if (response.status === 201) {
         window.alert('Grupo creado correctamente');
-        actualizarListaGrupos();
+        
         onClose();
       } else {
         console.error('Error al crear grupo');
@@ -59,20 +59,24 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
     try {
       const alumnos = await getTodosLosAlumnos(idCurso);
       setListAlumnos(alumnos);
+      fetchGrupos(alumnos);
     } catch (err) {
       console.log('Ocurrió este error:', err);
       setHasError(true);
     }
   };
-  const fetchGrupos = async () => {
+  const fetchGrupos = async (alumnos) => {
     try {
-      const grupos = await getGrupoPorCurso(idCurso); 
+      const grupos = await getGrupoByCursoId(idCurso); 
       const alumnosAsignados = grupos.reduce((acc, grupo) => {
-        return acc.concat(grupo.alumnos);
+        return acc.concat(grupo.alumnos.map(alumno => alumno._id));
       }, []);
-      const alumnosDisponibles = listAlumnos.filter(
-        (alumno) => !alumnosAsignados.some((a) => a.id === alumno.id)
-      );
+      console.log("Son alumnos Asignados:", alumnosAsignados);
+     
+      const alumnosDisponibles = alumnos.filter(
+        alumno => !alumnosAsignados.includes(alumno._id)
+      ); 
+      console.log("Este me quedan:",alumnosDisponibles)
       setListAlumnos(alumnosDisponibles);
     } catch (err) {
       console.log('Ocurrió este error:', err);
@@ -83,7 +87,7 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso, actualizarListaGru
   useEffect(() => {
     if (show) {
       fetchAlumnos();
-      fetchGrupos();
+      
     }
   }, [show]);
 
@@ -151,5 +155,5 @@ ModalCrearGrupos.propTypes = {
   show: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   idCurso: PropTypes.string.isRequired,
-  actualizarListaGrupos: PropTypes.func.isRequired,
+ // actualizarListaGrupos: PropTypes.func.isRequired,
 };

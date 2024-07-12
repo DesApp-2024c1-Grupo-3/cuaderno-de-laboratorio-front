@@ -1,20 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Box,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  Paper,
-  Alert
+import { Button, Card, CardContent, Container, Box, Grid, Table, TableBody, TableCell,
+  TableContainer, TableHead, TableRow, Typography, Paper, Alert
 } from '@mui/material';
 import { getDataFromBackend } from '../constants/curso';
 import { getCurso as getTodosLosUsuarios_fake } from '../services/curso-fake';
@@ -24,7 +10,7 @@ import { SubHeader } from './General/SubHeader';
 import { getProfesorPorId } from '../services/Profesor';
 
 
-const profesorId = '667759deca2ecc5c938c2c46';
+const profesorId = '669028aeb16ac395eec3432c';
 
 // define el cuatrimestre y el año
 const getCuatrimestreYAnio = () => {
@@ -111,9 +97,9 @@ export default function Comision() {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Comisiones</TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Descripción</TableCell>
-                    <TableCell style={{ width: '15%', fontSize: '15px' }}>Acciones</TableCell>
+                    <TableCell sx={{ width: '35%', fontSize: '15px' }}>Materia</TableCell>
+                    <TableCell sx={{ width: '35%', fontSize: '15px' }}>Comisiones</TableCell>
+                    <TableCell sx={{ width: '35%', fontSize: '15px' }}>Trabajos Practicos</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -126,7 +112,7 @@ export default function Comision() {
                       <TableCell>{it.comision}</TableCell>
                       <TableCell>
 
-                        <Button variant="contained"
+                        <Button 
                           sx={{
                             backgroundColor: '#c5e1a5',
                             color: '#000000',
@@ -135,7 +121,7 @@ export default function Comision() {
                             '&:hover': { backgroundColor: '#b0d38a' }
                           }}
                           component={NavLink}
-                          to={`/tps/${it._id}/${profesorId}`}>Detalles</Button>
+                          to={`/tps/${it._id}/${profesorId}`}>Trabajos Practicos</Button>
                       </TableCell>
                     </TableRow>
                   ))}

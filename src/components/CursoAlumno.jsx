@@ -10,7 +10,7 @@ import { getCursosByAlumnoId } from '../services/Alumnos';
 
 
 const AlumnoCursos = () => {
-  const alumnoId = '667759deca2ecc5c938c2c06'; //Elena Rodriguez
+  const alumnoId = '669028aeb16ac395eec342ec'; 
 
   const { idAlumno } = useParams();
   const [dato, setDato] = useState([]);
@@ -47,7 +47,7 @@ const AlumnoCursos = () => {
             }}
           >
             <Typography variant="h6" component="div" gutterBottom>
-
+              {dato.nombre}
             </Typography>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">

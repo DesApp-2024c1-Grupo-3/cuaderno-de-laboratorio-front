@@ -47,7 +47,7 @@ export default function Tps() {
 
   
   const handleVolver = () => {
-    history.push(`/comision`);
+    history.push(`/comision/actual`);
   };
 
   const handleAdministrarGrupo = () => {

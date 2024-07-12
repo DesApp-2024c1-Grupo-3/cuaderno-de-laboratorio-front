@@ -8,13 +8,13 @@ import {
 
 import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
 import { getTpId } from '../services/tps';
+import { crearCalificacion, getCalificacionDetails  } from '../services/Calificacion';
 
 const TpEntrega = () => {
   const { idEntregaGrupal, tpId } = useParams();
   const [tp, setTp] = useState(null);
 
-  const [nombreGrupo, setNombreGrupo] = useState(null);
-
+  
   const [grupo, setGrupo] = useState(null);
   const [nota, setNota] = useState('');
 
@@ -31,9 +31,6 @@ const TpEntrega = () => {
 
         const gruposData = await getGrupoPorId(idEntregaGrupal);
         setGrupo(gruposData);
-
-
-        setComentario(gruposData.comentario || '');
 
         const notaData = await updateNotaEntrega(idEntregaGrupal)
         setNota(notaData.nota || '');

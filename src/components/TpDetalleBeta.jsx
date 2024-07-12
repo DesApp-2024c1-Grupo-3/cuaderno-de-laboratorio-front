@@ -16,7 +16,6 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import { getAlumnosByCursoId } from '../services/Alumnos';
 import { getTpPorId, getCursoPorId, getGruposByTpId } from '../services/tps';
-import { SubHeader } from './General/SubHeader';
 
 const TpDetalle = () => {
   const { idCurso, tpId } = useParams();
@@ -32,7 +31,7 @@ const TpDetalle = () => {
       try {
         if (tpId) {
           const tpData = await getTpPorId(idCurso, tpId);
-          console.log(tpData);
+          //console.log(tpData);
           setTp(tpData);
           const cursoData = await getCursoPorId(idCurso);
           setCurso(cursoData);
@@ -59,8 +58,8 @@ const TpDetalle = () => {
     return (
       <Grid container justifyContent="center" alignItems="center" >
         <Typography variant="h4" component="div">
-          <span style={{ color: '#272727' }}>{titulo} </span>
-          <span style={{ fontWeight: 'bold', color: '#272727' }}>{nombreTP}</span>
+          <span sx={{ color: '#272727' }}>{titulo} </span>
+          <span sx={{ fontWeight: 'bold', color: '#272727' }}>{nombreTP}</span>
         </Typography>
       </Grid>
     );
@@ -78,12 +77,8 @@ const TpDetalle = () => {
     <Box>
       <Card sx={{ mb: 2 }}>
         <CardContent>
-          <div>
-            <SubHeader titulo="Detalle de:" nombreTP={tp.nombre} />
-
-          </div>
-
-          <Grid container alignItems="center">
+          <SubHeader titulo="Detalle del TP:" nombreTP={tp.nombre} />
+          <Grid container spacing={2} alignItems="center">
             <Grid item xs={3}>
               <Typography variant="body1" color="textSecondary">
                 Consigna:
@@ -96,35 +91,23 @@ const TpDetalle = () => {
             </Grid>
           </Grid>
 
-          <Grid container alignItems="center">
+          <Grid container spacing={2} alignItems="center">
             <Grid item xs={3}>
               <Typography variant="body1" color="textSecondary">
-                Fecha de inicio:
+                Fechas:
               </Typography>
             </Grid>
-            <Grid item xs={9}>
+            <Grid item xs={4}>
               <Typography variant="body2" component="div">
-                {formatFecha(tp.fechaInicio)}
+                Inicio: {formatFecha(tp.fechaInicio)}
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body2" component="div">
+                Fin: {formatFecha(tp.fechaFin)}
               </Typography>
             </Grid>
           </Grid>
-
-          <Grid container alignItems="center">
-            <Grid item xs={3}>
-              <Typography variant="body1" color="textSecondary">
-                Fecha de fin:
-              </Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Typography variant="body2" component="div">
-                {formatFecha(tp.fechaFin)}
-              </Typography>
-            </Grid>
-          </Grid>
-
-
-
-
           <Container
             maxWidth="xl"
             sx={{
@@ -136,8 +119,6 @@ const TpDetalle = () => {
               borderRadius: '1%'
             }}
           >
-
-
             <Typography variant="h6" component="div" gutterBottom>
               Grupos o alumnos
             </Typography>
@@ -211,36 +192,32 @@ const TpDetalle = () => {
               </Table>
             </TableContainer>
             {tp && curso && (
-              <div marginTop="5%">
-                <Grid container alignItems="center">
-                  <Grid item xs={3}>
-                    <Typography variant="body1" color="textSecondary">
-                      Cantidad de alumnos:
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <Typography variant="body2" component="div">
-                      {curso.alumnos.length}
-                    </Typography>
-                  </Grid>
+            <div style={{ marginTop: '5%' }}>
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={3}>
+                  <Typography variant="body1" color="textSecondary">
+                    Cantidad de alumnos:
+                  </Typography>
                 </Grid>
-                <Grid container alignItems="center">
-                  <Grid item xs={3}>
-                    <Typography variant="body1" color="textSecondary">
-                      Cantidad de grupos:
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <Typography variant="body2" component="div">
-                      {tp.grupos.length}
-                    </Typography>
-                  </Grid>
+                <Grid item xs={3}>
+                  <Typography variant="body2" component="div">
+                    {curso.alumnos.length}
+                  </Typography>
                 </Grid>
-
-
-              </div>
-            )}
-            <Grid container
+                <Grid item xs={3}>
+                  <Typography variant="body1" color="textSecondary">
+                    Cantidad de grupos:
+                  </Typography>
+                </Grid>
+                <Grid item xs={3}>
+                  <Typography variant="body2" component="div">
+                    {tp.grupos.length}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </div>
+          )}
+          <Grid container
               spacing={2}
               justifyContent="space-between"
               marginTop='20px'

@@ -173,7 +173,7 @@ const TpEntrega = () => {
               ))}
             </Box>
             <Box mt={2}>
-         ||   {nota && <TextField
+              {nota && <TextField
                 label="Nota"
                 value={nota}
                 onChange={handleNotaChange}

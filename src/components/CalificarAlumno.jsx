@@ -4,13 +4,15 @@ import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
  } from '@mui/material';
 import { getAlumnoById } from '../services/Alumnos';
+import { getTpId } from '../services/tps';
 import {crearCalificacion} from '../services/Calificacion';
 import { SubHeader } from './General/SubHeader';
 
 const TpEntrega = () => {
   const { idEntregaAlumno, tpId} = useParams();
-  console.log(idEntregaAlumno);
+ 
   const [nota, setNota] = useState('');
+  const [tp, setTp] = useState(null);
   const [alumno, setAlumno] = useState([]);
   const [comentario, setComentario] = useState('');
   const [archivo, setArchivo] = useState(null);
@@ -21,6 +23,15 @@ const TpEntrega = () => {
   useEffect(() => {
     async function fetchTp() {
       try {
+      
+        if (tpId) {
+          const tpData = await getTpId(tpId);
+          setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
+
+        } else {
+          console.error('tpId es undefined');
+          setHasError(true);
+        }
         const alumnoData = await getAlumnoById(idEntregaAlumno);
         setAlumno(alumnoData);
       } catch (err) {
@@ -28,7 +39,17 @@ const TpEntrega = () => {
       }
     }
     fetchTp();
-  }, [idEntregaAlumno]);
+  }, [idEntregaAlumno, tpId]);
+  const SubHeader = ({ titulo, nombreTP }) => {
+    return (
+      <Grid container justifyContent="center" alignItems="center" >
+        <Typography variant="h5" component="div">
+          <span style={{ color: '#272727' }}>{titulo} </span>
+          <span style={{ fontWeight: 'bold', color: '#272727' }}>{nombreTP}</span>
+        </Typography>
+      </Grid>
+    );
+  };
 
   const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
@@ -62,12 +83,14 @@ const TpEntrega = () => {
   const handleEntrega = () => {
     history.push(`/calificaion/${idEntrega}/${profesorId}`);
   };
-
+  const titulo = tp ? `${tp.nombre}` : 'Cargando...';
+  
   const tpRendering = () => (
     <Box>
       <Card sx={{ mb:2}}>
         <CardContent>
-          <SubHeader titulo="Ver entrega" />
+        <SubHeader titulo="Trabajo Practico:" nombreTP={titulo} />
+         
           <Container 
             maxWidth="xl"
             sx={{ 
@@ -80,8 +103,8 @@ const TpEntrega = () => {
               }}
             >
             <Typography variant="h6" component="div" gutterBottom>
-            Tp Moderno
-            </Typography>  
+                Tp individual
+              </Typography>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>

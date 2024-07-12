@@ -8,7 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { ModalCrearGrupos } from './ModalCrearGrupoBeta';
-import { ModalClonarGrupos } from './ModalClonarGrupoBeta';
+import { ModalModificarGrupo } from './ModalModificarGrupoBeta';
 import { useParams, useHistory } from 'react-router-dom';
 import { getGrupoByCursoId, postEliminarGrupo } from '../../services/Grupo';
 import { getAlumnosByCursoId } from '../../services/Alumnos';
@@ -20,19 +20,9 @@ const AdministrarGrupos = () => {
   const [grupos, setGrupos] = useState([]);
   const [hasError, setHasError] = useState(false);
   const [show, setShow] = useState(false);
-  const [showClonar, setShowClonar] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [openView, setOpenView] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-  const [alumnos, setAlumnos] = useState([]);
-  const [selectedAlumnos, setSelectedAlumnos] = useState([]);
-
-  const hideModalClonar = () => {
-    setShowClonar(false);
-  };
-  const openModalClonar = () => {
-    setShowClonar(true);
-  };
 
   const hideModal = () => {
     setShow(false);
@@ -51,28 +41,14 @@ const AdministrarGrupos = () => {
     setSelectedGroup(null);
   };
 
-  const handleEditOpen = async (group) => {
+  const handleEditOpen = (group) => {
     setSelectedGroup(group);
-
-    await fetchAlumnos(idCurso);
-    setSelectedAlumnos(group.alumnos.map(alumno => alumno.id)); // Inicializa selectedAlumnos con los IDs de los alumnos del grupo seleccionado
     setOpenEdit(true);
-
   };
 
   const handleEditClose = () => {
     setOpenEdit(false);
     setSelectedGroup(null);
-  };
-
-  const handleSaveChanges = async () => {
-    try {
-      await actualizarListaAlumnos(selectedGroup._id, selectedAlumnos);
-      handleEditClose();
-      actualizarListaGrupos();
-    } catch (error) {
-      console.error('Error al guardar los cambios:', error);
-    }
   };
 
   const deleteGrup = async (id) => {
@@ -84,7 +60,7 @@ const AdministrarGrupos = () => {
       console.error('Error al eliminar el grupo:', error);
     }
   };
-
+ 
   const actualizarListaGrupos = async () => {
     try {
       const gruposActualizados = await getGrupoByCursoId(idCurso);
@@ -93,18 +69,7 @@ const AdministrarGrupos = () => {
       console.error('Error al actualizar la lista de grupos:', error);
     }
   };
-
-  const fetchAlumnos = async (cursoId) => {
-    try {
-      const alumnos = await getAlumnosByCursoId(cursoId);
-      const alumnosEnGrupos = grupos.flatMap(grupo => grupo.alumnos.map(alumno => alumno.id));
-      const alumnosDisponibles = alumnos.filter(alumno => !alumnosEnGrupos.includes(alumno.id));
-      setAlumnos(alumnosDisponibles);
-    } catch (error) {
-      console.error('Error al obtener la lista de alumnos:', error);
-    }
-  };
-
+ 
   useEffect(() => {
     async function fetchGrupos() {
       try {
@@ -117,15 +82,6 @@ const AdministrarGrupos = () => {
     }
     fetchGrupos();
   }, [idCurso, show]);
-
-  const handleAlumnoSelection = (alumnoId) => {
-    if (selectedAlumnos.includes(alumnoId)) {
-      setSelectedAlumnos(selectedAlumnos.filter((id) => id !== alumnoId));
-    } else {
-      setSelectedAlumnos([...selectedAlumnos, alumnoId]);
-      console.log(setSelectedAlumnos)
-    }
-  };
 
   const gruposRendering = () => (
     <Box display="flex" flexDirection="column">
@@ -177,11 +133,7 @@ const AdministrarGrupos = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Grid container
-              spacing={2}
-              justifyContent="space-between"
-              marginTop='20px'
-            >
+            <Grid container spacing={2} justifyContent="space-between" marginTop="20px">
               <Grid item>
                 <Button
                   variant="contained"
@@ -205,12 +157,14 @@ const AdministrarGrupos = () => {
               show={show}
               closeModal={hideModal}
               idCurso={idCurso}
-              actualizarListaGrupos={actualizarListaGrupos}
-              alumnosDisponibles={alumnos} // Pasamos los alumnos disponibles al modal de creación
+              
             />
-            <ModalClonarGrupos
-              show={showClonar}
-              closeModal={hideModalClonar}
+            <ModalModificarGrupo
+              show={openEdit}
+              closeModal={handleEditClose}
+              idCurso={idCurso}
+              actualizarListaGrupos={actualizarListaGrupos}
+              grupoParaModificar={selectedGroup}
             />
           </Container>
         </CardContent>
@@ -236,48 +190,6 @@ const AdministrarGrupos = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleViewClose} color="primary">Cerrar</Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Modal Modificar */}
-      <Dialog open={openEdit} onClose={handleEditClose}>
-        <DialogTitle>Modificar Grupo</DialogTitle>
-        <DialogContent>
-          {selectedGroup && (
-            <List>
-              <ListItem>
-                <ListItemText primary="Nombre" secondary={selectedGroup.nombre} />
-              </ListItem>
-              <ListItem>
-                <TextField
-                  fullWidth
-                  label="Nombre del Grupo"
-                  value={selectedGroup.nombre}
-                  onChange={(e) => setSelectedGroup({ ...selectedGroup, nombre: e.target.value })}
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText primary="Alumnos" />
-                <List>
-                  {alumnos.map((alumno) => (
-                    <ListItem key={alumno._id} onClick={() => handleAlumnoSelection(alumno._id)}>
-                      <Checkbox
-                        edge="start"
-                        checked={selectedAlumnos.includes(alumno._id)}
-                        tabIndex={-1}
-                        disableRipple
-                      />
-                      <ListItemText primary={`${alumno.nombre} ${alumno.apellido}`} />
-                    </ListItem>
-                  ))}
-                </List>
-              </ListItem>
-            </List>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleEditClose} color="primary">Cancelar</Button>
-          <Button onClick={handleSaveChanges} color="primary">Guardar</Button>
         </DialogActions>
       </Dialog>
     </Box>

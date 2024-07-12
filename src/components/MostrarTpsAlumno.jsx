@@ -12,9 +12,6 @@ const AlumnoTps = () => {
   const { idCurso, alumnoId} = useParams();
   const [dato, setDato] = useState([]);
   const [data, setData] = useState(null);
-  const [grupoId, setGrupoId] = useState(null); // Nueva variable de estado para el ID del grupo
-  console.log(alumnoId);
-
   const history = useHistory();
 
   useEffect(() => {
