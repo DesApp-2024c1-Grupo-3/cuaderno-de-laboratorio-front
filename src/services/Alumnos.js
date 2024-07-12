@@ -1,8 +1,14 @@
 import { getJsonFromApi } from './utils';
 
-export async function getTodosLosAlumnos(idCurso) {
-  const apiResponse = await getJsonFromApi(`curso/${idCurso}/alumnos`);
-  return apiResponse.alumnos;
+export async function getTodosLosAlumnos() {
+  const apiResponse = await getJsonFromApi(`alumnos/`);
+  return apiResponse;
+}
+
+export async function GetIdAlumnoByDNI(dni) {
+  // creada para buscar id almno con dni , si no se usa, se borra
+  const apiResponse = await getJsonFromApi(`alumno/${dni}`);
+  return apiResponse;
 }
 
 export async function getAlumnoPorId(id) {

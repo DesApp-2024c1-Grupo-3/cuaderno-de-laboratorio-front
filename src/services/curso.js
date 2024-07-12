@@ -2,7 +2,7 @@ import { getJsonFromApi } from './utils';
 
 export async function getTodosLasCursos() {
   const apiResponse = await getJsonFromApi('/profesor/:profesorId/cursos');
-  return apiResponse.data;
+  return apiResponse;
 }
 
 export async function getCursoPorIdProfesor(id) {
