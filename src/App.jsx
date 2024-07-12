@@ -1,6 +1,7 @@
 import { Container } from '@mui/material'; // Importa Container desde @mui/material;
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
+import LogIn from './components/LogIn';
 import { Header } from './components/General/Header';
 import { Footer } from './components/General/Footer';
 
@@ -11,6 +12,7 @@ import CrearTpsBeta from './components/CrearTpsBeta';
 import AdministrarGrupos from './components/Profesores/AdmGrupoBeta';
 import TpDetalleBeta from './components/TpDetalleBeta';
 
+import CalificarGrupo from './components/CalificarGrupo';
 import CalificarGrupo from './components/CalificarGrupo';
 import CalificarAlumno from './components/CalificarAlumno';
 //---------------------------Componentes Alumno---------------------------------------
@@ -47,7 +49,14 @@ const App = () => {
             <Route path="/entregaGrupo/:idEntregaGrupal/:tpId" component={TpEntregaGrupal} />
             <Route path="/entregaAlumno/:idEntregaAlumno/:tpId" component={TpEntregaAlumno} />
            
+            <Route path="/calificarGrupo/:idEntregaGrupal/:tpId" component={CalificarGrupo} />
+            <Route path="/calificarAlumno/:idEntregaAlumno/:tpId" component={CalificarAlumno} />
+            {/*
+            Ruta home original
             <Route path="/" component={Home} />
+            */}
+            <Route path="/" component={LogIn} />
+
           </Switch>
         </div>
 

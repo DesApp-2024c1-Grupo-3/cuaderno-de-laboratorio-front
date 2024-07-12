@@ -8,17 +8,17 @@ import {
 
 import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
 import { getTpId } from '../services/tps';
-import { crearCalificacion, getCalificacionDetails  } from '../services/Calificacion';
+import { getComAlumnByCalifId } from '../services/Calificacion';
 
 const TpEntrega = () => {
   const { idEntregaGrupal, tpId } = useParams();
   const [tp, setTp] = useState(null);
 
-  
   const [grupo, setGrupo] = useState(null);
   const [nota, setNota] = useState('');
 
   const [comentario, setComentario] = useState('');
+  const [comAlumno, setComentarioAlumno] = useState('');
   const [archivo, setArchivo] = useState(null);
   const [hasError, setHasError] = useState(false);
 
@@ -28,9 +28,20 @@ const TpEntrega = () => {
     async function fetchTp() {
       try {
 
-
         const gruposData = await getGrupoPorId(idEntregaGrupal);
         setGrupo(gruposData);
+
+        try {
+          const califData = await getComAlumnByCalifId(idEntregaGrupal, tpId);
+          setComentarioAlumno(califData || 'El Trabajo practico no fue entregado');
+        } catch (error) {
+          if (error.response && error.response.status === 404 || error.response.status === 500) {
+            setComentarioAlumno('El Trabajo practico no fue entregado');
+          }
+        }
+        console.log(comAlumno)
+
+        setComentario(gruposData.comentario || '');
 
         const notaData = await updateNotaEntrega(idEntregaGrupal)
         setNota(notaData.nota || '');
@@ -59,7 +70,6 @@ const TpEntrega = () => {
   const handleSave = async () => {
     const calificacionData = {
       archivosSubidos: [], // Ajustar según tus necesidades
-      comentarioAlumno: '',
       devolucionProf: comentario,
       calificacion: parseFloat(nota),
       tpId: tpId, // Proporcionar el ID del Trabajo Práctico si está disponible
@@ -104,6 +114,7 @@ const TpEntrega = () => {
     return new Date(fecha).toLocaleDateString('es-ES', options);
   };
   const titulo = tp ? `${tp.nombre}` : 'Cargando...';
+
 
 
 
@@ -194,11 +205,20 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                Documento Entregado
+                Documento {comAlumno !== 'El Trabajo practico no fue entregado' ? 'entregado' : 'no entregado'}
               </Typography>
+
+              <Typography variant="h6">
+                {comAlumno !== 'El Trabajo practico no fue entregado' ? "Comentario grupal: " + comAlumno : 'El trabajo practico no fue entregado'}
+              </Typography>
+
               {archivo && (
-                <Button variant="contained" onClick={handleDownload}>
-                  Descargar {archivo.nombre}
+                <Button
+                  variant="contained"
+                  onClick={handleDownload}
+                  disabled={!archivo || comAlumno === 'El Trabajo practico no fue entregado'}
+                >
+                  Descargar {archivo ? archivo.nombre : ''}
                 </Button>
               )}
             </Box>

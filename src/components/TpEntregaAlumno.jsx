@@ -47,7 +47,7 @@ const TpEntrega = () => {
       
 
       await crearCalificacion(formData);
-      alert('Calificación guardada con éxito');
+      alert('Entrega realizada con éxito');
       history.goBack();
     } catch (err) {
       console.error('Error al guardar', err);

@@ -107,7 +107,7 @@ const TpEntrega = () => {
       formData.append('grupoId', grupo._id);
 
       await crearCalificacion(formData);
-      alert('Calificación guardada con éxito');
+      alert('Entrega realizada con éxito');
       history.goBack();
     } catch (err) {
       console.error('Error al guardar', err);
@@ -173,7 +173,7 @@ const TpEntrega = () => {
               ))}
             </Box>
             <Box mt={2}>
-              {nota && <TextField
+             {nota && <TextField
                 label="Nota"
                 value={nota}
                 onChange={handleNotaChange}

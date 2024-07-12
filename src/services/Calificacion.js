@@ -5,10 +5,7 @@ export async function crearCalificacion(body) {
   return apiResponse;
 }
 
-export async function getCalificacionDetails(tpId) {
-  console.log(tpId)
-
-  const response = await getJsonFromApi(`/calificacion/${tpId}/${grupoId}`);
-  console.log(tpId,grupoId)
-  return response.calificacion;
-};
+export async function getComAlumnByCalifId(idGrupo, tpId) {
+  const apiResponse = await getJsonFromApi(`calificacion/${idGrupo}/${tpId}`);
+  return apiResponse.coment;
+}
