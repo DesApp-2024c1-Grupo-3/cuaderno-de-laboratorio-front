@@ -16,7 +16,7 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import {getCursoById} from '../services/tps';
 import { getTpsByCursoId } from '../services/tps';
-//import { getMateriaPorIdCurso } from '../services/materia'; //AGREGADO PARA TRAER LA MATERIA ACTUAL EN APARTADO DE TPS
+import { Header} from './General/HeaderProf';
 import { SubHeader } from './General/SubHeader';
 
 
@@ -65,6 +65,7 @@ export default function Tps() {
 
   const tpsRendering = () => (
     <Box display="flex" flexDirection="column">
+      <Header />
       <Card sx={{ mb: 2 }}>
         <CardContent>
           <SubHeader titulo="Trabajos Prácticos" />

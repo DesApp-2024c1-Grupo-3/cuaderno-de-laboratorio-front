@@ -23,8 +23,10 @@ import { useParams, NavLink } from 'react-router-dom';
 import { SubHeader } from './General/SubHeader';
 import { getProfesorPorId } from '../services/Profesor';
 
+import { Header} from './General/HeaderProf';
 
-const profesorId = '667759deca2ecc5c938c2c46';
+
+const profesorId = '6685d8cbf85876c72749555e';
 
 // define el cuatrimestre y el año
 const getCuatrimestreYAnio = () => {
@@ -89,7 +91,9 @@ export default function Comision() {
 
 
   const comisionRendering = () => (
+    
     <Box display="flex" flexDirection="column">
+      <Header />
       <Card sx={{ mb: 2 }}>
         <CardContent>
           <Typography sx={{ fontSize: '30px' }}>{profesor.apellido} {profesor.nombre}</Typography>

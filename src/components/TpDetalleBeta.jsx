@@ -17,6 +17,7 @@ import Paper from '@mui/material/Paper';
 import { getAlumnosByCursoId } from '../services/Alumnos';
 import { getTpPorId, getCursoPorId, getGruposByTpId } from '../services/tps';
 import { SubHeader } from './General/SubHeader';
+import { Header} from './General/HeaderProf';
 
 const TpDetalle = () => {
   const { idCurso, tpId } = useParams();
@@ -76,6 +77,7 @@ const TpDetalle = () => {
 
   const tpRendering = () => (
     <Box>
+      <Header />
       <Card sx={{ mb: 2 }}>
         <CardContent>
           <div>

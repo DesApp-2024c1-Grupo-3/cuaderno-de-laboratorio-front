@@ -4,8 +4,7 @@ import {
   Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 } from '@mui/material';
-
-
+import { Header} from './General/HeaderProf';
 import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
 import { getTpId } from '../services/tps';
 import { getComAlumnByCalifId } from '../services/Calificacion';
@@ -120,6 +119,7 @@ const TpEntrega = () => {
 
   const tpRendering = () => (
     <Box>
+      <Header />
       <Card sx={{ mb: 2 }}>
         <CardContent>
 

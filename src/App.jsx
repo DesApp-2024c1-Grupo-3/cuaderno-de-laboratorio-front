@@ -30,7 +30,7 @@ const App = () => {
         display: 'flex',
         flexDirection: 'column',
       }}>
-        <Header />
+        {/* Utiliza sx prop para estilos en línea <Header />*/}
         <div sx={{ flex: '1' }}> {/* Utiliza sx prop para estilos en línea */}
           <Switch>
 

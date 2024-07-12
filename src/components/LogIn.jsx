@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Card, CardContent, Container, TextField, Typography, Box } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import { Header} from './General/Header';
 
 const LogIn = () => {
   const [dni, setDni] = useState('');
@@ -16,6 +17,7 @@ const LogIn = () => {
 
   return (
     <Card>
+      <Header />
       <CardContent>
         <Container maxWidth="xs">
           <Typography variant="h4" component="h1" gutterBottom textAlign="center" fontWeight="bold">

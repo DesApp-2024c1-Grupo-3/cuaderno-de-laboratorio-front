@@ -6,6 +6,7 @@ import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
 import { getAlumnoById } from '../services/Alumnos';
 import {crearCalificacion} from '../services/Calificacion';
 import { SubHeader } from './General/SubHeader';
+import { Header} from './General/HeaderProf';
 
 const TpEntrega = () => {
   const { idEntregaAlumno, tpId} = useParams();
@@ -65,6 +66,7 @@ const TpEntrega = () => {
 
   const tpRendering = () => (
     <Box>
+      <Header />
       <Card sx={{ mb:2}}>
         <CardContent>
           <SubHeader titulo="Ver entrega" />
