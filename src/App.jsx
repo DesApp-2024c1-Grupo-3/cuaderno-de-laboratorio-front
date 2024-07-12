@@ -12,7 +12,7 @@ import CrearTpsBeta from './components/CrearTpsBeta';
 import AdministrarGrupos from './components/Profesores/AdmGrupoBeta';
 import TpDetalleBeta from './components/TpDetalleBeta';
 
-import CalificarGrupo from './components/CalificarGrupo';
+
 import CalificarGrupo from './components/CalificarGrupo';
 import CalificarAlumno from './components/CalificarAlumno';
 //---------------------------Componentes Alumno---------------------------------------
