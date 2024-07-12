@@ -8,8 +8,8 @@ import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect  } from 'react';
+
 import { getGrupoByCursoId } from '../../services/Grupo';
 import { Container } from '@mui/system';
 import Box from '@mui/material/Box';
@@ -17,11 +17,11 @@ import Typography from '@mui/material/Typography';
 import Modal from 'react-bootstrap/Modal';
 import Divider from '@mui/material/Divider';
 
-
+// Proposito:  Devuelve los elementos en a que no están en b.
 function not(a, b) {
   return a.filter((value) => b.indexOf(value) === -1);
 }
-
+// Proposito: Devuelve los elementos que están en ambos, a y b
 function intersection(a, b) {
   return a.filter((value) => b.indexOf(value) !== -1);
 }
@@ -30,12 +30,11 @@ export default function ListaDeGrupos({
   idCurso,
   show,
   closeModal,
-  setGruposParaTrabajo,
+  setGruposParaTrabajo, //Función para establecer los grupos seleccionados para el trabajo práctico.
 }) {
-  const [checked, setChecked] = React.useState([]);
-
-  const [gruposParaTp, setGruposParaTp] = useState([]);
-  const [gruposDeCurso, setGruposDeCurso] = useState([]);
+  const [checked, setChecked] = React.useState([]); //checked: Lista de grupos seleccionados (checkeados).
+  const [gruposParaTp, setGruposParaTp] = useState([]); //gruposParaTp: Grupos seleccionados para el trabajo práctico.
+  const [gruposDeCurso, setGruposDeCurso] = useState([]);//: Grupos disponibles en el curso.
 
   const gruposParaTpChecked = intersection(checked, gruposParaTp);
   const gruposDeCursoChecked = intersection(checked, gruposDeCurso);
@@ -125,7 +124,7 @@ export default function ListaDeGrupos({
             <ListItem
               key={value._id}
               role="listitem"
-              button
+              
               onClick={handleToggle(value)}
             >
               <ListItemIcon>

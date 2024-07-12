@@ -49,3 +49,16 @@ export async function deleteFromApi(path) {
     throw error; // Puedes manejar el error según tus necesidades
   }
 }
+export async function putJsonToApi(path, data) {
+  try {
+    const response = await axios.put(`${apiUrl}/${path}`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al actualizar el grupo:', error);
+    throw error;
+  }
+}

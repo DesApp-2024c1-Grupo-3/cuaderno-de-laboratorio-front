@@ -1,4 +1,9 @@
-import { deleteFromApi, getJsonFromApi, postJsonToApi } from './utils';
+import {
+  deleteFromApi,
+  getJsonFromApi,
+  postJsonToApi,
+  putJsonToApi,
+} from './utils';
 
 export async function getTodosLosGrupos() {
   const apiResponse = await getJsonFromApi('grupos/');
@@ -37,4 +42,16 @@ export async function getArchivoEntrega(id) {
 export async function updateNotaEntrega(id) {
   const apiResponse = await getJsonFromApi(`grupo/${id}`);
   return apiResponse.alumnos;
+}
+export async function updateGrupo(id, idGrupo, idCurso) {
+  const apiResponse = await getJsonFromApi(
+    `curso/${id}/${idCurso}/grupo/${idGrupo}`
+  );
+
+  return apiResponse.grupos;
+}
+export async function upDateGrupo(grupoId, grupoData) {
+  const apiResponse = await putJsonToApi(`grupo/${grupoId}`, grupoData);
+
+  return apiResponse;
 }

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
-import { Button, Card, CardContent, Container, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, TextField, Box, Grid, Typography } from '@mui/material';
+import { NavLink, useHistory, useParams } from 'react-router-dom';
+import { Button, Card, CardContent, Container, FormControl, FormLabel, RadioGroup, 
+  FormControlLabel, Radio, TextField, Box, Grid, Typography 
+} from '@mui/material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { getCursoById, crearTp as postCrearTp } from '../services/tps';
@@ -20,7 +22,7 @@ const CrearTpsBeta = () => {
     consigna: '',
     cuatrimestre: false,
   });
-
+  const history = useHistory();
   const quillRef = useRef(null); // Asegúrate de que quillRef esté definido correctamente
 
   const handleChange = (event) => {
@@ -57,21 +59,8 @@ const CrearTpsBeta = () => {
     try {
       const response = await postCrearTp(idCurso, profesorId, tpData);
       if (response.status === 201) {
-        const tpId = response.data._id;
-
-        // Actualizar alumnos con el nuevo TP y curso
-        const alumnosIds = gruposParaTrabajo.flatMap(grupo => grupo.alumnos);
-        await Promise.all(alumnosIds.map(alumnoId =>
-          fetch(`/api/alumno/${alumnoId}/addTpAndCurso`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ tpId, cursoId: idCurso }),
-          }
-        )
-      ));
         window.alert('Trabajo práctico creado correctamente');
+        history.goBack();
       } else {
         console.error('Error al crear TP');
       }
@@ -232,6 +221,7 @@ const CrearTpsBeta = () => {
                     variant="contained"
                     sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
                     onClick={crearTp}
+                    
                   >Grabar TP
                   </Button>
                 </Box>

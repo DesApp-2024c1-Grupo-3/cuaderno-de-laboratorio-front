@@ -8,9 +8,6 @@ import {crearCalificacion} from '../services/Calificacion';
 
 const TpEntrega = () => {
   const { idEntregaAlumno, tpId} = useParams();
-  console.log(idEntregaAlumno);
-  
-  console.log(tpId);
   const [nota, setNota] = useState('');
   const [alumno, setAlumno] = useState([]);
   const [comentario, setComentario] = useState('');
@@ -46,8 +43,8 @@ const TpEntrega = () => {
       });
       formData.append('comentarioAlum', comentario);
       formData.append('tpId', tpId);
-      formData.append('alumnoId', idEntregaGrupal);
-      formData.append('grupoId', grupo._id);
+      formData.append('alumnoId', idEntregaAlumno);
+      
 
       await crearCalificacion(formData);
       alert('Entrega realizada con éxito');

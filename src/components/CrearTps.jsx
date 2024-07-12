@@ -26,7 +26,7 @@ const CrearTps = () => { // Cambio en la declaración de la función
   
   const { idCurso, profesorId } = useParams();
   const [show, setShow] = useState(false);
-  const [gruposParaTrabajo,  ] = useState([]);
+  const [gruposParaTrabajo, setGruposParaTrabajo ] = useState([]);
   const [tpData, setTpData] = useState({
     nombre: '',
     fechaInicio: '',
@@ -189,7 +189,7 @@ const CrearTps = () => { // Cambio en la declaración de la función
                 </Container>
               </Container>
               <br />
-              <Container style={{ marginTop: '20px', marginBottom: '20px' }}>
+              <Container sx={{ marginTop: '20px', marginBottom: '20px' }}>
                 <FormLabel >Consigna</FormLabel>
                 <ReactQuill
                   value={tpData.consigna}
