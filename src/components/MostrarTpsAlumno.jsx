@@ -6,6 +6,7 @@ import {
 import { NavLink, useParams, useHistory } from 'react-router-dom';
 
 import { getCursoById, getTpsByCursoId } from '../services/tps';
+import { Header} from './General/HeaderAlum';
 
 const AlumnoTps = () => {
  
@@ -39,6 +40,7 @@ const AlumnoTps = () => {
   
   return (
     <Box display="flex" flexDirection="column">
+      <Header />
       <Card sx={{ mb: 2 }}>
         <CardContent>
           <Typography variant="h6" component="div" gutterBottom>
@@ -119,7 +121,7 @@ const AlumnoTps = () => {
             </TableContainer>
             <Grid container 
               spacing={2} 
-              justifyContent="space-between"
+              justifyContent="center"
               marginTop='20px'
             >
               <Grid item>
