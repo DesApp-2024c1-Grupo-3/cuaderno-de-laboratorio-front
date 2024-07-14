@@ -7,7 +7,7 @@ import {
 import { Header} from './General/HeaderProf';
 import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
 import { getTpId } from '../services/tps';
-import { getComAlumnByCalifId } from '../services/Calificacion';
+import { getComAlumnByCalifId, updateCalificacion} from '../services/Calificacion';
 
 const TpEntrega = () => {
   const { idEntregaGrupal, tpId } = useParams();
@@ -16,7 +16,7 @@ const TpEntrega = () => {
   const [nota, setNota] = useState('');
 
   const [comentario, setComentario] = useState('');
-  const [comAlumno, setComentarioAlumno] = useState('');
+  const [comAlumno, setComentarioAlumno] = useState(['']);
   const [archivo, setArchivo] = useState(null);
   const [hasError, setHasError] = useState(false);
 
@@ -39,14 +39,14 @@ const TpEntrega = () => {
           }
         }
 
-        setComentario(gruposData.comentario || '');
+        /* setComentario(gruposData.comentario || '');
 
         const notaData = await updateNotaEntrega(idEntregaGrupal)
         setNota(notaData.nota || '');
 
         const archivoData = await getArchivoEntrega(idEntregaGrupal);
         setArchivo(archivoData);
-
+ */
         if (tpId) {
           const tpData = await getTpId(tpId);
           setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
@@ -67,18 +67,18 @@ const TpEntrega = () => {
 
   const handleSave = async () => {
     const calificacionData = {
-     
       devolucionProf: comentario,
       calificacion: parseFloat(nota),
     };
     try {
-      await crearCalificacion(idEntregaAlumno, calificacionData);
+      await updateCalificacion(comAlumno.idCalif, calificacionData);
       alert('Calificación guardada con éxito');
       history.goBack();
     } catch (err) {
       console.error('Error al guardar la calificación', err);
     }
   };
+  
 
   const handleDownload = () => {
     const link = document.createElement('a');
@@ -109,9 +109,6 @@ const TpEntrega = () => {
     return new Date(fecha).toLocaleDateString('es-ES', options);
   };
   const titulo = tp ? `${tp.nombre}` : 'Cargando...';
-
-
-
 
   const tpRendering = () => (
     <Box>
@@ -156,9 +153,6 @@ const TpEntrega = () => {
               </>
             )}
           </div>
-
-
-
           <Container
             maxWidth="xl"
             sx={{
@@ -201,12 +195,12 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                Documento {comAlumno !== 'El Trabajo practico no fue entregado' ? 'entregado' : 'no entregado'}
+                Documento {comAlumno.coment !== 'El Trabajo practico no fue entregado' ? 'entregado' : 'no entregado'}
               </Typography>
               <Typography variant="h6">
-                {comAlumno !== 'El Trabajo practico no fue entregado' ? "Comentario grupal: " : 'El trabajo practico no fue entregado'}
+                {comAlumno.coment !== 'El Trabajo practico no fue entregado' ? "Comentario grupal: " : 'El trabajo practico no fue entregado'}
                 <Typography marginLeft={2}>
-                  {comAlumno !== 'El Trabajo practico no fue entregado' ?  comAlumno : ''}
+                  {comAlumno.coment !== 'El Trabajo practico no fue entregado' ?  comAlumno.coment : ''}
                 </Typography>
               </Typography>
               <br/>
@@ -214,7 +208,7 @@ const TpEntrega = () => {
                 <Button
                   variant="contained"
                   onClick={handleDownload}
-                  disabled={!archivo || comAlumno === 'El Trabajo practico no fue entregado'}
+                  disabled={!archivo || comAlumno.coment === 'El Trabajo practico no fue entregado'}
                 >
                   Descargar {archivo ? archivo.nombre : ''}
                 </Button>

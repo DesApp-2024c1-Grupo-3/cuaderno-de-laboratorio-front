@@ -5,8 +5,7 @@ import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
  } from '@mui/material';
 import { getAlumnoById } from '../services/Alumnos';
 import { getTpId } from '../services/tps';
-import {crearCalificacion} from '../services/Calificacion';
-import { SubHeader } from './General/SubHeader';
+import {getComAlumnIndByCalifId, updateCalificacion} from '../services/Calificacion';
 import { Header} from './General/HeaderProf';
 
 const TpEntrega = () => {
@@ -15,6 +14,7 @@ const TpEntrega = () => {
   const [nota, setNota] = useState('');
   const [tp, setTp] = useState(null);
   const [alumno, setAlumno] = useState([]);
+  const [comentarioAlum, setComentarioAlum]= useState('')
   const [comentario, setComentario] = useState('');
   const [archivo, setArchivo] = useState(null);
   const [hasError, setHasError] = useState(false);
@@ -38,9 +38,15 @@ const TpEntrega = () => {
       } catch (err) {
         setHasError(true);
       }
+      const comentarioAlumnoTp= await getComAlumnIndByCalifId(idEntregaAlumno, tpId);
+      setComentarioAlum(comentarioAlumnoTp);
+      console.log("Holaaaaa")
     }
+   
     fetchTp();
   }, [idEntregaAlumno, tpId]);
+  console.log(idEntregaAlumno, tpId)
+  console.log(comentarioAlum)
   const SubHeader = ({ titulo, nombreTP }) => {
     return (
       <Grid container justifyContent="center" alignItems="center" >
@@ -57,16 +63,11 @@ const TpEntrega = () => {
 
   const handleSave = async () => {
     const calificacionData = {
-      archivosSubidos: [], // Ajustar según tus necesidades
-      comentarioAlumno: '',
       devolucionProf: comentario,
       calificacion: parseFloat(nota),
-      tpId: tpId, // Proporcionar el ID del Trabajo Práctico si está disponible
-      alumnoId: idEntregaAlumno,
-      grupoId: '', // Proporcionar el ID del grupo si está disponible
     };
     try {
-      await crearCalificacion(idEntregaAlumno, calificacionData);
+      await updateCalificacion(comentarioAlum.idCalif, calificacionData);
       alert('Calificación guardada con éxito');
       history.goBack();
     } catch (err) {
@@ -80,9 +81,6 @@ const TpEntrega = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
-  const handleEntrega = () => {
-    history.push(`/calificaion/${idEntrega}/${profesorId}`);
   };
   const titulo = tp ? `${tp.nombre}` : 'Cargando...';
   
