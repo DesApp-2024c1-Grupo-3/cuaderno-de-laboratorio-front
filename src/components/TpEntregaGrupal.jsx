@@ -5,10 +5,8 @@ import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
  } from '@mui/material';
 import { getGrupoPorId } from '../services/Grupo';
 import { getGruposByTpId } from '../services/tps';
-
-//import { obtenerCalificacionesPorGrupo } '../services/calificacion';
-//import {subirArchivo} '../services/calificacion';
 import { crearCalificacion } from '../services/Calificacion';
+import { Header} from './General/HeaderAlum';
 
 const TpEntrega = () => {
   const { idEntregaGrupal, tpId} = useParams();  
@@ -20,32 +18,7 @@ const TpEntrega = () => {
   const [hasError, setHasError] = useState(false);
   const history = useHistory();
  
-/*   const [calificacionData, setCalificacionData] = useState({
-    nota: '',
-    comentario: '',
-    archivo: null,
-  }); */
-  
 
-
- /*  useEffect(() => {
-    const fetchCalificacion = async () => {
-      try {
-        const data = await getCalificacionById(idCalificacion);
-        setCalificacionData(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchCalificacion();
-  }, [idCalificacion]);
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setCalificacionData((prev) => ({ ...prev, [name]: value }));
-  };
-   */
   useEffect(() => {
     async function fetchTp() {
       try {
@@ -70,30 +43,11 @@ const TpEntrega = () => {
     }
     fetchTp();
   }, [tpId, idEntregaGrupal]);
-  //console.log('Grupos obtenido aca:', grupo._id);
-
- /*  const verificarArchivo = async (grupoId) => {
-    try {
-      const calificaciones = await obtenerCalificacionesPorGrupo(grupoId); // Define esta función en tu servicio
-      if (calificaciones.length > 0) {
-        setArchivoCargado(true);
-      }
-    } catch (err) {
-      setHasError(true);
-    }
-  }; */
+ 
 
   const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
   const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
-   /*
-    = (e) =>  {  if (archivoCargado) {
-      alert('Ya se ha cargado un archivo para este grupo');
-      return;
-    }
-    setArchivo(e.target.files[0]);
-  }; 
- */
   const handleSave = async () => {
     try {
       const formData = new FormData();
@@ -115,6 +69,7 @@ const TpEntrega = () => {
   };
   const entregaRendering = () => (
     <Box>
+      <Header />
       <Card sx={{ mb:2}}>
         <CardContent>
           <Typography variant="h6" component="div" gutterBottom>

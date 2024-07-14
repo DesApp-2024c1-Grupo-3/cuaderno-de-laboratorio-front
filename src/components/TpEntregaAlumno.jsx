@@ -5,6 +5,7 @@ import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
  } from '@mui/material';
 import { getAlumnoById } from '../services/Alumnos';
 import {crearCalificacion} from '../services/Calificacion';
+import { Header} from './General/HeaderAlum';
 
 const TpEntrega = () => {
   const { idEntregaAlumno, tpId} = useParams();
@@ -56,6 +57,7 @@ const TpEntrega = () => {
   
   const tpRendering = () => (
     <Box>
+      <Header />
       <Card sx={{ mb:2}}>
         <CardContent>
           <Typography variant="h6" component="div" gutterBottom>

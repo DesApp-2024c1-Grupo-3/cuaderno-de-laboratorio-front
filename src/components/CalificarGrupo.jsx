@@ -38,6 +38,7 @@ const TpEntrega = () => {
             setComentarioAlumno('El Trabajo practico no fue entregado');
           }
         }
+
         setComentario(gruposData.comentario || '');
 
         const notaData = await updateNotaEntrega(idEntregaGrupal)
@@ -202,11 +203,13 @@ const TpEntrega = () => {
               <Typography variant="h6" component="div" gutterBottom>
                 Documento {comAlumno !== 'El Trabajo practico no fue entregado' ? 'entregado' : 'no entregado'}
               </Typography>
-
               <Typography variant="h6">
-                {comAlumno !== 'El Trabajo practico no fue entregado' ? "Comentario grupal: " + comAlumno : 'El trabajo practico no fue entregado'}
+                {comAlumno !== 'El Trabajo practico no fue entregado' ? "Comentario grupal: " : 'El trabajo practico no fue entregado'}
+                <Typography marginLeft={2}>
+                  {comAlumno !== 'El Trabajo practico no fue entregado' ?  comAlumno : ''}
+                </Typography>
               </Typography>
-
+              <br/>
               {archivo && (
                 <Button
                   variant="contained"

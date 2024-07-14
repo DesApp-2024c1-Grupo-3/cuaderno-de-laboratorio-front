@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Unahur from '../../Img/UNAHUR.png';
-import { getProfesorPorId } from '../../services/Profesor';
+import { getAlumnoById } from '../../services/Alumnos';
 import { Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
@@ -29,22 +29,22 @@ const Title = styled.p`
   text-align: center;
 `;
 
-const profesorId = '6685d8cbf85876c72749555e';
+const alumnoId = '6685d8cbf85876c72749551e';
 
 
 
 export const Header = () => {
 
-    const [profesor, setProfesor] = useState([]);
+    const [alumno, setAlumno] = useState([]);
   
     useEffect(() => {
-      async function fetchProfesor() {
+      async function fetchAlumno() {
         
   
         try {
           // Agregar el ID del profesor según la información que tengas en tu base de datos local.
-          const data = await getProfesorPorId(profesorId);
-          setProfesor(data);
+          const data = await getAlumnoById(alumnoId);
+          setAlumno(data);
   
         } catch (err) {
           console.log('Ocurrió este error.', err);
@@ -52,8 +52,8 @@ export const Header = () => {
         }
       }
   
-      fetchProfesor();
-    }, [profesorId]);
+      fetchAlumno();
+    }, [alumnoId]);
   return (
     <FixedHeader>
         <div>
@@ -61,9 +61,9 @@ export const Header = () => {
         </div>
         <Title>
           CUADERNO DE LABORATORIO
-          <br/>
-        <Typography sx={{fontSize: '1.2vw'}} >Profesor:</Typography>
-        <Typography sx={{fontSize: '1.2vw',fontWeight: 'bold'}} >{profesor.apellido} {profesor.nombre}</Typography>
+        <br/>
+        <Typography sx={{fontSize: '1.2vw'}} >Alumno:</Typography>
+        <Typography sx={{fontSize: '1.2vw',fontWeight: 'bold'}} >{alumno.apellido} {alumno.nombre}</Typography>
         </Title>
         
     </FixedHeader>

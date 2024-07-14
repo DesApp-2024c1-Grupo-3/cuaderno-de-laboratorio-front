@@ -6,7 +6,7 @@ import {
 import { SubHeader } from './General/SubHeader';
 import { NavLink, useParams, useHistory } from 'react-router-dom';
 import { getCursosByAlumnoId } from '../services/Alumnos';
-
+import { Header} from './General/HeaderAlum';
 
 
 const AlumnoCursos = () => {
@@ -32,6 +32,7 @@ const AlumnoCursos = () => {
 
   return (
     <Box display="flex" flexDirection="column">
+      <Header />
       <Card sx={{ mb: 2 }}>
         <CardContent>
           <SubHeader titulo="Mis cursos" />
@@ -88,7 +89,7 @@ const AlumnoCursos = () => {
             </TableContainer>
             <Grid container
               spacing={2}
-              justifyContent="space-between"
+              justifyContent="center"
               marginTop='20px'
             >
               <Grid item>
