@@ -12,7 +12,7 @@ import { getProfesorPorId } from '../services/Profesor';
 import { Header} from './General/HeaderProf';
 
 
-const profesorId = '6685d8cbf85876c72749555e';
+const profesorId = '669028aeb16ac395eec3432c';
 
 // define el cuatrimestre y el año
 const getCuatrimestreYAnio = () => {

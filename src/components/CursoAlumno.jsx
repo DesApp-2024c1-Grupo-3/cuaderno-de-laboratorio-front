@@ -10,7 +10,7 @@ import { getCursosByAlumnoId } from '../services/Alumnos';
 
 
 const AlumnoCursos = () => {
-  const alumnoId = '6685d8cbf85876c72749551e'; //Elena Rodriguez
+  const alumnoId = '669028aeb16ac395eec342ee'; //Elena Rodriguez
 
   const { idAlumno } = useParams();
   const [dato, setDato] = useState([]);

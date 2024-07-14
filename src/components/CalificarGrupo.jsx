@@ -12,7 +12,6 @@ import { getComAlumnByCalifId } from '../services/Calificacion';
 const TpEntrega = () => {
   const { idEntregaGrupal, tpId } = useParams();
   const [tp, setTp] = useState(null);
-
   const [grupo, setGrupo] = useState(null);
   const [nota, setNota] = useState('');
 
@@ -33,13 +32,12 @@ const TpEntrega = () => {
         try {
           const califData = await getComAlumnByCalifId(idEntregaGrupal, tpId);
           setComentarioAlumno(califData || 'El Trabajo practico no fue entregado');
+          console.log(califData)
         } catch (error) {
           if (error.response && error.response.status === 404 || error.response.status === 500) {
             setComentarioAlumno('El Trabajo practico no fue entregado');
           }
         }
-        console.log(comAlumno)
-
         setComentario(gruposData.comentario || '');
 
         const notaData = await updateNotaEntrega(idEntregaGrupal)
@@ -68,12 +66,9 @@ const TpEntrega = () => {
 
   const handleSave = async () => {
     const calificacionData = {
-      archivosSubidos: [], // Ajustar según tus necesidades
+     
       devolucionProf: comentario,
       calificacion: parseFloat(nota),
-      tpId: tpId, // Proporcionar el ID del Trabajo Práctico si está disponible
-      alumnoId: '',
-      grupoId: idEntregaGrupal, // Proporcionar el ID del grupo si está disponible
     };
     try {
       await crearCalificacion(idEntregaAlumno, calificacionData);

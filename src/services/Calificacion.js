@@ -9,3 +9,9 @@ export async function getComAlumnByCalifId(idGrupo, tpId) {
   const apiResponse = await getJsonFromApi(`calificacion/${idGrupo}/${tpId}`);
   return apiResponse.coment;
 }
+export async function getComAlumnIndByCalifId(idEntregaAlumno, tpId) {
+  const apiResponse = await getJsonFromApi(
+    `calificacionIndivdual/${idEntregaAlumno}/${tpId}`
+  );
+  return apiResponse.coment;
+}
