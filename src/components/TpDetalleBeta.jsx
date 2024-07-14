@@ -111,6 +111,19 @@ const TpDetalle = () => {
               </Typography>
             </Grid>
           </Grid>
+          {tp.grupal ? (
+                ''
+              ) : (
+                <Grid container justifyContent="flex-end">
+                <Grid item>
+                    <Button variant="contained" sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }} 
+                      onClick={() => history.goBack()}>
+                        Volver
+                    </Button>
+                </Grid>
+              </Grid>
+              )}
+          
           <Container
             maxWidth="xl"
             sx={{
@@ -123,13 +136,22 @@ const TpDetalle = () => {
             }}
           >
             <Typography variant="h6" component="div" gutterBottom>
-              Grupos o alumnos
+              {tp.grupal ? (
+                <Typography sx={{fontSize: '1.2vw',fontWeight: 'bold'}}>Grupos</Typography>
+              ) : (
+                <Typography sx={{fontSize: '1.2vw',fontWeight: 'bold'}}>Alumnos</Typography>
+              )}
             </Typography>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Nombre del Grupo</TableCell>
+                    <TableCell style={{ width: '35%', fontSize: '15px' }}>
+                      {tp.grupal ? (
+                      <Typography sx={{fontSize: '1vw'}}>Nombre de grupo</Typography>
+                      ) : (
+                      <Typography sx={{fontSize: '1vw'}}>Nombre de alumno</Typography>
+                      )}</TableCell>
                     <TableCell style={{ width: '35%', fontSize: '15px' }}>Estado</TableCell>
                     <TableCell style={{ width: '35%', fontSize: '15px' }}>Nota</TableCell>
                     <TableCell style={{ width: '15%', fontSize: '15px' }}>Entrega</TableCell>
@@ -222,7 +244,7 @@ const TpDetalle = () => {
           )}
           <Grid container
               spacing={2}
-              justifyContent="space-between"
+              justifyContent="center"
               marginTop='20px'
             >
               <Grid item>
