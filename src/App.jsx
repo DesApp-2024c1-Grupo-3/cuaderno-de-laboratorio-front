@@ -35,7 +35,7 @@ const App = () => {
         <div sx={{ flex: '1' }}> {/* Utiliza sx prop para estilos en línea */}
           <Switch>
 
-            <Route path="/comision/actual" component={ComisionBeta} /> {/* Inicia el profesor */}
+            <Route path="/comision/actual/:profesorId" component={ComisionBeta} />
             <Route path="/tps/:idCurso/:profesorId" component={TpsBeta} />
             <Route path="/crearTps/:idCurso/:profesorId" component={CrearTpsBeta} />
             <Route path="/Administrar_Grupos/:idCurso" component={AdministrarGrupos} />
@@ -44,7 +44,7 @@ const App = () => {
             <Route path="/calificarAlumno/:idEntregaAlumno/:tpId" component={CalificarAlumno} />
            
 
-            <Route path="/alumno/curso" component={CursoAlumno} />  {/* Inicia el Alumno */}
+            <Route path="/alumno/curso/:idAlumno" component={CursoAlumno} />  
             <Route path="/tpsAlumno/:idCurso/:alumnoId" component={MostrarTpsAlumno} />
             <Route path="/entregaGrupo/:idEntregaGrupal/:tpId" component={TpEntregaGrupal} />
             <Route path="/entregaAlumno/:idEntregaAlumno/:tpId" component={TpEntregaAlumno} />

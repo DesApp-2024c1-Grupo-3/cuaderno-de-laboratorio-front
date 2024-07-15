@@ -1,8 +1,8 @@
 import { getJsonFromApi } from './utils';
 
-export async function getTodosLosAlumnos(idCurso) {
-  const apiResponse = await getJsonFromApi(`curso/${idCurso}/alumnos`);
-  return apiResponse.alumnos;
+export async function getTodosLosAlumnos() {
+  const apiResponse = await getJsonFromApi(`alumnos/`);
+  return apiResponse; // este no lo uso, poner el metodo que estaba antes
 }
 
 export async function getAlumnosByCursoId(cursoId) {
@@ -20,5 +20,11 @@ export async function getTpsDelCursosByAlumnoId(alumnoId) {
 }
 export async function getAlumnoById(alumnoId) {
   const apiResponse = await getJsonFromApi(`alumnoSolo/${alumnoId}`);
+  return apiResponse;
+}
+
+export async function getTodosLosAlumnosJson() {
+  //metodo para el login provisonal
+  const apiResponse = await getJsonFromApi(`alumnosJson/`);
   return apiResponse;
 }

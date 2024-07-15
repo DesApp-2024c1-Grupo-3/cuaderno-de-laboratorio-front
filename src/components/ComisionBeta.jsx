@@ -12,7 +12,7 @@ import { getProfesorPorId } from '../services/Profesor';
 import { Header} from './General/HeaderProf';
 
 
-const profesorId = '669028aeb16ac395eec3432c';
+//const profesorId = '669028aeb16ac395eec3432c'; //PARA BORRAR , LO DEJO PARA NO ROMPER NADA
 
 // define el cuatrimestre y el año
 const getCuatrimestreYAnio = () => {
@@ -41,6 +41,7 @@ const loadingRendering = () => {
   );
 };
 export default function Comision() {
+  const { profesorId } = useParams(); // viene del login
   const { estadoCurso } = useParams();
 
   const [comision, setComision] = useState(null);
