@@ -14,9 +14,9 @@ const TpEntrega = () => {
   const [nota, setNota] = useState('');
   const [tp, setTp] = useState(null);
   const [alumno, setAlumno] = useState([]);
-  const [comentarioAlum, setComentarioAlum]= useState('')
+  const [comAlum, setComentarioAlum]= useState('');
   const [comentario, setComentario] = useState('');
-  const [archivo, setArchivo] = useState(null);
+  const [archivo, setArchivo] = useState('');
   const [hasError, setHasError] = useState(false);
   
   const history = useHistory();
@@ -38,15 +38,20 @@ const TpEntrega = () => {
       } catch (err) {
         setHasError(true);
       }
-      const comentarioAlumnoTp= await getComAlumnIndByCalifId(idEntregaAlumno, tpId);
-      setComentarioAlum(comentarioAlumnoTp);
-      console.log("Holaaaaa")
+      try {
+        const califData = await getComAlumnIndByCalifId(idEntregaAlumno, tpId);
+        setComentarioAlum(califData || '');
+   
+      } catch (error) {
+        if (error.response && error.response.status === 404 || error.response.status === 500) {
+          setComentarioAlum('');
+        }
+      }
     }
    
     fetchTp();
   }, [idEntregaAlumno, tpId]);
-  console.log(idEntregaAlumno, tpId)
-  console.log(comentarioAlum)
+
   const SubHeader = ({ titulo, nombreTP }) => {
     return (
       <Grid container justifyContent="center" alignItems="center" >
@@ -67,7 +72,7 @@ const TpEntrega = () => {
       calificacion: parseFloat(nota),
     };
     try {
-      await updateCalificacion(comentarioAlum.idCalif, calificacionData);
+      await updateCalificacion(comAlum._id, calificacionData);
       alert('Calificación guardada con éxito');
       history.goBack();
     } catch (err) {
@@ -130,34 +135,52 @@ const TpEntrega = () => {
               </Table>
             </TableContainer>
             <Box mt={2}>
-              <Typography variant="h6" component="div" gutterBottom>
-                Documento Entregado
+            <Typography variant="h6" component="div" gutterBottom>
+                Documento {comAlum === '' ? 'No entregado' : 'Entregado'}
               </Typography>
+              <Typography variant="h6">
+                {comAlum !== '' ? "Comentario Del Alumno: " : 'El trabajo practico no fue entregado'}
+                <Typography marginLeft={2}>
+                  {comAlum !== ' ' ?  comAlum.comentarioAlum : ''}
+                </Typography>
+              </Typography>
+              <br/>
               {archivo && (
-                <Button variant="contained" onClick={handleDownload}>
-                  Descargar {archivo.nombre}
+                <div>
+                <Button
+                  variant="contained"
+                  onClick={handleDownload}
+                  disabled={comAlum.comentarioAlum === ''}
+                >
+                  Descargar {archivo ? archivo : ''}
                 </Button>
+                <Typography variant="body1">{archivo}</Typography>
+              </div>
               )}
             </Box>
             <Box mt={2}>
-              <TextField
-                label="Nota"
-                value={nota}
-                onChange={handleNotaChange}
-                variant="outlined"
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Comentario"
-                value={comentario}
-                onChange={handleComentarioChange}
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                multiline
-                rows={4}
-              />
+              {comAlum.comentarioAlum && (
+              <>
+                <TextField
+                  label="Nota"
+                  value={nota}
+                  onChange={handleNotaChange}
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                />
+                <TextField
+                  label="Comentario"
+                  value={comentario}
+                  onChange={handleComentarioChange}
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  multiline
+                  rows={4}
+                />
+              </> 
+            )}
             </Box>
             <Grid container 
               spacing={2} 

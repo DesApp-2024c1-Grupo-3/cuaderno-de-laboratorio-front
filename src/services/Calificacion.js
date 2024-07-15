@@ -11,9 +11,9 @@ export async function getComAlumnByCalifId(idGrupo, tpId) {
 }
 export async function getComAlumnIndByCalifId(idEntregaAlumno, tpId) {
   const apiResponse = await getJsonFromApi(
-    `/calificacionIndivdual/${idEntregaAlumno}/${tpId}`
+    `calificacionIndivdual/${idEntregaAlumno}/${tpId}`
   );
-  return apiResponse.coment;
+  return apiResponse.comentario;
 }
 export async function updateCalificacion(id, data) {
   try {

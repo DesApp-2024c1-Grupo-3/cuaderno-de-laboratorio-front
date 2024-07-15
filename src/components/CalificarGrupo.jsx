@@ -38,15 +38,6 @@ const TpEntrega = () => {
             setComentarioAlumno('El Trabajo practico no fue entregado');
           }
         }
-
-        /* setComentario(gruposData.comentario || '');
-
-        const notaData = await updateNotaEntrega(idEntregaGrupal)
-        setNota(notaData.nota || '');
-
-        const archivoData = await getArchivoEntrega(idEntregaGrupal);
-        setArchivo(archivoData);
- */
         if (tpId) {
           const tpData = await getTpId(tpId);
           setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
