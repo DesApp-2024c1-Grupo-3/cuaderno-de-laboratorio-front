@@ -24,7 +24,7 @@ import { SubHeader } from './General/SubHeader';
 import { getProfesorPorId } from '../services/Profesor';
 
 
-const profesorId = '6649226549ae2f87255cc248';
+
 const loadingRendering = () => {
   return (
     <div>
@@ -33,6 +33,7 @@ const loadingRendering = () => {
   );
 };
 export default function Comision() {
+  const { profesorId } = useParams(); // viene del login
   const { estadoCurso } = useParams();
 
   const [comision, setComision] = useState(null);

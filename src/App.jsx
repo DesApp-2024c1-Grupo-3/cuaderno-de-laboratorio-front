@@ -34,12 +34,12 @@ const App = () => {
         <div sx={{ flex: '1' }}> {/* Utiliza sx prop para estilos en línea */}
           <Switch>
 
-            <Route path="/comision/actual" component={ComisionBeta} />
+            <Route path="/comision/actual/:profesorId" component={ComisionBeta} /> {/*login prueba de parameto */}
             <Route path="/tps/:idCurso/:profesorId" component={TpsBeta} />
             <Route path="/crearTps/:idCurso/:profesorId" component={CrearTpsBeta} />
             <Route path="/Administrar_Grupos/:idCurso" component={AdministrarGrupos} />
             <Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />
-            <Route path="/alumno/curso" component={CursoAlumno} />
+            <Route path="/alumno/curso/:idAlumno" component={CursoAlumno} /> {/*login prueba de parameto */}
             <Route path="/tpsAlumno/:idCurso/:alumnoId" component={MostrarTpsAlumno} />
             <Route path="/entregaGrupo/:idEntregaGrupal/:tpId" component={TpEntregaGrupal} />
             <Route path="/entregaAlumno/:idEntregaAlumno/:tpId" component={TpEntregaAlumno} />

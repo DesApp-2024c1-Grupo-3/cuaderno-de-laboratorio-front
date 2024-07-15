@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Card, CardContent, Container, TextField, Typography, Box } from '@mui/material';
-import { NavLink } from 'react-router-dom';
-import { getTodosLosProfesores, getProfesorPorId } from '../services/Profesor';
-import { getTodosLosAlumnos, getAlumnoPorId, getAlumnoById, GetIdAlumnoByDNI } from '../services/Alumnos';
-import { getTodosLasCursos } from '../services/curso';
+import { NavLink} from 'react-router-dom';
+import { getTodosLosProfesoresJson } from '../services/Profesor';
+import { getTodosLosAlumnosJson } from '../services/Alumnos';
+import { Nav } from 'react-bootstrap';
 
 const LogIn = () => {
   const [dni, setDni] = useState('');
@@ -20,36 +20,33 @@ const LogIn = () => {
 
   // logica para buscar dni entre profesor y alumno
   const handleLogin = async () => {
-    //try {
+    try {
       setError(null); // Reset error
 
-      const profesores = await getTodosLosProfesores();
-      console.log("lo que trae profesores: " + profesores);
+      const profesores = await getTodosLosProfesoresJson();
+      const alumnos = await getTodosLosAlumnosJson();
 
-      // const cursos = await getTodosLasCursos();
-      // console.log("lo que trae todo los cursos" + cursos);
+      const profesor = profesores.find(prof => prof.dni === parseInt(dni));
+        if (profesor) {
+          console.log("entro en profe");
+          //navegate(`/comision/actual/${profesor._id}`); // NO SE POR QUE NO ANDA ESTE
+          window.location.href = `/comision/actual/${profesor._id}`;
+        return;
+        }
 
-      const alumnos = await getTodosLosAlumnos();
-      console.log("lo que trae por dni: " + alumnos);
+      const alumno = alumnos.find(alumn => alumn.dni === parseInt(dni));
+        if(alumno) {
+          console.log("entro en alumno");
+          //navegate(`/alumno/curso/${alumno._id}`); // NO SE POR QUE NO ANDA ESTE
+          window.location.href = `/alumno/curso/${alumno._id}`;
+          return;
+        }
 
-      //const profesor = profesores.find(prof => prof.dni === parseInt(dni));
-      //if (profesor) {
-      //  navigate(`/comision/actual`);
-      //  return;
-     // }
-
-      //const alumnos = await getTodosLosAlumnos();
-    //   const alumno = alumnos.find(alum => alum.dni === parseInt(dni));
-    //   if (alumno) {
-    //     navigate(`/alumno/curso`);
-    //     return;
-    //   }
-
-    //   setError('Usuario no encontrado');
-    // } catch (error) {
-    //   console.error('Error al buscar el usuario', error);
-    //   setError('Ocurrió un error al intentar ingresar. Por favor, intenta nuevamente.');
-    // }
+       window.alert('Usuario no encontrado');
+     } catch (error) {
+       console.error('Error al buscar el usuario', error);
+       window.alert("Ocurrió un error al intentar ingresar. Por favor, intenta nuevamente.");
+      }
   };
 
   return (

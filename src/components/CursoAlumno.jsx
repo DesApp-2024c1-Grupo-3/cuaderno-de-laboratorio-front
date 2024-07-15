@@ -9,7 +9,6 @@ import { getCursosByAlumnoId } from '../services/Alumnos';
 
 
 const AlumnoCursos = () => {
-  const alumnoId = '665de481ea2f98169d808680'; //Elena Rodriguez
 
   const { idAlumno } = useParams();
   const [dato, setDato] = useState([]);
@@ -18,16 +17,16 @@ const AlumnoCursos = () => {
   useEffect(() => {
     const fetchCurso = async () => {
       try {
-        const response = await getCursosByAlumnoId(alumnoId);
+        const response = await getCursosByAlumnoId(idAlumno);
         setDato(response || []);
       }catch (error) {
         console.error('Error al obtener los cursos:', error);
       }
     };
-    if (alumnoId) {
+    if (idAlumno) {
       fetchCurso();
     }
-  }, [alumnoId]);
+  }, [idAlumno]);
 
   return (
     <Box display="flex" flexDirection="column">
@@ -75,7 +74,7 @@ const AlumnoCursos = () => {
                             borderRadius: '30%',
                             '&:hover': { backgroundColor: '#b0d38a' }
                           }}
-                          onClick={() => history.push(`/tpsAlumno/${curso._id}/${alumnoId}`)}
+                          onClick={() => history.push(`/tpsAlumno/${curso._id}/${idAlumno}`)}
                         >
                           Ir al Curso
                         </Button>

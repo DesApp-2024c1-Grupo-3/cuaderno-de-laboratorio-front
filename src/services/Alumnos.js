@@ -2,13 +2,7 @@ import { getJsonFromApi } from './utils';
 
 export async function getTodosLosAlumnos() {
   const apiResponse = await getJsonFromApi(`alumnos/`);
-  return apiResponse;
-}
-
-export async function GetIdAlumnoByDNI(dni) {
-  // creada para buscar id almno con dni , si no se usa, se borra
-  const apiResponse = await getJsonFromApi(`alumno/${dni}`);
-  return apiResponse;
+  return apiResponse; // este no lo uso, poner el metodo que estaba antes
 }
 
 export async function getAlumnoPorId(id) {
@@ -31,5 +25,11 @@ export async function getTpsDelCursosByAlumnoId(alumnoId) {
 }
 export async function getAlumnoById(alumnoId) {
   const apiResponse = await getJsonFromApi(`alumnoSolo/${alumnoId}`);
+  return apiResponse;
+}
+
+export async function getTodosLosAlumnosJson() {
+  //metodo para el login provisonal
+  const apiResponse = await getJsonFromApi(`alumnosJson/`);
   return apiResponse;
 }
