@@ -9,7 +9,7 @@ import { crearCalificacion } from '../services/Calificacion';
 import { Header} from './General/HeaderAlum';
 
 const TpEntrega = () => {
-  const { idEntregaGrupal, tpId} = useParams();  
+  const { idEntregaGrupal, alumnoId, tpId} = useParams();  
   const [grupo, setGrupo] = useState([]);
   const [alumnos, setAlumnos] = useState([])
   const [nota, setNota] = useState('');
@@ -42,7 +42,7 @@ const TpEntrega = () => {
       }
     }
     fetchTp();
-  }, [tpId, idEntregaGrupal]);
+  }, [tpId, idEntregaGrupal, alumnoId]);
  
 
   const handleNotaChange = (e) => setNota(e.target.value);
@@ -119,7 +119,7 @@ const TpEntrega = () => {
               <Typography variant="h6" component="div" gutterBottom>
                 Entrega de documento - Un solo integrante del grupo puede hacer la carga.
               </Typography>
-              <Button variant="contained" component="label">
+              <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
                 Subir archivos
                 <input type="file" hidden multiple onChange={handleArchivoChange} />
               </Button>

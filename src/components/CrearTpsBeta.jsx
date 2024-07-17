@@ -7,6 +7,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { getCursoById, crearTp as postCrearTp } from '../services/tps';
 import ListaDeGrupos from './Profesores/ListaDeGrupos';
+import { Header} from './General/HeaderProf';
 
 const CrearTpsBeta = () => {
   const { idCurso, profesorId } = useParams();
@@ -98,6 +99,7 @@ const CrearTpsBeta = () => {
 
   return (
     <Box display="flex" flexDirection="column">
+      <Header />
       <Card sx={{ mb: 2 }}>
         <CardContent>
           <Typography variant="h6" component="div" gutterBottom>

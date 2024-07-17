@@ -3,6 +3,7 @@ import Unahur from '../../Img/UNAHUR.png';
 import { getProfesorPorId } from '../../services/Profesor';
 import { Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 // Define los estilos utilizando @emotion/styled
 const FixedHeader = styled.div`
@@ -29,13 +30,14 @@ const Title = styled.p`
   text-align: center;
 `;
 
-const profesorId = '6685d8cbf85876c72749555e';
+//const profesorId = '6685d8cbf85876c72749555e';
 
 
 
 export const Header = () => {
 
     const [profesor, setProfesor] = useState([]);
+    const { profesorId } = useParams();
   
     useEffect(() => {
       async function fetchProfesor() {

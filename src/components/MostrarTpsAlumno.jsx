@@ -3,14 +3,14 @@ import {
   Box, Button, Card, CardContent, Container, Table, TableBody, TableCell, TableContainer, TableHead,
   TableRow, Paper, Typography, Grid
   } from '@mui/material';
-import { NavLink, useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import { getCursoById, getTpsByCursoId } from '../services/tps';
 import { Header} from './General/HeaderAlum';
 
 const AlumnoTps = () => {
  
-  const { idCurso, alumnoId} = useParams();
+  const { idCurso, alumnoId } = useParams();
   const [dato, setDato] = useState([]);
   const [data, setData] = useState(null);
   const history = useHistory();
@@ -93,7 +93,7 @@ const AlumnoTps = () => {
                               borderRadius: '30%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/entregaAlumno/${alumnoId}/${tp._id}`)}
+                            onClick={() => history.push(`/entregaAlumno/${alumnoId}/${alumnoId}/${tp._id}`)}
                           >
                             Agregar Entrega
                           </Button>
@@ -107,7 +107,7 @@ const AlumnoTps = () => {
                               borderRadius: '30%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/entregaGrupo/${alumnoId}/${tp._id}`)}
+                            onClick={() => history.push(`/entregaGrupo/${alumnoId}/${alumnoId}/${tp._id}`)}
                             >
                               Agregar Entrega
                             </Button>
@@ -128,8 +128,7 @@ const AlumnoTps = () => {
                 <Button
                   variant="contained"
                   sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  component={NavLink}
-                  to={`/alumno/curso`}
+                  onClick={() => history.goBack()}
                 >
                   Volver
                 </Button>

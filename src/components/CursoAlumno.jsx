@@ -11,23 +11,23 @@ import { Header} from './General/HeaderAlum';
 
 const AlumnoCursos = () => {
 
-  const { idAlumno } = useParams();
+  const { alumnoId } = useParams();
   const [dato, setDato] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
     const fetchCurso = async () => {
       try {
-        const response = await getCursosByAlumnoId(idAlumno);
+        const response = await getCursosByAlumnoId(alumnoId);
         setDato(response || []);
       } catch (error) {
         console.error('Error al obtener los cursos:', error);
       }
     };
-    if (idAlumno) {
+    if (alumnoId) {
       fetchCurso();
     }
-  }, [idAlumno]);
+  }, [alumnoId]);
 
   return (
     <Box display="flex" flexDirection="column">
@@ -76,7 +76,7 @@ const AlumnoCursos = () => {
                             borderRadius: '30%',
                             '&:hover': { backgroundColor: '#b0d38a' }
                           }}
-                          onClick={() => history.push(`/tpsAlumno/${curso._id}/${idAlumno}`)}
+                          onClick={() => history.push(`/tpsAlumno/${curso._id}/${alumnoId}`)}
                         >
                           Ir al Curso
                         </Button>

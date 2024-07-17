@@ -20,7 +20,7 @@ import { SubHeader } from './General/SubHeader';
 import { Header} from './General/HeaderProf';
 
 const TpDetalle = () => {
-  const { idCurso, tpId } = useParams();
+  const { idCurso, profesorId, tpId } = useParams();
   const [tp, setTp] = useState(null);
   const [curso, setCurso] = useState(null);
   const [alumnos, setAlumnos] = useState([]);
@@ -53,7 +53,7 @@ const TpDetalle = () => {
       }
     }
     fetchTp();
-  }, [idCurso, tpId]);
+  }, [idCurso, profesorId, tpId]);
 
 
   const SubHeader = ({ titulo, nombreTP }) => {
@@ -146,15 +146,15 @@ const TpDetalle = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>
+                    <TableCell style={{ width: '35%', fontSize: '18px' }}>
                       {tp.grupal ? (
-                      <Typography sx={{fontSize: '1vw'}}>Nombre de grupo</Typography>
+                      <Typography sx={{fontSize: '1vw', fontWeight: 'bold'}}>Nombre de grupo</Typography>
                       ) : (
-                      <Typography sx={{fontSize: '1vw'}}>Nombre de alumno</Typography>
+                      <Typography sx={{fontSize: '1vw', fontWeight: 'bold'}}>Nombre de alumno</Typography>
                       )}</TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Estado</TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Nota</TableCell>
-                    <TableCell style={{ width: '15%', fontSize: '15px' }}>Entrega</TableCell>
+                    <TableCell style={{ width: '35%', fontSize: '17px', fontWeight:'bold' }}>Estado</TableCell>
+                    <TableCell style={{ width: '35%', fontSize: '17px', fontWeight:'bold' }}>Nota</TableCell>
+                    <TableCell style={{ width: '15%', fontSize: '17px', fontWeight:'bold'}}>Entrega</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -175,12 +175,12 @@ const TpDetalle = () => {
                               backgroundColor: '#c5e1a5',
                               color: '#000000',
                               fontSize: '10px',
-                              borderRadius: '30%',
+                              borderRadius: '5%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/calificarGrupo/${grupo._id}/${tpId} `)}
+                            onClick={() => history.push(`/calificarGrupo/${grupo._id}/${profesorId}/${tpId} `)}
                           >
-                            Ver entrega
+                            Ver
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -202,12 +202,12 @@ const TpDetalle = () => {
                               backgroundColor: '#c5e1a5',
                               color: '#000000',
                               fontSize: '10px',
-                              borderRadius: '30%',
+                              borderRadius: '5%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/CalificarAlumno/${alumno._id}/${tpId}`)}
+                            onClick={() => history.push(`/CalificarAlumno/${alumno._id}/${profesorId}/${tpId}`)}
                           >
-                            Ver entrega
+                            Ver
                           </Button>
                         </TableCell>
                       </TableRow>

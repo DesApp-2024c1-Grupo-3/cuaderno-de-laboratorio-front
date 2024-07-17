@@ -40,7 +40,7 @@ const LogIn = () => {
           console.log("entro en alumno");
           //navegate(`/alumno/curso/${alumno._id}`); // NO SE POR QUE NO ANDA ESTE
           window.location.href = `/alumno/curso/${alumno._id}`;
-          return;
+        return;
         }
 
        window.alert('Usuario no encontrado');
@@ -56,7 +56,7 @@ const LogIn = () => {
       <CardContent>
         <Container maxWidth="xs">
           <Typography variant="h4" component="h1" gutterBottom textAlign="center" fontWeight="bold">
-            Ingreso
+            Iniciar Sesión
           </Typography>
           <TextField
             label="DNI"
@@ -80,15 +80,16 @@ const LogIn = () => {
               onClick={handleLogin}
               variant="contained"
               fullWidth
-              sx={{ mb: 2 }}
+              sx={{ mb:3.5, backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
             >
               Ingresar
             </Button>
             <Button
               component={NavLink}
               to={'/#'}
-              variant="text"
               fullWidth
+              variant="contained" 
+              sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
             >
               Olvidé la contraseña
             </Button>

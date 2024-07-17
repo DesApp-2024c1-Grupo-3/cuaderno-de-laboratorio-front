@@ -8,7 +8,7 @@ import {crearCalificacion} from '../services/Calificacion';
 import { Header} from './General/HeaderAlum';
 
 const TpEntrega = () => {
-  const { idEntregaAlumno, tpId} = useParams();
+  const { idEntregaAlumno, alumnoId, tpId} = useParams();
   const [nota, setNota] = useState('');
   const [alumno, setAlumno] = useState([]);
   const [comentario, setComentario] = useState('');
@@ -29,7 +29,7 @@ const TpEntrega = () => {
 
     }
     fetchTp();
-  }, [idEntregaAlumno]);
+  }, [idEntregaAlumno, alumnoId]);
 
   const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
@@ -105,7 +105,7 @@ const TpEntrega = () => {
               <Typography variant="h6" component="div" gutterBottom>
                 Entrega de documento 
               </Typography>
-              <Button variant="contained" component="label">
+              <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
                 Subir archivos
                 <input type="file" hidden multiple onChange={handleArchivoChange} />
               </Button>

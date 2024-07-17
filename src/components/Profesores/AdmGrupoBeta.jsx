@@ -13,6 +13,8 @@ import { useParams, useHistory } from 'react-router-dom';
 import { getGrupoByCursoId, postEliminarGrupo } from '../../services/Grupo';
 import { getAlumnosByCursoId } from '../../services/Alumnos';
 import { SubHeader } from '../General/SubHeader';
+import { Header } from '../General/HeaderProf';
+import { border } from '@mui/system';
 
 const AdministrarGrupos = () => {
   const { idCurso } = useParams();
@@ -85,6 +87,7 @@ const AdministrarGrupos = () => {
 
   const gruposRendering = () => (
     <Box display="flex" flexDirection="column">
+      <Header />
       <Card sx={{ mb: 2 }}>
         <CardContent>
           <SubHeader titulo="Administrar Grupos" />
@@ -103,27 +106,27 @@ const AdministrarGrupos = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '25%', fontSize: '15px' }}>Nombre del Grupo</TableCell>
-                    <TableCell style={{ width: '25%', fontSize: '15px' }}>Ver</TableCell>
-                    <TableCell style={{ width: '25%', fontSize: '15px' }}>Modificar</TableCell>
-                    <TableCell style={{ width: '25%', fontSize: '15px' }}>Eliminar</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '5%'}} >Nombre del Grupo</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '10.5%' }} >Ver</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '8%' }} >Modificar</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '10%'}} >Eliminar</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {grupos.map((grupo) => (
                     <TableRow key={grupo._id} sx={{ backgroundColor: grupos.indexOf(grupo) % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}>
-                      <TableCell>{grupo.nombre}</TableCell>
-                      <TableCell>
+                      <TableCell align="center">{grupo.nombre}</TableCell>
+                      <TableCell align="center">
                         <IconButton edge="start" aria-label="view" onClick={() => handleViewOpen(grupo)}>
                           <VisibilityIcon />
                         </IconButton>
                       </TableCell>
-                      <TableCell>
-                        <IconButton edge="start" aria-label="edit" onClick={() => handleEditOpen(grupo)}>
+                      <TableCell align="center">
+                        <IconButton edge="start"  aria-label="edit" onClick={() => handleEditOpen(grupo)}>
                           <EditIcon />
                         </IconButton>
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="center">
                         <IconButton edge="end" aria-label="delete" onClick={() => deleteGrup(grupo._id)}>
                           <DeleteIcon />
                         </IconButton>

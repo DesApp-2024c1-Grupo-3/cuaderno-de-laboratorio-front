@@ -7,10 +7,10 @@ import {
 import { Header} from './General/HeaderProf';
 import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
 import { getTpId } from '../services/tps';
-import { getComAlumnByCalifId, updateCalificacion} from '../services/Calificacion';
+import { getComAlumnByCalifId, updateCalificacion, postEliminarCalificacion} from '../services/Calificacion';
 
 const TpEntrega = () => {
-  const { idEntregaGrupal, tpId } = useParams();
+  const { idEntregaGrupal, profesorId, tpId } = useParams();
   const [tp, setTp] = useState(null);
   const [grupo, setGrupo] = useState(null);
   const [nota, setNota] = useState('');
@@ -51,7 +51,7 @@ const TpEntrega = () => {
       }
     }
     fetchTp();
-  }, [idEntregaGrupal, tpId]);
+  }, [idEntregaGrupal, profesorId, tpId]);
  
   const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
