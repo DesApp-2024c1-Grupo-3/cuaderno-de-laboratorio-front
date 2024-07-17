@@ -1,4 +1,9 @@
-import { postMultipartToApi, getJsonFromApi, putJsonToApi } from './utils';
+import {
+  postMultipartToApi,
+  getJsonFromApi,
+  putJsonToApi,
+  deleteFromApi,
+} from './utils';
 
 export async function crearCalificacion(body) {
   const apiResponse = await postMultipartToApi(`calificacion/`, body);
@@ -7,7 +12,7 @@ export async function crearCalificacion(body) {
 
 export async function getComAlumnByCalifId(idGrupo, tpId) {
   const apiResponse = await getJsonFromApi(`calificacion/${idGrupo}/${tpId}`);
-  return apiResponse;
+  return apiResponse.coment;
 }
 export async function getComAlumnIndByCalifId(idEntregaAlumno, tpId) {
   const apiResponse = await getJsonFromApi(
@@ -23,4 +28,10 @@ export async function updateCalificacion(id, data) {
     console.error('Error al actualizar la calificación:', error);
     throw error;
   }
+}
+export async function postEliminarCalificacion(id) {
+  console.log('ID Calificacion: ', id);
+  const apiResponse = await deleteFromApi(`calificacion/${id}`);
+  console.log('Delete Calificacion; ', apiResponse);
+  return apiResponse;
 }

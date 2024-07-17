@@ -5,7 +5,10 @@ import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
  } from '@mui/material';
 import { getAlumnoById } from '../services/Alumnos';
 import { getTpId } from '../services/tps';
-import {getComAlumnIndByCalifId, updateCalificacion} from '../services/Calificacion';
+import {getComAlumnIndByCalifId,
+        updateCalificacion,
+        postEliminarCalificacion,
+      } from '../services/Calificacion';
 import { Header} from './General/HeaderProf';
 
 const TpEntrega = () => {
@@ -62,7 +65,13 @@ const TpEntrega = () => {
       </Grid>
     );
   };
-
+  const deleteCalificacion = async (id) => {
+    try {
+      await postEliminarCalificacion(id);
+      } catch (error) {
+      console.error('Error al eliminar la calificaion del alumno:', error);
+    }
+  };
   const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
 
@@ -135,7 +144,7 @@ const TpEntrega = () => {
               </Table>
             </TableContainer>
             <Box mt={2}>
-            <Typography variant="h6" component="div" gutterBottom>
+              <Typography variant="h6" component="div" gutterBottom>
                 Documento {comAlum === '' ? 'No entregado' : 'Entregado'}
               </Typography>
               <Typography variant="h6">
@@ -158,8 +167,8 @@ const TpEntrega = () => {
               </div>
               )}
             </Box>
-            <Box mt={2}>
-              {comAlum.comentarioAlum && (
+            <Box mt={2}>            
+              { !comAlum.calificacion ? (
               <>
                 <TextField
                   label="Nota"
@@ -180,8 +189,34 @@ const TpEntrega = () => {
                   rows={4}
                 />
               </> 
+            ):(
+        
+               <Grid container spacing={2} alignItems="center">
+              
+                <Grid item xs={4}>
+                  <Typography variant="h6" component="div" gutterBottom>
+                  Nota: {comAlum.calificacion}
+                  </Typography>
+                  <Typography variant="h6" component="div" gutterBottom>
+                      Devolucion del Profesor : 
+                    <Typography marginLeft={2}>
+                       {comAlum.devolucionProf}
+                    </Typography>
+                  </Typography>
+                </Grid>
+                <Grid item>
+                <Button
+                  variant="contained"
+                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  onClick={() => deleteCalificacion(comAlum._id)}
+                >
+                  Eliminar Trabajo practico
+                </Button>
+              </Grid>
+              </Grid> 
             )}
             </Box>
+            
             <Grid container 
               spacing={2} 
               justifyContent="space-between"
@@ -197,13 +232,13 @@ const TpEntrega = () => {
                 </Button>
               </Grid>
               <Grid item>
-                <Button
+               {!comAlum.calificacion && (<Button
                   variant="contained"
                   sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
                   onClick={handleSave}
                 >
                   Enviar Calificacion
-                </Button>
+                </Button>)}
               </Grid>              
             </Grid>
           </Container>

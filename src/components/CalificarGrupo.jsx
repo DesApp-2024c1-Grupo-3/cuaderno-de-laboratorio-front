@@ -16,7 +16,7 @@ const TpEntrega = () => {
   const [nota, setNota] = useState('');
 
   const [comentario, setComentario] = useState('');
-  const [comAlumno, setComentarioAlumno] = useState(['']);
+  const [comAlumno, setComentarioAlumno] = useState('');
   const [archivo, setArchivo] = useState(null);
   const [hasError, setHasError] = useState(false);
 
@@ -31,11 +31,11 @@ const TpEntrega = () => {
 
         try {
           const califData = await getComAlumnByCalifId(idEntregaGrupal, tpId);
-          setComentarioAlumno(califData || 'El Trabajo practico no fue entregado');
+          setComentarioAlumno(califData );
           console.log(califData)
         } catch (error) {
           if (error.response && error.response.status === 404 || error.response.status === 500) {
-            setComentarioAlumno('El Trabajo practico no fue entregado');
+            setComentarioAlumno('');
           }
         }
         if (tpId) {
@@ -52,7 +52,7 @@ const TpEntrega = () => {
     }
     fetchTp();
   }, [idEntregaGrupal, tpId]);
-
+ 
   const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
 
@@ -94,6 +94,13 @@ const TpEntrega = () => {
         </Typography>
       </Grid>
     );
+  };
+  const deleteCalificacion = async (id) => {
+    try {
+      await postEliminarCalificacion(id);
+      } catch (error) {
+      console.error('Error al eliminar la calificaion del alumno:', error);
+    }
   };
   const formatFecha = (fecha) => {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -186,12 +193,12 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                Documento {comAlumno.coment !== 'El Trabajo practico no fue entregado' ? 'entregado' : 'no entregado'}
+                Documento {comAlumno !== ''? 'entregado' : 'no entregado'}
               </Typography>
               <Typography variant="h6">
-                {comAlumno.coment !== 'El Trabajo practico no fue entregado' ? "Comentario grupal: " : 'El trabajo practico no fue entregado'}
+                {comAlumno !== '' ? "Comentario grupal: " : 'El trabajo practico no fue entregado'}
                 <Typography marginLeft={2}>
-                  {comAlumno.coment !== 'El Trabajo practico no fue entregado' ?  comAlumno.coment : ''}
+                  {comAlumno !== '' ?  comAlumno.comentarioAlum : 'Hola'}
                 </Typography>
               </Typography>
               <br/>
@@ -199,13 +206,15 @@ const TpEntrega = () => {
                 <Button
                   variant="contained"
                   onClick={handleDownload}
-                  disabled={!archivo || comAlumno.coment === 'El Trabajo practico no fue entregado'}
+                  disabled={comAlumno.comentarioAlum === ''}
                 >
                   Descargar {archivo ? archivo.nombre : ''}
                 </Button>
               )}
             </Box>
             <Box mt={2}>
+              {!comAlumno.calificacion?(
+              <>
               <TextField
                 label="Nota"
                 value={nota}
@@ -224,6 +233,31 @@ const TpEntrega = () => {
                 multiline
                 rows={4}
               />
+              </>
+              ):(
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item xs={4}>
+                    <Typography variant="h6" component="div" gutterBottom>
+                      Nota: {comAlumno.calificacion}
+                    </Typography>
+                    <Typography variant="h6" component="div" gutterBottom>
+                      Devolucion del Profesor : 
+                      <Typography marginLeft={2}>
+                        {comAlumno.devolucionProf}
+                      </Typography>
+                    </Typography>
+                  </Grid>
+                  <Grid item style={{ marginLeft: 'auto' }}>
+                    <Button
+                      variant="contained"
+                      sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                      onClick={() => deleteCalificacion(comAlumno._id)}
+                    >
+                      Eliminar Trabajo practico
+                    </Button>
+                  </Grid>
+                </Grid>
+              )}
             </Box>
             <Grid container
               spacing={2}
@@ -240,13 +274,13 @@ const TpEntrega = () => {
                 </Button>
               </Grid>
               <Grid item>
-                <Button
+                {!comAlumno.calificacion && (<Button
                   variant="contained"
                   sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
                   onClick={handleSave}
                 >
                   Enviar Calificacion
-                </Button>
+                </Button>)}
               </Grid>
             </Grid>
           </Container>
