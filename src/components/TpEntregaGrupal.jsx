@@ -86,6 +86,8 @@ const TpEntrega = () => {
   const deleteCalificacion = async (id) => {
     try {
       await postEliminarCalificacion(id);
+      alert(' eliminada con éxito');
+      history.goBack();
       } catch (error) {
       console.error('Error al eliminar la calificaion del alumno:', error);
     }
@@ -159,14 +161,14 @@ const TpEntrega = () => {
               <br/>
             </Box>
             <Box mt={2}>
-             {nota && <TextField
+             {!comProfe &&(nota && <TextField
                 label="Nota"
                 value={nota}
                 
                 variant="outlined"
                 fullWidth
                 margin="normal"
-              />}
+              />)}
               
               {!comProfe && (
               <TextField
@@ -179,30 +181,31 @@ const TpEntrega = () => {
                 multiline
                 rows={4}
             />)}
-            {comProfe.calificacion ?( 
+            {comProfe.calificacion &&( 
               <Grid container spacing={2} alignItems="center">              
                 <Grid item xs={4}>
                   <Typography variant="h6" component="div" gutterBottom>
-                  Nota: {comAlum.calificacion}
+                  Nota: {comProfe.calificacion}
                   </Typography>
                   <Typography variant="h6" component="div" gutterBottom>
                       Devolucion del Profesor : 
                     <Typography marginLeft={2}>
-                      {comAlum.devolucionProf}
+                      {comProfe.devolucionProf}
                     </Typography>
                   </Typography>
                 </Grid>
               </Grid> 
-            ):(
+            )}{ comProfe.calificacion || comProfe && (
             <Grid item>
                <Button
                   variant="contained"
                   sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
                   onClick={
                     () => deleteCalificacion(comProfe._id)
+                     
                   }
                 >
-                  Eliminar Trabajo practico
+                  Eliminar entrega
                   </Button>
               </Grid>
             )}  

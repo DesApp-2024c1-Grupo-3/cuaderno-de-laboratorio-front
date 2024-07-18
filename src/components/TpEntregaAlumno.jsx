@@ -4,13 +4,17 @@ import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
  } from '@mui/material';
 import { getAlumnoById } from '../services/Alumnos';
-import {crearCalificacion} from '../services/Calificacion';
+import { crearCalificacion,
+         getComAlumnIndByCalifId,
+         postEliminarCalificacion 
+} from '../services/Calificacion';
 import { Header} from './General/HeaderAlum';
 
 const TpEntrega = () => {
   const { idEntregaAlumno, alumnoId, tpId} = useParams();
   const [nota, setNota] = useState('');
   const [alumno, setAlumno] = useState([]);
+  const [comProfe, setComentarioProfe] = useState('');
   const [comentario, setComentario] = useState('');
   const [archivos, setArchivos] = useState([]);
   const [hasError, setHasError] = useState(false);
@@ -22,6 +26,19 @@ const TpEntrega = () => {
       try {
         const alumnoData = await getAlumnoById(idEntregaAlumno);
         setAlumno(alumnoData);
+        try {
+          const califData = await getComAlumnIndByCalifId(idEntregaAlumno, tpId);
+          setComentarioProfe(califData );
+          setNota(califData.calificacion);
+          
+          console.log(califData)
+          console.log( califData.calificacion)
+         
+        } catch (error) {
+          if (error.response && error.response.status === 404 || error.response.status === 500) {
+            setComentarioProfe('');
+          }
+        }         
               
       } catch (err) {
         setHasError(true);
@@ -54,6 +71,16 @@ const TpEntrega = () => {
       console.error('Error al guardar', err);
     }
   };
+  const deleteCalificacion = async (id) => {
+    try {
+      await postEliminarCalificacion(id);
+      alert(' eliminada con éxito');
+      history.goBack();
+      } catch (error) {
+      console.error('Error al eliminar la calificaion del alumno:', error);
+    }
+  };
+  //console.log(comProfe)
   
   const tpRendering = () => (
     <Box>
@@ -75,7 +102,7 @@ const TpEntrega = () => {
               }}
             >
             <Typography variant="h6" component="div" gutterBottom>
-            Tp Moderno
+            Tp
             </Typography>  
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
@@ -103,25 +130,34 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                Entrega de documento 
+                {!comProfe && ('Entrega de Trabajo practico')}
               </Typography>
-              <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
-                Subir archivos
-                <input type="file" hidden multiple onChange={handleArchivoChange} />
-              </Button>
+               {!comProfe &&( <Button variant="contained" component="label">
+                  Subir archivos
+                  <input type="file" hidden multiple onChange={handleArchivoChange} />
+                </Button>)}
               {archivos && archivos.map((archivo, index) => (
                 <Typography variant="body2" key={index}>{archivo.name}</Typography>
               ))}
+              <Typography variant="h6">
+                {comProfe.comentarioAlum &&("Comentario Del Alumno: ") }
+                <Typography marginLeft={2}>
+                  {comProfe.comentarioAlum}
+                </Typography>
+              </Typography>
+              <br/>
             </Box>
             <Box mt={2}>
-              {nota && <TextField
+             {!comProfe &&(nota && <TextField
                 label="Nota"
                 value={nota}
-                onChange={handleNotaChange}
+                
                 variant="outlined"
                 fullWidth
                 margin="normal"
-              />}
+              />)}
+              
+              {!comProfe && (
               <TextField
                 label="Comentario"
                 value={comentario}
@@ -131,7 +167,35 @@ const TpEntrega = () => {
                 margin="normal"
                 multiline
                 rows={4}
-              />
+            />)}
+            {comProfe.calificacion &&( 
+              <Grid container spacing={2} alignItems="center">              
+                <Grid item xs={4}>
+                  <Typography variant="h6" component="div" gutterBottom>
+                  Nota: {comProfe.calificacion}
+                  </Typography>
+                  <Typography variant="h6" component="div" gutterBottom>
+                      Devolucion del Profesor : 
+                    <Typography marginLeft={2}>
+                      {comProfe.devolucionProf}
+                    </Typography>
+                  </Typography>
+                </Grid>
+              </Grid> 
+            )}{ comProfe.calificacion || comProfe && (
+            <Grid item>
+               <Button
+                  variant="contained"
+                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  onClick={
+                    () => deleteCalificacion(comProfe._id)
+                     
+                  }
+                >
+                  Eliminar entrega
+                  </Button>
+              </Grid>
+            )}  
             </Box>
             <Grid container 
               spacing={2} 
@@ -148,13 +212,13 @@ const TpEntrega = () => {
                 </Button>
               </Grid>
               <Grid item>
-                <Button
+                {!comProfe && (<Button
                   variant="contained"
                   sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
                   onClick={handleSave}
                 >
                   Cargar TP
-                </Button>
+                </Button>)}
               </Grid>              
             </Grid>
           </Container>
