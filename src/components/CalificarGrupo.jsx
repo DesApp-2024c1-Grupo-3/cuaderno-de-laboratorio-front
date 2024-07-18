@@ -21,7 +21,7 @@ const TpEntrega = () => {
   const [hasError, setHasError] = useState(false);
 
   const history = useHistory();
-
+  
   useEffect(() => {
     async function fetchTp() {
       try {
@@ -61,8 +61,9 @@ const TpEntrega = () => {
       devolucionProf: comentario,
       calificacion: parseFloat(nota),
     };
+    console.log(comAlumno._id)
     try {
-      await updateCalificacion(comAlumno.idCalif, calificacionData);
+      await updateCalificacion(comAlumno._id, calificacionData);
       alert('Calificación guardada con éxito');
       history.goBack();
     } catch (err) {

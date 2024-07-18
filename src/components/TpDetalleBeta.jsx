@@ -251,7 +251,9 @@ const TpDetalle = () => {
                 <Button
                   variant="contained"
                   sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={() => history.goBack()}
+                  component={NavLink}
+                  to={`/tps/${idCurso}/${profesorId}`}
+                  //onClick={() => history.goBack()}
                 >
                   Volver
                 </Button>

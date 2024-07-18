@@ -24,11 +24,12 @@ const TpEntrega = () => {
       try {
         // Obtener la lista de grupos y verificar si el alumno pertenece a algún grupo
         const grupos = await getGruposByTpId(tpId);
-                  
+        console.log(grupos)          
         if (grupos) {
           const grupoEncontrado = grupos.find(grupo => 
             grupo.alumnos.some(alumno => alumno._id === idEntregaGrupal)
           );
+          console.log(grupoEncontrado)
           if (grupoEncontrado) {
             setGrupo(grupoEncontrado);
             const alumnosData= await getGrupoPorId(grupoEncontrado._id);
