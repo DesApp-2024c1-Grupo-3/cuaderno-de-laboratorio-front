@@ -102,9 +102,9 @@ export default function Comision() {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ width: '35%', fontSize: '15px' }}>Materia</TableCell>
-                    <TableCell sx={{ width: '35%', fontSize: '15px' }}>Comisiones</TableCell>
-                    <TableCell sx={{ width: '35%', fontSize: '15px' }}>Trabajos Practicos</TableCell>
+                    <TableCell sx={{ width: '40%', fontSize: '18px' }}>Materia</TableCell>
+                    <TableCell sx={{ width: '40%', fontSize: '18px' }}>Comisiones</TableCell>
+                    <TableCell sx={{ width: '40%', fontSize: '18px' }}>Trabajos Practicos</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -115,14 +115,18 @@ export default function Comision() {
                     >
                       <TableCell>{it.materia.nombre}</TableCell>
                       <TableCell>{it.comision}</TableCell>
-                      <TableCell>
+                      <TableCell sx={{
+                        display: 'flex',
+                        justifyContent: 'center', // Centra horizontalmente
+                        alignItems: 'center' // Centra verticalmente
+                      }}>
 
                         <Button 
                           sx={{
                             backgroundColor: '#c5e1a5',
                             color: '#000000',
                             fontSize: '10px',
-                            borderRadius: '30%',
+                            borderRadius: '5%',
                             '&:hover': { backgroundColor: '#b0d38a' }
                           }}
                           component={NavLink}
@@ -140,7 +144,10 @@ export default function Comision() {
               marginLeft='41.5%'
             >
               <Grid item>
-                <Button Button variant="contained" sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }} component={NavLink} to="/">Volver</Button>
+                <Button Button variant="contained" 
+                sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }} component={NavLink} to="/">
+                  Salir
+                </Button>
               </Grid>
             </Grid>
           </Container>

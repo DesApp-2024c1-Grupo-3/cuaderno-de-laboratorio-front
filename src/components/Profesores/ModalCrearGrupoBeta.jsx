@@ -71,12 +71,12 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
       const alumnosAsignados = grupos.reduce((acc, grupo) => {
         return acc.concat(grupo.alumnos.map(alumno => alumno._id));
       }, []);
-      console.log("Son alumnos Asignados:", alumnosAsignados);
+      //console.log("Son alumnos Asignados:", alumnosAsignados);
      
       const alumnosDisponibles = alumnos.filter(
         alumno => !alumnosAsignados.includes(alumno._id)
       ); 
-      console.log("Este me quedan:",alumnosDisponibles)
+      //console.log("Este me quedan:",alumnosDisponibles)
       setListAlumnos(alumnosDisponibles);
     } catch (err) {
       console.log('Ocurrió este error:', err);

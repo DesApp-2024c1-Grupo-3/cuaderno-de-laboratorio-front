@@ -12,7 +12,7 @@ import {getComAlumnIndByCalifId,
 import { Header} from './General/HeaderProf';
 
 const TpEntrega = () => {
-  const { idEntregaAlumno, tpId} = useParams();
+  const { idEntregaAlumno, profesorId, tpId} = useParams();
  
   const [nota, setNota] = useState('');
   const [tp, setTp] = useState(null);
@@ -53,7 +53,7 @@ const TpEntrega = () => {
     }
    
     fetchTp();
-  }, [idEntregaAlumno, tpId]);
+  }, [idEntregaAlumno, profesorId, tpId]);
 
   const SubHeader = ({ titulo, nombreTP }) => {
     return (

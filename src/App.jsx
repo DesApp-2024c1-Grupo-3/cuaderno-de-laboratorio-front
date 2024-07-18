@@ -38,23 +38,17 @@ const App = () => {
             <Route path="/comision/actual/:profesorId" component={ComisionBeta} />
             <Route path="/tps/:idCurso/:profesorId" component={TpsBeta} />
             <Route path="/crearTps/:idCurso/:profesorId" component={CrearTpsBeta} />
-            <Route path="/Administrar_Grupos/:idCurso" component={AdministrarGrupos} />
+            <Route path="/Administrar_Grupos/:idCurso/:profesorId" component={AdministrarGrupos} />
             <Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />
-            <Route path="/calificarGrupo/:idEntregaGrupal/:tpId" component={CalificarGrupo} />
-            <Route path="/calificarAlumno/:idEntregaAlumno/:tpId" component={CalificarAlumno} />
+            <Route path="/calificarGrupo/:idEntregaGrupal/:profesorId/:tpId" component={CalificarGrupo} />
+            <Route path="/calificarAlumno/:idEntregaAlumno/:profesorId/:tpId" component={CalificarAlumno} />
            
 
-            <Route path="/alumno/curso/:idAlumno" component={CursoAlumno} />  
+            <Route path="/alumno/curso/:alumnoId" component={CursoAlumno} />  
             <Route path="/tpsAlumno/:idCurso/:alumnoId" component={MostrarTpsAlumno} />
-            <Route path="/entregaGrupo/:idEntregaGrupal/:tpId" component={TpEntregaGrupal} />
-            <Route path="/entregaAlumno/:idEntregaAlumno/:tpId" component={TpEntregaAlumno} />
+            <Route path="/entregaGrupo/:idEntregaGrupal/:alumnoId/:tpId" component={TpEntregaGrupal} />
+            <Route path="/entregaAlumno/:idEntregaAlumno/:alumnoId/:tpId" component={TpEntregaAlumno} />
            
-            <Route path="/calificarGrupo/:idEntregaGrupal/:tpId" component={CalificarGrupo} />
-            <Route path="/calificarAlumno/:idEntregaAlumno/:tpId" component={CalificarAlumno} />
-            {/*
-            Ruta home original
-            <Route path="/" component={Home} />
-            */}
             <Route path="/" component={LogIn} />
 
           </Switch>

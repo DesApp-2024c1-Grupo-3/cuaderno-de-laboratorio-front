@@ -12,7 +12,7 @@ import { crearCalificacion,
 import { Header} from './General/HeaderAlum';
 
 const TpEntrega = () => {
-  const { idEntregaGrupal, tpId} = useParams();  
+  const { idEntregaGrupal, alumnoId, tpId} = useParams();  
   const [grupo, setGrupo] = useState([]);
   const [alumnos, setAlumnos] = useState([])
   const [nota, setNota] = useState('');
@@ -46,6 +46,7 @@ const TpEntrega = () => {
           const grupoEncontrado = grupos.find(grupo => 
             grupo.alumnos.some(alumno => alumno._id === idEntregaGrupal)
           );
+          console.log(grupoEncontrado)
           if (grupoEncontrado) {
             setGrupo(grupoEncontrado);
             const alumnosData= await getGrupoPorId(grupoEncontrado._id);
@@ -59,7 +60,7 @@ const TpEntrega = () => {
       }
     }
     fetchTp();
-  }, [tpId, idEntregaGrupal]);
+  }, [tpId, idEntregaGrupal, alumnoId]);
  
   const handleComentarioChange = (e) => setComentario(e.target.value);
   const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));

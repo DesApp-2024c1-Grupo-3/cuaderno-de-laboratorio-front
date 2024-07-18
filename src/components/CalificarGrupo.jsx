@@ -8,9 +8,10 @@ import { Header} from './General/HeaderProf';
 import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
 import { getTpId } from '../services/tps';
 import { getComAlumnByCalifId, updateCalificacion, postEliminarCalificacion} from '../services/Calificacion';
+import { getComAlumnByCalifId, updateCalificacion, postEliminarCalificacion} from '../services/Calificacion';
 
 const TpEntrega = () => {
-  const { idEntregaGrupal, tpId } = useParams();
+  const { idEntregaGrupal, profesorId, tpId } = useParams();
   const [tp, setTp] = useState(null);
   const [grupo, setGrupo] = useState(null);
   const [nota, setNota] = useState('');
@@ -51,7 +52,7 @@ const TpEntrega = () => {
       }
     }
     fetchTp();
-  }, [idEntregaGrupal, tpId]);
+  }, [idEntregaGrupal, profesorId, tpId]);
  
   const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
@@ -61,7 +62,9 @@ const TpEntrega = () => {
       devolucionProf: comentario,
       calificacion: parseFloat(nota),
     };
+    console.log(comAlumno._id)
     try {
+      await updateCalificacion(comAlumno._id, calificacionData);
       await updateCalificacion(comAlumno._id, calificacionData);
       alert('Calificación guardada con éxito');
       history.goBack();

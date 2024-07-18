@@ -3,6 +3,7 @@ import Unahur from '../../Img/UNAHUR.png';
 import { getAlumnoById } from '../../services/Alumnos';
 import { Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 // Define los estilos utilizando @emotion/styled
 const FixedHeader = styled.div`
@@ -29,12 +30,13 @@ const Title = styled.p`
   text-align: center;
 `;
 
-const alumnoId = '6685d8cbf85876c72749551e';
+//const alumnoId = '6685d8cbf85876c727495522';
 
 
 
 export const Header = () => {
 
+    const { alumnoId } = useParams();
     const [alumno, setAlumno] = useState([]);
   
     useEffect(() => {
@@ -45,6 +47,7 @@ export const Header = () => {
           // Agregar el ID del profesor según la información que tengas en tu base de datos local.
           const data = await getAlumnoById(alumnoId);
           setAlumno(data);
+          console.log(alumno.nombre);
   
         } catch (err) {
           console.log('Ocurrió este error.', err);

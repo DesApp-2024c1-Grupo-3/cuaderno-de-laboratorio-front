@@ -43,15 +43,15 @@ export default function Tps() {
     }
 
     fetchData();
-  }, [idCurso]);
+  }, [idCurso, profesorId]);
 
   
   const handleVolver = () => {
-    history.push(`/comision/actual`);
+    history.push(`/comision/actual/${profesorId}`);
   };
 
   const handleAdministrarGrupo = () => {
-    history.push(`/Administrar_Grupos/${idCurso}`);
+    history.push(`/Administrar_Grupos/${idCurso}/${profesorId}`);
   };
 
   const handleNuevoTp = () => {
@@ -87,10 +87,10 @@ export default function Tps() {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Nombre del TP</TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Estado</TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Finalización</TableCell>
-                    <TableCell style={{ width: '15%', fontSize: '15px' }}>Acciones</TableCell>
+                    <TableCell style={{ width: '35%', fontSize: '18px' }}>Nombre del TP</TableCell>
+                    <TableCell style={{ width: '20%', fontSize: '18px' }}>Estado</TableCell>
+                    <TableCell style={{ width: '20%', fontSize: '18px' }}>Finalización</TableCell>
+                    <TableCell style={{ width: '15%', fontSize: '18px' }}>Acciones</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -100,8 +100,8 @@ export default function Tps() {
                       sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                     >
                       <TableCell>{tp.nombre}</TableCell>
-                      <TableCell>{tp.estado || 'Desconocido'}</TableCell>
-                      <TableCell>{formatFecha(tp.fechaFin)}</TableCell>
+                      <TableCell align='justify'>{tp.estado || 'Desconocido'}</TableCell>
+                      <TableCell align='justify'>{formatFecha(tp.fechaFin)}</TableCell>
                       <TableCell>
                         <Button
                           variant="contained"
@@ -109,7 +109,7 @@ export default function Tps() {
                             backgroundColor: '#c5e1a5',
                             color: '#000000',
                             fontSize: '10px',
-                            borderRadius: '30%',
+                            borderRadius: '5%',
                             '&:hover': { backgroundColor: '#b0d38a' }
                           }}
                           onClick={() => history.push(`/tp/${idCurso}/${profesorId}/${tp._id}`)}
