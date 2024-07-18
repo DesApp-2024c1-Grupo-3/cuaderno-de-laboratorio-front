@@ -64,7 +64,7 @@ const TpEntrega = () => {
     };
     console.log(comAlumno._id)
     try {
-      await updateCalificacion(comAlumno._id, calificacionData);
+     
       await updateCalificacion(comAlumno._id, calificacionData);
       alert('Calificación guardada con éxito');
       history.goBack();
