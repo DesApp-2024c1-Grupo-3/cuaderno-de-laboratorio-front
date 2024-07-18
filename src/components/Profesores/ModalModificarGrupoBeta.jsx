@@ -12,6 +12,7 @@ export const ModalModificarGrupo = ({ show, closeModal, idCurso, grupoParaModifi
     nombre: '',
     alumnos: [],
   });
+  console.log(listAlumnos)
 
   const resetModal = () => {
     setNombreGrupo('');
@@ -66,6 +67,7 @@ export const ModalModificarGrupo = ({ show, closeModal, idCurso, grupoParaModifi
       console.error('Error al obtener la lista de alumnos:', error);
     }
   };
+  
 
   useEffect(() => {
     if (show) {

@@ -145,7 +145,7 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                Documento {comAlum === '' ? 'No entregado' : 'Entregado'}
+                Trabajo Practico {comAlum === '' ? 'No entregado' : 'Entregado'}
               </Typography>
               <Typography variant="h6">
                 {comAlum !== '' ? "Comentario Del Alumno: " : 'El trabajo practico no fue entregado'}

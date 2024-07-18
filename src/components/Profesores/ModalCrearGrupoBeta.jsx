@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Box, Container, Typography, Divider, TextField, FormControl, Button, Autocomplete } from '@mui/material';
 import PropTypes from 'prop-types';
-import { getTodosLosAlumnos } from '../../services/Alumnos';
+import { getAlumnosByCursoId } from '../../services/Alumnos';
 import { postCrearGrupo, getGrupoByCursoId } from '../../services/Grupo';
 
 export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
@@ -57,7 +57,7 @@ export const ModalCrearGrupos = ({ show, closeModal, idCurso }) => {
   };
   const fetchAlumnos = async () => {
     try {
-      const alumnos = await getTodosLosAlumnos(idCurso);
+      const alumnos = await getAlumnosByCursoId(idCurso);
       setListAlumnos(alumnos);
       fetchGrupos(alumnos);
     } catch (err) {

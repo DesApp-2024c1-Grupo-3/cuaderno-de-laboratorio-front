@@ -7,7 +7,7 @@ import {
 import { Header} from './General/HeaderProf';
 import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
 import { getTpId } from '../services/tps';
-import { getComAlumnByCalifId, updateCalificacion} from '../services/Calificacion';
+import { getComAlumnByCalifId, updateCalificacion, postEliminarCalificacion} from '../services/Calificacion';
 
 const TpEntrega = () => {
   const { idEntregaGrupal, tpId } = useParams();
@@ -21,7 +21,7 @@ const TpEntrega = () => {
   const [hasError, setHasError] = useState(false);
 
   const history = useHistory();
-
+  console.log(comAlumno._id)
   useEffect(() => {
     async function fetchTp() {
       try {
@@ -32,7 +32,7 @@ const TpEntrega = () => {
         try {
           const califData = await getComAlumnByCalifId(idEntregaGrupal, tpId);
           setComentarioAlumno(califData );
-          console.log(califData)
+         
         } catch (error) {
           if (error.response && error.response.status === 404 || error.response.status === 500) {
             setComentarioAlumno('');
@@ -62,7 +62,7 @@ const TpEntrega = () => {
       calificacion: parseFloat(nota),
     };
     try {
-      await updateCalificacion(comAlumno.idCalif, calificacionData);
+      await updateCalificacion(comAlumno._id, calificacionData);
       alert('Calificación guardada con éxito');
       history.goBack();
     } catch (err) {

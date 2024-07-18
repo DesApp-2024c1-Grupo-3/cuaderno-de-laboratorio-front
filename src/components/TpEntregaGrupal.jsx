@@ -5,7 +5,10 @@ import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
  } from '@mui/material';
 import { getGrupoPorId } from '../services/Grupo';
 import { getGruposByTpId } from '../services/tps';
-import { crearCalificacion } from '../services/Calificacion';
+import { crearCalificacion,
+         getComAlumnIndByCalifId,
+         postEliminarCalificacion 
+        } from '../services/Calificacion';
 import { Header} from './General/HeaderAlum';
 
 const TpEntrega = () => {
@@ -13,18 +16,32 @@ const TpEntrega = () => {
   const [grupo, setGrupo] = useState([]);
   const [alumnos, setAlumnos] = useState([])
   const [nota, setNota] = useState('');
+  const [comProfe, setComentarioProfe] = useState('');
   const [comentario, setComentario] = useState('');
   const [archivos, setArchivos] = useState([]);
   const [hasError, setHasError] = useState(false);
   const history = useHistory();
- 
+  console.log(idEntregaGrupal)
+  console.log( tpId)
 
   useEffect(() => {
     async function fetchTp() {
       try {
         // Obtener la lista de grupos y verificar si el alumno pertenece a algún grupo
         const grupos = await getGruposByTpId(tpId);
-                  
+        try {
+          const califData = await getComAlumnIndByCalifId(idEntregaGrupal, tpId);
+          setComentarioProfe(califData );
+          setNota(califData.calificacion);
+          
+          console.log(califData)
+          console.log( califData.calificacion)
+         
+        } catch (error) {
+          if (error.response && error.response.status === 404 || error.response.status === 500) {
+            setComentarioProfe('');
+          }
+        }          
         if (grupos) {
           const grupoEncontrado = grupos.find(grupo => 
             grupo.alumnos.some(alumno => alumno._id === idEntregaGrupal)
@@ -44,8 +61,6 @@ const TpEntrega = () => {
     fetchTp();
   }, [tpId, idEntregaGrupal]);
  
-
-  const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
   const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
   const handleSave = async () => {
@@ -67,6 +82,14 @@ const TpEntrega = () => {
       console.error('Error al guardar', err);
     }
   };
+  const deleteCalificacion = async (id) => {
+    try {
+      await postEliminarCalificacion(id);
+      } catch (error) {
+      console.error('Error al eliminar la calificaion del alumno:', error);
+    }
+  };
+  //console.log(comProfe)
   const entregaRendering = () => (
     <Box>
       <Header />
@@ -117,25 +140,34 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                Entrega de documento - Un solo integrante del grupo puede hacer la carga.
+                {!comProfe ? 'Entrega - Un solo integrante del grupo puede hacer la carga.': 'Trabajo practico entregado'}
               </Typography>
-              <Button variant="contained" component="label">
-                Subir archivos
-                <input type="file" hidden multiple onChange={handleArchivoChange} />
-              </Button>
+               {!comProfe &&( <Button variant="contained" component="label">
+                  Subir archivos
+                  <input type="file" hidden multiple onChange={handleArchivoChange} />
+                </Button>)}
               {archivos && archivos.map((archivo, index) => (
                 <Typography variant="body2" key={index}>{archivo.name}</Typography>
               ))}
+              <Typography variant="h6">
+                {comProfe.comentarioAlum &&("Comentario Del Alumno: ") }
+                <Typography marginLeft={2}>
+                  {comProfe.comentarioAlum}
+                </Typography>
+              </Typography>
+              <br/>
             </Box>
             <Box mt={2}>
              {nota && <TextField
                 label="Nota"
                 value={nota}
-                onChange={handleNotaChange}
+                
                 variant="outlined"
                 fullWidth
                 margin="normal"
               />}
+              
+              {!comProfe && (
               <TextField
                 label="Comentario"
                 value={comentario}
@@ -145,7 +177,34 @@ const TpEntrega = () => {
                 margin="normal"
                 multiline
                 rows={4}
-              />
+            />)}
+            {comProfe.calificacion ?( 
+              <Grid container spacing={2} alignItems="center">              
+                <Grid item xs={4}>
+                  <Typography variant="h6" component="div" gutterBottom>
+                  Nota: {comAlum.calificacion}
+                  </Typography>
+                  <Typography variant="h6" component="div" gutterBottom>
+                      Devolucion del Profesor : 
+                    <Typography marginLeft={2}>
+                      {comAlum.devolucionProf}
+                    </Typography>
+                  </Typography>
+                </Grid>
+              </Grid> 
+            ):(
+            <Grid item>
+               <Button
+                  variant="contained"
+                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  onClick={
+                    () => deleteCalificacion(comProfe._id)
+                  }
+                >
+                  Eliminar Trabajo practico
+                  </Button>
+              </Grid>
+            )}  
             </Box>
             <Grid container 
               spacing={2} 
@@ -162,13 +221,13 @@ const TpEntrega = () => {
                 </Button>
               </Grid>
               <Grid item>
-                <Button
+                {!comProfe && (<Button
                   variant="contained"
                   sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
                   onClick={handleSave}
                 >
                   Cargar TP
-                </Button>
+                </Button>)}
               </Grid>              
             </Grid>
           </Container>

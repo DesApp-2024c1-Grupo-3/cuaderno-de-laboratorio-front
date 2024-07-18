@@ -12,7 +12,9 @@ import { Header} from './General/HeaderAlum';
 const AlumnoCursos = () => {
 
   const { idAlumno } = useParams();
+  console.log(idAlumno)
   const [dato, setDato] = useState([]);
+  
   const history = useHistory();
 
   useEffect(() => {
@@ -20,6 +22,7 @@ const AlumnoCursos = () => {
       try {
         const response = await getCursosByAlumnoId(idAlumno);
         setDato(response || []);
+        console.log(response)
       } catch (error) {
         console.error('Error al obtener los cursos:', error);
       }
