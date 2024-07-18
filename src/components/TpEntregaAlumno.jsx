@@ -108,9 +108,9 @@ const TpEntrega = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Nombre </TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Apellido</TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Dni</TableCell>
+                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '14%' }}>Nombre </TableCell>
+                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '13.5%' }}>Apellido</TableCell>
+                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '15%' }}>Dni</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -119,9 +119,9 @@ const TpEntrega = () => {
                       <TableRow
                         sx={{ backgroundColor:'rgba(0, 0, 0, 0.08)' }}
                       >
-                        <TableCell>{alumno.nombre} </TableCell>
-                        <TableCell>{alumno.apellido}</TableCell>
-                        <TableCell>{alumno.dni}</TableCell>
+                        <TableCell align="center">{alumno.nombre} </TableCell>
+                        <TableCell align="center">{alumno.apellido}</TableCell>
+                        <TableCell align="center">{alumno.dni}</TableCell>
                       </TableRow>
                     )
                   }
@@ -132,7 +132,7 @@ const TpEntrega = () => {
               <Typography variant="h6" component="div" gutterBottom>
                 {!comProfe && ('Entrega de Trabajo practico')}
               </Typography>
-               {!comProfe &&( <Button variant="contained" component="label">
+               {!comProfe &&( <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
                   Subir archivos
                   <input type="file" hidden multiple onChange={handleArchivoChange} />
                 </Button>)}

@@ -55,9 +55,9 @@ const AlumnoCursos = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Materia</TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Curso</TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Descripción</TableCell>
+                    <TableCell style={{  width: '33%', fontSize: '18px', paddingLeft: '14%' }}>Materia</TableCell>
+                    <TableCell style={{  width: '33%', fontSize: '18px', paddingLeft: '14%' }}>Curso</TableCell>
+                    <TableCell style={{  width: '33%', fontSize: '18px', paddingLeft: '12%' }}>Descripción</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -66,16 +66,16 @@ const AlumnoCursos = () => {
                       key={curso._id}
                       sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                     >
-                      <TableCell>{curso.materia.nombre}</TableCell>
-                      <TableCell>{curso.comision}</TableCell>
-                      <TableCell>
+                      <TableCell align="center">{curso.materia.nombre}</TableCell>
+                      <TableCell align="center">{curso.comision}</TableCell>
+                      <TableCell align="center">
                         <Button
                           variant="contained"
                           sx={{
                             backgroundColor: '#c5e1a5',
                             color: '#000000',
                             fontSize: '10px',
-                            borderRadius: '30%',
+                            borderRadius: '5%',
                             '&:hover': { backgroundColor: '#b0d38a' }
                           }}
                           onClick={() => history.push(`/tpsAlumno/${curso._id}/${alumnoId}`)}

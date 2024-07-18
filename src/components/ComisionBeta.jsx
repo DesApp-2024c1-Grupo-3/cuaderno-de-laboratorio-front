@@ -83,7 +83,7 @@ export default function Comision() {
       <Header />
       <Card sx={{ mb: 2 }}>
         <CardContent>
-          <Typography sx={{ fontSize: '30px' }}>{profesor.apellido} {profesor.nombre}</Typography>
+          <Typography sx={{ fontSize: '30px' }}>Materias</Typography>
           <Container
             maxWidth="xl"
             sx={{

@@ -64,11 +64,11 @@ const AlumnoTps = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '20%', fontSize: '15px' }}>Nombre del TP</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '15px' }}>Estado</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '15px' }}>Finalización</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '15px' }}>Nota</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '15px' }}>Entrega</TableCell>
+                    <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '4%' }}>Nombre del TP</TableCell>
+                    <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '7%' }}>Estado</TableCell>
+                    <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '5.5%' }}>Finalización</TableCell>
+                    <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '8%' }}>Nota</TableCell>
+                    <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '7%' }}>Entrega</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -77,12 +77,12 @@ const AlumnoTps = () => {
                       key={tp._id}
                       sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                     >
-                      <TableCell>{tp.nombre }</TableCell>
-                      <TableCell>{tp.estado || 'Desconocido'}</TableCell>
-                      <TableCell>{formatFecha(tp.fechaFin)}</TableCell>
-                      <TableCell>{}/ 10</TableCell>
+                      <TableCell align="center">{tp.nombre }</TableCell>
+                      <TableCell align="center">{tp.estado || 'Desconocido'}</TableCell>
+                      <TableCell align="center">{formatFecha(tp.fechaFin)}</TableCell>
+                      <TableCell align="center">{} / 10</TableCell>
                      
-                      <TableCell>
+                      <TableCell align="center">
                         {!tp.grupal?(
                           <Button
                             variant="contained"
@@ -90,12 +90,12 @@ const AlumnoTps = () => {
                               backgroundColor: '#c5e1a5',
                               color: '#000000',
                               fontSize: '10px',
-                              borderRadius: '30%',
+                              borderRadius: '5%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
                             onClick={() => history.push(`/entregaAlumno/${alumnoId}/${alumnoId}/${tp._id}`)}
                           >
-                            Agregar Entrega
+                            Agregar
                           </Button>
                           ):(
                             <Button
@@ -104,12 +104,12 @@ const AlumnoTps = () => {
                               backgroundColor: '#c5e1a5',
                               color: '#000000',
                               fontSize: '10px',
-                              borderRadius: '30%',
+                              borderRadius: '5%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
                             onClick={() => history.push(`/entregaGrupo/${alumnoId}/${alumnoId}/${tp._id}`)}
                             >
-                              Agregar Entrega
+                              Agregar
                             </Button>
                           )
                         }

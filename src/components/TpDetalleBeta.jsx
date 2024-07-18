@@ -18,6 +18,7 @@ import { getAlumnosByCursoId } from '../services/Alumnos';
 import { getTpPorId, getCursoPorId, getGruposByTpId } from '../services/tps';
 import { SubHeader } from './General/SubHeader';
 import { Header} from './General/HeaderProf';
+import { fontWeight } from '@mui/system';
 
 const TpDetalle = () => {
   const { idCurso, profesorId, tpId } = useParams();
@@ -146,15 +147,15 @@ const TpDetalle = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '35%', fontSize: '18px' }}>
+                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '7%' }}>
                       {tp.grupal ? (
-                      <Typography sx={{fontSize: '1vw', fontWeight: 'bold'}}>Nombre de grupo</Typography>
+                      <Typography sx={{fontWeight:'bold'}}>Nombre de grupo</Typography>
                       ) : (
-                      <Typography sx={{fontSize: '1vw', fontWeight: 'bold'}}>Nombre de alumno</Typography>
+                      <Typography sx={{fontWeight:'bold'}}>Nombre de alumno</Typography>
                       )}</TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '17px', fontWeight:'bold' }}>Estado</TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '17px', fontWeight:'bold' }}>Nota</TableCell>
-                    <TableCell style={{ width: '15%', fontSize: '17px', fontWeight:'bold'}}>Entrega</TableCell>
+                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '9.5%'}}>Estado</TableCell>
+                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '9.5%'}}>Nota</TableCell>
+                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '9.2%'}}>Entrega</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -165,10 +166,10 @@ const TpDetalle = () => {
                         key={grupo.id}
                         sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                       >
-                        <TableCell>{grupo.nombre}</TableCell>
-                        <TableCell>{grupo.estado || 'Desconocido'}</TableCell>
-                        <TableCell>{grupo.calificacion}/ 10</TableCell>
-                        <TableCell>
+                        <TableCell align="center">{grupo.nombre}</TableCell>
+                        <TableCell align="center">{grupo.estado || 'Desconocido'}</TableCell>
+                        <TableCell align="center">{grupo.calificacion}/ 10</TableCell>
+                        <TableCell align="center">
                           <Button
                             variant="contained"
                             sx={{
@@ -192,10 +193,10 @@ const TpDetalle = () => {
                         key={alumno.id}
                         sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                       >
-                        <TableCell>{alumno.nombre} {alumno.apellido}</TableCell>
-                        <TableCell>{alumno.estado || 'Desconocido'}</TableCell>
-                        <TableCell>{ }/ 10</TableCell>
-                        <TableCell>
+                        <TableCell align="center">{alumno.nombre} {alumno.apellido}</TableCell>
+                        <TableCell align="center">{alumno.estado || 'Desconocido'}</TableCell>
+                        <TableCell align="center">{ }/ 10</TableCell>
+                        <TableCell align="center">
                           <Button
                             variant="contained"
                             sx={{

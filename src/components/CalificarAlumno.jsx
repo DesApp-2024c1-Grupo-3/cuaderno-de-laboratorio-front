@@ -96,6 +96,10 @@ const TpEntrega = () => {
     link.click();
     document.body.removeChild(link);
   };
+  const formatFecha = (fecha) => {
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    return new Date(fecha).toLocaleDateString('es-ES', options);
+  };
   const titulo = tp ? `${tp.nombre}` : 'Cargando...';
   
   const tpRendering = () => (
@@ -103,8 +107,43 @@ const TpEntrega = () => {
       <Header />
       <Card sx={{ mb:2}}>
         <CardContent>
-        <SubHeader titulo="Trabajo Practico:" nombreTP={titulo} />
-         
+        <div>
+            <SubHeader titulo="Calificar:" nombreTP={titulo} />
+            {/* Verifica si tp existe antes de mostrar la consigna y la fecha de fin */}
+            {tp && (
+              <>
+                <Grid container alignItems="center">
+                  <Grid item xs={3}>
+                    <Typography variant="body1" color="textSecondary">
+                      Descripción:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Typography variant="body2" component="div">
+                      {tp.consigna ? (
+                        <div dangerouslySetInnerHTML={{ __html: tp.consigna }} />
+                      ) : (
+                        'No hay consigna'
+                      )}
+                    </Typography>
+                  </Grid>
+                </Grid>
+
+                <Grid container alignItems="center">
+                  <Grid item xs={3}>
+                    <Typography variant="body1" color="textSecondary">
+                      Fecha de fin:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Typography variant="body2" component="div">
+                      {tp.fechaFin ? formatFecha(tp.fechaFin) : ''}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </>
+            )}
+          </div>
           <Container 
             maxWidth="xl"
             sx={{ 
@@ -123,9 +162,9 @@ const TpEntrega = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Nombre </TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Apellido</TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Dni</TableCell>
+                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '14%'}}>Nombre </TableCell>
+                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '13.5%'}}>Apellido</TableCell>
+                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '15%'}}>Dni</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -134,9 +173,9 @@ const TpEntrega = () => {
                       <TableRow
                         sx={{ backgroundColor:'rgba(0, 0, 0, 0.08)' }}
                       >
-                        <TableCell>{alumno.nombre} </TableCell>
-                        <TableCell>{alumno.apellido}</TableCell>
-                        <TableCell>{alumno.dni}</TableCell>
+                        <TableCell align="center">{alumno.nombre}</TableCell>
+                        <TableCell align="center">{alumno.apellido}</TableCell>
+                        <TableCell align="center">{alumno.dni}</TableCell>
                       </TableRow>
                     )
                   }

@@ -171,9 +171,9 @@ const TpEntrega = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Nombre </TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Apellido</TableCell>
-                    <TableCell style={{ width: '35%', fontSize: '15px' }}>Dni</TableCell>
+                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '14%'}}>Nombre </TableCell>
+                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '13.5%'}}>Apellido</TableCell>
+                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '15%'}}>Dni</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -183,9 +183,9 @@ const TpEntrega = () => {
                         key={integrante.id}
                         sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                       >
-                        <TableCell>{integrante.nombre}</TableCell>
-                        <TableCell>{integrante.apellido}</TableCell>
-                        <TableCell>{integrante.dni}</TableCell>
+                        <TableCell align="center">{integrante.nombre}</TableCell>
+                        <TableCell align="center">{integrante.apellido}</TableCell>
+                        <TableCell align="center">{integrante.dni}</TableCell>
 
                       </TableRow>
                     ))

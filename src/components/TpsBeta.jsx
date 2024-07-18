@@ -87,10 +87,10 @@ export default function Tps() {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '35%', fontSize: '18px' }}>Nombre del TP</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '18px' }}>Estado</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '18px' }}>Finalización</TableCell>
-                    <TableCell style={{ width: '15%', fontSize: '18px' }}>Acciones</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '7%' }}>Nombre del TP</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '9.5%' }}>Estado</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '8%' }}>Finalización</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '9.5%' }}>Detalles</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -99,10 +99,10 @@ export default function Tps() {
                       key={tp._id}
                       sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                     >
-                      <TableCell>{tp.nombre}</TableCell>
-                      <TableCell align='justify'>{tp.estado || 'Desconocido'}</TableCell>
-                      <TableCell align='justify'>{formatFecha(tp.fechaFin)}</TableCell>
-                      <TableCell>
+                      <TableCell align="center">{tp.nombre}</TableCell>
+                      <TableCell align="center">{tp.estado || 'Desconocido'}</TableCell>
+                      <TableCell align="center">{formatFecha(tp.fechaFin)}</TableCell>
+                      <TableCell align="center">
                         <Button
                           variant="contained"
                           sx={{ 
@@ -114,7 +114,7 @@ export default function Tps() {
                           }}
                           onClick={() => history.push(`/tp/${idCurso}/${profesorId}/${tp._id}`)}
                         >
-                          Detalles
+                          Ver
                         </Button>
                       </TableCell>
                     </TableRow>
