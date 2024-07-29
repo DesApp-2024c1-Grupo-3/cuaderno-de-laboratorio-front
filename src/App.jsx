@@ -14,6 +14,15 @@ import AdministrarGrupos from './components/Profesores/AdmGrupos';
 import TpDetalle from './components/TpDetalle';
 import TpDetalleBeta from './components/TpDetalleBeta';
 
+import CalificarGrupo from './components/CalificarGrupo';
+import CalificarAlumno from './components/CalificarAlumno';
+//---------------------------Componentes Alumno---------------------------------------
+import MostrarTpsAlumno from './components/MostrarTpsAlumno'
+import CursoAlumno from './components/CursoAlumno';
+import TpEntregaGrupal from './components/TpEntregaGrupal';
+import TpEntregaAlumno from './components/TpEntregaAlumno';
+
+
 const App = () => {
   return (
     <Router>
