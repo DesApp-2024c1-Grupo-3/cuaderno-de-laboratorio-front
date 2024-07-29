@@ -2,12 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from 'react-bootstrap/Modal';
-import {
-  Button,
-  Container,
-  Divider,
-  TextField,
-} from '@mui/material';
+import { Button, Container, Divider, TextField } from '@mui/material';
 import { Autocomplete } from '@mui/material';
 import PropTypes from 'prop-types';
 import { getTodosLosAlumnos } from '../../services/Alumnos';

@@ -76,112 +76,129 @@ const CrearTpsBeta = () => {
     <Box display="flex" flexDirection="column">
       <Card sx={{ mb: 2 }}>
         <CardContent>
-          <SubHeader titulo="Matematicas" />    
-            <Container 
-              maxWidth="xl"
-              sx={{ 
-                mt: 1, 
-                mb: 1, 
-                border: 'solid', 
-                borderWidth: '10px 20px 20px 10px', 
-                borderColor: 'rgba(0, 0, 0, 0.08)',
-                borderRadius: '1%' 
-              }}           
-            >
-              <form>
-                <Box component="div" sx={{}}>
-                  <Typography variant="h6" gutterBottom>
-                    Crear Tps
-                  </Typography>
-                  <TextField
-                    label="Nombre de Tp"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    name="nombre"
-                    value={tpData.nombre}
-                    onChange={handleChange}
-                  />
-                  <FormLabel>Descripcion</FormLabel>
-                  <ReactQuill
-                    value={tpData.consigna}
-                    onChange={handleConsignaChange}
-                    style={{ marginBottom: '20px' }}
-                  />
-                  <Grid container spacing={5}>
-                    <Grid item xs={6}>
-                      <TextField
-                        label="Fecha inicio"
-                        type="date"
-                        fullWidth
-                        margin="normal"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        name="fechaInicio"
-                        value={tpData.fechaInicio}
-                        onChange={handleChange}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        label="Fecha fin"
-                        type="date"
-                        fullWidth
-                        margin="normal"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        name="fechaFin"
-                        value={tpData.fechaFin}
-                        onChange={handleChange}
-                      />
-                    </Grid>
-                    <Grid item xs={5}>
-                      <FormControl margin="normal" fullWidth>
-                        <FormLabel>Grupal</FormLabel>
-                        <RadioGroup
-                          row
-                          name="grupal"
-                          value={tpData.grupal.toString()}
-                          onChange={handleChange}
-                        >
-                          <FormControlLabel value="true" control={<Radio />} label="Sí" />
-                          <FormControlLabel value="false" control={<Radio />} label="No" />
-                        </RadioGroup>
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={5}> 
-                        
-                    </Grid>
-                  </Grid>
-                  {show && (
-                    <ListaDeGrupos
-                      idCurso={idCurso}
-                      show={show}
-                      closeModal={() => setShow(false)}
-                      setGruposParaTrabajo={setGruposParaTrabajo}
+          <Typography variant="h6" component="div" gutterBottom>
+            Nuevo TP
+          </Typography>
+          <Container 
+            maxWidth="xl"
+            sx={{ 
+              mt: 1, 
+              mb: 1, 
+              border: 'solid', 
+              borderWidth: '10px 20px 20px 10px', 
+              borderColor: 'rgba(0, 0, 0, 0.08)',
+              borderRadius: '1%' 
+            }}           
+          >
+            <form>
+              <Box component="div" sx={{}}>
+                <Typography variant="h6" gutterBottom>
+                   {dato ? dato.materia : 'Cargando...'}
+                </Typography>
+                <TextField
+                  label="Nombre de Tp"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  name="nombre"
+                  value={tpData.nombre}
+                  onChange={handleChange}
+                />
+                <FormLabel>Descripcion</FormLabel>
+                <ReactQuill
+                  ref={quillRef}
+                  value={tpData.consigna}
+                  onChange={handleConsignaChange}
+                  style={{ marginBottom: '20px' }}
+                  modules={{
+                    toolbar: [
+                      [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+                      [{size: []}],
+                      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                      [{'list': 'ordered'}, {'list': 'bullet'}],
+                      ['link', 'image'],
+                      ['clean']
+                    ]
+                  }}
+                  formats={[
+                    'header', 'font', 'size',
+                    'bold', 'italic', 'underline', 'strike', 'blockquote',
+                    'list', 'bullet',
+                    'link', 'image'
+                  ]}
+                />
+                <Grid container spacing={5}>
+                  <Grid item xs={6}>
+                    <TextField
+                      label="Fecha inicio"
+                      type="date"
+                      fullWidth
+                      margin="normal"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      name="fechaInicio"
+                      value={tpData.fechaInicio}
+                      onChange={handleChange}
                     />
-                  )}
-                
-                  <Box 
-                    display="flex"
-                    justifyContent="space-between"
-                    marginTop= '20px'  
-                  >
-                    <Button
-                      variant="contained"
-                      sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                      component={NavLink}
-                      to={`/tps/${idCurso}/${profesorId}`}
-                    >Volver
-                    </Button>
-                    <Button
-                      variant="contained"
-                      sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
-                      onClick={crearTp}
-                    >Crear TP
-                    </Button>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      label="Fecha fin"
+                      type="date"
+                      fullWidth
+                      margin="normal"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      name="fechaFin"
+                      value={tpData.fechaFin}
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={5}>
+                    <FormControl margin="normal" fullWidth>
+                      <FormLabel>Grupal</FormLabel>
+                      <RadioGroup
+                        row
+                        name="grupal"
+                        value={tpData.grupal.toString()}
+                        onChange={handleChange}
+                      >
+                        <FormControlLabel value="true" control={<Radio />} label="Sí" />
+                        <FormControlLabel value="false" control={<Radio />} label="No" />
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={5}>
+                  </Grid>
+                </Grid>
+                {show && (
+                  <ListaDeGrupos
+                    idCurso={idCurso}
+                    show={show}
+                    closeModal={() => setShow(false)}
+                    setGruposParaTrabajo={setGruposParaTrabajo}
+                  />
+                )}
+                <Box 
+                  display="flex"
+                  justifyContent="space-between"
+                  marginTop= '20px'  
+                >
+                  <Button
+                    variant="contained"
+                    sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                    component={NavLink}
+                    to={`/tps/${idCurso}/${profesorId}`}
+                  >Volver
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
+                    onClick={crearTp}
+                  >Grabar TP
+                  </Button>
                 </Box>
               </Box>
             </form>

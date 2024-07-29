@@ -22,9 +22,30 @@ import { getCursoPorIdProfesor } from '../services/curso';
 import {  useParams, NavLink } from 'react-router-dom';
 import { SubHeader } from './General/SubHeader';
 import { getProfesorPorId } from '../services/Profesor';
-import { fontStyle } from '@mui/system';
 
-const profesorId = '661b0339aca97bd9f01f737a';
+import { Header } from './General/HeaderProf';
+
+
+
+// define el cuatrimestre y el año
+const getCuatrimestreYAnio = () => {
+  const fecha = new Date();
+  const mes = fecha.getMonth() + 1; // Los meses en JavaScript son de 0 a 11
+  const anio = fecha.getFullYear();
+  let cuatrimestre = '';
+
+  if (mes >= 3 && mes <= 7) {
+    cuatrimestre = `Primer Cuatrimestre ${anio}`;
+  } else if (mes >= 8 && mes <= 12) {
+    cuatrimestre = `Segundo Cuatrimestre ${anio}`;
+  } else {
+    cuatrimestre = `Anterior ${anio}`;
+  }
+
+  return cuatrimestre;
+}
+
+
 const loadingRendering = () => {
   return (
     <div>

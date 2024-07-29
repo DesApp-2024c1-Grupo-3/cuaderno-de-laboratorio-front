@@ -32,7 +32,6 @@ import { NavLink } from 'react-router-dom';
 import { getGrupoByCursoId, postEliminarGrupo } from '../../services/Grupo';
 import { SubHeader } from '../General/SubHeader';
 
-
 const theme = createTheme({
   palette:{
     background:{

@@ -18,7 +18,6 @@ import { getTpsByCursoId } from '../services/tps';
 //import { getMateriaPorIdCurso } from '../services/materia'; //AGREGADO PARA TRAER LA MATERIA ACTUAL EN APARTADO DE TPS
 import { SubHeader } from './General/SubHeader';
 
-
 export default function Tps() {
   const { idCurso, profesorId } = useParams();
   const [tps, setTps] = useState(null);
