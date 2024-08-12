@@ -22,7 +22,7 @@ const TpEntrega = () => {
   const [hasError, setHasError] = useState(false);
 
   const history = useHistory();
-  console.log(comAlumno._id)
+  
   useEffect(() => {
     async function fetchTp() {
       try {
