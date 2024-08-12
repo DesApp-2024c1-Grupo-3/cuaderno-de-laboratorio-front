@@ -57,7 +57,7 @@ const TpEntrega = () => {
 
     }
     fetchTp();
-  }, [idEntregaAlumno, alumnoId, tpId]);
+  }, [ alumnoId, tpId]);
 
   const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
