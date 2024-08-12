@@ -65,6 +65,7 @@ const LogIn = () => {
             variant="outlined"
             fullWidth
             margin="normal"
+            autoComplete='off'
           />
           <TextField
             label="Contraseña"
@@ -74,6 +75,7 @@ const LogIn = () => {
             variant="outlined"
             fullWidth
             margin="normal"
+            autoComplete='off'
           />
           <Box mt={2}>
             <Button

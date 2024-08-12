@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import {
-  Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
-} from '@mui/material';
+import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle  
+ } from '@mui/material';
 import { Header} from './General/HeaderProf';
 import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
 import { getTpId } from '../services/tps';
@@ -20,6 +19,7 @@ const TpEntrega = () => {
   const [comAlumno, setComentarioAlumno] = useState('');
   const [archivo, setArchivo] = useState(null);
   const [hasError, setHasError] = useState(false);
+  const [open, setOpen] = useState(false);//LOGICA PARA WARNING ELIMINACION
 
   const history = useHistory();
   console.log(comAlumno._id)
@@ -54,7 +54,11 @@ const TpEntrega = () => {
     fetchTp();
   }, [idEntregaGrupal, profesorId, tpId]);
  
-  const handleNotaChange = (e) => setNota(e.target.value);
+  const handleNotaChange = (e) => {
+    const value = e.target.value;
+    if (value === '' || (Number(value) >= 1 && Number(value) <= 10)) {
+      setNota(value);}
+  };
   const handleComentarioChange = (e) => setComentario(e.target.value);
 
   const handleSave = async () => {
@@ -104,20 +108,31 @@ const TpEntrega = () => {
       console.error('Error al eliminar la calificaion del alumno:', error);
     }
   };
+  const handleClickOpen = () => {//LOGICA PARA WARNING ELIMINACION
+    setOpen(true);
+  };
+  const handleClose = () => {//LOGICA PARA WARNING ELIMINACION
+    setOpen(false);
+  };
+  const handleConfirmDelete = async () => {//LOGICA PARA WARNING ELIMINACION
+    await deleteCalificacion(comAlumno._id);
+    setOpen(false);
+    window.location.reload();
+  };
   const formatFecha = (fecha) => {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(fecha).toLocaleDateString('es-ES', options);
   };
   const titulo = tp ? `${tp.nombre}` : 'Cargando...';
 
+  
   const tpRendering = () => (
     <Box>
       <Header />
       <Card sx={{ mb: 2 }}>
         <CardContent>
-
           <div>
-            <SubHeader titulo="Calificar:" nombreTP={titulo} />
+            <SubHeader titulo="Título:" nombreTP={titulo} />
             {/* Verifica si tp existe antes de mostrar la consigna y la fecha de fin */}
             {tp && (
               <>
@@ -186,7 +201,6 @@ const TpEntrega = () => {
                         <TableCell align="center">{integrante.nombre}</TableCell>
                         <TableCell align="center">{integrante.apellido}</TableCell>
                         <TableCell align="center">{integrante.dni}</TableCell>
-
                       </TableRow>
                     ))
                   }
@@ -195,12 +209,12 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                Documento {comAlumno !== ''? 'entregado' : 'no entregado'}
+                {comAlumno !== ''? ' Documento entregado' : 'Documento no entregado. El trabajo practico no fue entregado'}
               </Typography>
               <Typography variant="h6">
-                {comAlumno !== '' ? "Comentario grupal: " : 'El trabajo practico no fue entregado'}
+                {comAlumno !== '' ? "Comentario grupal: " : ''}
                 <Typography marginLeft={2}>
-                  {comAlumno !== '' ?  comAlumno.comentarioAlum : 'Hola'}
+                  {comAlumno !== '' ?  comAlumno.comentarioAlum : ''}
                 </Typography>
               </Typography>
               <br/>
@@ -214,77 +228,124 @@ const TpEntrega = () => {
                 </Button>
               )}
             </Box>
-            <Box mt={2}>
-              {!comAlumno.calificacion?(
+            <Box mt={2} sx={{ display: 'flex' }}>
+              {!comAlumno.comentarioAlum ? ( //IMPLEMENTAR LOGICA PARA QUE NO APAREZCAN LOS RECUADROS DE NOTA Y COMENTARIO DE PROF
               <>
-              <TextField
-                label="Nota"
-                value={nota}
-                onChange={handleNotaChange}
-                variant="outlined"
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Comentario"
-                value={comentario}
-                onChange={handleComentarioChange}
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                multiline
-                rows={4}
-              />
               </>
               ):(
                 <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={4}>
-                    <Typography variant="h6" component="div" gutterBottom>
-                      Nota: {comAlumno.calificacion}
-                    </Typography>
-                    <Typography variant="h6" component="div" gutterBottom>
-                      Devolucion del Profesor : 
-                      <Typography marginLeft={2}>
-                        {comAlumno.devolucionProf}
-                      </Typography>
-                    </Typography>
+                  <Grid item xs={8}>
+                    <TextField
+                      label="Nota"
+                      value={nota}
+                      onChange={handleNotaChange}
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      inputProps={{ type: 'number', min: 1, max: 10 }}
+                      autoComplete='off'
+                    />
+                    <TextField
+                      label="Comentario"
+                      value={comentario}
+                      onChange={handleComentarioChange}
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      multiline
+                      rows={4}
+                      autoComplete='off'
+                    />
+                      <Grid item>
+                      {comAlumno.calificacion ? (
+                          <><Typography variant="h6" component="div" gutterBottom>
+                            Nota: {comAlumno.calificacion}
+                          </Typography>
+                          <Typography variant="h6" component="div" gutterBottom>
+                            Devolución del Profesor : 
+                            <Typography marginLeft={2}>
+                              {comAlumno.devolucionProf} 
+                            </Typography>
+                          </Typography></>
+                         ) : (<></>)}
+                      </Grid>
                   </Grid>
                   <Grid item style={{ marginLeft: 'auto' }}>
                     <Button
                       variant="contained"
                       sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                      onClick={() => deleteCalificacion(comAlumno._id)}
+                      onClick={handleClickOpen}
                     >
-                      Eliminar Trabajo practico
+                      Eliminar entrega del grupo
                     </Button>
+                    <Dialog
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description"
+                    >
+                    <DialogTitle id="alert-dialog-title">{"Confirmar Eliminación"}</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        ¿Está seguro que desea eliminar este trabajo práctico? Esta acción no se puede deshacer.
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose} color="primary">
+                        Cancelar
+                      </Button>
+                      <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+                        Confirmar
+                      </Button>
+                  </DialogActions>
+                  </Dialog>
                   </Grid>
                 </Grid>
               )}
             </Box>
-            <Grid container
-              spacing={2}
-              justifyContent="space-between"
-              marginTop='20px'
-            >
-              <Grid item>
-                <Button
-                  variant="contained"
-                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={() => history.goBack()}
+            <Grid container>
+                {comAlumno.comentarioAlum ? (
+                  <Grid container
+                  spacing={2}
+                  justifyContent="space-between"
+                  alignItems="center"
+                  marginTop='20px'
                 >
-                  Volver
-                </Button>
-              </Grid>
-              <Grid item>
-                {!comAlumno.calificacion && (<Button
-                  variant="contained"
-                  sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={handleSave}
-                >
-                  Enviar Calificacion
-                </Button>)}
-              </Grid>
-            </Grid>
+                    <Grid item>
+                      <Button
+                        variant="contained"
+                        sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' }}}
+                        onClick={() => history.goBack()}
+                      >
+                        Volver
+                      </Button>
+                      </Grid>
+                      <Grid item xs={12} sm="auto">
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                          <Button
+                            variant="contained"
+                            sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' }}}
+                            onClick={handleSave}
+                          >
+                            Enviar Calificacion
+                          </Button>
+                        </Box>
+                      </Grid>
+                    </Grid>) : (
+                      <Grid container
+                      justifyContent="center"
+                      marginTop='20px'
+                    >
+                      <Button
+                        variant="contained"
+                        sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                        onClick={() => history.goBack()}
+                      >
+                        Volver
+                      </Button>
+                    </Grid>
+                    )}
+            </Grid> 
           </Container>
         </CardContent>
       </Card>
