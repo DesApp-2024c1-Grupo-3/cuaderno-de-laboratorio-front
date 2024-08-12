@@ -12,7 +12,7 @@ import { getTpId } from '../services/tps';
 import { Header} from './General/HeaderAlum';
 
 const TpEntrega = () => {
-  const { idEntregaAlumno, alumnoId, tpId} = useParams();
+  const { alumnoId, tpId} = useParams();
   const [nota, setNota] = useState('');
   const [tp, setTp] = useState(null);
   const [alumno, setAlumno] = useState([]);
@@ -27,10 +27,10 @@ const TpEntrega = () => {
   useEffect(() => {
     async function fetchTp() {
       try {
-        const alumnoData = await getAlumnoById(idEntregaAlumno);
+        const alumnoData = await getAlumnoById(alumnoId);
         setAlumno(alumnoData);
         try {
-          const califData = await getComAlumnIndByCalifId(idEntregaAlumno, tpId);
+          const califData = await getComAlumnIndByCalifId(alumnoId, tpId);
           setComentarioProfe(califData );
           setNota(califData.calificacion);
           
@@ -57,7 +57,7 @@ const TpEntrega = () => {
 
     }
     fetchTp();
-  }, [idEntregaAlumno, alumnoId,, tpId]);
+  }, [idEntregaAlumno, alumnoId, tpId]);
 
   const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
@@ -72,7 +72,7 @@ const TpEntrega = () => {
       });
       formData.append('comentarioAlum', comentario);
       formData.append('tpId', tpId);
-      formData.append('alumnoId', idEntregaAlumno);
+      formData.append('alumnoId', alumnoId);
       
 
       await crearCalificacion(formData);

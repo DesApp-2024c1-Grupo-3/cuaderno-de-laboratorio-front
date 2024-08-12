@@ -1,24 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useHistory, useParams } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
+
+import {Card, Paper, Typography, TableRow, TableHead, TableContainer, TableCell,
+        TableBody,Table, Grid, Box, Button, Container, CardContent
+ } from '@mui/material';
 import { getAlumnosByCursoId } from '../services/Alumnos';
+import { getCalificacionesByTpId } from '../services/Calificacion'; 
 import { getTpPorId, getCursoPorId, getGruposByTpId } from '../services/tps';
-import { SubHeader } from './General/SubHeader';
 import { Header} from './General/HeaderProf';
-import { fontWeight } from '@mui/system';
+
 
 const TpDetalle = () => {
   const { idCurso, profesorId, tpId } = useParams();
@@ -26,6 +16,7 @@ const TpDetalle = () => {
   const [curso, setCurso] = useState(null);
   const [alumnos, setAlumnos] = useState([]);
   const [grupos, setGrupos] = useState([]);
+  const [calificaciones, setCalificaciones] = useState([]);
   const [hasError, setHasError] = useState(false);
   const history = useHistory();
 
@@ -40,6 +31,8 @@ const TpDetalle = () => {
           setCurso(cursoData);
           const alumnos = await getAlumnosByCursoId(idCurso);
           setAlumnos(alumnos);
+          const calificacionesData = await getCalificacionesByTpId(tpId);
+          setCalificaciones(calificacionesData);
           if (tpData.grupal) {
             // Suponiendo que tienes un servicio para obtener los grupos por TP
             const gruposData = await getGruposByTpId(tpId);
@@ -55,8 +48,33 @@ const TpDetalle = () => {
     }
     fetchTp();
   }, [idCurso, profesorId, tpId]);
+  const estadoTp = (calif, tp) => {
+    
+    if (calif && ! (calif === "No asignada")) {
+      return 'Entregado';
+    } else if (tp.fechaFin && tp.fechaInicio) {
+      return 'En proceso';
+    } else if (tp.nombre && tp.consigna) {
+      return 'En preparación';
+    }
+    
+  }
 
-
+  const getCalificacion = (id, tipo) => {
+    // Asegúrate de que calificaciones esté definido y sea un array antes de buscar
+    if (!calificaciones || !Array.isArray(calificaciones)) {
+      return 'No asignada';  // o un valor por defecto adecuado
+    }
+  
+    // Busca la calificación basada en el tipo (alumno o grupo)
+    const calificacion = calificaciones.find(c => 
+      tipo === 'alumno' ? c.alumnoId === id : c.grupoId === id
+    );
+  
+    // Retorna la calificación si se encuentra, o un mensaje por defecto
+    return calificacion ? calificacion.calificacion : 'No asignada';
+  };
+  
   const SubHeader = ({ titulo, nombreTP }) => {
     return (
       <Grid container justifyContent="center" alignItems="center" >
@@ -71,10 +89,6 @@ const TpDetalle = () => {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(fecha).toLocaleDateString('es-ES', options);
   };
-
-
-
-  //const cambioEstado= ()
 
   const tpRendering = () => (
     <Box>
@@ -160,15 +174,15 @@ const TpDetalle = () => {
                 </TableHead>
                 <TableBody>
                   {tp.grupal ? (
-
+                    
                     grupos.map((grupo, index) => (
                       <TableRow
                         key={grupo.id}
                         sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                       >
                         <TableCell align="center">{grupo.nombre}</TableCell>
-                        <TableCell align="center">{grupo.estado || 'Desconocido'}</TableCell>
-                        <TableCell align="center">{grupo.calificacion}/ 10</TableCell>
+                        <TableCell align="center">{estadoTp(getCalificacion(grupo._id, 'grupo'),tp)}</TableCell>
+                        <TableCell align="center">{getCalificacion(grupo._id, 'grupo')}/ 10</TableCell>
                         <TableCell align="center">
                           <Button
                             variant="contained"
@@ -188,14 +202,14 @@ const TpDetalle = () => {
                     ))
                   ) : (
                     alumnos.map((alumno, index) => (
-
+                   
                       <TableRow
                         key={alumno.id}
                         sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                       >
                         <TableCell align="center">{alumno.nombre} {alumno.apellido}</TableCell>
-                        <TableCell align="center">{alumno.estado || 'Desconocido'}</TableCell>
-                        <TableCell align="center">{ }/ 10</TableCell>
+                        <TableCell align="center">{estadoTp(getCalificacion(alumno._id, 'alumno'),tp)}</TableCell>
+                        <TableCell align="center">{getCalificacion(alumno._id, 'alumno')}/ 10</TableCell>
                         <TableCell align="center">
                           <Button
                             variant="contained"

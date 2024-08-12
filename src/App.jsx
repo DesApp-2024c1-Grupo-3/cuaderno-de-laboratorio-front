@@ -1,8 +1,6 @@
 import { Container } from '@mui/material'; // Importa Container desde @mui/material;
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Home from './components/Home';
 import LogIn from './components/LogIn';
-import { Header } from './components/General/Header';
 import { Footer } from './components/General/Footer';
 
 //---------------------------Componentes Profesor---------------------------------------
@@ -46,8 +44,8 @@ const App = () => {
 
             <Route path="/alumno/curso/:alumnoId" component={CursoAlumno} />  
             <Route path="/tpsAlumno/:idCurso/:alumnoId" component={MostrarTpsAlumno} />
-            <Route path="/entregaGrupo/:idEntregaGrupal/:alumnoId/:tpId" component={TpEntregaGrupal} />
-            <Route path="/entregaAlumno/:idEntregaAlumno/:alumnoId/:tpId" component={TpEntregaAlumno} />
+            <Route path="/entregaGrupo/:alumnoId/:tpId" component={TpEntregaGrupal} />
+            <Route path="/entregaAlumno/:alumnoId/:tpId" component={TpEntregaAlumno} />
            
             <Route path="/" component={LogIn} />
 

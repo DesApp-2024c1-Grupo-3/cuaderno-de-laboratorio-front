@@ -22,7 +22,7 @@ const TpEntrega = () => {
   const [open, setOpen] = useState(false);//LOGICA PARA WARNING ELIMINACION
 
   const history = useHistory();
-  console.log(comAlumno._id)
+  
   useEffect(() => {
     async function fetchTp() {
       try {

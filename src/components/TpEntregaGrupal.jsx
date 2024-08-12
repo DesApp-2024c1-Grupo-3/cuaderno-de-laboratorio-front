@@ -6,14 +6,14 @@ import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
 import { getGrupoPorId } from '../services/Grupo';
 import { getGruposByTpId } from '../services/tps';
 import { crearCalificacion,
-         getComAlumnIndByCalifId,
+         getComAlumnByCalifId,
          postEliminarCalificacion 
         } from '../services/Calificacion';
  import { getTpId } from '../services/tps';
 import { Header} from './General/HeaderAlum';
 
 const TpEntrega = () => {
-  const { idEntregaGrupal, alumnoId, tpId} = useParams();  
+  const { alumnoId, tpId} = useParams();  
   const [grupo, setGrupo] = useState([]);
   const [tp, setTp] = useState(null);
   const [alumnos, setAlumnos] = useState([])
@@ -25,38 +25,38 @@ const TpEntrega = () => {
   const [open, setOpen] = useState(false);//LOGICA PARA WARNING ELIMINACION
 
   const history = useHistory();
-  console.log(idEntregaGrupal)
-  console.log( tpId)
+   console.log( tpId)
 
   useEffect(() => {
     async function fetchTp() {
       try {
         // Obtener la lista de grupos y verificar si el alumno pertenece a algún grupo
         const grupos = await getGruposByTpId(tpId);
-        try {
-          const califData = await getComAlumnIndByCalifId(idEntregaGrupal, tpId);
-          setComentarioProfe(califData );
-          setNota(califData.calificacion);
-          
-          console.log(califData)
-          console.log( califData.calificacion)
-         
-        } catch (error) {
-          if (error.response && error.response.status === 404 || error.response.status === 500) {
-            setComentarioProfe('');
-          }
-        }          
+        
         if (grupos) {
           const grupoEncontrado = grupos.find(grupo => 
-            grupo.alumnos.some(alumno => alumno._id === idEntregaGrupal)
+            grupo.alumnos.some(alumno => alumno._id === alumnoId)
           );
-          console.log(grupoEncontrado)
+          console.log("grupo encontrado",grupoEncontrado)
           if (grupoEncontrado) {
+            try {
+              const califData = await getComAlumnByCalifId(grupoEncontrado._id, tpId);
+              setComentarioProfe(califData );
+              setNota(califData.calificacion);
+              
+              console.log(califData)
+              console.log( califData.calificacion)
+             
+            } catch (error) {
+              if (error.response && error.response.status === 404 || error.response.status === 500) {
+                setComentarioProfe('');
+              }
+            }          
             setGrupo(grupoEncontrado);
             const alumnosData= await getGrupoPorId(grupoEncontrado._id);
             setAlumnos(alumnosData);
           } else {
-            console.log('No se encontró un grupo para el alumno:', idEntregaGrupal);
+            console.log('No se encontró un grupo para el alumno:', alumnoId);
           }
           
         }
@@ -73,7 +73,7 @@ const TpEntrega = () => {
       }
     }
     fetchTp();
-  }, [tpId, idEntregaGrupal, alumnoId]);
+  }, [tpId, alumnoId]);
  
   const handleComentarioChange = (e) => setComentario(e.target.value);
   const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
@@ -86,7 +86,7 @@ const TpEntrega = () => {
       });
       formData.append('comentarioAlum', comentario);
       formData.append('tpId', tpId);
-      formData.append('alumnoId', idEntregaGrupal);
+      formData.append('alumnoId', alumnoId);
       formData.append('grupoId', grupo._id);
 
       await crearCalificacion(formData);

@@ -20,6 +20,14 @@ export async function getComAlumnIndByCalifId(idEntregaAlumno, tpId) {
   );
   return apiResponse.comentario;
 }
+export async function getCalificacionesByTpId(tpId) {
+  const apiResponse = await getJsonFromApi(`calificacionesTp/${tpId}`);
+  return apiResponse.calificaciones;
+}
+export async function getCalificaciones(alumnoId) {
+  const apiResponse = await getJsonFromApi(`calificaciones/${alumnoId}`);
+  return apiResponse.calificaciones;
+}
 export async function updateCalificacion(id, data) {
   try {
     const response = await putJsonToApi(`calificacion/${id}`, data);

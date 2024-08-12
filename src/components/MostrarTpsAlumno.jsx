@@ -4,7 +4,7 @@ import {
   TableRow, Paper, Typography, Grid
   } from '@mui/material';
 import { useParams, useHistory } from 'react-router-dom';
-
+import { getCalificaciones } from '../services/Calificacion'; 
 import { getCursoById, getTpsByCursoId } from '../services/tps';
 import { Header} from './General/HeaderAlum';
 
@@ -13,6 +13,7 @@ const AlumnoTps = () => {
   const { idCurso, alumnoId } = useParams();
   const [dato, setDato] = useState([]);
   const [data, setData] = useState(null);
+  const [calificaciones, setCalificaciones] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
@@ -22,17 +23,16 @@ const AlumnoTps = () => {
         const tpsDato = await getCursoById(idCurso);
         setDato(tpsDato);
         setData(tpsData);
+        const califData = await getCalificaciones(alumnoId)
+        console.log("Holaa",califData)
+        setCalificaciones(califData)
 
-      
       } catch (error) {
         console.error('Error fetching data:', error);
-        
       }
     }
-
     fetchData();
   }, [idCurso, alumnoId]);
-
   const formatFecha = (fechaHora) => {
     const fecha = fechaHora.split('T')[0];
     return fecha;
@@ -93,7 +93,7 @@ const AlumnoTps = () => {
                               borderRadius: '5%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/entregaAlumno/${alumnoId}/${alumnoId}/${tp._id}`)}
+                            onClick={() => history.push(`/entregaAlumno/${alumnoId}/${tp._id}`)}
                           >
                             Agregar
                           </Button>
@@ -107,7 +107,7 @@ const AlumnoTps = () => {
                               borderRadius: '5%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/entregaGrupo/${alumnoId}/${alumnoId}/${tp._id}`)}
+                            onClick={() => history.push(`/entregaGrupo/${alumnoId}/${tp._id}`)}
                             >
                               Agregar
                             </Button>
