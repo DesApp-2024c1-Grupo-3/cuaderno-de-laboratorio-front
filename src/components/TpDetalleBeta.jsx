@@ -62,7 +62,7 @@ const TpDetalle = () => {
 
   const getCalificacion = (id, tipo) => {
     // Asegúrate de que calificaciones esté definido y sea un array antes de buscar
-    if (!calificaciones || !Array.isArray(calificaciones)) {
+    if (!calificaciones || !Array.isArray(calificaciones) ) {
       return 'No asignada';  // o un valor por defecto adecuado
     }
   

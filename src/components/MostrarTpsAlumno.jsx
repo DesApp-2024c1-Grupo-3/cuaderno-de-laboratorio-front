@@ -33,6 +33,30 @@ const AlumnoTps = () => {
     }
     fetchData();
   }, [idCurso, alumnoId]);
+ 
+  const getCalificacion = (idTp) => {
+    // Asegúrate de que calificaciones esté definido y sea un array antes de buscar
+    if (!calificaciones || !Array.isArray(calificaciones)) {
+      return 'No asignada';  // o un valor por defecto adecuado
+    }    
+    const calificacion = calificaciones.find(c => 
+      c.tpId === idTp );
+    // Retorna la calificación si se encuentra, o un mensaje por defecto
+    return calificacion && calificacion.calificacion ? calificacion.calificacion : 'No asignada';
+  };
+  const estadoTp = (idTp)=> {
+    if (!calificaciones || !Array.isArray(calificaciones)) {
+      return 'No asignada';  // o un valor por defecto adecuado
+    }   
+    const calificacion = calificaciones.find(c => c.tpId === idTp );
+    if (calificacion && calificacion.calificacion) {
+      return 'Corregido';
+    } else if (calificacion && !calificacion.calificacion) {
+      return 'Entregado';
+    } else  {
+      return 'En proceso';
+    }
+  }
   const formatFecha = (fechaHora) => {
     const fecha = fechaHora.split('T')[0];
     return fecha;
@@ -73,17 +97,18 @@ const AlumnoTps = () => {
                 </TableHead>
                 <TableBody>
                   {data?.map((tp, index) => (
+                    
                     <TableRow
                       key={tp._id}
                       sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                     >
                       <TableCell align="center">{tp.nombre }</TableCell>
-                      <TableCell align="center">{tp.estado || 'Desconocido'}</TableCell>
+                      <TableCell align="center">{estadoTp(tp._id) || 'Desconocido'}</TableCell>
                       <TableCell align="center">{formatFecha(tp.fechaFin)}</TableCell>
-                      <TableCell align="center">{} / 10</TableCell>
+                      <TableCell align="center">{getCalificacion(tp._id)} / 10</TableCell>
                      
                       <TableCell align="center">
-                        {!tp.grupal?(
+                        {(estadoTp(tp._id)==='Entregado')|| (estadoTp(tp._id)==='Corregido') ?(
                           <Button
                             variant="contained"
                             sx={{ 
@@ -95,7 +120,7 @@ const AlumnoTps = () => {
                             }}
                             onClick={() => history.push(`/entregaAlumno/${alumnoId}/${tp._id}`)}
                           >
-                            Agregar
+                            Ver
                           </Button>
                           ):(
                             <Button
