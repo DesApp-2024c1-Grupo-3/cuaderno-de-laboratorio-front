@@ -108,7 +108,7 @@ const AlumnoTps = () => {
                       <TableCell align="center">{getCalificacion(tp._id)} / 10</TableCell>
                      
                       <TableCell align="center">
-                        {(estadoTp(tp._id)==='Entregado')|| (estadoTp(tp._id)==='Corregido') ?(
+                        {!tp.grupal?(
                           <Button
                             variant="contained"
                             sx={{ 
@@ -120,7 +120,7 @@ const AlumnoTps = () => {
                             }}
                             onClick={() => history.push(`/entregaAlumno/${alumnoId}/${tp._id}`)}
                           >
-                            Ver
+                            {(estadoTp(tp._id)==='Entregado')|| (estadoTp(tp._id)==='Corregido')? 'Ver' : 'Agregar'}
                           </Button>
                           ):(
                             <Button
@@ -134,7 +134,7 @@ const AlumnoTps = () => {
                             }}
                             onClick={() => history.push(`/entregaGrupo/${alumnoId}/${tp._id}`)}
                             >
-                              Agregar
+                              {(estadoTp(tp._id)==='Entregado')|| (estadoTp(tp._id)==='Corregido')? 'Ver' : 'Agregar'}
                             </Button>
                           )
                         }
