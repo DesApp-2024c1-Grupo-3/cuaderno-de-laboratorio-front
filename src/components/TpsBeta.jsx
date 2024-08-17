@@ -14,14 +14,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import {getCursoById} from '../services/tps';
+import { getCursoById } from '../services/tps';
 import { getTpsByCursoId } from '../services/tps';
-import { Header} from './General/HeaderProf';
+import { Header } from './General/HeaderProf';
 import { SubHeader } from './General/SubHeader';
 
 
 export default function Tps() {
-  
+
   const { idCurso, profesorId } = useParams();
   const [dato, setDato] = useState(null);
   const [data, setData] = useState(null);
@@ -33,7 +33,7 @@ export default function Tps() {
       try {
         const tpsData = await getTpsByCursoId(idCurso);
         const tpsDato = await getCursoById(idCurso);
-        console.log("Datos obtenidos:", tpsDato.materia);  // Verifica la estructura de los datos obtenidos
+
         setDato(tpsDato);
         setData(tpsData);
       } catch (error) {
@@ -45,7 +45,7 @@ export default function Tps() {
     fetchData();
   }, [idCurso, profesorId]);
 
-  
+
   const handleVolver = () => {
     history.push(`/comision/actual/${profesorId}`);
   };
@@ -71,17 +71,17 @@ export default function Tps() {
           <SubHeader titulo="Trabajos Prácticos" />
           <Container
             maxWidth="xl"
-            sx={{ 
-              mt: 1, 
-              mb: 1, 
-              border: 'solid', 
-              borderWidth: '10px 20px 20px 10px', 
+            sx={{
+              mt: 1,
+              mb: 1,
+              border: 'solid',
+              borderWidth: '10px 20px 20px 10px',
               borderColor: 'rgba(0, 0, 0, 0.08)',
-              borderRadius: '1%' 
+              borderRadius: '1%'
             }}
           >
             <Typography variant="h6" component="div" gutterBottom>
-              {dato.materia} - {dato.comision} 
+              {dato.materia} - {dato.comision}
             </Typography>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
@@ -105,7 +105,7 @@ export default function Tps() {
                       <TableCell align="center">
                         <Button
                           variant="contained"
-                          sx={{ 
+                          sx={{
                             backgroundColor: '#c5e1a5',
                             color: '#000000',
                             fontSize: '10px',
@@ -117,13 +117,28 @@ export default function Tps() {
                           Ver
                         </Button>
                       </TableCell>
+                      <TableCell align="center">
+                        <Button
+                          variant="contained"
+                          sx={{
+                            backgroundColor: '#ffb74d',
+                            color: '#000000',
+                            fontSize: '10px',
+                            borderRadius: '5%',
+                            '&:hover': { backgroundColor: '#ffa726' }
+                          }}
+                          onClick={() => history.push(`/modificarTP/${idCurso}/${profesorId}/${tp._id}`)}
+                        >
+                          Modificar
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
-            <Grid container 
-              spacing={2} 
+            <Grid container
+              spacing={2}
               justifyContent="space-between"
               marginTop='20px'
             >
@@ -172,6 +187,6 @@ export default function Tps() {
   return hasError
     ? errorRendering()
     : !data
-    ? loadingRendering()
-    : tpsRendering();
+      ? loadingRendering()
+      : tpsRendering();
 }

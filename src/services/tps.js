@@ -1,4 +1,9 @@
-import { getJsonFromApi, postJsonToApi, deleteFromApi } from './utils';
+import {
+  getJsonFromApi,
+  postJsonToApi,
+  deleteFromApi,
+  putJsonToApi,
+} from './utils';
 
 export async function getTodosLosTps() {
   const apiResponse = await getJsonFromApi('usuarios');
@@ -91,4 +96,22 @@ export async function deleteTp(tpId) {
 export async function getTpId(id) {
   const apiResponse = await getJsonFromApi(`tps/${id}`);
   return apiResponse;
+}
+
+export async function updateTp(tpId, body) {
+  try {
+    const response = await putJsonToApi(`tp/${tpId}`, body);
+    console.log(response.status);
+    if (response.status === 200) {
+      // Actualización exitosa
+      console.log('Trabajo práctico actualizado exitosamente');
+    } else {
+      console.error('Error al actualizar trabajo práctico');
+      // Manejo de errores según sea necesario
+    }
+    return response;
+  } catch (error) {
+    console.error('Error en la solicitud:', error);
+    // Manejo de errores según sea necesario
+  }
 }

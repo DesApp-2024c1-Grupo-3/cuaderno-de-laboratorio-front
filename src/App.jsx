@@ -9,6 +9,7 @@ import TpsBeta from './components/TpsBeta';
 import CrearTpsBeta from './components/CrearTpsBeta';
 import AdministrarGrupos from './components/Profesores/AdmGrupoBeta';
 import TpDetalleBeta from './components/TpDetalleBeta';
+import TpModificar from './components/TpModificar';
 
 
 import CalificarGrupo from './components/CalificarGrupo';
@@ -40,13 +41,14 @@ const App = () => {
             <Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />
             <Route path="/calificarGrupo/:idEntregaGrupal/:profesorId/:tpId" component={CalificarGrupo} />
             <Route path="/calificarAlumno/:idEntregaAlumno/:profesorId/:tpId" component={CalificarAlumno} />
-           
+            <Route path="/modificarTP/:idCurso/:profesorId/:tpId" component={TpModificar} />
 
-            <Route path="/alumno/curso/:alumnoId" component={CursoAlumno} />  
+
+            <Route path="/alumno/curso/:alumnoId" component={CursoAlumno} />
             <Route path="/tpsAlumno/:idCurso/:alumnoId" component={MostrarTpsAlumno} />
             <Route path="/entregaGrupo/:alumnoId/:tpId" component={TpEntregaGrupal} />
             <Route path="/entregaAlumno/:alumnoId/:tpId" component={TpEntregaAlumno} />
-           
+
             <Route path="/" component={LogIn} />
 
           </Switch>

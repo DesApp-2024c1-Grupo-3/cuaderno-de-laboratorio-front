@@ -56,9 +56,12 @@ export async function putJsonToApi(path, data) {
         'Content-Type': 'application/json',
       },
     });
-    return response.data;
+    return response; // Devuelve solo los datos de la respuesta
   } catch (error) {
-    console.error('Error al actualizar el grupo:', error);
+    console.error(
+      'Error en la solicitud PUT:',
+      error.response || error.message
+    );
     throw error;
   }
 }
