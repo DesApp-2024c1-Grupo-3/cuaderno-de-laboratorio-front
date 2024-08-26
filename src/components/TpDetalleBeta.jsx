@@ -257,28 +257,19 @@ const TpDetalle = () => {
               </Grid>
             </div>
           )}
-          <Grid container
-              spacing={2}
-              justifyContent="center"
-              marginTop='20px'
-            >
-              <Grid item>
-                <Button
-                  variant="contained"
-                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  component={NavLink}
-                  to={`/tps/${idCurso}/${profesorId}`}
-                  //onClick={() => history.goBack()}
-                >
-                  Volver
-                </Button>
-              </Grid>
-            </Grid>
           </Container>
         </CardContent>
+          <Grid item mx={2}>
+              <Button
+                onClick={() => history.goBack()}
+                variant="contained"
+                color="primary"
+                sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                >
+                  Volver
+              </Button>
+            </Grid>
       </Card>
-
-
     </Box>
   );
 

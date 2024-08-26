@@ -19,7 +19,10 @@ const TpEntrega = () => {
   const [archivo, setArchivo] = useState('');
   const [hasError, setHasError] = useState(false);
   const [open, setOpen] = useState(false);//LOGICA PARA WARNING ELIMINACION
-  
+  const [calificado, setCalificado] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+
+
   const history = useHistory();
  
   useEffect(() => {
@@ -42,10 +45,12 @@ const TpEntrega = () => {
       try {
         const califData = await getComAlumnIndByCalifId(idEntregaAlumno, tpId);
         setComentarioAlum(califData || '');
+        setCalificado(califData?.calificado);
    
       } catch (error) {
         if (error.response && error.response.status === 404 || error.response.status === 500) {
           setComentarioAlum('');
+          setCalificado(false);
         }
       }
     }
@@ -94,15 +99,23 @@ const TpEntrega = () => {
     const calificacionData = {
       devolucionProf: comentario,
       calificacion: parseFloat(nota),
+      calificado: true,
     };
     try {
       await updateCalificacion(comAlumno._id, calificacionData);
+      setEditMode(false);
+      setCalificado(true);
       alert('Calificación guardada con éxito');
       history.goBack();
     } catch (err) {
       console.error('Error al guardar la calificación', err);
     }
   };
+
+  const handleEdit = () => {
+    setEditMode(true);
+  };
+  
   const handleDownload = () => {
     const link = document.createElement('a');
     link.href = archivo.url;
@@ -197,146 +210,185 @@ const TpEntrega = () => {
               </Table>
             </TableContainer>
             <Box mt={2}>
-              <Typography variant="h6">
-                {comAlumno !== '' ? "Comentario Del Alumno: " : 'El trabajo practico no fue entregado'}
-                <Typography marginLeft={2}>
-                  {comAlumno !== ' ' ?  comAlumno.comentarioAlum : ''}
-                </Typography>
+              <Typography variant="h6" component="div" gutterBottom>
+                {comAlumno ? 'Documento entregado' : 'Documento no entregado. El trabajo practico no fue entregado'}
               </Typography>
-              <br/>
-              {archivo && (
-                <div>
-                <Button
-                  variant="contained"
-                  onClick={handleDownload}
-                  disabled={comAlumno.comentarioAlum === ''}
-                >
-                  Descargar {archivo ? archivo : ''}
-                </Button>
-                <Typography variant="body1">{archivo}</Typography>
-              </div>
+              {comAlumno && (
+                <>
+                  <Typography variant="h6">
+                    Comentario:
+                    <Typography marginLeft={2} variant="h6">
+                      {comAlumno.comentarioAlum}
+                    </Typography>
+                  </Typography>
+                  <br/>
+                  {archivo && (
+                    <Button variant="contained" onClick={handleDownload} sx={{
+                      backgroundColor: '#c5e1a5',
+                      color: '#000000',
+                      '&:hover': { backgroundColor: '#b0d38a' }
+                    }}>
+                      Descargar {archivo.nombre}
+                    </Button>
+                  )}
+                </>
               )}
             </Box>
             <Box mt={2} sx={{ display: 'flex' }}>
-              {!comAlumno.comentarioAlum ? ( //IMPLEMENTAR LOGICA PARA QUE NO APAREZCAN LOS RECUADROS DE NOTA Y COMENTARIO DE PROF
-              <>
-              </>
-              ):(
-                <Grid container spacing={2} alignItems="center">
+            <Grid container>
+              {(calificado === true) && (
+                <>
                   <Grid item xs={8}>
-                    <TextField
-                      label="Nota"
-                      value={nota}
-                      onChange={handleNotaChange}
-                      variant="outlined"
-                      fullWidth
-                      margin="normal"
-                      inputProps={{ type: 'number', min: 1, max: 10 }}
-                      autoComplete='off'
-                    />
-                    <TextField
-                      label="Comentario"
-                      value={comentario}
-                      onChange={handleComentarioChange}
-                      variant="outlined"
-                      fullWidth
-                      margin="normal"
-                      multiline
-                      rows={4}
-                      autoComplete='off'
-                    />
-                      <Grid item>
-                      {comAlumno.calificacion ? (
-                          <><Typography variant="h6" component="div" gutterBottom>
-                            Nota: {comAlumno.calificacion}
-                          </Typography>
-                          <Typography variant="h6" component="div" gutterBottom>
-                            Devolución del Profesor : 
-                            <Typography marginLeft={2}>
-                              {comAlumno.devolucionProf} 
-                            </Typography>
-                          </Typography></>
-                         ) : (<></>)}
-                      </Grid>
+                    <Typography variant="h6" component="div" gutterBottom>
+                      Nota: {comAlumno.calificacion}
+                      <Typography variant="h6" component="div" gutterBottom>
+                      Devolución: {comAlumno.devolucionProf}
+                    </Typography>
+                    </Typography>
                   </Grid>
-                  <Grid item style={{ marginLeft: 'auto' }}>
-                    <Button
-                      variant="contained"
-                      sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                      onClick={handleClickOpen}
-                    >
-                      Eliminar entrega de alumno
-                    </Button>
-                    <Dialog
-                      open={open}
-                      onClose={handleClose}
-                      aria-labelledby="alert-dialog-title"
-                      aria-describedby="alert-dialog-description"
-                    >
-                    <DialogTitle id="alert-dialog-title">{"Confirmar Eliminación"}</DialogTitle>
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-description">
-                        ¿Está seguro que desea eliminar este trabajo práctico? Esta acción no se puede deshacer.
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={handleClose} color="primary">
-                        Cancelar
-                      </Button>
-                      <Button onClick={handleConfirmDelete} color="primary" autoFocus>
-                        Confirmar
-                      </Button>
-                  </DialogActions>
-                  </Dialog>
+                </>
+              )}
+              {(calificado === false && !editMode && comAlumno) && (
+                  <Grid item xs={8}>
+                    <Typography variant="h6" component="div" gutterBottom>
+                      Aun no se ha calificado.
+                    </Typography>
                   </Grid>
+              )}
+              {(editMode) && (
+                <Grid container spacing={2} alignItems="center">
+                <Grid item xs={12}>  
+                  <TextField
+                    label="Nota"
+                    value={nota}
+                    onChange={handleNotaChange}
+                    variant="outlined"
+                    fullWidth="true"
+                    margin="normal"
+                    inputProps={{ type: 'number', min: 1, max: 10 }}
+                    autoComplete='off'
+                  />
+                  <TextField
+                    label="Comentario"
+                    value={comentario}
+                    onChange={handleComentarioChange}
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    multiline
+                    rows={4}
+                    autoComplete='off'
+                  />
+                </Grid>
                 </Grid>
               )}
+              </Grid>
             </Box>
-            <Grid container>
-                {comAlumno.comentarioAlum ? (
-                  <Grid container
-                  spacing={2}
-                  justifyContent="space-between"
-                  alignItems="center"
-                  marginTop='20px'
-                >
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' }}}
-                        onClick={() => history.goBack()}
-                      >
-                        Volver
-                      </Button>
-                      </Grid>
-                      <Grid item xs={12} sm="auto">
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-                          <Button
-                            variant="contained"
-                            sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' }}}
-                            onClick={handleSave}
-                          >
-                            Enviar Calificacion
-                          </Button>
-                        </Box>
-                      </Grid>
-                    </Grid>) : (
-                      <Grid container
-                      justifyContent="center"
-                      marginTop='20px'
-                    >
-                      <Button
-                        variant="contained"
-                        sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                        onClick={() => history.goBack()}
-                      >
-                        Volver
-                      </Button>
-                    </Grid>
-                    )}
-            </Grid> 
           </Container>
         </CardContent>
+          {!comAlumno && (
+                <>
+                  <Grid item mx={2}>
+                    <Button
+                      onClick={() => history.goBack()}
+                      variant="contained"
+                      color="primary"
+                      sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                    >
+                      Volver
+                    </Button>
+                  </Grid>
+                </>
+              )}   
+          <Box display="flex" justifyContent="space-between" p={2}>
+            <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              
+              {comAlumno && !editMode && (
+                <>
+                  <Grid item>
+                    <Button
+                      onClick={() => history.goBack()}
+                      variant="contained"
+                      color="primary"
+                      sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                    >
+                      Volver
+                    </Button>
+                  </Grid>
+
+                  <Grid item>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={handleEdit}
+                      sx={{
+                        backgroundColor: '#c5e1a5',
+                        color: '#000000',
+                        '&:hover': { backgroundColor: '#b0d38a' }
+                      }}
+                    >
+                      Editar Calificación
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                  <Button variant="contained" color="error" onClick={handleClickOpen}>
+                    Eliminar Entrega
+                  </Button>
+                </Grid>
+                </>
+              )}
+              {comAlumno && editMode && (
+                <>
+                <Grid item>
+                  <Button
+                    onClick={() => history.goBack()}
+                    variant="contained"
+                    color="primary"
+                    sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  >
+                    Volver
+                  </Button>
+                </Grid>
+
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleSave}
+                    sx={{
+                      backgroundColor: '#c5e1a5',
+                      color: '#000000',
+                      '&:hover': { backgroundColor: '#b0d38a' }
+                    }}
+                  >
+                    Calificar
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button variant="contained" color="error" onClick={handleClickOpen}>
+                    Eliminar Entrega
+                  </Button>
+                </Grid>
+              </>
+              )}
+            </Grid>
+          </Box>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Confirmación</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              ¿Estás seguro que quieres eliminar la calificación?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancelar
+            </Button>
+            <Button onClick={handleConfirmDelete} color="primary">
+              Confirmar
+            </Button>
+          </DialogActions>
+          </Dialog> 
       </Card>      
     </Box>
   );

@@ -3,23 +3,23 @@ import { useHistory, useParams } from 'react-router-dom';
 import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle  
  } from '@mui/material';
-import { Header} from './General/HeaderProf';
+import { Header } from './General/HeaderProf';
 import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
 import { getTpId } from '../services/tps';
 import { getComAlumnByCalifId, updateCalificacion, postEliminarCalificacion} from '../services/Calificacion';
 
-
 const TpEntrega = () => {
-  const { idEntregaGrupal, profesorId, tpId } = useParams();
+  const { idEntregaGrupal, tpId } = useParams();
   const [tp, setTp] = useState(null);
   const [grupo, setGrupo] = useState(null);
   const [nota, setNota] = useState('');
-
   const [comentario, setComentario] = useState('');
-  const [comAlumno, setComentarioAlumno] = useState('');
+  const [comAlumno, setComentarioAlumno] = useState(null);
   const [archivo, setArchivo] = useState(null);
   const [hasError, setHasError] = useState(false);
-  const [open, setOpen] = useState(false);//LOGICA PARA WARNING ELIMINACION
+  const [open, setOpen] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [calificado, setCalificado] = useState(null);
 
   const history = useHistory();
   
@@ -33,10 +33,12 @@ const TpEntrega = () => {
         try {
           const califData = await getComAlumnByCalifId(idEntregaGrupal, tpId);
           setComentarioAlumno(califData );
+          setCalificado(califData?.calificado);
          
         } catch (error) {
           if (error.response && error.response.status === 404 || error.response.status === 500) {
             setComentarioAlumno('');
+            setCalificado(null);
           }
         }
         if (tpId) {
@@ -52,30 +54,39 @@ const TpEntrega = () => {
       }
     }
     fetchTp();
-  }, [idEntregaGrupal, profesorId, tpId]);
- 
+  }, [idEntregaGrupal, tpId]);
+
   const handleNotaChange = (e) => {
     const value = e.target.value;
     if (value === '' || (Number(value) >= 1 && Number(value) <= 10)) {
-      setNota(value);}
+      setNota(value);
+    }
   };
+  
   const handleComentarioChange = (e) => setComentario(e.target.value);
-
+  
   const handleSave = async () => {
     const calificacionData = {
       devolucionProf: comentario,
       calificacion: parseFloat(nota),
+      calificado: true,
     };
     try {
       await updateCalificacion(comAlumno._id, calificacionData);
+      setEditMode(false);
+      setCalificado(true); // Actualiza el estado local
+      const updatedCalifData = await getComAlumnByCalifId(idEntregaGrupal, tpId);
+      setComentarioAlumno(updatedCalifData);
       alert('Calificación guardada con éxito');
-      setArchivo(false);
-      history.goBack();
+      //history.goBack();
     } catch (err) {
       console.error('Error al guardar la calificación', err);
     }
   };
   
+  const handleEdit = () => {
+    setEditMode(true);
+  };
 
   const handleDownload = () => {
     const link = document.createElement('a');
@@ -85,100 +96,82 @@ const TpEntrega = () => {
     link.click();
     document.body.removeChild(link);
   };
-  const handleEntrega = () => {
-    history.push(`/calificaion/${idEntrega}/${profesorId}`);
-  };
 
-
-
-  const SubHeader = ({ titulo, nombreTP }) => {
-    return (
-      <Grid container justifyContent="center" alignItems="center" >
-        <Typography variant="h5" component="div">
-          <span style={{ color: '#272727' }}>{titulo} </span>
-          <span style={{ fontWeight: 'bold', color: '#272727' }}>{nombreTP}</span>
-        </Typography>
-      </Grid>
-    );
-  };
   const deleteCalificacion = async (id) => {
     try {
       await postEliminarCalificacion(id);
-      } catch (error) {
-      console.error('Error al eliminar la calificaion del alumno:', error);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error al eliminar la calificación:', error);
     }
   };
-  const handleClickOpen = () => {//LOGICA PARA WARNING ELIMINACION
-    setOpen(true);
-  };
-  const handleClose = () => {//LOGICA PARA WARNING ELIMINACION
-    setOpen(false);
-  };
-  const handleConfirmDelete = async () => {//LOGICA PARA WARNING ELIMINACION
+
+  const handleClickOpen = () => setOpen(true);
+
+  const handleClose = () => setOpen(false);
+
+  const handleConfirmDelete = async () => {
     await deleteCalificacion(comAlumno._id);
     setOpen(false);
-    window.location.reload();
   };
+
   const formatFecha = (fecha) => {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(fecha).toLocaleDateString('es-ES', options);
   };
-  const titulo = tp ? `${tp.nombre}` : 'Cargando...';
 
-  
+  const SubHeader = ({ titulo, nombreTP }) => (
+    <Grid container justifyContent="center" alignItems="center">
+      <Typography variant="h5" component="div">
+        <span style={{ color: '#272727' }}>{titulo} </span>
+        <span style={{ fontWeight: 'bold', color: '#272727' }}>{nombreTP}</span>
+      </Typography>
+    </Grid>
+  );
+
+//console.log('Estado de calificado:', comAlumno.calificado);
+console.log('Estado de editMode:', editMode);
+
   const tpRendering = () => (
     <Box>
       <Header />
       <Card sx={{ mb: 2 }}>
         <CardContent>
-          <div>
-            <SubHeader titulo="Título:" nombreTP={titulo} />
-            {/* Verifica si tp existe antes de mostrar la consigna y la fecha de fin */}
-            {tp && (
-              <>
-                <Grid container alignItems="center">
-                  <Grid item xs={3}>
-                    <Typography variant="body1" color="textSecondary">
-                      Descripción:
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <Typography variant="body2" component="div">
-                      {tp.consigna ? (
-                        <div dangerouslySetInnerHTML={{ __html: tp.consigna }} />
-                      ) : (
-                        'No hay consigna'
-                      )}
-                    </Typography>
-                  </Grid>
+          <SubHeader titulo="Título:" nombreTP={tp ? tp.nombre : 'Cargando...'} />
+          {tp && (
+            <>
+              <Grid container alignItems="center">
+                <Grid item xs={3}>
+                  <Typography variant="body1" color="textSecondary">
+                    Descripción:
+                  </Typography>
                 </Grid>
+                <Grid item xs={9}>
+                  <Typography variant="body2" component="div">
+                    {tp.consigna ? (
+                      <div dangerouslySetInnerHTML={{ __html: tp.consigna }} />
+                    ) : (
+                      'No hay consigna'
+                    )}
+                  </Typography>
+                </Grid>
+              </Grid>
 
-                <Grid container alignItems="center">
-                  <Grid item xs={3}>
-                    <Typography variant="body1" color="textSecondary">
-                      Fecha de fin:
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <Typography variant="body2" component="div">
-                      {tp.fechaFin ? formatFecha(tp.fechaFin) : ''}
-                    </Typography>
-                  </Grid>
+              <Grid container alignItems="center">
+                <Grid item xs={3}>
+                  <Typography variant="body1" color="textSecondary">
+                    Fecha de fin:
+                  </Typography>
                 </Grid>
-              </>
-            )}
-          </div>
-          <Container
-            maxWidth="xl"
-            sx={{
-              mt: 1,
-              mb: 1,
-              border: 'solid',
-              borderWidth: '10px 20px 20px 10px',
-              borderColor: 'rgba(0, 0, 0, 0.08)',
-              borderRadius: '1%'
-            }}
-          >
+                <Grid item xs={9}>
+                  <Typography variant="body2" component="div">
+                    {tp.fechaFin ? formatFecha(tp.fechaFin) : ''}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </>
+          )}
+          <Container maxWidth="xl" sx={{ mt: 1, mb: 1, border: 'solid', borderWidth: '10px 20px 20px 10px', borderColor: 'rgba(0, 0, 0, 0.08)', borderRadius: '1%' }}>
             <Typography variant="h6" component="div" gutterBottom>
               Tp Grupal
             </Typography>
@@ -186,170 +179,203 @@ const TpEntrega = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '14%'}}>Nombre </TableCell>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '13.5%'}}>Apellido</TableCell>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '15%'}}>Dni</TableCell>
+                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '14%' }}>Nombre </TableCell>
+                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '13.5%' }}>Apellido</TableCell>
+                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '15%' }}>Dni</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {
-                    grupo.map((integrante, index) => (
-                      <TableRow
-                        key={integrante.id}
-                        sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
-                      >
-                        <TableCell align="center">{integrante.nombre}</TableCell>
-                        <TableCell align="center">{integrante.apellido}</TableCell>
-                        <TableCell align="center">{integrante.dni}</TableCell>
-                      </TableRow>
-                    ))
-                  }
+                  {grupo && grupo.map((integrante, index) => (
+                    <TableRow key={integrante.id} sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}>
+                      <TableCell align="center">{integrante.nombre}</TableCell>
+                      <TableCell align="center">{integrante.apellido}</TableCell>
+                      <TableCell align="center">{integrante.dni}</TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                {comAlumno !== ''? ' Documento entregado' : 'Documento no entregado. El trabajo practico no fue entregado'}
+                {comAlumno ? 'Documento entregado' : 'Documento no entregado. El trabajo practico no fue entregado'}
               </Typography>
-              <Typography variant="h6">
-                {comAlumno !== '' ? "Comentario grupal: " : ''}
-                <Typography marginLeft={2}>
-                  {comAlumno !== '' ?  comAlumno.comentarioAlum : ''}
-                </Typography>
-              </Typography>
-              <br/>
-              {archivo && (
-                <Button
-                  variant="contained"
-                  onClick={handleDownload}
-                  disabled={comAlumno.comentarioAlum === ''}
-                >
-                  Descargar {archivo ? archivo.nombre : ''}
-                </Button>
+              {comAlumno && (
+                <>
+                  <Typography variant="h6">
+                    Comentario grupal:
+                    <Typography marginLeft={2} variant="h6">
+                      {comAlumno.comentarioAlum}
+                    </Typography>
+                  </Typography>
+                  <br/>
+                  {archivo && (
+                    <Button variant="contained" onClick={handleDownload} sx={{
+                      backgroundColor: '#c5e1a5',
+                      color: '#000000',
+                      '&:hover': { backgroundColor: '#b0d38a' }
+                    }}>
+                      Descargar {archivo.nombre}
+                    </Button>
+                  )}
+                </>
               )}
             </Box>
             <Box mt={2} sx={{ display: 'flex' }}>
-              {!comAlumno.comentarioAlum ? ( //IMPLEMENTAR LOGICA PARA QUE NO APAREZCAN LOS RECUADROS DE NOTA Y COMENTARIO DE PROF
-              <>
-              </>
-              ):(
-                <Grid container spacing={2} alignItems="center">
+              <Grid container>
+              {(calificado === true) && (
+                <>
                   <Grid item xs={8}>
-                    <TextField
-                      label="Nota"
-                      value={nota}
-                      onChange={handleNotaChange}
-                      variant="outlined"
-                      fullWidth
-                      margin="normal"
-                      inputProps={{ type: 'number', min: 1, max: 10 }}
-                      autoComplete='off'
-                    />
-                    <TextField
-                      label="Comentario"
-                      value={comentario}
-                      onChange={handleComentarioChange}
-                      variant="outlined"
-                      fullWidth
-                      margin="normal"
-                      multiline
-                      rows={4}
-                      autoComplete='off'
-                    />
-                      <Grid item>
-                      {comAlumno.calificacion ? (
-                          <><Typography variant="h6" component="div" gutterBottom>
-                            Nota: {comAlumno.calificacion}
-                          </Typography>
-                          <Typography variant="h6" component="div" gutterBottom>
-                            Devolución del Profesor : 
-                            <Typography marginLeft={2}>
-                              {comAlumno.devolucionProf} 
-                            </Typography>
-                          </Typography></>
-                         ) : (<></>)}
-                      </Grid>
+                    <Typography variant="h6" component="div" gutterBottom>
+                      Nota: {comAlumno.calificacion}
+                      <Typography variant="h6" component="div" gutterBottom>
+                      Devolución: {comAlumno.devolucionProf}
+                    </Typography>
+                    </Typography>
                   </Grid>
-                  <Grid item style={{ marginLeft: 'auto' }}>
-                    <Button
-                      variant="contained"
-                      sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                      onClick={handleClickOpen}
-                    >
-                      Eliminar entrega del grupo
-                    </Button>
-                    <Dialog
-                      open={open}
-                      onClose={handleClose}
-                      aria-labelledby="alert-dialog-title"
-                      aria-describedby="alert-dialog-description"
-                    >
-                    <DialogTitle id="alert-dialog-title">{"Confirmar Eliminación"}</DialogTitle>
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-description">
-                        ¿Está seguro que desea eliminar este trabajo práctico? Esta acción no se puede deshacer.
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={handleClose} color="primary">
-                        Cancelar
-                      </Button>
-                      <Button onClick={handleConfirmDelete} color="primary" autoFocus>
-                        Confirmar
-                      </Button>
-                  </DialogActions>
-                  </Dialog>
+                </>
+              )}
+              {(calificado === false && !editMode && comAlumno) && (
+                  <Grid item xs={8}>
+                    <Typography variant="h6" component="div" gutterBottom>
+                      Aun no se ha calificado.
+                    </Typography>
                   </Grid>
+              )}
+              {(editMode) && (
+                <Grid container spacing={2} alignItems="center">
+                <Grid item xs={12}>  
+                  <TextField
+                    label="Nota"
+                    value={nota}
+                    onChange={handleNotaChange}
+                    variant="outlined"
+                    fullWidth="true"
+                    margin="normal"
+                    inputProps={{ type: 'number', min: 1, max: 10 }}
+                    autoComplete='off'
+                  />
+                  <TextField
+                    label="Comentario"
+                    value={comentario}
+                    onChange={handleComentarioChange}
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    multiline
+                    rows={4}
+                    autoComplete='off'
+                  />
+                </Grid>
                 </Grid>
               )}
+              </Grid>
             </Box>
-            <Grid container>
-                {comAlumno.comentarioAlum ? (
-                  <Grid container
-                  spacing={2}
-                  justifyContent="space-between"
-                  alignItems="center"
-                  marginTop='20px'
-                >
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' }}}
-                        onClick={() => history.goBack()}
-                      >
-                        Volver
-                      </Button>
-                      </Grid>
-                      <Grid item xs={12} sm="auto">
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-                          <Button
-                            variant="contained"
-                            sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' }}}
-                            onClick={handleSave}
-                          >
-                            Enviar Calificacion
-                          </Button>
-                        </Box>
-                      </Grid>
-                    </Grid>) : (
-                      <Grid container
-                      justifyContent="center"
-                      marginTop='20px'
-                    >
-                      <Button
-                        variant="contained"
-                        sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                        onClick={() => history.goBack()}
-                      >
-                        Volver
-                      </Button>
-                    </Grid>
-                    )}
-            </Grid> 
           </Container>
         </CardContent>
+        {!comAlumno && (
+                <>
+                  <Grid item mx={2}>
+                    <Button
+                      onClick={() => history.goBack()}
+                      variant="contained"
+                      color="primary"
+                      sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                    >
+                      Volver
+                    </Button>
+                  </Grid>
+                </>
+              )}    
+          <Box display="flex" justifyContent="space-between" p={2}>
+            <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              {comAlumno && !editMode && (
+                <>
+                  <Grid item>
+                    <Button
+                      onClick={() => history.goBack()}
+                      variant="contained"
+                      color="primary"
+                      sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                    >
+                      Volver
+                    </Button>
+                  </Grid>
+
+                  <Grid item>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={handleEdit}
+                      sx={{
+                        backgroundColor: '#c5e1a5',
+                        color: '#000000',
+                        '&:hover': { backgroundColor: '#b0d38a' }
+                      }}
+                    >
+                      Editar Calificación
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                  <Button variant="contained" color="error" onClick={handleClickOpen}>
+                    Eliminar Entrega
+                  </Button>
+                </Grid>
+                </>
+              )}
+              {comAlumno && editMode && (
+                <>
+                <Grid item>
+                  <Button
+                    onClick={() => history.goBack()}
+                    variant="contained"
+                    color="primary"
+                    sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  >
+                    Volver
+                  </Button>
+                </Grid>
+
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleSave}
+                    sx={{
+                      backgroundColor: '#c5e1a5',
+                      color: '#000000',
+                      '&:hover': { backgroundColor: '#b0d38a' }
+                    }}
+                  >
+                    Calificar
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button variant="contained" color="error" onClick={handleClickOpen}>
+                    Eliminar Entrega
+                  </Button>
+                </Grid>
+              </>
+              )}
+            </Grid>
+          </Box>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Confirmación</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              ¿Estás seguro que quieres eliminar la calificación?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancelar
+            </Button>
+            <Button onClick={handleConfirmDelete} color="primary">
+              Confirmar
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Card>
-    </Box >
+    </Box>
   );
 
   const loadingRendering = () => <div>Cargando detalles del Tp...</div>;

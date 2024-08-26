@@ -217,7 +217,7 @@ const TpEntrega = () => {
               ))}
               <Typography variant="h6">
                 {comProfe.comentarioAlum &&("Comentario Del Alumno: ") }
-                <Typography marginLeft={2}>
+                <Typography marginLeft={2} variant="h6">
                   {comProfe.comentarioAlum}
                 </Typography>
               </Typography>
@@ -227,12 +227,10 @@ const TpEntrega = () => {
              {!comProfe &&(nota && <TextField
                 label="Nota"
                 value={nota}
-                
                 variant="outlined"
                 fullWidth
                 margin="normal"
               />)}
-              
               {!comProfe && (
               <TextField
                 label="Comentario"
@@ -244,39 +242,42 @@ const TpEntrega = () => {
                 multiline
                 rows={4}
             />)}
-            {comProfe.calificacion ? ( 
+            {comProfe.calificacion && ( 
               <Grid container spacing={2} alignItems="center">              
                 <Grid item xs={12}>
                   <Typography variant="h6" component="div" gutterBottom>
-                  Nota: {comProfe.calificacion}
+                      Nota: {comProfe.calificacion}
                   </Typography>
                   <Typography variant="h6" component="div" gutterBottom>
                       Devolucion del Profesor : 
-                    <Typography marginLeft={2}>
+                    <Typography marginLeft={2} variant="h6">
                       {comProfe.devolucionProf}
                     </Typography>
                   </Typography>
-                  <Grid container
-                      justifyContent="center"
-                      alignItems="center"
-                      marginTop='20px'
-                    >
-                      <Grid item>
-                      <Button
-                        variant="contained"
-                        sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                        onClick={() => history.goBack()}
-                      >
-                        Volver
-                      </Button>
-                      </Grid>
-                    </Grid>
                 </Grid>
               </Grid> 
+            )}  
+            </Box>
+          </Container>
+        </CardContent>
+        <Box display="flex"  p={2}>
+        {comProfe.calificacion ? ( 
+              <>
+              <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                <Button
+                  onClick={() => history.goBack()}
+                  variant="contained"
+                  color="primary"
+                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                >
+                  Volver
+                </Button>
+              </Grid>
+            </> 
             ) : (
               comProfe ? (
                 <Grid container justifyContent="space-between" marginTop="20px">
-                  <Grid item>
+                  <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                 <Button
                   variant="contained"
                   sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
@@ -288,7 +289,7 @@ const TpEntrega = () => {
                 <Grid item>
                 <Button
                   variant="contained"
-                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  color="error"
                   onClick={handleClickOpen}
                 >
                   Eliminar entrega
@@ -317,14 +318,13 @@ const TpEntrega = () => {
               </Dialog>
               </Grid>
               ) : ('')
-            )}  
-            </Box>
+            )}
             <Grid container 
               spacing={2} 
               justifyContent="space-between"
               marginTop='20px'
-            > 
-                {!comProfe && (
+            >
+            {!comProfe && (
                   <>
                   <Grid item>
                   <Button
@@ -345,10 +345,9 @@ const TpEntrega = () => {
                 </Button>
                 </Grid>
                 </>
-                )}          
-            </Grid>
-          </Container>
-        </CardContent>
+                )}
+                </Grid>
+        </Box>
       </Card>      
     </Box>
   );

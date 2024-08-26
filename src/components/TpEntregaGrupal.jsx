@@ -233,7 +233,7 @@ const TpEntrega = () => {
               ))}
               <Typography variant="h6">
                 {comProfe.comentarioAlum &&("Comentario grupal: ") }
-                <Typography marginLeft={2}>
+                <Typography marginLeft={2} variant="h6">
                   {comProfe.comentarioAlum}
                 </Typography>
               </Typography>
@@ -243,12 +243,10 @@ const TpEntrega = () => {
              {!comProfe &&(nota && <TextField
                 label="Nota"
                 value={nota}
-                
                 variant="outlined"
                 fullWidth
                 margin="normal"
               />)}
-              
               {!comProfe && (
               <TextField
                 label="Comentario"
@@ -269,25 +267,10 @@ const TpEntrega = () => {
                   </Typography>
                   <Typography variant="h6" component="div" gutterBottom>
                       Devolucion del Profesor : 
-                    <Typography marginLeft={2}>
+                    <Typography marginLeft={2} variant="h6">
                       {comProfe.devolucionProf}
                     </Typography>
                   </Typography>
-                  <Grid container
-                      justifyContent="center"
-                      alignItems="center"
-                      marginTop='20px'
-                    >
-                      <Grid item>
-                      <Button
-                        variant="contained"
-                        sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                        onClick={() => history.goBack()}
-                      >
-                        Volver
-                      </Button>
-                      </Grid>
-                    </Grid>
                 </Grid>
               </Grid> 
             ) : (
@@ -305,7 +288,7 @@ const TpEntrega = () => {
                 <Grid item>
                 <Button
                   variant="contained"
-                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  color="error"
                   onClick={handleClickOpen}
                 >
                   Eliminar entrega
@@ -336,12 +319,73 @@ const TpEntrega = () => {
               ) : ('')
             )}  
             </Box>
+          </Container>
+        </CardContent>
+        <Box display="flex"  p={2}>
+        {comProfe.calificacion ? ( 
+              <>
+              <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                <Button
+                  onClick={() => history.goBack()}
+                  variant="contained"
+                  color="primary"
+                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                >
+                  Volver
+                </Button>
+              </Grid>
+            </> 
+            ) : (
+              comProfe ? (
+                <Grid container justifyContent="space-between" marginTop="20px">
+                  <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                <Button
+                  variant="contained"
+                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  onClick={() => history.goBack()}
+                >
+                  Volver
+                </Button>
+                </Grid>
+                <Grid item>
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={handleClickOpen}
+                >
+                  Eliminar entrega
+                </Button>
+                </Grid>
+                <Dialog
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                <DialogTitle id="alert-dialog-title">{"Confirmar Eliminación"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    ¿Está seguro que desea eliminar esta entrega? Esta acción no se puede deshacer.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Cancelar
+                  </Button>
+                  <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+                    Confirmar
+                  </Button>
+              </DialogActions>
+              </Dialog>
+              </Grid>
+              ) : ('')
+            )}
             <Grid container 
               spacing={2} 
               justifyContent="space-between"
               marginTop='20px'
-            > 
-                {!comProfe && (
+            >
+            {!comProfe && (
                   <>
                   <Grid item>
                   <Button
@@ -362,10 +406,9 @@ const TpEntrega = () => {
                 </Button>
                 </Grid>
                 </>
-                )}          
-            </Grid>
-          </Container>
-        </CardContent>
+                )}
+                </Grid>
+        </Box>
       </Card>      
     </Box>
   );
