@@ -18,6 +18,7 @@ import { getCursoById } from '../services/tps';
 import { getTpsByCursoId } from '../services/tps';
 import { Header } from './General/HeaderProf';
 import { SubHeader } from './General/SubHeader';
+import { margin } from '@mui/system';
 
 
 export default function Tps() {
@@ -75,7 +76,7 @@ export default function Tps() {
               mt: 1,
               mb: 1,
               border: 'solid',
-              borderWidth: '10px 20px 20px 10px',
+              borderWidth: '20px',
               borderColor: 'rgba(0, 0, 0, 0.08)',
               borderRadius: '1%'
             }}
@@ -84,13 +85,13 @@ export default function Tps() {
               {dato.materia} - {dato.comision}
             </Typography>
             <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
+              <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)'}} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '7%' }}>Nombre del TP</TableCell>
-                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '9.5%' }}>Estado</TableCell>
-                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '8%' }}>Finalización</TableCell>
-                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '9.5%' }}>Detalles</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '5.5%' }}>Nombre del TP</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '8.3%' }}>Estado</TableCell>
+                    <TableCell style={{ width: '30%', fontSize: '18px', paddingLeft: '9%' }}>Finalización</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '13.5%' }}>Detalles</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -98,6 +99,7 @@ export default function Tps() {
                     <TableRow
                       key={tp._id}
                       sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
+                      
                     >
                       <TableCell align="center">{tp.nombre}</TableCell>
                       <TableCell align="center">{tp.estado || 'Desconocido'}</TableCell>
@@ -110,6 +112,7 @@ export default function Tps() {
                             color: '#000000',
                             fontSize: '10px',
                             borderRadius: '5%',
+                            marginLeft: '30%',
                             '&:hover': { backgroundColor: '#b0d38a' }
                           }}
                           onClick={() => history.push(`/tp/${idCurso}/${profesorId}/${tp._id}`)}
@@ -125,23 +128,25 @@ export default function Tps() {
                             color: '#000000',
                             fontSize: '10px',
                             borderRadius: '5%',
+                            marginRight: '5%',
                             '&:hover': { backgroundColor: '#ffa726' }
                           }}
                           onClick={() => history.push(`/modificarTP/${idCurso}/${profesorId}/${tp._id}`)}
                         >
                           Modificar
                         </Button>
+                        
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
-            <Grid container
-              spacing={2}
-              justifyContent="space-between"
-              marginTop='20px'
-            >
+            <div style={{ marginTop: '20px' }}></div>{/*SALTO DE LINEA*/}
+          </Container>
+        </CardContent>
+        <Box display="flex" justifyContent="space-between" p={2}>
+        <Grid container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Grid item>
                 <Button
                   variant="contained"
@@ -170,8 +175,7 @@ export default function Tps() {
                 </Button>
               </Grid>
             </Grid>
-          </Container>
-        </CardContent>
+            </Box>
       </Card>
     </Box>
   );

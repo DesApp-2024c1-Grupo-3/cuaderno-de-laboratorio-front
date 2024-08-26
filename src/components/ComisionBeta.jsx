@@ -83,14 +83,14 @@ export default function Comision() {
       <Header />
       <Card sx={{ mb: 2 }}>
         <CardContent>
-          <Typography sx={{ fontSize: '30px' }}>Materias</Typography>
+          <Typography sx={{ fontSize: '30px' }}>Comisiones</Typography>
           <Container
             maxWidth="xl"
             sx={{
               mt: 1,
               mb: 1,
               border: 'solid',
-              borderWidth: '10px 20px 20px 10px',
+              borderWidth: '20px',
               borderColor: 'rgba(0, 0, 0, 0.08)',
               borderRadius: '1%'
             }}
@@ -103,7 +103,7 @@ export default function Comision() {
                 <TableHead>
                   <TableRow>
                     <TableCell sx={{ width: '40%', fontSize: '18px' }}>Materia</TableCell>
-                    <TableCell sx={{ width: '40%', fontSize: '18px' }}>Comisiones</TableCell>
+                    <TableCell sx={{ width: '40%', fontSize: '18px' }}>Comision</TableCell>
                     <TableCell sx={{ width: '40%', fontSize: '18px' }}>Trabajos Practicos</TableCell>
                   </TableRow>
                 </TableHead>
@@ -137,11 +137,13 @@ export default function Comision() {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Grid container
-              spacing={2}
-              justifyContent="space-between"
+            <div style={{ marginTop: '20px' }}></div>{/*SALTO DE LINEA*/}
+          </Container>
+        </CardContent>
+        <Grid container
               marginTop='20px'
-              marginLeft='41.5%'
+              mx={2}
+              mb={2}
             >
               <Grid item>
                 <Button Button variant="contained" 
@@ -150,8 +152,6 @@ export default function Comision() {
                 </Button>
               </Grid>
             </Grid>
-          </Container>
-        </CardContent>
       </Card>
     </Box>
   );

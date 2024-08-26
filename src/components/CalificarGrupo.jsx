@@ -171,7 +171,7 @@ console.log('Estado de editMode:', editMode);
               </Grid>
             </>
           )}
-          <Container maxWidth="xl" sx={{ mt: 1, mb: 1, border: 'solid', borderWidth: '10px 20px 20px 10px', borderColor: 'rgba(0, 0, 0, 0.08)', borderRadius: '1%' }}>
+          <Container maxWidth="xl" sx={{ mt: 1, mb: 1, border: 'solid', borderWidth: '20px', borderColor: 'rgba(0, 0, 0, 0.08)', borderRadius: '1%' }}>
             <Typography variant="h6" component="div" gutterBottom>
               Tp Grupal
             </Typography>

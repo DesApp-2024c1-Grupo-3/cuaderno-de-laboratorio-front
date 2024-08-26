@@ -68,7 +68,7 @@ const AlumnoTps = () => {
       <Card sx={{ mb: 2 }}>
         <CardContent>
           <Typography variant="h6" component="div" gutterBottom>
-              Curso - {dato.comision}
+              Comision - {dato.comision}
           </Typography>
           <Container
             maxWidth="xl"
@@ -82,7 +82,7 @@ const AlumnoTps = () => {
             }}
           >
             <Typography variant="h6" component="div" gutterBottom>
-              Materia {dato.materia}
+              {dato.materia}
             </Typography>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
@@ -105,7 +105,8 @@ const AlumnoTps = () => {
                       <TableCell align="center">{tp.nombre }</TableCell>
                       <TableCell align="center">{estadoTp(tp._id) || 'Desconocido'}</TableCell>
                       <TableCell align="center">{formatFecha(tp.fechaFin)}</TableCell>
-                      <TableCell align="center">{getCalificacion(tp._id)} / 10</TableCell>
+                      <TableCell align="center">{getCalificacion(tp._id) !== 'No asignada' ? 
+            `${getCalificacion(tp._id)} / 10` : 'No asignada'}</TableCell>
                      
                       <TableCell align="center">
                         {!tp.grupal?(
@@ -144,10 +145,12 @@ const AlumnoTps = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Grid container 
-              spacing={2} 
-              justifyContent="center"
-              marginTop='20px'
+            <div style={{ marginTop: '20px' }}></div>{/*SALTO DE LINEA*/}
+          </Container>
+        </CardContent>
+        <Grid container
+              mx={2}
+              mb={2}
             >
               <Grid item>
                 <Button
@@ -159,8 +162,6 @@ const AlumnoTps = () => {
                 </Button>
               </Grid>
             </Grid>
-          </Container>
-        </CardContent>
       </Card>
     </Box>
   );

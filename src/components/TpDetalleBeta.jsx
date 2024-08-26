@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import {Card, Paper, Typography, TableRow, TableHead, TableContainer, TableCell,
         TableBody,Table, Grid, Box, Button, Container, CardContent
@@ -41,6 +41,7 @@ const TpDetalle = () => {
         } else {
           console.error('tpId es undefined');
           setHasError(true);
+          setCalificado(null);
         }
       } catch (err) {
         setHasError(true);
@@ -64,7 +65,7 @@ const TpDetalle = () => {
     // Asegúrate de que calificaciones esté definido y sea un array antes de buscar
     if (!calificaciones || !Array.isArray(calificaciones) ) {
       return 'No asignada';  // o un valor por defecto adecuado
-    }
+    } 
   
     // Busca la calificación basada en el tipo (alumno o grupo)
     const calificacion = calificaciones.find(c => 
@@ -130,7 +131,7 @@ const TpDetalle = () => {
                 ''
               ) : (
                 <Grid container justifyContent="flex-end">
-                <Grid item>
+                <Grid item mb={1}>
                     <Button variant="contained" sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }} 
                       onClick={() => history.goBack()}>
                         Volver
@@ -145,7 +146,7 @@ const TpDetalle = () => {
               mt: 1,
               mb: 1,
               border: 'solid',
-              borderWidth: '10px 20px 20px 10px',
+              borderWidth: '20px',
               borderColor: 'rgba(0, 0, 0, 0.08)',
               borderRadius: '1%'
             }}
@@ -182,7 +183,8 @@ const TpDetalle = () => {
                       >
                         <TableCell align="center">{grupo.nombre}</TableCell>
                         <TableCell align="center">{estadoTp(getCalificacion(grupo._id, 'grupo'),tp)}</TableCell>
-                        <TableCell align="center">{getCalificacion(grupo._id, 'grupo')}/ 10</TableCell>
+                        <TableCell align="center">{getCalificacion(grupo._id, 'grupo') !== 'No asignada' ? 
+            `${getCalificacion(grupo._id, 'grupo')} / 10` : 'No asignada'}</TableCell>
                         <TableCell align="center">
                           <Button
                             variant="contained"
@@ -209,7 +211,8 @@ const TpDetalle = () => {
                       >
                         <TableCell align="center">{alumno.nombre} {alumno.apellido}</TableCell>
                         <TableCell align="center">{estadoTp(getCalificacion(alumno._id, 'alumno'),tp)}</TableCell>
-                        <TableCell align="center">{getCalificacion(alumno._id, 'alumno')}/ 10</TableCell>
+                        <TableCell align="center">{getCalificacion(alumno._id, 'alumno') !== 'No asignada' ? 
+            `${getCalificacion(alumno._id, 'alumno')} / 10` : 'No asignada'}</TableCell>
                         <TableCell align="center">
                           <Button
                             variant="contained"
@@ -259,7 +262,7 @@ const TpDetalle = () => {
           )}
           </Container>
         </CardContent>
-          <Grid item mx={2}>
+          <Grid item mx={2} mb={2}>
               <Button
                 onClick={() => history.goBack()}
                 variant="contained"

@@ -177,7 +177,7 @@ const TpEntrega = () => {
               mt: 1, 
               mb: 1, 
               border: 'solid', 
-              borderWidth: '10px 20px 20px 10px', 
+              borderWidth: '20px', 
               borderColor: 'rgba(0, 0, 0, 0.08)',
               borderRadius: '1%' 
               }}

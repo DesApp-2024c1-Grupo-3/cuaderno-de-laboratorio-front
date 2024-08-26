@@ -207,10 +207,15 @@ const CrearTpsBeta = () => {
                     setGruposParaTrabajo={setGruposParaTrabajo}
                   />
                 )}
-                <Box 
+                
+              </Box>
+            </form>
+          </Container>
+        </CardContent>
+          <Box 
                   display="flex"
                   justifyContent="space-between"
-                  marginTop= '20px'  
+                  p={2}  
                 >
                   <Button
                     variant="contained"
@@ -227,10 +232,6 @@ const CrearTpsBeta = () => {
                   >Grabar TP
                   </Button>
                 </Box>
-              </Box>
-            </form>
-          </Container>
-        </CardContent>
       </Card>
     </Box>
   );

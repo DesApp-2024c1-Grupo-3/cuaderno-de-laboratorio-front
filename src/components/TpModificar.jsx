@@ -12,7 +12,6 @@ import { Header } from './General/HeaderProf';
 
 const TpModificar = () => {
     const { idCurso, profesorId, tpId } = useParams();
-    const [dato, setDato] = useState(null);
     const [show, setShow] = useState(false);
     const [gruposParaTrabajo, setGruposParaTrabajo] = useState([]);
     const [tpData, setTpData] = useState({
@@ -235,10 +234,15 @@ const TpModificar = () => {
                                         setGruposParaTrabajo={setGruposParaTrabajo}
                                     />
                                 )}
+                                
+                            </Box>
+                        </form>
+                    </Container>
+                </CardContent>
                                 <Box
                                     display="flex"
                                     justifyContent="space-between"
-                                    marginTop='20px'
+                                    p={2}
                                 >
                                     <Button
                                         variant="contained"
@@ -256,10 +260,6 @@ const TpModificar = () => {
                                         Guardar Cambios
                                     </Button>
                                 </Box>
-                            </Box>
-                        </form>
-                    </Container>
-                </CardContent>
             </Card>
         </Box>
     );

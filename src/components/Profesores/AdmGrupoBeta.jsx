@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box, Button, Card, CardContent, Container, Grid, IconButton, Table, TableBody, TableCell,
+import {Box, Button, Card, CardContent, Container, Grid, IconButton, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Paper, Dialog, DialogTitle, DialogContent, DialogActions,
-  List, ListItem, ListItemText, TextField, Checkbox
-} from '@mui/material';
+  List, ListItem, ListItemText} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -11,10 +9,8 @@ import { ModalCrearGrupos } from './ModalCrearGrupoBeta';
 import { ModalModificarGrupo } from './ModalModificarGrupoBeta';
 import { useParams, useHistory } from 'react-router-dom';
 import { getGrupoByCursoId, postEliminarGrupo } from '../../services/Grupo';
-import { getAlumnosByCursoId } from '../../services/Alumnos';
 import { SubHeader } from '../General/SubHeader';
 import { Header } from '../General/HeaderProf';
-import { border } from '@mui/system';
 
 const AdministrarGrupos = () => {
   const { idCurso } = useParams();
@@ -97,7 +93,7 @@ const AdministrarGrupos = () => {
               mt: 1,
               mb: 1,
               border: 'solid',
-              borderWidth: '10px 20px 20px 10px',
+              borderWidth: '20px',
               borderColor: 'rgba(0, 0, 0, 0.08)',
               borderRadius: '1%'
             }}
@@ -136,7 +132,22 @@ const AdministrarGrupos = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Grid container spacing={2} justifyContent="space-between" marginTop="20px">
+            <div style={{ marginTop: '20px' }}></div>{/*SALTO DE LINEA*/}
+            <ModalCrearGrupos
+              show={show}
+              closeModal={hideModal}
+              idCurso={idCurso}  
+            />
+            <ModalModificarGrupo
+              show={openEdit}
+              closeModal={handleEditClose}
+              idCurso={idCurso}
+              actualizarListaGrupos={actualizarListaGrupos}
+              grupoParaModificar={selectedGroup}
+            />
+          </Container>
+        </CardContent>
+        <Grid container p={2} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Grid item>
                 <Button
                   variant="contained"
@@ -156,21 +167,6 @@ const AdministrarGrupos = () => {
                 </Button>
               </Grid>
             </Grid>
-            <ModalCrearGrupos
-              show={show}
-              closeModal={hideModal}
-              idCurso={idCurso}
-              
-            />
-            <ModalModificarGrupo
-              show={openEdit}
-              closeModal={handleEditClose}
-              idCurso={idCurso}
-              actualizarListaGrupos={actualizarListaGrupos}
-              grupoParaModificar={selectedGroup}
-            />
-          </Container>
-        </CardContent>
       </Card>
 
       {/* Modal Ver */}

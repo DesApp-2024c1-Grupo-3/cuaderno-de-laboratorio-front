@@ -12,9 +12,6 @@ import { useState, useEffect  } from 'react';
 
 import { getGrupoByCursoId } from '../../services/Grupo';
 import { Container } from '@mui/system';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Modal from 'react-bootstrap/Modal';
 import Divider from '@mui/material/Divider';
 
 // Proposito:  Devuelve los elementos en a que no están en b.
@@ -160,7 +157,7 @@ export default function ListaDeGrupos({
   return (
     <>
       <Grid container spacing={2} justifyContent="center" alignItems="center">
-        <Grid item>{customList(gruposParaTp, 'Grupos para crear TP')}</Grid>
+        <Grid item>{customList(gruposParaTp, 'Grupos para asignar TP')}</Grid>
         <Grid item>
           <Grid container direction="column" alignItems="center">
             <Button
@@ -212,10 +209,18 @@ export default function ListaDeGrupos({
           display: 'flex',
           flexDirection: ' row',
           justifyContent: 'space-evenly',
-          paddingTop: '4%',
+          paddingTop: '2%',
+          paddingBottom: '2%', 
         }}
       >
-        <Button onClick={agregarGrupo} variant="contained" color="success">
+        <Button onClick={agregarGrupo} 
+        variant="contained" 
+        color="success" 
+          sx={{ 
+            backgroundColor: '#c5e1a5', 
+            color: '#000000', 
+            '&:hover': { backgroundColor: '#b0d38a' 
+            } }}>
           Agregar Grupos a Tp
         </Button>
       </Container>

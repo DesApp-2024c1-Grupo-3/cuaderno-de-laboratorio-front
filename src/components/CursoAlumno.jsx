@@ -43,7 +43,7 @@ const AlumnoCursos = () => {
               mt: 1,
               mb: 1,
               border: 'solid',
-              borderWidth: '10px 20px 20px 10px',
+              borderWidth: '20px',
               borderColor: 'rgba(0, 0, 0, 0.08)',
               borderRadius: '1%'
             }}
@@ -51,11 +51,12 @@ const AlumnoCursos = () => {
             <Typography variant="h6" component="div" gutterBottom>
               {dato.nombre}
             </Typography>
+            <div style={{ marginTop: '20px' }}></div>{/*SALTO DE LINEA*/}
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{  width: '33%', fontSize: '18px', paddingLeft: '14%' }}>Materia</TableCell>
+                    <TableCell style={{  width: '33%', fontSize: '18px', paddingLeft: '13.5%' }}>Materia</TableCell>
                     <TableCell style={{  width: '33%', fontSize: '18px', paddingLeft: '14%' }}>Curso</TableCell>
                     <TableCell style={{  width: '33%', fontSize: '18px', paddingLeft: '12%' }}>Descripción</TableCell>
                   </TableRow>
@@ -88,10 +89,12 @@ const AlumnoCursos = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Grid container
-              spacing={2}
-              justifyContent="center"
-              marginTop='20px'
+            <div style={{ marginTop: '20px' }}></div>{/*SALTO DE LINEA*/}
+          </Container>
+        </CardContent>
+        <Grid container
+              mx={2}
+              mb={2}
             >
               <Grid item>
                 <Button
@@ -104,8 +107,6 @@ const AlumnoCursos = () => {
                 </Button>
               </Grid>
             </Grid>
-          </Container>
-        </CardContent>
       </Card>
     </Box>
   );
