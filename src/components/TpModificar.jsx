@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useHistory, useParams } from 'react-router-dom';
 import {
-    Button, Card, CardContent, Container, FormControl, FormLabel, RadioGroup,
+    Button, Card, CardContent, Container, FormControl, FormLabel, RadioGroup, InputLabel, Select, MenuItem,
     FormControlLabel, Radio, TextField, Box, Grid, Typography
 } from '@mui/material';
 import ReactQuill from 'react-quill';
@@ -22,6 +22,7 @@ const TpModificar = () => {
         grupo: [],
         consigna: '',
         cuatrimestre: false,
+        estado: 'Futuro',
     });
     const history = useHistory();
     const quillRef = useRef(null);
@@ -104,6 +105,7 @@ const TpModificar = () => {
                     grupo: tp?.grupos || [],
                     consigna: tp?.consigna || '',
                     cuatrimestre: tp?.cuatrimestre || false,
+                    estado: tp?.estado || 'Futuro'  // Asignar el valor de estado
                 });
 
                 setShow(tp?.grupal || false);
@@ -157,12 +159,17 @@ const TpModificar = () => {
                                     value={tpData.nombre}
                                     onChange={handleChange}
                                 />
-                                <FormLabel>Descripcion</FormLabel>
+                                <FormLabel>Descripción</FormLabel>
+                                {/* Proximamente cambiar estado Entregado por Cerrado */}
                                 <ReactQuill
                                     ref={quillRef}
                                     value={tpData.consigna}
-                                    onChange={handleConsignaChange}
-                                    style={{ marginBottom: '20px' }}
+                                    onChange={tpData.estado === 'Entregado' ? () => { } : handleConsignaChange} // No permite cambios si el estado es 'Cerrado'
+                                    style={{
+                                        marginBottom: '20px',
+                                        backgroundColor: tpData.estado === 'Entregado' ? '#f0f0f0' : 'white', // Fondo grisáceo si está cerrado
+                                        pointerEvents: tpData.estado === 'Entregado' ? 'none' : 'auto' // Evita interacción en cerrado
+                                    }}
                                     modules={{
                                         toolbar: [
                                             [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
@@ -179,7 +186,10 @@ const TpModificar = () => {
                                         'list', 'bullet',
                                         'link', 'image'
                                     ]}
+                                    readOnly={tpData.estado === 'Entregado'} // Solo lectura si el estado es 'Cerrado'
                                 />
+
+                                {/* Campos de fecha controlados por el estado */}
                                 <Grid container spacing={5}>
                                     <Grid item xs={6}>
                                         <TextField
@@ -193,8 +203,10 @@ const TpModificar = () => {
                                             name="fechaInicio"
                                             value={tpData.fechaInicio}
                                             onChange={handleChange}
+                                            disabled={tpData.estado !== 'Futuro'} // Solo editable si el estado es 'Futuro'
                                         />
                                     </Grid>
+                                    {/* Proximamente cambiar estado Entregado por Cerrado */}
                                     <Grid item xs={6}>
                                         <TextField
                                             label="Fecha fin"
@@ -207,8 +219,29 @@ const TpModificar = () => {
                                             name="fechaFin"
                                             value={tpData.fechaFin}
                                             onChange={handleChange}
+                                            disabled={tpData.estado === 'Entregado'} // Deshabilitado si el estado es 'Cerrado'
                                         />
+
                                     </Grid>
+                                    {/* Proximamente cambiar estado Entregado por Cerrado */}
+                                    <Grid item xs={12}>
+                                        <FormControl fullWidth margin="normal">
+                                            <InputLabel id="estado-tp-label">Estado del TP</InputLabel>
+                                            <Select
+                                                labelId="estado-tp-label"
+                                                name="estado"
+                                                value={tpData.estado}
+                                                onChange={handleChange}
+                                                label="Estado del TP"
+                                            >
+                                                <MenuItem value="Futuro">Futuro</MenuItem>
+                                                <MenuItem value="En proceso">En proceso</MenuItem>
+                                                <MenuItem value="En evaluación">En evaluación</MenuItem>
+                                                <MenuItem value="Entregado">Entregado</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+
                                     <Grid item xs={5}>
                                         <FormControl margin="normal" fullWidth>
                                             <FormLabel>Grupal</FormLabel>
@@ -234,32 +267,32 @@ const TpModificar = () => {
                                         setGruposParaTrabajo={setGruposParaTrabajo}
                                     />
                                 )}
-                                
+
                             </Box>
                         </form>
                     </Container>
                 </CardContent>
-                                <Box
-                                    display="flex"
-                                    justifyContent="space-between"
-                                    p={2}
-                                >
-                                    <Button
-                                        variant="contained"
-                                        sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                                        component={NavLink}
-                                        to={`/tps/${idCurso}/${profesorId}`}
-                                    >
-                                        Volver
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
-                                        onClick={actualizarTp}
-                                    >
-                                        Guardar Cambios
-                                    </Button>
-                                </Box>
+                <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    p={2}
+                >
+                    <Button
+                        variant="contained"
+                        sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                        component={NavLink}
+                        to={`/tps/${idCurso}/${profesorId}`}
+                    >
+                        Volver
+                    </Button>
+                    <Button
+                        variant="contained"
+                        sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
+                        onClick={actualizarTp}
+                    >
+                        Guardar Cambios
+                    </Button>
+                </Box>
             </Card>
         </Box>
     );
