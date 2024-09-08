@@ -19,35 +19,33 @@ const TpEntrega = () => {
   const [hasError, setHasError] = useState(false);
   const [open, setOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [calificado, setCalificado] = useState(null);
 
   const history = useHistory();
   
   useEffect(() => {
     async function fetchTp() {
       try {
-
+        
         const gruposData = await getGrupoPorId(idEntregaGrupal);
         setGrupo(gruposData);
-
+        
+        if (tpId) {
+          const tpData = await getTpId(tpId);
+          setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
+  
+        } else {
+          console.error('tpId es undefined');
+          setHasError(true);
+        }
         try {
           const califData = await getComAlumnByCalifId(idEntregaGrupal, tpId);
           setComentarioAlumno(califData );
-          setCalificado(califData?.calificado);
+          setNota(califData?.calificacion);
          
         } catch (error) {
           if (error.response && error.response.status === 404 || error.response.status === 500) {
             setComentarioAlumno('');
-            setCalificado(null);
           }
-        }
-        if (tpId) {
-          const tpData = await getTpId(tpId);
-          setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
-
-        } else {
-          console.error('tpId es undefined');
-          setHasError(true);
         }
       } catch (err) {
         setHasError(true);
@@ -69,16 +67,14 @@ const TpEntrega = () => {
     const calificacionData = {
       devolucionProf: comentario,
       calificacion: parseFloat(nota),
-      calificado: true,
     };
     try {
       await updateCalificacion(comAlumno._id, calificacionData);
       setEditMode(false);
-      setCalificado(true); // Actualiza el estado local
       const updatedCalifData = await getComAlumnByCalifId(idEntregaGrupal, tpId);
       setComentarioAlumno(updatedCalifData);
       alert('Calificación guardada con éxito');
-      //history.goBack();
+      history.goBack();
     } catch (err) {
       console.error('Error al guardar la calificación', err);
     }
@@ -128,9 +124,6 @@ const TpEntrega = () => {
       </Typography>
     </Grid>
   );
-
-//console.log('Estado de calificado:', comAlumno.calificado);
-console.log('Estado de editMode:', editMode);
 
   const tpRendering = () => (
     <Box>
@@ -222,7 +215,7 @@ console.log('Estado de editMode:', editMode);
             </Box>
             <Box mt={2} sx={{ display: 'flex' }}>
               <Grid container>
-              {(calificado === true) && (
+              { (nota !== '' ) && (
                 <>
                   <Grid item xs={8}>
                     <Typography variant="h6" component="div" gutterBottom>
@@ -234,7 +227,7 @@ console.log('Estado de editMode:', editMode);
                   </Grid>
                 </>
               )}
-              {(calificado === false && !editMode && comAlumno) && (
+              {((nota === '' ) && !editMode && comAlumno) && (
                   <Grid item xs={8}>
                     <Typography variant="h6" component="div" gutterBottom>
                       Aun no se ha calificado.

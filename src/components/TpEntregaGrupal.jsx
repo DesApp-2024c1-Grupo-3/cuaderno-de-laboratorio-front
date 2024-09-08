@@ -273,58 +273,14 @@ const TpEntrega = () => {
                   </Typography>
                 </Grid>
               </Grid> 
-            ) : (
-              comProfe ? (
-                <Grid container justifyContent="space-between" marginTop="20px">
-                  <Grid item>
-                <Button
-                  variant="contained"
-                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={() => history.goBack()}
-                >
-                  Volver
-                </Button>
-                </Grid>
-                <Grid item>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={handleClickOpen}
-                >
-                  Eliminar entrega
-                </Button>
-                </Grid>
-                <Dialog
-                  open={open}
-                  onClose={handleClose}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
-                >
-                <DialogTitle id="alert-dialog-title">{"Confirmar Eliminación"}</DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    ¿Está seguro que desea eliminar esta entrega? Esta acción no se puede deshacer.
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose} color="primary">
-                    Cancelar
-                  </Button>
-                  <Button onClick={handleConfirmDelete} color="primary" autoFocus>
-                    Confirmar
-                  </Button>
-              </DialogActions>
-              </Dialog>
-              </Grid>
-              ) : ('')
-            )}  
+            ) : ('')}  
             </Box>
           </Container>
         </CardContent>
-        <Box display="flex"  p={2}>
+        <Box p={2}>
         {comProfe.calificacion ? ( 
               <>
-              <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+              <Grid item>
                 <Button
                   onClick={() => history.goBack()}
                   variant="contained"
@@ -337,8 +293,9 @@ const TpEntrega = () => {
             </> 
             ) : (
               comProfe ? (
+                
                 <Grid container justifyContent="space-between" marginTop="20px">
-                  <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                <Grid item xs={12} sm={6}>
                 <Button
                   variant="contained"
                   sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
@@ -347,7 +304,7 @@ const TpEntrega = () => {
                   Volver
                 </Button>
                 </Grid>
-                <Grid item>
+                <Grid item xs={12} sm={6} container justifyContent="flex-end">
                 <Button
                   variant="contained"
                   color="error"
@@ -378,6 +335,7 @@ const TpEntrega = () => {
               </DialogActions>
               </Dialog>
               </Grid>
+              
               ) : ('')
             )}
             <Grid container 

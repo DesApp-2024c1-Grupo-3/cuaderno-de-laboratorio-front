@@ -19,7 +19,6 @@ const TpEntrega = () => {
   const [archivo, setArchivo] = useState('');
   const [hasError, setHasError] = useState(false);
   const [open, setOpen] = useState(false);//LOGICA PARA WARNING ELIMINACION
-  const [calificado, setCalificado] = useState(null);
   const [editMode, setEditMode] = useState(false);
 
 
@@ -45,12 +44,10 @@ const TpEntrega = () => {
       try {
         const califData = await getComAlumnIndByCalifId(idEntregaAlumno, tpId);
         setComentarioAlum(califData || '');
-        setCalificado(califData?.calificado);
    
       } catch (error) {
         if (error.response && error.response.status === 404 || error.response.status === 500) {
           setComentarioAlum('');
-          setCalificado(false);
         }
       }
     }
@@ -99,12 +96,10 @@ const TpEntrega = () => {
     const calificacionData = {
       devolucionProf: comentario,
       calificacion: parseFloat(nota),
-      calificado: true,
     };
     try {
       await updateCalificacion(comAlumno._id, calificacionData);
       setEditMode(false);
-      setCalificado(true);
       alert('Calificación guardada con éxito');
       history.goBack();
     } catch (err) {
@@ -236,7 +231,7 @@ const TpEntrega = () => {
             </Box>
             <Box mt={2} sx={{ display: 'flex' }}>
             <Grid container>
-              {(calificado === true) && (
+              {(nota !== '') && (
                 <>
                   <Grid item xs={8}>
                     <Typography variant="h6" component="div" gutterBottom>
@@ -248,7 +243,7 @@ const TpEntrega = () => {
                   </Grid>
                 </>
               )}
-              {(calificado === false && !editMode && comAlumno) && (
+              {((nota === '') && !editMode && comAlumno) && (
                   <Grid item xs={8}>
                     <Typography variant="h6" component="div" gutterBottom>
                       Aun no se ha calificado.

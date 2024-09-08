@@ -260,10 +260,10 @@ const TpEntrega = () => {
             </Box>
           </Container>
         </CardContent>
-        <Box display="flex"  p={2}>
+        <Box p={2}>
         {comProfe.calificacion ? ( 
               <>
-              <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+              <Grid item>
                 <Button
                   onClick={() => history.goBack()}
                   variant="contained"
@@ -277,7 +277,7 @@ const TpEntrega = () => {
             ) : (
               comProfe ? (
                 <Grid container justifyContent="space-between" marginTop="20px">
-                  <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                  <Grid item xs={12} sm={6}>
                 <Button
                   variant="contained"
                   sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
