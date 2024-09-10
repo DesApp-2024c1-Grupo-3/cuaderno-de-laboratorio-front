@@ -89,10 +89,11 @@ const AlumnoTps = () => {
                 <TableHead>
                   <TableRow>
                     <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '4%' }}>Nombre del TP</TableCell>
-                    <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '7%' }}>Estado</TableCell>
-                    <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '5.5%' }}>Finalización</TableCell>
-                    <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '8%' }}>Nota</TableCell>
-                    <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '7%' }}>Entrega</TableCell>
+                    <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '7%' }}>Tipo</TableCell>
+                    <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '6%' }}>Estado</TableCell>
+                    <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '4.5%' }}>Finalización</TableCell>
+                    <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '7%' }}>Nota</TableCell>
+                    <TableCell style={{  width: '20%', fontSize: '18px', paddingLeft: '2.5%' }}>Entrega</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -103,6 +104,7 @@ const AlumnoTps = () => {
                       sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                     >
                       <TableCell align="center">{tp.nombre }</TableCell>
+                      <TableCell align="center">{tp.grupal === false ? 'Individual':'Grupal'}</TableCell>
                       <TableCell align="center">{estadoTp(tp._id) || 'Desconocido'}</TableCell>
                       <TableCell align="center">{formatFecha(tp.fechaFin)}</TableCell>
                       <TableCell align="center">{getCalificacion(tp._id) !== 'No asignada' ? 

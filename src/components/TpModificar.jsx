@@ -235,9 +235,9 @@ const TpModificar = () => {
                                                 label="Estado del TP"
                                             >
                                                 <MenuItem value="Futuro">Futuro</MenuItem>
-                                                <MenuItem value="En proceso">En proceso</MenuItem>
+                                                <MenuItem value="En marcha">En marcha</MenuItem>
                                                 <MenuItem value="En evaluación">En evaluación</MenuItem>
-                                                <MenuItem value="Entregado">Entregado</MenuItem>
+                                                <MenuItem value="Cerrado">Cerrado</MenuItem>
                                             </Select>
                                         </FormControl>
                                     </Grid>

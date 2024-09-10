@@ -17,6 +17,7 @@ const TpEntrega = () => {
   const [grupo, setGrupo] = useState([]);
   const [tp, setTp] = useState(null);
   const [alumnos, setAlumnos] = useState([])
+  const [entrego, setEntrego] = useState(null);
   const [nota, setNota] = useState('');
   const [comProfe, setComentarioProfe] = useState('');
   const [comentario, setComentario] = useState('');
@@ -46,6 +47,12 @@ const TpEntrega = () => {
               
               console.log(califData)
               console.log( califData.calificacion)
+
+              // Asignar el alumno que hizo la entrega
+              const alumnoEntregador = grupoEncontrado.alumnos.find(alumno => alumno._id === califData.alumnoId);
+              setEntrego(alumnoEntregador); // Guardar el alumno en el estado
+          
+              console.log("Alumno que hizo la entrega:", alumnoEntregador); // Verificar los datos del alumno
              
             } catch (error) {
               if (error.response && error.response.status === 404 || error.response.status === 500) {
@@ -90,6 +97,7 @@ const TpEntrega = () => {
       formData.append('grupoId', grupo._id);
 
       await crearCalificacion(formData);
+
       alert('Entrega realizada con éxito');
       history.goBack();
     } catch (err) {
@@ -221,9 +229,15 @@ const TpEntrega = () => {
               </Table>
             </TableContainer>
             <Box mt={2}>
-              <Typography variant="h6" component="div" gutterBottom>
-                {!comProfe ? 'Un solo integrante del grupo puede hacer la entrega': 'Trabajo practico entregado'}
-              </Typography>
+            <Typography variant="h6" component="div" gutterBottom>
+              {!comProfe 
+                ? 'Un solo integrante del grupo puede hacer la entrega' 
+                : entrego 
+                  ? `Trabajo práctico entregado por ${entrego.apellido}, ${entrego.nombre}` 
+                  : 'Trabajo práctico entregado'
+              }
+            </Typography>
+
                {!comProfe &&( <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
                   Subir archivos
                   <input type="file" hidden multiple onChange={handleArchivoChange} />

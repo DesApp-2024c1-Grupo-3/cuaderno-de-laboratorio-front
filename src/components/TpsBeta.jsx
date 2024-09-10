@@ -88,10 +88,11 @@ export default function Tps() {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)'}} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '5.5%' }}>Nombre del TP</TableCell>
-                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '8.3%' }}>Estado</TableCell>
-                    <TableCell style={{ width: '30%', fontSize: '18px', paddingLeft: '9%' }}>Finalización</TableCell>
-                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '13.5%' }}>Detalles</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '5%' }}>Nombre del TP</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '7.7%' }}>Tipo</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '6.8%' }}>Estado</TableCell>
+                    <TableCell style={{ width: '30%', fontSize: '18px', paddingLeft: '5.8%' }}>Finalización</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '8%' }}>Detalles</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -102,6 +103,7 @@ export default function Tps() {
                       
                     >
                       <TableCell align="center">{tp.nombre}</TableCell>
+                      <TableCell align="center">{tp.grupal === false ? 'Individual':'Grupal'}</TableCell>
                       <TableCell align="center">{tp.estado || 'Desconocido'}</TableCell>
                       <TableCell align="center">{formatFecha(tp.fechaFin)}</TableCell>
                       <TableCell align="center">

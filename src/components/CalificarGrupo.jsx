@@ -6,6 +6,7 @@ import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
 import { Header } from './General/HeaderProf';
 import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
 import { getTpId } from '../services/tps';
+import { getAlumnoById } from '../services/Alumnos';
 import { getComAlumnByCalifId, updateCalificacion, postEliminarCalificacion} from '../services/Calificacion';
 
 const TpEntrega = () => {
@@ -15,6 +16,7 @@ const TpEntrega = () => {
   const [nota, setNota] = useState('');
   const [comentario, setComentario] = useState('');
   const [comAlumno, setComentarioAlumno] = useState(null);
+  const [entrego, setEntrego] = useState(null);
   const [archivo, setArchivo] = useState(null);
   const [hasError, setHasError] = useState(false);
   const [open, setOpen] = useState(false);
@@ -32,7 +34,7 @@ const TpEntrega = () => {
         if (tpId) {
           const tpData = await getTpId(tpId);
           setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
-  
+          
         } else {
           console.error('tpId es undefined');
           setHasError(true);
@@ -41,7 +43,10 @@ const TpEntrega = () => {
           const califData = await getComAlumnByCalifId(idEntregaGrupal, tpId);
           setComentarioAlumno(califData );
           setNota(califData?.calificacion);
-         
+
+          const alumnoEntregador = await getAlumnoById(califData.alumnoId);
+          setEntrego(alumnoEntregador);
+        
         } catch (error) {
           if (error.response && error.response.status === 404 || error.response.status === 500) {
             setComentarioAlumno('');
@@ -190,7 +195,7 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                {comAlumno ? 'Documento entregado' : 'Documento no entregado. El trabajo practico no fue entregado'}
+                {comAlumno && entrego ? `Trabajo práctico entregado por ${entrego.apellido}, ${entrego.nombre}` : 'Documento no entregado. El trabajo practico no fue entregado'}
               </Typography>
               {comAlumno && (
                 <>
@@ -215,25 +220,32 @@ const TpEntrega = () => {
             </Box>
             <Box mt={2} sx={{ display: 'flex' }}>
               <Grid container>
-              { (nota !== '' ) && (
-                <>
-                  <Grid item xs={8}>
-                    <Typography variant="h6" component="div" gutterBottom>
-                      Nota: {comAlumno.calificacion}
-                      <Typography variant="h6" component="div" gutterBottom>
-                      Devolución: {comAlumno.devolucionProf}
-                    </Typography>
-                    </Typography>
-                  </Grid>
-                </>
-              )}
-              {((nota === '' ) && !editMode && comAlumno) && (
-                  <Grid item xs={8}>
+                {comAlumno ? (
+                  (comAlumno.calificacion || comAlumno.devolucionProf) ? (
+                    <>
+                      {comAlumno.calificacion && (
+                        <Grid item xs={8}>
+                          <Typography variant="h6" component="div" gutterBottom>
+                            Nota: {comAlumno.calificacion}
+                          </Typography>
+                        </Grid>
+                      )}
+                      {comAlumno.devolucionProf && (
+                        <Grid item xs={8}>  
+                          <Typography variant="h6" component="div" gutterBottom>
+                            Devolución: {comAlumno.devolucionProf}
+                          </Typography>
+                        </Grid>
+                      )}
+                      </>
+                  ) : (
                     <Typography variant="h6" component="div" gutterBottom>
                       Aun no se ha calificado.
                     </Typography>
-                  </Grid>
-              )}
+                  )
+                ) : ('')}              
+
+
               {(editMode) && (
                 <Grid container spacing={2} alignItems="center">
                 <Grid item xs={12}>  
