@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { SubHeader } from './General/SubHeader';
 import { NavLink, useParams, useHistory } from 'react-router-dom';
-import { getCursosByAlumnoId } from '../services/Alumnos';
+import { getCursosByAlumnoIdWithAgreggate } from '../services/Alumnos';
 import { Header} from './General/HeaderAlum';
 
 
@@ -13,14 +13,15 @@ const AlumnoCursos = () => {
 
   const { alumnoId } = useParams();
   const [dato, setDato] = useState([]);
-  
+
   const history = useHistory();
 
   useEffect(() => {
     const fetchCurso = async () => {
       try {
-        const response = await getCursosByAlumnoId(alumnoId);
-        setDato(response || []);
+        const response = await getCursosByAlumnoIdWithAgreggate(alumnoId);
+        setDato( response );
+        
         console.log(response)
       } catch (error) {
         console.error('Error al obtener los cursos:', error);
@@ -30,7 +31,7 @@ const AlumnoCursos = () => {
       fetchCurso();
     }
   }, [alumnoId]);
-
+  
   return (
     <Box display="flex" flexDirection="column">
       <Header />
@@ -49,7 +50,7 @@ const AlumnoCursos = () => {
             }}
           >
             <Typography variant="h6" component="div" gutterBottom>
-              {dato.nombre}
+              Prrobando por donde sale
             </Typography>
             <div style={{ marginTop: '20px' }}></div>{/*SALTO DE LINEA*/}
             <TableContainer component={Paper}>
@@ -67,7 +68,7 @@ const AlumnoCursos = () => {
                       key={curso._id}
                       sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                     >
-                      <TableCell align="center">{curso.materia.nombre}</TableCell>
+                      <TableCell align="center">{curso.materia}</TableCell>
                       <TableCell align="center">{curso.comision}</TableCell>
                       <TableCell align="center">
                         <Button
@@ -79,7 +80,7 @@ const AlumnoCursos = () => {
                             borderRadius: '5%',
                             '&:hover': { backgroundColor: '#b0d38a' }
                           }}
-                          onClick={() => history.push(`/tpsAlumno/${curso._id}/${alumnoId}`)}
+                          onClick={() => history.push(`/tpsAlumno/${curso.cursoId}/${alumnoId}`)}
                         >
                           Ir al Curso
                         </Button>
