@@ -115,3 +115,25 @@ export async function updateTp(tpId, body) {
     // Manejo de errores según sea necesario
   }
 }
+export async function cerrarTp(tpId) {
+  try {
+    // Crear el cuerpo de la solicitud con el nuevo estado
+    const body = { estado: 'Cerrado' };
+
+    // Enviar la solicitud al backend para actualizar el estado del TP
+    const response = await putJsonToApi(`tp/${tpId}`, body);
+
+    // Verificar el estado de la respuesta
+    if (response.status === 200) {
+      // Actualización exitosa
+      console.log('Trabajo práctico cerrado exitosamente');
+    } else {
+      console.error('Error al cerrar trabajo práctico');
+      // Manejo de errores según sea necesario
+    }
+    return response;
+  } catch (error) {
+    console.error('Error en la solicitud:', error);
+    // Manejo de errores según sea necesario
+  }
+}
