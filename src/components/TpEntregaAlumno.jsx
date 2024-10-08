@@ -62,7 +62,7 @@ const TpEntrega = () => {
   const handleNotaChange = (e) => setNota(e.target.value);
   const handleComentarioChange = (e) => setComentario(e.target.value);
   const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
-
+  console.log('Archivos:', archivos); // Depuración
   const handleSave = async () => {
     try {
       const formData = new FormData();
@@ -70,18 +70,24 @@ const TpEntrega = () => {
       archivos.forEach((archivo, index) => {
         formData.append('file', archivo);
       });
+      formData.forEach((value, key) => {
+        console.log(key, value);
+      });
       formData.append('comentarioAlum', comentario);
       formData.append('tpId', tpId);
       formData.append('alumnoId', alumnoId);
-      
+
 
       await crearCalificacion(formData);
       alert('Entrega realizada con éxito');
+      
+      console.log('formData:', formData); // Depuración
       history.goBack();
     } catch (err) {
       console.error('Error al guardar', err);
     }
   };
+  
   const deleteCalificacion = async (id) => {
     try {
       await postEliminarCalificacion(id);

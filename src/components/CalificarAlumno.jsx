@@ -44,6 +44,35 @@ const TpEntrega = () => {
       try {
         const califData = await getComAlumnIndByCalifId(idEntregaAlumno, tpId);
         setComentarioAlum(califData || '');
+        if (califData.file && califData.file.length > 0) {
+          const archivos = califData.file.map((file, index) => {
+              
+            if (file && file.data) {
+              // Convertimos el array de bytes a Uint8Array
+              const byteArray = new Uint8Array(file.data);
+              // Creamos el Blob
+              const blob = new Blob([byteArray], { type: califData.fileType[index] });
+              
+              // Generamos la URL del Blob
+              const url = URL.createObjectURL(blob);
+          
+              // Si no hay nombre en `fileName`, generamos un nombre por defecto
+              const nombreArchivo = califData.fileName ? califData.fileName[index] : `archivo_${index + 1}.pdf`;
+          
+              // Devolvemos el archivo con su URL y nombre
+              return {
+                url: url,
+                nombre: nombreArchivo,  // Nombre del archivo
+              };
+            }
+          
+            return null;
+          }).filter(item => item !== null);  // Filtramos los elementos nulos
+          
+          // Actualizamos el estado con los archivos procesados
+          setArchivo(archivos);
+                 
+        }
    
       } catch (error) {
         if (error.response && error.response.status === 404 || error.response.status === 500) {
@@ -111,7 +140,7 @@ const TpEntrega = () => {
     setEditMode(true);
   };
   
-  const handleDownload = () => {
+  const handleDownload = (archivo) => {
     const link = document.createElement('a');
     link.href = archivo.url;
     link.download = archivo.nombre;
@@ -208,24 +237,31 @@ const TpEntrega = () => {
               <Typography variant="h6" component="div" gutterBottom>
                 {comAlumno ? 'Documento entregado' : 'Documento no entregado. El trabajo practico no fue entregado'}
               </Typography>
+              {archivo && archivo.length > 0 && (
+                <>
+                 
+                  {archivo.map((archivo, index) => (
+                    <a key={index} href={archivo.url} download={archivo.nombre}>
+                      Descargar {archivo.nombre}
+                      <br/>
+                    </a>
+                     
+                  ))}
+                
+                </>
+              )}
+
               {comAlumno && (
                 <>
+                   
                   <Typography variant="h6">
                     Comentario:
                     <Typography marginLeft={2} variant="h6">
                       {comAlumno.comentarioAlum}
                     </Typography>
                   </Typography>
-                  <br/>
-                  {archivo && (
-                    <Button variant="contained" onClick={handleDownload} sx={{
-                      backgroundColor: '#c5e1a5',
-                      color: '#000000',
-                      '&:hover': { backgroundColor: '#b0d38a' }
-                    }}>
-                      Descargar {archivo.nombre}
-                    </Button>
-                  )}
+                         
+                 
                 </>
               )}
             </Box>
