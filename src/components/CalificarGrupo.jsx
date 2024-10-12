@@ -42,6 +42,35 @@ const TpEntrega = () => {
         try {
           const califData = await getComAlumnByCalifId(idEntregaGrupal, tpId);
           setComentarioAlumno(califData );
+          if (califData.file && califData.file.length > 0) {
+            const archivos = califData.file.map((file, index) => {
+                
+              if (file && file.data) {
+                // Convertimos el array de bytes a Uint8Array
+                const byteArray = new Uint8Array(file.data);
+                // Creamos el Blob
+                const blob = new Blob([byteArray], { type: califData.fileType[index] });
+                
+                // Generamos la URL del Blob
+                const url = URL.createObjectURL(blob);
+            
+                // Si no hay nombre en `fileName`, generamos un nombre por defecto
+                const nombreArchivo = califData.fileName[index]|| `archivo_${index + 1}.pdf`
+            
+                // Devolvemos el archivo con su URL y nombre
+                return {
+                  url: url,
+                  nombre: nombreArchivo,  // Nombre del archivo
+                };
+              }
+            
+              return null;
+            }).filter(item => item !== null);  // Filtramos los elementos nulos
+            
+            // Actualizamos el estado con los archivos procesados
+            setArchivo(archivos);
+                   
+          }
           setNota(califData?.calificacion);
 
           const alumnoEntregador = await getAlumnoById(califData.alumnoId);
@@ -87,15 +116,6 @@ const TpEntrega = () => {
   
   const handleEdit = () => {
     setEditMode(true);
-  };
-
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = archivo.url;
-    link.download = archivo.nombre;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   const deleteCalificacion = async (id) => {
@@ -194,9 +214,28 @@ const TpEntrega = () => {
               </Table>
             </TableContainer>
             <Box mt={2}>
-              <Typography variant="h6" component="div" gutterBottom>
-                {comAlumno && entrego ? `Trabajo práctico entregado por ${entrego.apellido}, ${entrego.nombre}` : 'Documento no entregado. El trabajo practico no fue entregado'}
+            <Typography variant="h6" component="div" gutterBottom>
+                {archivo && archivo.length > 0  ? (
+                  <>
+                    Documento entregado: <span style={{ color: 'blue'}}>Descargar</span>
+                  </>
+                ) : (
+                  'Documento no entregado. El trabajo práctico no fue entregado'
+                )}
               </Typography>
+              {archivo && archivo.length > 0 && (
+                <>
+                  {archivo.map((archivo, index) => (
+                    <a key={index} href={archivo.url} download={archivo.nombre}>
+                       <br/>
+                       {archivo.nombre}
+                       <br/>
+                    </a>
+                    
+                  ))}
+                </>
+              )}
+              <br/>
               {comAlumno && (
                 <>
                   <Typography variant="h6">
@@ -206,15 +245,6 @@ const TpEntrega = () => {
                     </Typography>
                   </Typography>
                   <br/>
-                  {archivo && (
-                    <Button variant="contained" onClick={handleDownload} sx={{
-                      backgroundColor: '#c5e1a5',
-                      color: '#000000',
-                      '&:hover': { backgroundColor: '#b0d38a' }
-                    }}>
-                      Descargar {archivo.nombre}
-                    </Button>
-                  )}
                 </>
               )}
             </Box>

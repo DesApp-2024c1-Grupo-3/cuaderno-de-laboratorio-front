@@ -23,7 +23,7 @@ const TpEntrega = () => {
 
 
   const history = useHistory();
- 
+  
   useEffect(() => {
     async function fetchTp() {
       try {
@@ -44,6 +44,7 @@ const TpEntrega = () => {
       try {
         const califData = await getComAlumnIndByCalifId(idEntregaAlumno, tpId);
         setComentarioAlum(califData || '');
+       
         if (califData.file && califData.file.length > 0) {
           const archivos = califData.file.map((file, index) => {
               
@@ -57,7 +58,7 @@ const TpEntrega = () => {
               const url = URL.createObjectURL(blob);
           
               // Si no hay nombre en `fileName`, generamos un nombre por defecto
-              const nombreArchivo = califData.fileName ? califData.fileName[index] : `archivo_${index + 1}.pdf`;
+              const nombreArchivo = califData.fileName[index]|| `archivo_${index + 1}.pdf`
           
               // Devolvemos el archivo con su URL y nombre
               return {
@@ -83,7 +84,7 @@ const TpEntrega = () => {
    
     fetchTp();
   }, [idEntregaAlumno, profesorId, tpId]);
-
+  
   const SubHeader = ({ titulo, nombreTP }) => {
     return (
       <Grid container justifyContent="center" alignItems="center" >
@@ -140,14 +141,6 @@ const TpEntrega = () => {
     setEditMode(true);
   };
   
-  const handleDownload = (archivo) => {
-    const link = document.createElement('a');
-    link.href = archivo.url;
-    link.download = archivo.nombre;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
   const formatFecha = (fecha) => {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(fecha).toLocaleDateString('es-ES', options);
@@ -235,22 +228,27 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                {comAlumno ? 'Documento entregado' : 'Documento no entregado. El trabajo practico no fue entregado'}
+                {archivo && archivo.length > 0  ? (
+                  <>
+                    Documento entregado: <span style={{ color: 'blue'}}>Descargar</span>
+                  </>
+                ) : (
+                  'Documento no entregado. El trabajo práctico no fue entregado'
+                )}
               </Typography>
               {archivo && archivo.length > 0 && (
                 <>
-                 
                   {archivo.map((archivo, index) => (
                     <a key={index} href={archivo.url} download={archivo.nombre}>
-                      Descargar {archivo.nombre}
-                      <br/>
+                       <br/>
+                       {archivo.nombre}
+                       <br/>
                     </a>
-                     
+                    
                   ))}
-                
                 </>
               )}
-
+              <br/>
               {comAlumno && (
                 <>
                    
@@ -260,8 +258,6 @@ const TpEntrega = () => {
                       {comAlumno.comentarioAlum}
                     </Typography>
                   </Typography>
-                         
-                 
                 </>
               )}
             </Box>

@@ -38,16 +38,13 @@ const TpEntrega = () => {
           const grupoEncontrado = grupos.find(grupo => 
             grupo.alumnos.some(alumno => alumno._id === alumnoId)
           );
-          console.log("grupo encontrado",grupoEncontrado)
+        
           if (grupoEncontrado) {
             try {
               const califData = await getComAlumnByCalifId(grupoEncontrado._id, tpId);
               setComentarioProfe(califData );
               setNota(califData.calificacion);
               
-              console.log(califData)
-              console.log( califData.calificacion)
-
               // Asignar el alumno que hizo la entrega
               const alumnoEntregador = grupoEncontrado.alumnos.find(alumno => alumno._id === califData.alumnoId);
               setEntrego(alumnoEntregador); // Guardar el alumno en el estado
