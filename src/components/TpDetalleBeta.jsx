@@ -51,17 +51,6 @@ const TpDetalle = () => {
     }
     fetchTp();
   }, [idCurso, profesorId, tpId]);
-  const estadoTp = (calif, tp) => {
-
-    if (calif && !(calif === "No asignada")) {
-      return 'En evaluación';
-    } else if (tp.fechaFin && tp.fechaInicio) {
-      return 'En marcha';
-    } else if (tp.nombre && tp.consigna) {
-      return 'Futuro';
-    }
-
-  }
 
   const getCalificacion = (id, tipo) => {
     // Asegúrate de que calificaciones esté definido y sea un array antes de buscar
@@ -220,7 +209,7 @@ const TpDetalle = () => {
                         sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                       >
                         <TableCell align="center">{grupo.nombre}</TableCell>
-                        <TableCell align="center">{estadoTp(getCalificacion(grupo._id, 'grupo'), tp)}</TableCell>
+                        <TableCell align="center">{tp.estado}</TableCell>
                         <TableCell align="center">{getCalificacion(grupo._id, 'grupo') !== 'No asignada' ?
                           `${getCalificacion(grupo._id, 'grupo')} / 10` : 'No asignada'}</TableCell>
                         <TableCell align="center">
@@ -248,7 +237,7 @@ const TpDetalle = () => {
                         sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                       >
                         <TableCell align="center">{alumno.nombre} {alumno.apellido}</TableCell>
-                        <TableCell align="center">{estadoTp(getCalificacion(alumno._id, 'alumno'), tp)}</TableCell>
+                        <TableCell align="center">{tp.estado}</TableCell>
                         <TableCell align="center">{getCalificacion(alumno._id, 'alumno') !== 'No asignada' ?
                           `${getCalificacion(alumno._id, 'alumno')} / 10` : 'No asignada'}</TableCell>
                         <TableCell align="center">

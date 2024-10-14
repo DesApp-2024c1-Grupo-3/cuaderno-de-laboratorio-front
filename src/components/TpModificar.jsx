@@ -223,7 +223,7 @@ const TpModificar = () => {
                                         />
 
                                     </Grid>
-                                    {/* Proximamente cambiar estado Entregado por Cerrado */}
+                                    {/* Proximamente cambiar estado Entregado por Cerrado 
                                     <Grid item xs={12}>
                                         <FormControl fullWidth margin="normal">
                                             <InputLabel id="estado-tp-label">Estado del TP</InputLabel>
@@ -240,7 +240,7 @@ const TpModificar = () => {
                                                 <MenuItem value="Cerrado">Cerrado</MenuItem>
                                             </Select>
                                         </FormControl>
-                                    </Grid>
+                                    </Grid>*/}
 
                                     <Grid item xs={5}>
                                         <FormControl margin="normal" fullWidth>
