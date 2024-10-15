@@ -1,11 +1,11 @@
 {
   "realm": "cuaderno-de-lab",
-  "auth-server-url": "http://0.0.0.0:8085/",
+  "auth-server-url": "http://localhost:8085/",
   "ssl-required": "external",
   "resource": "cuaderno-de-lab",
   "verify-token-audience": true,
   "credentials": {
-    "secret": "lnecpW0m8MLFxKGCmwr4rS9hsN5mfa14"
+    "secret": "rQJG1aOUW4uaifvO3CqfDY74ZBPAXAik"
   },
   "use-resource-role-mappings": true,
   "confidential-port": 0,

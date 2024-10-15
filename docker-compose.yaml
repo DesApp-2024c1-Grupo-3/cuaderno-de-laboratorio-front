@@ -29,3 +29,4 @@ services:
 
 volumes:
   postgres_data:  # Declaración de volumen para persistencia
+  #Queda en este mismo scope el realm.json para importar en el servidor

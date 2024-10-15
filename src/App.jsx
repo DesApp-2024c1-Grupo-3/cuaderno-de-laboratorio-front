@@ -1,7 +1,7 @@
-import { Container } from '@mui/material'; // Importa Container desde @mui/material;
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import React from 'react';
+import { useKeycloak } from '@react-keycloak/web';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import LogIn from './components/LogIn';
-import { Footer } from './components/General/Footer';
 
 //---------------------------Componentes Profesor---------------------------------------
 import ComisionBeta from './components/ComisionBeta';
@@ -10,52 +10,72 @@ import CrearTpsBeta from './components/CrearTpsBeta';
 import AdministrarGrupos from './components/Profesores/AdmGrupoBeta';
 import TpDetalleBeta from './components/TpDetalleBeta';
 import TpModificar from './components/TpModificar';
-
-
 import CalificarGrupo from './components/CalificarGrupo';
 import CalificarAlumno from './components/CalificarAlumno';
+
 //---------------------------Componentes Alumno---------------------------------------
-import MostrarTpsAlumno from './components/MostrarTpsAlumno'
+import MostrarTpsAlumno from './components/MostrarTpsAlumno';
 import CursoAlumno from './components/CursoAlumno';
 import TpEntregaGrupal from './components/TpEntregaGrupal';
 import TpEntregaAlumno from './components/TpEntregaAlumno';
 
+// Componente para rutas protegidas
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  const { keycloak } = useKeycloak();
+
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        keycloak?.authenticated ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/" /> // Redirigir a la página de inicio de sesión si no está autenticado
+        )
+      }
+    />
+  );
+};
 
 const App = () => {
+  const { keycloak, initialized } = useKeycloak();
+
+  // Mostrar un mensaje de carga mientras se inicializa Keycloak
+  if (!initialized) {
+    return <div>Loading...</div>;
+  }
+
+  // Si el usuario no está autenticado, muestra el componente de inicio de sesión
+  if (!keycloak.authenticated) {
+    return <LogIn />;
+  }
+
   return (
     <Router>
-      <Container sx={{ // Utiliza sx prop para estilos en línea
-        marginTop: '0px',
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-      }}>
-        {/* Utiliza sx prop para estilos en línea <Header />*/}
-        <div sx={{ flex: '1' }}> {/* Utiliza sx prop para estilos en línea */}
-          <Switch>
+      <div>
+        <Switch>
+          {/* Rutas protegidas para el profesor */}
+          <ProtectedRoute path="/comision/actual/:profesorId" component={ComisionBeta} />
+          <ProtectedRoute path="/tps/:idCurso/:profesorId" component={TpsBeta} />
+          <ProtectedRoute path="/crearTps/:idCurso/:profesorId" component={CrearTpsBeta} />
+          <ProtectedRoute path="/Administrar_Grupos/:idCurso/:profesorId" component={AdministrarGrupos} />
+          <ProtectedRoute path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />
+          <ProtectedRoute path="/calificarGrupo/:idEntregaGrupal/:profesorId/:tpId" component={CalificarGrupo} />
+          <ProtectedRoute path="/calificarAlumno/:idEntregaAlumno/:profesorId/:tpId" component={CalificarAlumno} />
+          <ProtectedRoute path="/modificarTP/:idCurso/:profesorId/:tpId" component={TpModificar} />
 
-            <Route path="/comision/actual/:profesorId" component={ComisionBeta} />
-            <Route path="/tps/:idCurso/:profesorId" component={TpsBeta} />
-            <Route path="/crearTps/:idCurso/:profesorId" component={CrearTpsBeta} />
-            <Route path="/Administrar_Grupos/:idCurso/:profesorId" component={AdministrarGrupos} />
-            <Route path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />
-            <Route path="/calificarGrupo/:idEntregaGrupal/:profesorId/:tpId" component={CalificarGrupo} />
-            <Route path="/calificarAlumno/:idEntregaAlumno/:profesorId/:tpId" component={CalificarAlumno} />
-            <Route path="/modificarTP/:idCurso/:profesorId/:tpId" component={TpModificar} />
+          {/* Rutas protegidas para el alumno */}
+          <ProtectedRoute path="/alumno/curso/:alumnoId" component={CursoAlumno} />
+          <ProtectedRoute path="/tpsAlumno/:idCurso/:alumnoId" component={MostrarTpsAlumno} />
+          <ProtectedRoute path="/entregaGrupo/:alumnoId/:tpId" component={TpEntregaGrupal} />
+          <ProtectedRoute path="/entregaAlumno/:alumnoId/:tpId" component={TpEntregaAlumno} />
 
-
-            <Route path="/alumno/curso/:alumnoId" component={CursoAlumno} />
-            <Route path="/tpsAlumno/:idCurso/:alumnoId" component={MostrarTpsAlumno} />
-            <Route path="/entregaGrupo/:alumnoId/:tpId" component={TpEntregaGrupal} />
-            <Route path="/entregaAlumno/:alumnoId/:tpId" component={TpEntregaAlumno} />
-
-            <Route path="/" component={LogIn} />
-
-          </Switch>
-        </div>
-
-        <Footer />
-      </Container>
+          {/* Ruta por defecto para manejar no encontradas */}
+          <Route path="*">
+            <div>Página no encontrada</div>
+          </Route>
+        </Switch>
+      </div>
     </Router>
   );
 };

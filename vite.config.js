@@ -6,5 +6,13 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    proxy: {
+      '/realms': {
+        target: 'http://localhost:8085',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/realms/, '/realms'),
+      },
+    },
   },
 });

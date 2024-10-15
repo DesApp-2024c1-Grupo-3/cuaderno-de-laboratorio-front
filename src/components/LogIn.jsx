@@ -25,7 +25,9 @@ const LogIn = () => {
       setError(null); // Reset error
 
       const profesores = await getTodosLosProfesoresJson();
+      console.log('Profesores:', profesores);
       const alumnos = await getTodosLosAlumnosJson();
+      console.log('Alumnos:', alumnos);
 
       const profesor = profesores.find(prof => prof.dni === parseInt(dni));
         if (profesor) {
