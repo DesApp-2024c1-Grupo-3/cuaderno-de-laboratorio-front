@@ -16,15 +16,21 @@ const AlumnoTps = () => {
   const [calificaciones, setCalificaciones] = useState([]);
   const history = useHistory();
 
+
   useEffect(() => {
     async function fetchData() {
       try {
         const tpsData = await getTpsByCursoId(idCurso);
         const tpsDato = await getCursoById(idCurso);
         setDato(tpsDato);
-        setData(tpsData);
-        const califData = await getCalificaciones(alumnoId)
-        setCalificaciones(califData)
+
+        // Filtrar los TPs que no estén en estado "Futuro"
+        const tpsFiltered = tpsData.filter(tp => tp.estado !== 'Futuro');
+
+        setData(tpsFiltered);
+
+        const califData = await getCalificaciones(alumnoId);
+        setCalificaciones(califData);
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -32,6 +38,8 @@ const AlumnoTps = () => {
     }
     fetchData();
   }, [idCurso, alumnoId]);
+
+
 
   const getCalificacion = (idTp) => {
     // Asegúrate de que calificaciones esté definido y sea un array antes de buscar
