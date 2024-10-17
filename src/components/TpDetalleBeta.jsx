@@ -27,7 +27,7 @@ const TpDetalle = () => {
       try {
         if (tpId) {
           const tpData = await getTpPorId(idCurso, tpId);
-          //console.log(tpData);
+          console.log("Fecha",tpData.fechaFin);
           setTp(tpData);
           const cursoData = await getCursoPorId(idCurso);
           setCurso(cursoData);
@@ -77,9 +77,10 @@ const TpDetalle = () => {
       </Grid>
     );
   };
-  const formatFecha = (fecha) => {
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    return new Date(fecha).toLocaleDateString('es-ES', options);
+  
+  const formatFecha = (fechaHora) => {
+    const fecha = fechaHora.split('T')[0];
+    return fecha;
   };
 
   const handleCerrarTP = async () => {
@@ -113,11 +114,6 @@ const TpDetalle = () => {
     }
   }
   //const isTPClosed = tp.estado === 'Cerrado';
-
-
-
-
-
   const tpRendering = () => (
     <Box>
       <Header />

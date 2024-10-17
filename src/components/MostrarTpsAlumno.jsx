@@ -21,6 +21,8 @@ const AlumnoTps = () => {
       try {
         const tpsData = await getTpsByCursoId(idCurso);
         const tpsDato = await getCursoById(idCurso);
+        console.log("tpsDatos:", tpsDato)
+        console.log("tpsData:", tpsData)
         setDato(tpsDato);
         setData(tpsData);
         const califData = await getCalificaciones(alumnoId)
