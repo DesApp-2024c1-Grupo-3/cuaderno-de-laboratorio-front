@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { useParams, useHistory } from 'react-router-dom';
 import { getCalificaciones } from '../services/Calificacion';
-import { getCursoById, getTpsByCursoId } from '../services/tps';
+import { getCursoById, getTpsByCursoId, getGruposByTpId } from '../services/tps';
 import { Header } from './General/HeaderAlum';
 
 const AlumnoTps = () => {
@@ -19,14 +19,55 @@ const AlumnoTps = () => {
   useEffect(() => {
     async function fetchData() {
       try {
+        // Obtener los TPs y el curso
         const tpsData = await getTpsByCursoId(idCurso);
         const tpsDato = await getCursoById(idCurso);
         console.log("tpsDatos:", tpsDato)
         console.log("tpsData:", tpsData)
         setDato(tpsDato);
-        setData(tpsData);
-        const califData = await getCalificaciones(alumnoId)
-        setCalificaciones(califData)
+
+        // Filtrar los TPs que no estén en estado "Futuro"
+        const tpsFiltered = tpsData.filter(tp => tp.estado !== 'Futuro');
+        let tpsParaMostrar = [];
+        // Recorrer los TPs filtrados
+        // Crear una lista de promesas para los TPs
+        const promesas = tpsFiltered.map(async (tp) => {
+          try {
+            // Obtener los grupos para cada TP filtrado
+            const grupos = await getGruposByTpId(tp._id);
+
+            if (!tp.grupal) {
+              // Si el TP es individual, agregarlo directamente a la lista
+              tpsParaMostrar.push(tp);
+
+            } else {
+              // Si el TP es grupal, verificar si el alumno está en algún grupo
+              const grupoEncontrado = grupos.find(grupo =>
+                grupo.alumnos.some(alumno => alumno._id === alumnoId)
+              );
+
+              if (grupoEncontrado) {
+                tpsParaMostrar.push(tp); // Agregar el TP a la lista
+
+              }
+            }
+          } catch (error) {
+            console.error("Error al obtener los grupos para el TP", tp._id, error);
+          }
+        });
+
+        // Esperar a que todas las promesas se resuelvan
+        Promise.all(promesas).then(() => {
+          // Actualizar el estado con los TPs filtrados
+          setData(tpsParaMostrar);
+
+        });
+
+
+
+        // Obtener calificaciones
+        const califData = await getCalificaciones(alumnoId);
+        setCalificaciones(califData);
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -34,6 +75,8 @@ const AlumnoTps = () => {
     }
     fetchData();
   }, [idCurso, alumnoId]);
+
+
 
   const getCalificacion = (idTp) => {
     // Asegúrate de que calificaciones esté definido y sea un array antes de buscar
