@@ -1,6 +1,7 @@
 import React from 'react';
 import { useKeycloak } from '@react-keycloak/web';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'; // Asegúrate de importar Router
+import { Footer } from './components/General/Footer';
 import LogIn from './components/LogIn';
 
 //---------------------------Componentes Profesor---------------------------------------
@@ -84,6 +85,7 @@ const App = () => {
             <div>Página no encontrada</div>
           </Route>
         </Switch>
+        <Footer />
       </Router>
     </div>
   );
