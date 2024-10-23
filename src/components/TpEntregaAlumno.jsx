@@ -126,7 +126,6 @@ const TpEntrega = () => {
       <Header />
       <Card sx={{ mb:2}}>
         <CardContent>
-          
           <div>
             <SubHeader titulo="Título:" nombreTP={titulo} />
             {/* Verifica si tp existe antes de mostrar la consigna y la fecha de fin */}

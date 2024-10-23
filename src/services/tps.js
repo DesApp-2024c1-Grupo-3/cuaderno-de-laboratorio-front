@@ -1,10 +1,17 @@
 import {
+  postMultipartToApi,
   getJsonFromApi,
   postJsonToApi,
   deleteFromApi,
   putJsonToApi,
 } from './utils';
-
+export async function crearTpMultipart(profesorId, idCurso, body) {
+  const apiResponse = await postMultipartToApi(
+    `tpNuevo/profesor/${profesorId}/curso/${idCurso}`,
+    body
+  );
+  return apiResponse;
+}
 export async function getTodosLosTps() {
   const apiResponse = await getJsonFromApi('usuarios');
   return apiResponse.data;
