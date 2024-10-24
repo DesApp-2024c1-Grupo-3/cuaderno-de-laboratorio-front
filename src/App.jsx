@@ -9,7 +9,7 @@ import ComisionBeta from './components/ComisionBeta';
 import TpsBeta from './components/TpsBeta';
 import CrearTpsBeta from './components/CrearTpsBeta';
 import AdministrarGrupos from './components/Profesores/AdmGrupoBeta';
-import TpDetalleBeta from './components/TpDetalleBeta';
+import TpDetalleBeta from './components/TpdetalleMarcos';
 import TpModificar from './components/TpModificar';
 import CalificarGrupo from './components/CalificarGrupo';
 import CalificarAlumno from './components/CalificarAlumno';
@@ -85,7 +85,7 @@ const App = () => {
             <div>Página no encontrada</div>
           </Route>
         </Switch>
-        <Footer />
+        <Footer/>
       </Router>
     </div>
   );

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-
 import {
   Card, Paper, Typography, TableRow, TableHead, TableContainer, TableCell,
   TableBody, Table, Grid, Box, Button, Container, CardContent
@@ -22,12 +21,12 @@ const TpDetalle = () => {
   const history = useHistory();
   // Verifica si el TP está cerrado
   const isTPClosed = tp && tp.estado === 'Cerrado';
+
   useEffect(() => {
     async function fetchTp() {
       try {
         if (tpId) {
           const tpData = await getTpPorId(idCurso, tpId);
-          //console.log(tpData);
           setTp(tpData);
           const cursoData = await getCursoPorId(idCurso);
           setCurso(cursoData);
@@ -35,6 +34,7 @@ const TpDetalle = () => {
           setAlumnos(alumnos);
           const calificacionesData = await getCalificacionesByTpId(tpId);
           setCalificaciones(calificacionesData);
+          console.log('Datos de calificaciones', calificacionesData);
           if (tpData.grupal) {
             // Suponiendo que tienes un servicio para obtener los grupos por TP
             const gruposData = await getGruposByTpId(tpId);
@@ -43,7 +43,6 @@ const TpDetalle = () => {
         } else {
           console.error('tpId es undefined');
           setHasError(true);
-          setCalificado(null);
         }
       } catch (err) {
         setHasError(true);
@@ -51,23 +50,35 @@ const TpDetalle = () => {
     }
     fetchTp();
   }, [idCurso, profesorId, tpId]);
- 
 
   const getCalificacion = (id, tipo) => {
-    // Asegúrate de que calificaciones esté definido y sea un array antes de buscar
+    // Asegúrate de que calificaciones es un array válido
     if (!calificaciones || !Array.isArray(calificaciones)) {
-      return 'No asignada';  // o un valor por defecto adecuado
+      return 'No asignada';
     }
-
-    // Busca la calificación basada en el tipo (alumno o grupo)
+  
+    // Intentamos encontrar la calificación
     const calificacion = calificaciones.find(c =>
       tipo === 'alumno' ? c.alumnoId === id : c.grupoId === id
-    );
+    )??"" ;
+    // Si existe una calificación válida que no es 'No asignada'
+    
+    if (calificacion && calificacion.calificacion) {
+        return` ${calificacion.calificacion} / 10`;
+      }
 
-    // Retorna la calificación si se encuentra, o un mensaje por defecto
-    return calificacion ? calificacion.calificacion : 'No asignada';
+    // Si el estado es 'En marcha' o 'En evaluación' y no hay calificación (o entrega)
+    console.log('tp.estado ',calificacion );
+    if (!calificacion && (tp.estado === 'En marcha' || tp.estado === 'En evaluacion')) {
+      return 'No entregado';
+    }
+  
+    
+  
+    // En cualquier otro caso
+    return 'No asignada';
   };
-
+  
   const SubHeader = ({ titulo, nombreTP }) => {
     return (
       <Grid container justifyContent="center" alignItems="center" >
@@ -78,10 +89,11 @@ const TpDetalle = () => {
       </Grid>
     );
   };
-  const formatFecha = (fecha) => {
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    return new Date(fecha).toLocaleDateString('es-ES', options);
+  const formatFecha = (fechaHora) => {
+    const [year, month, day] = fechaHora.split('T')[0].split('-');
+    return `${day}/${month}/${year}`;
   };
+  
 
   const handleCerrarTP = async () => {
     if (isTPClosed) {
@@ -113,12 +125,7 @@ const TpDetalle = () => {
       alert('Hubo un error al intentar cerrar el TP.');
     }
   }
-  //const isTPClosed = tp.estado === 'Cerrado';
-
-
-
-
-
+  
   const tpRendering = () => (
     <Box>
       <Header />
@@ -197,7 +204,7 @@ const TpDetalle = () => {
                         <Typography sx={{ fontWeight: 'bold' }}>Nombre de alumno</Typography>
                       )}</TableCell>
                     <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '9.5%' }}>Estado</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '9.5%' }}>Nota</TableCell>
+                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '10.5%' }}>Nota</TableCell>
                     <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '9.2%' }}>Entrega</TableCell>
                   </TableRow>
                 </TableHead>
@@ -211,8 +218,7 @@ const TpDetalle = () => {
                       >
                         <TableCell align="center">{grupo.nombre}</TableCell>
                         <TableCell align="center">{tp.estado}</TableCell>
-                        <TableCell align="center">{getCalificacion(grupo._id, 'grupo') !== 'No asignada' ?
-                          `${getCalificacion(grupo._id, 'grupo')} / 10` : 'No asignada'}</TableCell>
+                        <TableCell align="center">{getCalificacion(grupo._id, 'grupo')}</TableCell>
                         <TableCell align="center">
                           <Button
                             variant="contained"
@@ -239,8 +245,7 @@ const TpDetalle = () => {
                       >
                         <TableCell align="center">{alumno.nombre} {alumno.apellido}</TableCell>
                         <TableCell align="center">{tp.estado}</TableCell>
-                        <TableCell align="center">{getCalificacion(alumno._id, 'alumno') !== 'No asignada' ?
-                          `${getCalificacion(alumno._id, 'alumno')} / 10` : 'No asignada'}</TableCell>
+                        <TableCell align="center">{getCalificacion(alumno._id, 'alumno')}</TableCell>
                         <TableCell align="center">
                           <Button
                             variant="contained"
