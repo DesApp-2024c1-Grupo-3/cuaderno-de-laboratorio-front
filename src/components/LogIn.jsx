@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Card, CardContent, Container, TextField, Typography, Box } from '@mui/material';
-import { NavLink} from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { getTodosLosProfesoresJson } from '../services/Profesor';
 import { getTodosLosAlumnosJson } from '../services/Alumnos';
-import { Nav } from 'react-bootstrap';
 import { Header } from './General/Header';
+import { useKeycloak } from '@react-keycloak/web';
 
 const LogIn = () => {
+
+  const history = useHistory();
+  const { keycloak } = useKeycloak();
+  
   const [dni, setDni] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -19,36 +23,69 @@ const LogIn = () => {
     setPassword(e.target.value);
   };
 
-  // logica para buscar dni entre profesor y alumno
+  // Lógica para buscar DNI entre profesor y alumno
   const handleLogin = async () => {
     try {
       setError(null); // Reset error
 
+      // Llamadas a las funciones para obtener la lista de profesores y alumnos
       const profesores = await getTodosLosProfesoresJson();
+    
       const alumnos = await getTodosLosAlumnosJson();
+    
 
       const profesor = profesores.find(prof => prof.dni === parseInt(dni));
-        if (profesor) {
-          console.log("entro en profe");
-          //navegate(`/comision/actual/${profesor._id}`); // NO SE POR QUE NO ANDA ESTE
-          window.location.href = `/comision/actual/${profesor._id}`;
+      if (profesor) {
+    
+        window.location.href = `/comision/actual/${profesor._id}`;
         return;
-        }
+      }
 
       const alumno = alumnos.find(alumn => alumn.dni === parseInt(dni));
-        if(alumno) {
-          console.log("entro en alumno");
-          //navegate(`/alumno/curso/${alumno._id}`); // NO SE POR QUE NO ANDA ESTE
-          window.location.href = `/alumno/curso/${alumno._id}`;
+      if (alumno) {
+        console.log("Usuario alumno encontrado");
+        window.location.href = `/alumno/curso/${alumno._id}`;
         return;
+      }
+
+      window.alert('Usuario no encontrado');
+    } catch (error) {
+      console.error('Error al buscar el usuario', error);
+      window.alert("Ocurrió un error al intentar ingresar. Por favor, intenta nuevamente.");
+    }
+  };
+
+  // Efecto para manejar la autenticación con Keycloak
+  useEffect(() => {
+    const handleKeycloakLogin = async () => {
+      if (keycloak.authenticated) {
+        // Obtener el DNI del token de Keycloak 
+        const userDni = keycloak.tokenParsed?.preferred_username;
+
+        // Llamadas para obtener profesores y alumnos
+        const profesores = await getTodosLosProfesoresJson();
+        const alumnos = await getTodosLosAlumnosJson();
+
+        const profesor = profesores.find(prof => prof.dni === parseInt(userDni));
+        if (profesor) {
+          history.push(`/comision/actual/${profesor._id}`);
+          return;
         }
 
-       window.alert('Usuario no encontrado');
-     } catch (error) {
-       console.error('Error al buscar el usuario', error);
-       window.alert("Ocurrió un error al intentar ingresar. Por favor, intenta nuevamente.");
+        const alumno = alumnos.find(alumn => alumn.dni === parseInt(userDni));
+        if (alumno) {
+          history.push(`/alumno/curso/${alumno._id}`);
+          return;
+        }
+
+        window.alert('Usuario no encontrado');
+      } else {
+        keycloak.login(); // Redirige a la página de inicio de sesión de Keycloak
       }
-  };
+    };
+
+    handleKeycloakLogin();
+  }, [keycloak, history]);
 
   return (
     <Card>
@@ -82,7 +119,7 @@ const LogIn = () => {
               onClick={handleLogin}
               variant="contained"
               fullWidth
-              sx={{ mb:3.5, backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
+              sx={{ mb: 3.5, backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
             >
               Ingresar
             </Button>
@@ -100,6 +137,6 @@ const LogIn = () => {
       </CardContent>
     </Card>
   );
-}
+};
 
 export default LogIn;
