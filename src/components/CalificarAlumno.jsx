@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {  useHistory, useParams } from 'react-router-dom';
-import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
+import { Card, CardContent, Button, Typography, TextField, Container, Box, MenuItem, Grid,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle  
  } from '@mui/material';
 import { getAlumnoById } from '../services/Alumnos';
@@ -116,8 +116,10 @@ const TpEntrega = () => {
 
   const handleNotaChange = (e) => {
     const value = e.target.value;
+    // Permite tanto números como 'No entregado'
     if (value === '' || (Number(value) >= 1 && Number(value) <= 10)) {
-      setNota(value);}
+      setNota(value);
+    }
   };
 
   const handleComentarioChange = (e) => setComentario(e.target.value);
@@ -141,10 +143,11 @@ const TpEntrega = () => {
     setEditMode(true);
   };
   
-  const formatFecha = (fecha) => {
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    return new Date(fecha).toLocaleDateString('es-ES', options);
+  const formatFecha = (fechaHora) => {
+    const [year, month, day] = fechaHora.split('T')[0].split('-');
+    return `${day}/${month}/${year}`;
   };
+  
   const titulo = tp ? `${tp.nombre}` : 'Cargando...';
   
   const tpRendering = () => (
@@ -160,7 +163,7 @@ const TpEntrega = () => {
                 <Grid container alignItems="center">
                   <Grid item xs={3}>
                     <Typography variant="body1" color="textSecondary">
-                      Descripción:
+                      Consigna:
                     </Typography>
                   </Grid>
                   <Grid item xs={9}>
@@ -173,18 +176,23 @@ const TpEntrega = () => {
                     </Typography>
                   </Grid>
                 </Grid>
-                <Grid container alignItems="center">
-                  <Grid item xs={3}>
-                    <Typography variant="body1" color="textSecondary">
-                      Fecha de fin:
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <Typography variant="body2" component="div">
-                      {tp.fechaFin ? formatFecha(tp.fechaFin) : ''}
-                    </Typography>
-                  </Grid>
-                </Grid>
+                <Grid container spacing={2} alignItems="center">
+            <Grid item xs={3}>
+              <Typography variant="body1" color="textSecondary">
+                Fechas:
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body2" component="div">
+                Inicio: {formatFecha(tp.fechaInicio)}
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body2" component="div">
+                Fin: {formatFecha(tp.fechaFin)}
+              </Typography>
+            </Grid>
+          </Grid>
               </>
             )}
           </div>
@@ -263,38 +271,48 @@ const TpEntrega = () => {
             </Box>
             <Box mt={2} sx={{ display: 'flex' }}>
             <Grid container>
-              {(nota !== '') && (
-                <>
-                  <Grid item xs={8}>
-                    <Typography variant="h6" component="div" gutterBottom>
-                      Nota: {comAlumno.calificacion}
-                      <Typography variant="h6" component="div" gutterBottom>
-                      Devolución: {comAlumno.devolucionProf}
-                    </Typography>
-                    </Typography>
-                  </Grid>
-                </>
-              )}
-              {((nota === '') && !editMode && comAlumno) && (
-                  <Grid item xs={8}>
+            {comAlumno ? (
+                  (comAlumno.calificacion || comAlumno.devolucionProf) ? (
+                    <>
+                      {comAlumno.calificacion && (
+                        <Grid item xs={8}>
+                          <Typography variant="h6" component="div" gutterBottom>
+                            Nota: {comAlumno.calificacion}
+                          </Typography>
+                        </Grid>
+                      )}
+                      {comAlumno.devolucionProf && (
+                        <Grid item xs={8}>  
+                          <Typography variant="h6" component="div" gutterBottom>
+                            Devolución: {comAlumno.devolucionProf}
+                          </Typography>
+                        </Grid>
+                      )}
+                      </>
+                  ) : (
                     <Typography variant="h6" component="div" gutterBottom>
                       Aun no se ha calificado.
                     </Typography>
-                  </Grid>
-              )}
+                  )
+                ) : ('')}
               {(editMode) && (
                 <Grid container spacing={2} alignItems="center">
                 <Grid item xs={12}>  
-                  <TextField
+                <TextField
+                    select
                     label="Nota"
                     value={nota}
                     onChange={handleNotaChange}
                     variant="outlined"
-                    fullWidth="true"
+                    fullWidth
                     margin="normal"
-                    inputProps={{ type: 'number', min: 1, max: 10 }}
-                    autoComplete='off'
-                  />
+                  >
+                    {[...Array(10)].map((_, i) => (
+                      <MenuItem key={i + 1} value={i + 1}>
+                        {i + 1}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                   <TextField
                     label="Comentario"
                     value={comentario}

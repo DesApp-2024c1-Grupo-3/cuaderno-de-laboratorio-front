@@ -50,7 +50,7 @@ const TpEntrega = () => {
               setEntrego(alumnoEntregador); // Guardar el alumno en el estado
           
               console.log("Alumno que hizo la entrega:", alumnoEntregador); // Verificar los datos del alumno
-             
+              
             } catch (error) {
               if (error.response && error.response.status === 404 || error.response.status === 500) {
                 setComentarioProfe('');
@@ -67,7 +67,7 @@ const TpEntrega = () => {
         if (tpId) {
           const tpData = await getTpId(tpId);
           setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
-
+          console.log(tpData.tp.estado);
         } else {
           console.error('tpId es undefined');
           setHasError(true);
@@ -104,7 +104,7 @@ const TpEntrega = () => {
   const deleteCalificacion = async (id) => {
     try {
       await postEliminarCalificacion(id);
-      alert(' eliminada con éxito');
+      alert('Entrega eliminada con éxito');
       history.goBack();
       } catch (error) {
       console.error('Error al eliminar la calificaion del alumno:', error);
@@ -122,12 +122,11 @@ const TpEntrega = () => {
     window.location.reload();
   };
 
-  const formatFecha = (fecha) => {
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    const date = new Date(fecha);
-    date.setDate(date.getDate() + 1); // Añade un día
-    return date.toLocaleDateString('es-ES', options);
+  const formatFecha = (fechaHora) => {
+    const [year, month, day] = fechaHora.split('T')[0].split('-');
+    return `${day}/${month}/${year}`;
   };
+  
   const titulo = tp ? `${tp.nombre}` : 'Cargando...';
 
   const SubHeader = ({ titulo, nombreTP }) => {
@@ -140,6 +139,8 @@ const TpEntrega = () => {
       </Grid>
     );
   };
+  
+  //console.log(tp.estado);
   
   const entregaRendering = () => (
     <Box>
@@ -168,18 +169,23 @@ const TpEntrega = () => {
                   </Grid>
                 </Grid>
 
-                <Grid container alignItems="center">
-                  <Grid item xs={3}>
-                    <Typography variant="body1" color="textSecondary">
-                      Fecha de fin:
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <Typography variant="body2" component="div">
-                      {tp.fechaFin ? formatFecha(tp.fechaFin) : ''}
-                    </Typography>
-                  </Grid>
-                </Grid>
+                <Grid container spacing={2} alignItems="center">
+            <Grid item xs={3}>
+              <Typography variant="body1" color="textSecondary">
+                Fechas:
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body2" component="div">
+                Inicio: {formatFecha(tp.fechaInicio)}
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body2" component="div">
+                Fin: {formatFecha(tp.fechaFin)}
+              </Typography>
+            </Grid>
+          </Grid>
               </>
             )}
           </div>
@@ -235,7 +241,7 @@ const TpEntrega = () => {
               }
             </Typography>
 
-               {!comProfe &&( <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
+               {!comProfe && ( <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
                   Subir archivos
                   <input type="file" hidden multiple onChange={handleArchivoChange} />
                 </Button>)}

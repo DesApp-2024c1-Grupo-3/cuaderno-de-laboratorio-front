@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
+import { Card, CardContent, Button, Typography, TextField, Container, Box, MenuItem, Grid,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle  
  } from '@mui/material';
 import { Header } from './General/HeaderProf';
@@ -71,7 +71,12 @@ const TpEntrega = () => {
             setArchivo(archivos);
                    
           }
-          setNota(califData?.calificacion);
+          //setNota(califData?.calificacion);
+          if (tp?.estado === 'En evaluacion' && (!califData || !califData.calificacion)) {
+            setNota('No entregado');
+          } else {
+            setNota(califData?.calificacion || 'No asignada');
+          }
 
           const alumnoEntregador = await getAlumnoById(califData.alumnoId);
           setEntrego(alumnoEntregador);
@@ -87,20 +92,23 @@ const TpEntrega = () => {
     }
     fetchTp();
   }, [idEntregaGrupal, tpId]);
+  
 
   const handleNotaChange = (e) => {
     const value = e.target.value;
+    // Permite tanto números como 'No entregado'
     if (value === '' || (Number(value) >= 1 && Number(value) <= 10)) {
       setNota(value);
     }
   };
+  
   
   const handleComentarioChange = (e) => setComentario(e.target.value);
   
   const handleSave = async () => {
     const calificacionData = {
       devolucionProf: comentario,
-      calificacion: parseFloat(nota),
+      calificacion: nota === 'No entregado' ? 'No entregado' : parseFloat(nota),
     };
     try {
       await updateCalificacion(comAlumno._id, calificacionData);
@@ -136,10 +144,11 @@ const TpEntrega = () => {
     setOpen(false);
   };
 
-  const formatFecha = (fecha) => {
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    return new Date(fecha).toLocaleDateString('es-ES', options);
+  const formatFecha = (fechaHora) => {
+    const [year, month, day] = fechaHora.split('T')[0].split('-');
+    return `${day}/${month}/${year}`;
   };
+  
 
   const SubHeader = ({ titulo, nombreTP }) => (
     <Grid container justifyContent="center" alignItems="center">
@@ -161,7 +170,7 @@ const TpEntrega = () => {
               <Grid container alignItems="center">
                 <Grid item xs={3}>
                   <Typography variant="body1" color="textSecondary">
-                    Descripción:
+                    Consigna:
                   </Typography>
                 </Grid>
                 <Grid item xs={9}>
@@ -175,18 +184,23 @@ const TpEntrega = () => {
                 </Grid>
               </Grid>
 
-              <Grid container alignItems="center">
-                <Grid item xs={3}>
-                  <Typography variant="body1" color="textSecondary">
-                    Fecha de fin:
-                  </Typography>
-                </Grid>
-                <Grid item xs={9}>
-                  <Typography variant="body2" component="div">
-                    {tp.fechaFin ? formatFecha(tp.fechaFin) : ''}
-                  </Typography>
-                </Grid>
-              </Grid>
+              <Grid container spacing={2} alignItems="center">
+            <Grid item xs={3}>
+              <Typography variant="body1" color="textSecondary">
+                Fechas:
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body2" component="div">
+                Inicio: {formatFecha(tp.fechaInicio)}
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body2" component="div">
+                Fin: {formatFecha(tp.fechaFin)}
+              </Typography>
+            </Grid>
+          </Grid>
             </>
           )}
           <Container maxWidth="xl" sx={{ mt: 1, mb: 1, border: 'solid', borderWidth: '20px', borderColor: 'rgba(0, 0, 0, 0.08)', borderRadius: '1%' }}>
@@ -215,12 +229,12 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
             <Typography variant="h6" component="div" gutterBottom>
-                {archivo && archivo.length > 0  ? (
+                {comAlumno && entrego ? `Trabajo práctico entregado por ${entrego.apellido}, ${entrego.nombre}` : 'Documento no entregado. El trabajo practico no fue entregado'}
+                <br/>
+                {archivo && archivo.length > 0  && (
                   <>
                     Documento entregado: <span style={{ color: 'blue'}}>Descargar</span>
                   </>
-                ) : (
-                  'Documento no entregado. El trabajo práctico no fue entregado'
                 )}
               </Typography>
               {archivo && archivo.length > 0 && (
@@ -279,16 +293,21 @@ const TpEntrega = () => {
               {(editMode) && (
                 <Grid container spacing={2} alignItems="center">
                 <Grid item xs={12}>  
-                  <TextField
+                <TextField
+                    select
                     label="Nota"
                     value={nota}
                     onChange={handleNotaChange}
                     variant="outlined"
-                    fullWidth="true"
+                    fullWidth
                     margin="normal"
-                    inputProps={{ type: 'number', min: 1, max: 10 }}
-                    autoComplete='off'
-                  />
+                  >
+                    {[...Array(10)].map((_, i) => (
+                      <MenuItem key={i + 1} value={i + 1}>
+                        {i + 1}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                   <TextField
                     label="Comentario"
                     value={comentario}
@@ -323,7 +342,7 @@ const TpEntrega = () => {
               )}    
           <Box display="flex" justifyContent="space-between" p={2}>
             <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              {comAlumno && !editMode && (
+              {comAlumno && !editMode &&  (
                 <>
                   <Grid item>
                     <Button

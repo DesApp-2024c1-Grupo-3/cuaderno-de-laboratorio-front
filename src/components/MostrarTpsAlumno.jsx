@@ -48,9 +48,7 @@ const AlumnoTps = () => {
       return 'No asignada';  // o un valor por defecto adecuado
     }
     const calificacion = calificaciones.find(c => c.tpId === idTp);
-    if (calificacion && calificacion.calificacion) {
-      return 'Cerrado';
-    } else if (calificacion && !calificacion.calificacion) {
+    if (calificacion && !calificacion.calificacion) {
       return 'En evaluación';
     } else {
       return 'En marcha';
@@ -104,7 +102,7 @@ const AlumnoTps = () => {
                     >
                       <TableCell align="center">{tp.nombre}</TableCell>
                       <TableCell align="center">{tp.grupal === false ? 'Individual' : 'Grupal'}</TableCell>
-                      <TableCell align="center">{estadoTp(tp._id) || 'Desconocido'}</TableCell>
+                      <TableCell align="center">{tp.estado !== 'Cerrado' ? estadoTp(tp._id) : 'Cerrado'}</TableCell>
                       <TableCell align="center">{formatFecha(tp.fechaFin)}</TableCell>
                       <TableCell align="center">{getCalificacion(tp._id) !== 'No asignada' ?
                         `${getCalificacion(tp._id)} / 10` : 'No asignada'}</TableCell>
@@ -122,7 +120,7 @@ const AlumnoTps = () => {
                             }}
                             onClick={() => history.push(`/entregaAlumno/${alumnoId}/${tp._id}`)}
                           >
-                            {(estadoTp(tp._id) === 'En evaluación') || (estadoTp(tp._id) === 'Cerrado') ? 'Ver' : 'Agregar'}
+                            {(estadoTp(tp._id) === 'En evaluación') || (tp.estado === 'Cerrado') ? 'Ver' : 'Agregar'}
                           </Button>
                         ) : (
                           <Button
@@ -136,7 +134,7 @@ const AlumnoTps = () => {
                             }}
                             onClick={() => history.push(`/entregaGrupo/${alumnoId}/${tp._id}`)}
                           >
-                            {(estadoTp(tp._id) === 'En evaluación') || (estadoTp(tp._id) === 'Cerrado') ? 'Ver' : 'Agregar'}
+                            {(estadoTp(tp._id) === 'En evaluación') || (tp.estado === 'Cerrado') ? 'Ver' : 'Agregar'}
                           </Button>
                         )
                         }

@@ -50,7 +50,7 @@ const AlumnoCursos = () => {
             }}
           >
             <Typography variant="h6" component="div" gutterBottom>
-              Prrobando por donde sale
+              Materia - Curso
             </Typography>
             <div style={{ marginTop: '20px' }}></div>{/*SALTO DE LINEA*/}
             <TableContainer component={Paper}>
