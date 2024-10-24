@@ -5,7 +5,7 @@ import { Button, Card, CardContent, Container, FormControl, FormLabel, RadioGrou
 } from '@mui/material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { getCursoById, crearTp as postCrearTp } from '../services/tps';
+import { getCursoById, crearTp as postCrearTp, crearTpMultipart } from '../services/tps';
 import ListaDeGrupos from './Profesores/ListaDeGrupos';
 import { Header} from './General/HeaderProf';
 
@@ -13,6 +13,7 @@ const CrearTpsBeta = () => {
   const { idCurso, profesorId } = useParams();
   const [dato, setDato] = useState(null);
   const [show, setShow] = useState(false);
+  const [archivos, setArchivos] = useState([]);
   const [gruposParaTrabajo, setGruposParaTrabajo] = useState([]);
   const [tpData, setTpData] = useState({
     nombre: '',
@@ -35,11 +36,34 @@ const CrearTpsBeta = () => {
       setTpData((prev) => ({ ...prev, [name]: value }));
     }
   };
+  const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
+  console.log('Archivos:', archivos); // Depuración
+  const handleSave = async () => {
+    try {
+      const formData = new FormData();
+      
+      archivos.forEach((archivo, index) => {
+        formData.append('file', archivo);
+      });
+      formData.append('nombre', tpData.nombre); // Nombre del TP
+      formData.append('fechaInicio', tpData.fechaInicio); // Fecha de inicio
+      formData.append('fechaFin', tpData.fechaFin); // Fecha de fin
+      formData.append('grupal', tpData.grupal); // Si es grupal
+      formData.append('grupos', JSON.stringify(tpData.grupo)); // Grupos seleccionados
+      formData.append('consigna', tpData.consigna); // Consigna del trabajo
 
+      await crearTpMultipart( profesorId, idCurso, formData);
+        window.alert('Trabajo práctico creado correctamente');
+        history.goBack();
+      
+    } catch (err) {
+      console.error('Error al guardar', err);
+    }
+  };
   const handleConsignaChange = (value) => {
     setTpData((prev) => ({ ...prev, consigna: value }));
   };
-
+  
   const validarDatos = () => {
     if (!tpData.nombre || !tpData.fechaInicio || !tpData.fechaFin) {
       window.alert('Completa todos los campos obligatorios: Nombre, Fecha Inicio, Fecha Fin');
@@ -183,6 +207,20 @@ const CrearTpsBeta = () => {
                     />
                   </Grid>
                   <Grid item xs={5}>
+
+                    <Typography variant="h6" component="div" gutterBottom>
+                      {archivos && ('Subir Trabajo practico')}
+                    </Typography>
+                    {archivos &&( <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
+                        Subir archivos
+                        <input type="file" hidden multiple onChange={handleArchivoChange} />
+                      </Button>)}
+                    {archivos && archivos.map((archivo, index) => (
+                      <Typography variant="body2" key={index}>{archivo.name}</Typography>
+                    ))}
+                                     
+                  </Grid>
+                  <Grid item xs={5}>
                     <FormControl margin="normal" fullWidth>
                       <FormLabel>Grupal</FormLabel>
                       <RadioGroup
@@ -227,7 +265,7 @@ const CrearTpsBeta = () => {
                   <Button
                     variant="contained"
                     sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
-                    onClick={crearTp}
+                    onClick={handleSave}
                     
                   >Grabar TP
                   </Button>

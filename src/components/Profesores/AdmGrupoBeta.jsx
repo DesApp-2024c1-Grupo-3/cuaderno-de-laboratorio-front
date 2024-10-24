@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {Box, Button, Card, CardContent, Container, Grid, IconButton, Table, TableBody, TableCell,
+import {
+  Box, Button, Card, CardContent, Container, Grid, IconButton, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Paper, Dialog, DialogTitle, DialogContent, DialogActions,
-  List, ListItem, ListItemText} from '@mui/material';
+  List, ListItem, ListItemText
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -58,7 +60,7 @@ const AdministrarGrupos = () => {
       console.error('Error al eliminar el grupo:', error);
     }
   };
- 
+
   const actualizarListaGrupos = async () => {
     try {
       const gruposActualizados = await getGrupoByCursoId(idCurso);
@@ -67,7 +69,7 @@ const AdministrarGrupos = () => {
       console.error('Error al actualizar la lista de grupos:', error);
     }
   };
- 
+
   useEffect(() => {
     async function fetchGrupos() {
       try {
@@ -102,10 +104,10 @@ const AdministrarGrupos = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '5%'}} >Nombre del Grupo</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '5%' }} >Nombre del Grupo</TableCell>
                     <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '10.5%' }} >Ver</TableCell>
                     <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '8%' }} >Modificar</TableCell>
-                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '10%'}} >Eliminar</TableCell>
+                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '10%' }} >Eliminar</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -118,12 +120,21 @@ const AdministrarGrupos = () => {
                         </IconButton>
                       </TableCell>
                       <TableCell align="center">
-                        <IconButton edge="start"  aria-label="edit" onClick={() => handleEditOpen(grupo)}>
+                        <IconButton edge="start" aria-label="edit" onClick={() => handleEditOpen(grupo)}>
                           <EditIcon />
                         </IconButton>
                       </TableCell>
                       <TableCell align="center">
-                        <IconButton edge="end" aria-label="delete" onClick={() => deleteGrup(grupo._id)}>
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          onClick={() => {
+                            const confirmDelete = window.confirm("¿Está seguro de que desea eliminar este grupo?");
+                            if (confirmDelete) {
+                              deleteGrup(grupo._id);
+                            }
+                          }}
+                        >
                           <DeleteIcon />
                         </IconButton>
                       </TableCell>
@@ -136,7 +147,7 @@ const AdministrarGrupos = () => {
             <ModalCrearGrupos
               show={show}
               closeModal={hideModal}
-              idCurso={idCurso}  
+              idCurso={idCurso}
             />
             <ModalModificarGrupo
               show={openEdit}
@@ -148,25 +159,25 @@ const AdministrarGrupos = () => {
           </Container>
         </CardContent>
         <Grid container p={2} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={() => history.goBack()}
-                >
-                  Volver
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={openModal}
-                >
-                  Crear Grupo
-                </Button>
-              </Grid>
-            </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+              onClick={() => history.goBack()}
+            >
+              Volver
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
+              onClick={openModal}
+            >
+              Crear Grupo
+            </Button>
+          </Grid>
+        </Grid>
       </Card>
 
       {/* Modal Ver */}

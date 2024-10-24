@@ -50,6 +50,7 @@ const TpModificar = () => {
     };
 
     const agregarGrupo = () => {
+        console.log('Grupos seleccionados:', gruposParaTrabajo); // Verifica que los grupos estén actualizados
         setTpData((prev) => ({ ...prev, grupo: gruposParaTrabajo }));
     };
 
@@ -59,6 +60,7 @@ const TpModificar = () => {
             return;
         }
         try {
+            console.log('Datos antes de actualizar:', tpData); // Verifica que tpData tiene los grupos correctos
             const response = await updateTp(tpId, tpData);
 
             if (response.status === 200) {
@@ -96,7 +98,7 @@ const TpModificar = () => {
             try {
                 const response = await getTpId(tpId);
                 const tp = response.tp; // Acceder al objeto tp dentro del response
-
+                console.log('Grupo traido del tp:', tp.grupos)    
                 setTpData({
                     nombre: tp?.nombre || '',
                     fechaInicio: tp?.fechaInicio ? tp.fechaInicio.split('T')[0] : '',
@@ -223,25 +225,7 @@ const TpModificar = () => {
                                         />
 
                                     </Grid>
-                                    {/* Proximamente cambiar estado Entregado por Cerrado 
-                                    <Grid item xs={12}>
-                                        <FormControl fullWidth margin="normal">
-                                            <InputLabel id="estado-tp-label">Estado del TP</InputLabel>
-                                            <Select
-                                                labelId="estado-tp-label"
-                                                name="estado"
-                                                value={tpData.estado}
-                                                onChange={handleChange}
-                                                label="Estado del TP"
-                                            >
-                                                <MenuItem value="Futuro">Futuro</MenuItem>
-                                                <MenuItem value="En marcha">En marcha</MenuItem>
-                                                <MenuItem value="En evaluación">En evaluación</MenuItem>
-                                                <MenuItem value="Cerrado">Cerrado</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Grid>*/}
-
+                                    
                                     <Grid item xs={5}>
                                         <FormControl margin="normal" fullWidth>
                                             <FormLabel>Grupal</FormLabel>

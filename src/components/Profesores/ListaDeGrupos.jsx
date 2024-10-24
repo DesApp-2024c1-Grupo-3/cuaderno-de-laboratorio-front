@@ -43,14 +43,10 @@ export default function ListaDeGrupos({
 
   useEffect(() => {
     async function fetchGrupos() {
-      console.log('show.', show);
       setGruposDeCurso([]);
-
       const getFunction = !show ? [] : getGrupoByCursoId(idCurso);
-
       try {
         const grupos = await getFunction;
-
         setGruposDeCurso(grupos);
       } catch (err) {
         console.log('Ocurrio este error.', err);
