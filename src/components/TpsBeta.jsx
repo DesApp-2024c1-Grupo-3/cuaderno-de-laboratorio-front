@@ -126,6 +126,7 @@ export default function Tps() {
                         </Button>
                       </TableCell>
                       <TableCell align="center">
+                        {tp.estado !== 'Cerrado' && (
                         <Button
                           variant="contained"
                           sx={{
@@ -140,7 +141,7 @@ export default function Tps() {
                         >
                           Modificar
                         </Button>
-                        
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}

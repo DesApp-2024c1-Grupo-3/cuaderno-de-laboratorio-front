@@ -88,17 +88,8 @@ const AlumnoTps = () => {
     // Retorna la calificación si se encuentra, o un mensaje por defecto
     return calificacion && calificacion.calificacion ? calificacion.calificacion : 'No asignada';
   };
-  const estadoTp = (idTp) => {
-    if (!calificaciones || !Array.isArray(calificaciones)) {
-      return 'No asignada';  // o un valor por defecto adecuado
-    }
-    const calificacion = calificaciones.find(c => c.tpId === idTp);
-    if (calificacion && !calificacion.calificacion) {
-      return 'En evaluación';
-    } else {
-      return 'En marcha';
-    }
-  }
+
+  
   const formatFecha = (fechaHora) => {
     const fecha = fechaHora.split('T')[0];
     return fecha;
@@ -147,9 +138,9 @@ const AlumnoTps = () => {
                     >
                       <TableCell align="center">{tp.nombre}</TableCell>
                       <TableCell align="center">{tp.grupal === false ? 'Individual' : 'Grupal'}</TableCell>
-                      <TableCell align="center">{tp.estado !== 'Cerrado' ? estadoTp(tp._id) : 'Cerrado'}</TableCell>
+                      <TableCell align="center">{tp.estado}</TableCell>
                       <TableCell align="center">{formatFecha(tp.fechaFin)}</TableCell>
-                      <TableCell align="center">{getCalificacion(tp._id) !== 'No asignada' ?
+                      <TableCell align="center">{getCalificacion(tp._id) !== 'No asignada' && tp.estado === 'Cerrado' ?
                         `${getCalificacion(tp._id)} / 10` : 'No asignada'}</TableCell>
 
                       <TableCell align="center">
@@ -165,7 +156,7 @@ const AlumnoTps = () => {
                             }}
                             onClick={() => history.push(`/entregaAlumno/${alumnoId}/${tp._id}`)}
                           >
-                            {(estadoTp(tp._id) === 'En evaluación') || (tp.estado === 'Cerrado') ? 'Ver' : 'Agregar'}
+                            {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') ? 'Ver' : 'Ver'}{/* ARREGLAR*/}
                           </Button>
                         ) : (
                           <Button
@@ -179,7 +170,7 @@ const AlumnoTps = () => {
                             }}
                             onClick={() => history.push(`/entregaGrupo/${alumnoId}/${tp._id}`)}
                           >
-                            {(estadoTp(tp._id) === 'En evaluación') || (tp.estado === 'Cerrado') ? 'Ver' : 'Agregar'}
+                            {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') ? 'Ver' : 'Ver'}{/* ARREGLAR*/}
                           </Button>
                         )
                         }

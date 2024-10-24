@@ -221,7 +221,7 @@ const TpModificar = () => {
                                             name="fechaFin"
                                             value={tpData.fechaFin}
                                             onChange={handleChange}
-                                            disabled={tpData.estado === 'Entregado'} // Deshabilitado si el estado es 'Cerrado'
+                                            disabled={tpData.estado === 'Cerrado'} // Deshabilitado si el estado es 'Cerrado'
                                         />
 
                                     </Grid>
