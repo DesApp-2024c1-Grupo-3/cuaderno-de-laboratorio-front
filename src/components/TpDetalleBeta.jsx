@@ -51,7 +51,6 @@ const TpDetalle = () => {
     }
     fetchTp();
   }, [idCurso, profesorId, tpId]);
- 
 
   const getCalificacion = (id, tipo) => {
     // Asegúrate de que calificaciones esté definido y sea un array antes de buscar
