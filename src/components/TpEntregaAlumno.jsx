@@ -323,7 +323,7 @@ const TpEntrega = () => {
               justifyContent="space-between"
               marginTop='20px'
             >
-            {!comProfe && (
+              {!comProfe && (
                   <>
                   <Grid item>
                   <Button
@@ -345,7 +345,7 @@ const TpEntrega = () => {
                 </Grid>
                 </>
                 )}
-                </Grid>
+          </Grid>
         </Box>
       </Card>      
     </Box>

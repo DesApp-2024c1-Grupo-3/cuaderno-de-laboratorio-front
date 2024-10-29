@@ -13,21 +13,27 @@ import { crearCalificacion,
 import { Header} from './General/HeaderAlum';
 
 const TpEntrega = () => {
+  const history = useHistory();
+
+ 
   const { alumnoId, tpId} = useParams();  
   const [grupo, setGrupo] = useState([]);
-  const [tp, setTp] = useState(null);
+  const [tp, setTp] = useState([]);
   const [alumnos, setAlumnos] = useState([])
   const [entrego, setEntrego] = useState(null);
   const [nota, setNota] = useState('');
   const [comProfe, setComentarioProfe] = useState('');
   const [comentario, setComentario] = useState('');
   const [archivos, setArchivos] = useState([]);
+  const [archivo, setArchivo] = useState(null);// descarga de archivos del buffer de subida del profesor
   const [hasError, setHasError] = useState(false);
   const [open, setOpen] = useState(false);//LOGICA PARA WARNING ELIMINACION
-
-  const history = useHistory();
-   console.log( tpId)
-
+  const handleBack = () => {
+    history.goBack()
+    //history.push('/tpsAlumno/:idCurso/:alumnoId');  // Cambia a la ruta que prefieras
+  };
+   
+  console.log("archivo", archivo); 
   useEffect(() => {
     async function fetchTp() {
       try {
@@ -38,24 +44,56 @@ const TpEntrega = () => {
           const grupoEncontrado = grupos.find(grupo => 
             grupo.alumnos.some(alumno => alumno._id === alumnoId)
           );
-        
+          
+
+          
           if (grupoEncontrado) {
+            //console.log("Alumno que hizo la entrega:", alumnoEntregador); // Verificar los datos del alumno
+            //console.log("tp.file",  tp.file ); 
+            if (tp.file && tp.file.length > 0) {
+              const archivos = tp.file.map((file, index) => {
+                //console.log("file:", file, file.data, archivos);  
+                if (file && file.data) {
+                  // Convertimos el array de bytes a Uint8Array
+                  const byteArray = new Uint8Array(file.data);
+                  // Creamos el Blob
+                  const blob = new Blob([byteArray], { type: tp.fileType[index] });
+                  
+                  // Generamos la URL del Blob
+                  const url = URL.createObjectURL(blob);
+              
+                  // Si no hay nombre en `fileName`, generamos un nombre por defecto
+                  const nombreArchivo = tp.fileName[index]|| `archivo_${index + 1}.pdf`
+              
+                  // Devolvemos el archivo con su URL y nombre
+                  return {
+                    url: url,
+                    nombre: nombreArchivo,  // Nombre del archivo
+                  };
+                }
+              
+                return null;
+              }).filter(item => item !== null);  // Filtramos los elementos nulos
+              
+              setArchivo(archivos);} 
             try {
               const califData = await getComAlumnByCalifId(grupoEncontrado._id, tpId);
               setComentarioProfe(califData );
               setNota(califData.calificacion);
+              console.log("CalifData", califData); 
               
               // Asignar el alumno que hizo la entrega
               const alumnoEntregador = grupoEncontrado.alumnos.find(alumno => alumno._id === califData.alumnoId);
               setEntrego(alumnoEntregador); // Guardar el alumno en el estado
-          
-              console.log("Alumno que hizo la entrega:", alumnoEntregador); // Verificar los datos del alumno
-             
+              
+        
+
             } catch (error) {
               if (error.response && error.response.status === 404 || error.response.status === 500) {
                 setComentarioProfe('');
               }
-            }          
+            }
+                      
             setGrupo(grupoEncontrado);
             const alumnosData= await getGrupoPorId(grupoEncontrado._id);
             setAlumnos(alumnosData);
@@ -78,7 +116,8 @@ const TpEntrega = () => {
     }
     fetchTp();
   }, [tpId, alumnoId]);
- 
+  console.log( tpId)
+  console.log("tp", tp.grupos ); 
   const handleComentarioChange = (e) => setComentario(e.target.value);
   const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
   const handleSave = async () => {
@@ -167,6 +206,26 @@ const TpEntrega = () => {
                     </Typography>
                   </Grid>
                 </Grid>
+                <Grid container alignItems="center">
+                  <Grid item xs={5}>
+                    <Typography variant="body1" color="textSecondary">
+                      Descarga TP :
+                    </Typography>
+                    {archivo && archivo.length > 0 && (
+                      <>
+                        {archivo.map((archivo, index) => (
+                          <a key={index} href={archivo.url} download={archivo.nombre}>
+                            <br/>
+                            {archivo.nombre}
+                            <br/>
+                          </a>
+                          
+                        ))}
+                      </>
+                    )}
+                    <br/> 
+                  </Grid>
+                </Grid>       
 
                 <Grid container alignItems="center">
                   <Grid item xs={3}>
@@ -225,6 +284,7 @@ const TpEntrega = () => {
                 </TableBody> 
               </Table>
             </TableContainer>
+            
             <Box mt={2}>
             <Typography variant="h6" component="div" gutterBottom>
               {!comProfe 
@@ -358,12 +418,12 @@ const TpEntrega = () => {
                   <>
                   <Grid item>
                   <Button
-                    variant="contained"
-                    sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                    onClick={() => history.goBack()}
-                  >
-                    Volver
-                  </Button>
+      onClick={handleBack}
+      variant="contained"
+      color="primary"
+    >
+      Volver
+    </Button>
                   </Grid>
                   <Grid item>
                   <Button

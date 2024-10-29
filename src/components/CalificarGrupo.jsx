@@ -222,7 +222,7 @@ const TpEntrega = () => {
                 ) : (
                   'Documento no entregado. El trabajo práctico no fue entregado'
                 )}
-              </Typography>
+            </Typography>
               {archivo && archivo.length > 0 && (
                 <>
                   {archivo.map((archivo, index) => (
