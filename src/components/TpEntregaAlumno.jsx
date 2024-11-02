@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle  
 } from '@mui/material';
@@ -12,18 +12,43 @@ import { getTpId } from '../services/tps';
 import { Header} from './General/HeaderAlum';
 
 const TpEntrega = () => {
-  const { alumnoId, tpId} = useParams();
+  const history = useHistory();
+ 
+  const { alumnoId, tpId, idCurso} = useParams();
   const [nota, setNota] = useState('');
   const [tp, setTp] = useState(null);
   const [alumno, setAlumno] = useState([]);
   const [comProfe, setComentarioProfe] = useState('');
   const [comentario, setComentario] = useState('');
   const [archivos, setArchivos] = useState([]);
+  const [archivo, setArchivo] = useState(null);// descarga de archivos del buffer de subida del profesor
   const [hasError, setHasError] = useState(false);
   const [open, setOpen] = useState(false);//LOGICA PARA WARNING ELIMINACION
-  
-  const history = useHistory();
- 
+  const handleBack = () => {
+    history.push(`/tpsAlumno/${idCurso}/${alumnoId}`);  // Cambia a la ruta que prefieras
+  };
+  console.log("archivo", archivo); 
+  console.log("estoy  ", {idCurso},{alumnoId});
+  // Función para convertir los archivos a objetos Blob y generar las URLs de descarga
+  const convertirArchivos = (files, fileTypes, fileNames) => {
+    if (!files || files.length === 0) return [];
+
+    return files.map((file, index) => {
+      if (file && file.data) {
+        // Convierte el array de bytes a Uint8Array
+        const byteArray = new Uint8Array(file.data);
+        // Crea el Blob con el tipo de archivo especificado
+        const blob = new Blob([byteArray], { type: fileTypes[index] });
+        // Genera la URL del Blob para descarga
+        const url = URL.createObjectURL(blob);
+        // Asigna un nombre por defecto si no hay uno
+        const nombreArchivo = fileNames[index] || `archivo_${index + 1}.pdf`;
+
+        return { url, nombre: nombreArchivo };
+      }
+      return null;
+    }).filter(item => item !== null); // Filtramos los elementos nulos
+  };
   useEffect(() => {
     async function fetchTp() {
       try {
@@ -43,7 +68,11 @@ const TpEntrega = () => {
         if (tpId) {
           const tpData = await getTpId(tpId);
           setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
-
+          // Convertir archivos solo si `tp.file` existe y tiene contenido
+          if (tpData.tp.file && tpData.tp.file.length > 0) {
+            const archivosConvertidos = convertirArchivos(tpData.tp.file, tpData.tp.fileType, tpData.tp.fileName);
+            setArchivo(archivosConvertidos); // Guardar los archivos convertidos en el estado
+          }
         } else {
           console.error('tpId es undefined');
           setHasError(true);
@@ -148,6 +177,26 @@ const TpEntrega = () => {
                     </Typography>
                   </Grid>
                 </Grid>
+                <Grid container alignItems="center">
+                  <Grid item xs={5}>
+                    <Typography variant="body1" color="textSecondary">
+                      Descarga TP :
+                    </Typography>
+                    {archivo && archivo.length > 0 && (
+                      <>
+                        {archivo.map((archivo, index) => (
+                          <a key={index} href={archivo.url} download={archivo.nombre}>
+                            <br/>
+                            {archivo.nombre}
+                            <br/>
+                          </a>
+                          
+                        ))}
+                      </>
+                    )}
+                    <br/> 
+                  </Grid>
+                </Grid>   
 
                 <Grid container alignItems="center">
                   <Grid item xs={3}>
@@ -207,7 +256,8 @@ const TpEntrega = () => {
               <Typography variant="h6" component="div" gutterBottom>
                 {!comProfe && ('Entrega de Trabajo practico')}
               </Typography>
-               {!comProfe &&( <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
+              {!comProfe &&( 
+                <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
                   Subir archivos
                   <input type="file" hidden multiple onChange={handleArchivoChange} />
                 </Button>)}
@@ -260,30 +310,32 @@ const TpEntrega = () => {
           </Container>
         </CardContent>
         <Box p={2}>
+
         {comProfe.calificacion ? ( 
-              <>
-              <Grid item>
-                <Button
-                  onClick={() => history.goBack()}
-                  variant="contained"
-                  color="primary"
-                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                >
-                  Volver
-                </Button>
-              </Grid>
-            </> 
-            ) : (
+          console.log("estoy aca ", {idCurso},{alumnoId}),
+          <>
+            <Grid item>
+              <Button
+                onClick={handleBack}
+                variant="contained"
+                sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}S
+              >
+                Volver
+              </Button>
+            </Grid>
+          </> 
+        ) : (
               comProfe ? (
+                console.log("estoy aca ", {idCurso},{alumnoId}),
                 <Grid container justifyContent="space-between" marginTop="20px">
-                  <Grid item xs={12} sm={6}>
-                <Button
-                  variant="contained"
-                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={() => history.goBack()}
-                >
-                  Volver
-                </Button>
+                <Grid item>
+                  <Button
+                    onClick={handleBack}
+                    variant="contained"
+                    sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}S
+                  >
+                    Volver
+                  </Button>
                 </Grid>
                 <Grid item>
                 <Button
@@ -316,24 +368,24 @@ const TpEntrega = () => {
               </DialogActions>
               </Dialog>
               </Grid>
-              ) : ('')
+            ) : ('')
             )}
             <Grid container 
               spacing={2} 
               justifyContent="space-between"
               marginTop='20px'
             >
-              {!comProfe && (
-                  <>
+            {!comProfe && (
+              <>
                   <Grid item>
                   <Button
+                    onClick={handleBack}
                     variant="contained"
-                    sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                    onClick={() => history.goBack()}
+                    color="primary"
                   >
                     Volver
                   </Button>
-                  </Grid>
+                </Grid>
                   <Grid item>
                   <Button
                   variant="contained"

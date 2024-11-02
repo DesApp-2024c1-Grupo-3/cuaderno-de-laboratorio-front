@@ -15,7 +15,7 @@ const AlumnoCursos = () => {
   const [dato, setDato] = useState([]);
 
   const history = useHistory();
-
+  
   useEffect(() => {
     const fetchCurso = async () => {
       try {

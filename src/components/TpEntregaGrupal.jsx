@@ -299,7 +299,7 @@ const TpEntrega = () => {
                   Subir archivos
                   <input type="file" hidden multiple onChange={handleArchivoChange} />
                 </Button>)}
-              {archivos && archivos.map((archivo, index) => (
+              {archivo && archivo.map((archivo, index) => (
                 <Typography variant="body2" key={index}>{archivo.name}</Typography>
               ))}
               <Typography variant="h6">
