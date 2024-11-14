@@ -236,7 +236,7 @@ const TpEntrega = () => {
                     Documento entregado: <span style={{ color: 'blue'}}>Descargar</span>
                   </>
                 )}
-              </Typography>
+            </Typography>
               {archivo && archivo.length > 0 && (
                 <>
                   {archivo.map((archivo, index) => (

@@ -9,13 +9,15 @@ import { getCursoById, getTpsByCursoId, getGruposByTpId } from '../services/tps'
 import { Header } from './General/HeaderAlum';
 
 const AlumnoTps = () => {
-
+  const history = useHistory();
   const { idCurso, alumnoId } = useParams();
   const [dato, setDato] = useState([]);
   const [data, setData] = useState(null);
   const [calificaciones, setCalificaciones] = useState([]);
-  const history = useHistory();
-
+  
+  const handleBack = () => {
+    history.push(`/alumno/curso/${alumnoId}`);  // Cambia a la ruta que prefieras
+  };
   useEffect(() => {
     async function fetchData() {
       try {
@@ -154,7 +156,7 @@ const AlumnoTps = () => {
                               borderRadius: '5%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/entregaAlumno/${alumnoId}/${tp._id}`)}
+                            onClick={() => history.push(`/entregaAlumno/${alumnoId}/${tp._id}/${idCurso}`)}
                           >
                             {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') ? 'Ver' : 'Ver'}{/* ARREGLAR*/}
                           </Button>
@@ -168,7 +170,7 @@ const AlumnoTps = () => {
                               borderRadius: '5%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/entregaGrupo/${alumnoId}/${tp._id}`)}
+                            onClick={() => history.push(`/entregaGrupo/${alumnoId}/${tp._id}/${idCurso}`)}
                           >
                             {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') ? 'Ver' : 'Ver'}{/* ARREGLAR*/}
                           </Button>
@@ -187,15 +189,17 @@ const AlumnoTps = () => {
           mx={2}
           mb={2}
         >
+          <>
           <Grid item>
             <Button
+              onClick={handleBack}
               variant="contained"
-              sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-              onClick={() => history.goBack()}
+              sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}S
             >
               Volver
             </Button>
           </Grid>
+          </>
         </Grid>
       </Card>
     </Box>

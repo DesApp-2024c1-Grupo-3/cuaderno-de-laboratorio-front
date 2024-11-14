@@ -16,7 +16,7 @@ import CalificarAlumno from './components/CalificarAlumno';
 //---------------------------Componentes Alumno---------------------------------------
 import MostrarTpsAlumno from './components/MostrarTpsAlumno';
 import CursoAlumno from './components/CursoAlumno';
-import TpEntregaGrupal from './components/TpEntregaGrupal';
+import TpEntregaGrupal from './components/TpEntregaGrupalBeta';
 import TpEntregaAlumno from './components/TpEntregaAlumno';
 
 // Componente que protege las rutas
@@ -76,8 +76,8 @@ const App = () => {
           {/* Rutas protegidas para el alumno */}
           <ProtectedRoute path="/alumno/curso/:alumnoId" component={CursoAlumno} />
           <ProtectedRoute path="/tpsAlumno/:idCurso/:alumnoId" component={MostrarTpsAlumno} />
-          <ProtectedRoute path="/entregaGrupo/:alumnoId/:tpId" component={TpEntregaGrupal} />
-          <ProtectedRoute path="/entregaAlumno/:alumnoId/:tpId" component={TpEntregaAlumno} />
+          <ProtectedRoute path="/entregaGrupo/:alumnoId/:tpId/:idCurso" component={TpEntregaGrupal} />
+          <ProtectedRoute path="/entregaAlumno/:alumnoId/:tpId/:idCurso" component={TpEntregaAlumno} />
 
           <Route path="/login" component={LogIn} />
 

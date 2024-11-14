@@ -1,0 +1,628 @@
+{
+  "realm" : "cuaderno-de-lab",
+  "users" : [ {
+    "id" : "c57d3b60-e5d8-4c24-ac4a-8ae034908cac",
+    "username" : "10000000",
+    "firstName" : "Marta",
+    "lastName" : "Gómez",
+    "email" : "martagómez@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729135967910,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "c53ca4a7-83ae-47a5-bd45-a63c05ae629c",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729135980586,
+      "secretData" : "{\"value\":\"1NqdAPN9ock2BSgLQSJ9YiJf+NEZTUQLRN2hyrdBUH8=\",\"salt\":\"sG6TxpWYRcpTKsUXgEyCkw==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "ee369ca6-0076-480a-9ab4-fe9322cc8db6",
+    "username" : "100000009",
+    "firstName" : "Tomás",
+    "lastName" : "Ruíz",
+    "email" : "tomásruiz@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729135681873,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "af34e879-7e65-42ee-9613-120c464f1a5c",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729135696493,
+      "secretData" : "{\"value\":\"mhNvdER5bus9FAWJj6uKWRvd/UH60aVBOAjlwG4ZoY8=\",\"salt\":\"qlieIfzGBx0yctkxb6kziQ==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "a040808e-295d-40d9-8c2e-6806c0b38634",
+    "username" : "10000003",
+    "firstName" : "Ana",
+    "lastName" : "Torres",
+    "email" : "anatorres@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729136022860,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "d276906c-1f9f-4023-9aeb-8e62963bb32b",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729136037280,
+      "secretData" : "{\"value\":\"ERPhmcypGgMgjI+gmE0aK5Qr+vqmcYhaQLnxSXYtwpU=\",\"salt\":\"IwJfFLaFFCjntHB+KfvH8A==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "975dfec5-f573-4314-9adf-19536be7b335",
+    "username" : "10000004",
+    "firstName" : "Pablo",
+    "lastName" : "Hernandez",
+    "email" : "pablohernández@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729136138509,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "b5ea1f00-181d-4b09-9e71-ad8420475e72",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729136153721,
+      "secretData" : "{\"value\":\"qolf97lE2tAPwE0Bg7y2I3TxlGh8zT79VxVwTkriv6A=\",\"salt\":\"5ziJANS57U6Cr6p3z+sFQw==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "41354c63-1af9-4a8e-86b1-161dca6aaedc",
+    "username" : "10000005",
+    "firstName" : "Isabel",
+    "lastName" : "Rodriguez",
+    "email" : "isabelrodríguez@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729135029492,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "baa5b591-de7f-444f-9419-1e4783e881bb",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729135046601,
+      "secretData" : "{\"value\":\"f8kjQ7O4YuVXL/rAFPNIMWVAKsJiGiqQiBCwo1eEfsA=\",\"salt\":\"+a3SImY5j2gyziTLrW65bA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "42655526-80d2-4419-8f36-1a20d601c184",
+    "username" : "10000007",
+    "firstName" : "Elena",
+    "lastName" : "Sánchez",
+    "email" : "elenasánchez@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729135621656,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "59e168e2-5958-47af-bfe5-837784bc1c26",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729135635634,
+      "secretData" : "{\"value\":\"TiDUTlpXbC6iFKwYtYzQeaHjXth3P2IHaoO9qElvBHw=\",\"salt\":\"ZJaEW7ng3HkqyVvu/K9uJw==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "3ab312e4-cf1e-4c3b-af58-18e5b8b6d33a",
+    "username" : "10000008",
+    "firstName" : "Gabriela",
+    "lastName" : "Garcia",
+    "email" : "gabrielagarcía@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729135108957,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "18e5c0ed-cf80-4539-9f9b-23c51925dc98",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729135125020,
+      "secretData" : "{\"value\":\"QmMsVW8Et1xmTQ9ROW9LJg2cwr1EWOoAAVWOeGPw5hk=\",\"salt\":\"UE91ukCnWkw5wiDZnWIuNg==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "50037ae8-81c9-462b-b27c-6925f05005b4",
+    "username" : "10000010",
+    "firstName" : "David",
+    "lastName" : "Garcia",
+    "email" : "davidgarcía@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729136199541,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "c123173d-f539-43e5-b661-08ec5ad3cae2",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729136213908,
+      "secretData" : "{\"value\":\"qEfWSK7meNdDgc40+e9tZWXgFiKF9S42stLSxJ9lWkM=\",\"salt\":\"TS3VFIT+RLSe7dd8XmfJKQ==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "c6a6f6d0-c4f8-4d19-9609-b33e9b63436d",
+    "username" : "10000011",
+    "firstName" : "Andrés",
+    "lastName" : "Flores",
+    "email" : "andrésflores@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729135187075,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "9739c452-46e0-4bcb-b0ed-bd50301fc9b6",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729135204708,
+      "secretData" : "{\"value\":\"jGLGoaNTZtGrxSF8cW+eldlvfl4p64mbDc8XXMj7WeQ=\",\"salt\":\"JTHBcU3S9UqQHAn4TDQ3vw==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "46707abb-dccf-4e26-8880-d35e2025ca74",
+    "username" : "10000013",
+    "firstName" : "Gabriela",
+    "lastName" : "Mendoza",
+    "email" : "gabrielamendoza@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729135744504,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "bd38d5a2-9332-4bd4-b53d-33f3b69be581",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729135758901,
+      "secretData" : "{\"value\":\"7HWAFs6hVwskQ9LE6GRzT5mR0f3JLnQtNKwxezyjwl8=\",\"salt\":\"nLRZGDaVqgsMf/rlgPEFJg==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "fd8288fb-c75e-468b-aae4-0c916307a11e",
+    "username" : "10000014",
+    "firstName" : "Carlos",
+    "lastName" : "Rodriguez",
+    "email" : "carlosrodríguez@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729135261331,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "b96421f9-142b-4b9b-a1fd-005dabdc43b6",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729135274798,
+      "secretData" : "{\"value\":\"eool0BfHl0XZhrBoDGFq7XmV3Wn9F9QGFXsmtU5h9h8=\",\"salt\":\"sxapdMFPqhFI5pSxQXuepA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "f533e3cf-0087-4c91-a831-c5031fc3b6ca",
+    "username" : "10000015",
+    "firstName" : "Sofía",
+    "lastName" : "Flores",
+    "email" : "sofíaflores@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729136256794,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "033435e0-fd3d-4c7e-bf31-fb48df30b1c0",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729136277057,
+      "secretData" : "{\"value\":\"9cG8X+ULJQONe4P24v+MbXDZiRSlh8XskbrokLw5/00=\",\"salt\":\"Wk3P55du1N5ejnK53r+kFQ==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "2e31d844-f284-46af-bb2c-82ff4ff43c71",
+    "username" : "10000016",
+    "firstName" : "Carlos",
+    "lastName" : "González",
+    "email" : "carlosgonzález@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729136339897,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "2b805305-39ff-4a24-beb1-6d8079e4b9e6",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729136354530,
+      "secretData" : "{\"value\":\"Xa63sQpx4m4S3yUravQ0h+Pja/FF300SAGit6XIi6Sc=\",\"salt\":\"f8LS6sZ3rp871HP10kXwxQ==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "d9ca27f6-6203-4e73-ac9c-46c249ab9c48",
+    "username" : "10000017",
+    "firstName" : "María",
+    "lastName" : "Díaz",
+    "email" : "maríadíaz@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729136397341,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "8059d78d-171e-41c1-8956-23981a5632c1",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729136412176,
+      "secretData" : "{\"value\":\"kWzOni27SyLVdRJnbfez5QVaTICUJNUzmtjmD/4YeRg=\",\"salt\":\"sLywOtopNxGf4ZV1HgTKtA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "b28ec629-6c41-4626-b4ed-db3118a924e6",
+    "username" : "10000018",
+    "firstName" : "José",
+    "lastName" : "Díaz",
+    "email" : "josédíaz@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729135343923,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "7af8116a-7787-4647-bbeb-5ae0e123809a",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729135358605,
+      "secretData" : "{\"value\":\"uzjeL4jH8m03foIiBAKUmPPDmbiO3SOStpERDdJLGBE=\",\"salt\":\"xEms7yOM64nJVDNhgcgU5Q==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "946adb26-7a16-492f-9a7e-42571ad600b6",
+    "username" : "10000019",
+    "firstName" : "José",
+    "lastName" : "Torres",
+    "email" : "josétorres@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729135809541,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "643fa064-d6d6-4631-950e-d10bd57005fc",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729135823536,
+      "secretData" : "{\"value\":\"+Ict7sgA3MISNthyGDBv0uYqlK8AF2i/uHi1+0v9kxU=\",\"salt\":\"ETxFL3B3ybfctR3Pk7tUhA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "09e515a1-032f-4546-a717-f6f63e5249e4",
+    "username" : "10000020",
+    "firstName" : "Carlos",
+    "lastName" : "Gomez",
+    "email" : "carlosgómez@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729135412271,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "a6a06f56-1f6e-4c90-acf1-2994d80ecbfe",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729135430130,
+      "secretData" : "{\"value\":\"7MOV5cHE5wSR0IGCK/Jd2tByaLf3eRAOQUMsVbCcbLU=\",\"salt\":\"oVgY2//gwX3i+1cOnBz8Vw==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "078333b5-3f34-47f0-a94e-bcc4c59aacbe",
+    "username" : "10000021",
+    "firstName" : "Luisa",
+    "lastName" : "Mendoza",
+    "email" : "luisamendoza@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729136458339,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "0ec88978-bbff-4416-9f42-0cad08fa7c69",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729136473760,
+      "secretData" : "{\"value\":\"YWbLwTMDP/O5r210QBNs2/LUhZkclpzrEvjjxWXTDeM=\",\"salt\":\"pEX5lyVHB/PH+ZWGrk4jFw==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "74221b2f-e30f-41b0-ba9d-d966fe5191e6",
+    "username" : "10000023",
+    "firstName" : "José",
+    "lastName" : "Perez",
+    "email" : "josépérez@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729135481873,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "6f76c7ab-b091-4b20-8e63-2f1fb3b515bf",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729135497699,
+      "secretData" : "{\"value\":\"i8DjgTvXlv2thTwr0ciaym84TdyOlvy+sK//s06deN8=\",\"salt\":\"8c14wuAzXKSAZ2R0mV4GWA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "1a6abc72-3a7f-4332-8e71-c0be3a9201c7",
+    "username" : "10000024",
+    "firstName" : "Pedro",
+    "lastName" : "Gonzalez",
+    "email" : "pedrogonzález@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729135556115,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "495ad3ea-f148-4da7-85c7-5386a540d12d",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729135571364,
+      "secretData" : "{\"value\":\"fMi4mYMkgMDmFoyXWT9oasop9kB4j22hGfFkvWvQaoQ=\",\"salt\":\"fHX3HPf30L24wGSL2HgeOw==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "e31cc5f7-4e0d-4491-8bfa-2f1e732712d0",
+    "username" : "10000028",
+    "firstName" : "Laura",
+    "lastName" : "Flores",
+    "email" : "lauraflores@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729135870145,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "f086e2a7-7bcb-4248-993b-b9b8693c6e44",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729135883942,
+      "secretData" : "{\"value\":\"7IrnLFx/Kt0irMlLrFqKGELm1nAW/xsPt+88QeMCF6k=\",\"salt\":\"nOMSFC5SWjG1tKQa1HDzbA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "alumno" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "5b283f89-29fe-46eb-82f4-1065a204fdb5",
+    "username" : "12345678",
+    "firstName" : "Pablo",
+    "lastName" : "Castillo",
+    "email" : "pablocastillo@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729136547685,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "c0df455a-0ed2-49f9-8532-0528ba466006",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729136561960,
+      "secretData" : "{\"value\":\"1B02OwqYWcttaY6zTxdVpxcGtflNM6SKJZuaFU5vhgU=\",\"salt\":\"TZAxM6U2VT26WiPOD6V/Cg==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "profesor" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "eec7f383-42a0-4e15-a0aa-52c929b758d8",
+    "username" : "22222222",
+    "firstName" : "Roberto",
+    "lastName" : "Castillo",
+    "email" : "castillo@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729009086757,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "712e90e7-b628-42e6-adc6-75b0c63a02ec",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729009101882,
+      "secretData" : "{\"value\":\"IVy2Qd4QEsQDQuocNQYlYuFc8OPYC1ORyH7KR873kR4=\",\"salt\":\"6eH/FybAfZsyES8o+SQAHg==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "profesor" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "bcbfe740-e8c5-4e50-9382-a19432d200e6",
+    "username" : "87654321",
+    "firstName" : "Sebastián",
+    "lastName" : "Goméz",
+    "email" : "sebastiangomez@example.com",
+    "emailVerified" : true,
+    "createdTimestamp" : 1729136616073,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "f00787bd-a1f2-419f-b96e-0d924120a923",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1729136628697,
+      "secretData" : "{\"value\":\"aeiGf0V/Ix02jDgWPY0okhUcGXaJlflieQjcoWanVyI=\",\"salt\":\"VIU7gZxOzvrCvH1S+o6juA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cuaderno-de-lab" ],
+    "clientRoles" : {
+      "cuaderno-de-lab" : [ "profesor" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  } ]
+}
