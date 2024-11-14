@@ -26,13 +26,15 @@ const TpEntrega = () => {
   const [comentario, setComentario] = useState('');
   const [archivos, setArchivos] = useState([]);
   const [archivo, setArchivo] = useState(null);// descarga de archivos del buffer de subida del profesor
+  const [archivoCalif, setArchivoCalif] = useState(null);
   const [hasError, setHasError] = useState(false);
   const [open, setOpen] = useState(false);//LOGICA PARA WARNING ELIMINACION
   const handleBack = () => {
     history.push(`/tpsAlumno/${idCurso}/${alumnoId}`);  // Cambia a la ruta que prefieras
   };
    
-  console.log("archivo", archivo); 
+  console.log("File entrega",archivoCalif ); 
+  console.log("comProfe",comProfe ); 
   // Función para convertir los archivos a objetos Blob y generar las URLs de descarga
   const convertirArchivos = (files, fileTypes, fileNames) => {
     if (!files || files.length === 0) return [];
@@ -77,26 +79,26 @@ const TpEntrega = () => {
 
             try {
               const califData = await getComAlumnByCalifId(grupoEncontrado._id, tpId);
+              const fileEntregado = convertirArchivos(comProfe.file, comProfe.fileType, comProfe.fileName)
               setComentarioProfe(califData);
               setNota(califData.calificacion);
-
+              setArchivoCalif(fileEntregado) 
               // Asigna el alumno que hizo la entrega
               const alumnoEntregador = grupoEncontrado.alumnos.find(alumno => alumno._id === califData.alumnoId);
               setEntrego(alumnoEntregador);
+              
             } catch (error) {
               if (error.response && (error.response.status === 404 || error.response.status === 500)) {
                 setComentarioProfe('');
               }
             }
-
             setGrupo(grupoEncontrado);
             const alumnosData = await getGrupoPorId(grupoEncontrado._id);
             setAlumnos(alumnosData);
           } else {
             console.log('No se encontró un grupo para el alumno:', alumnoId);
           }
-        }
-        
+        }        
         if (tpId) {
           const tpData = await getTpId(tpId);
           setTp(tpData.tp);
@@ -113,7 +115,7 @@ const TpEntrega = () => {
   }, [tpId, alumnoId]);
 
   console.log( tpId)
-  console.log("tp", tp.grupos ); 
+  console.log("tp", archivos ); 
   const handleComentarioChange = (e) => setComentario(e.target.value);
   const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
   const handleSave = async () => {
@@ -131,7 +133,7 @@ const TpEntrega = () => {
       await crearCalificacion(formData);
 
       alert('Entrega realizada con éxito');
-      history.goBack();
+      handleBack();
     } catch (err) {
       console.error('Error al guardar', err);
     }
@@ -140,7 +142,7 @@ const TpEntrega = () => {
     try {
       await postEliminarCalificacion(id);
       alert(' eliminada con éxito');
-      history.goBack();
+      handleBack();
       } catch (error) {
       console.error('Error al eliminar la calificaion del alumno:', error);
     }
@@ -203,10 +205,13 @@ const TpEntrega = () => {
                   </Grid>
                 </Grid>
                 <Grid container alignItems="center">
-                  <Grid item xs={5}>
+                  <Grid item xs={3}>
                     <Typography variant="body1" color="textSecondary">
                       Descarga TP :
                     </Typography>
+                  </Grid>
+                  <Grid item xs={9}>
+                   <Typography variant="body2" component="div">
                     {archivo && archivo.length > 0 && (
                       <>
                         {archivo.map((archivo, index) => (
@@ -215,14 +220,13 @@ const TpEntrega = () => {
                             {archivo.nombre}
                             <br/>
                           </a>
-                          
                         ))}
                       </>
                     )}
-                    <br/> 
+                   <br/> 
+                   </Typography>
                   </Grid>
                 </Grid>       
-
                 <Grid container alignItems="center">
                   <Grid item xs={3}>
                     <Typography variant="body1" color="textSecondary">
@@ -282,20 +286,46 @@ const TpEntrega = () => {
             </TableContainer>
             
             <Box mt={2}>
-            <Typography variant="h6" component="div" gutterBottom>
-              {!comProfe 
-                ? 'Un solo integrante del grupo puede hacer la entrega' 
-                : entrego 
-                  ? `Trabajo práctico entregado por ${entrego.apellido}, ${entrego.nombre}` 
-                  : 'Trabajo práctico entregado'
-              }
-            </Typography>
-
-               {!comProfe &&( <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
+              <Typography variant="h6" component="div" gutterBottom>
+                {!comProfe 
+                  ? 'Un solo integrante del grupo puede hacer la entrega' 
+                  : entrego 
+                    ? `Trabajo práctico entregado por ${entrego.apellido}, ${entrego.nombre}` 
+                    : 'Trabajo práctico entregado'
+                }
+              </Typography>
+              {comProfe &&(
+                <Grid container alignItems="center">
+                  <Grid item xs={5}>
+                    <Typography variant="h6" component="div" gutterBottom>
+                      Descarga TP enviado :
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={5}>
+                   <Typography variant="body2" component="div">
+                    {archivoCalif && archivoCalif.length > 0 && (
+                      <>
+                        {archivoCalif.map((archivo, index) => (
+                          <a key={index} href={archivo.url} download={archivo.nombre}>
+                            <br/>
+                            {archivo.nombre}
+                            <br/>
+                          </a>
+                        ))}
+                      </>
+                    )}
+                   <br/> 
+                   </Typography>
+                  </Grid>
+                </Grid>  
+              )}
+              {!comProfe &&( 
+                <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
                   Subir archivos
                   <input type="file" hidden multiple onChange={handleArchivoChange} />
-                </Button>)}
-              {archivo && archivo.map((archivo, index) => (
+                </Button>
+              )}
+              {archivos && archivos.map((archivo, index) => (
                 <Typography variant="body2" key={index}>{archivo.name}</Typography>
               ))}
               <Typography variant="h6">
@@ -362,15 +392,15 @@ const TpEntrega = () => {
               comProfe ? (
                 
                 <Grid container justifyContent="space-between" marginTop="20px">
-                <Grid item xs={12} sm={6}>
-                <Button
-                  variant="contained"
-                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={() => history.goBack()}
-                >
-                  Volver
-                </Button>
-                </Grid>
+               <Grid item>
+              <Button
+                onClick={handleBack}
+                variant="contained"
+                sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}S
+              >
+                Volver
+              </Button>
+            </Grid>
                 <Grid item xs={12} sm={6} container justifyContent="flex-end">
                 <Button
                   variant="contained"
@@ -413,14 +443,14 @@ const TpEntrega = () => {
             {!comProfe && (
               <>
                 <Grid item>
-                  <Button
-                    onClick={handleBack}
-                    variant="contained"
-                    color="primary"
-                  >
-                  Volver
-                  </Button>
-                </Grid>
+              <Button
+                onClick={handleBack}
+                variant="contained"
+                sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}S
+              >
+                Volver
+              </Button>
+            </Grid>
                 <Grid item>
                   <Button
                   variant="contained"
