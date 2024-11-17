@@ -39,7 +39,7 @@ En el directorio raíz donde está el frontend ejecutar el comando:
 npm install
 ```
 
-### 4. Configirar archivo de variables de ambiente
+### 4. Configurar archivo de variables de ambiente
 
 En la raíz del directorio donde está el frontend, localizar el archivo `.env.example` y renombrarlo a `.env`
 
@@ -51,7 +51,7 @@ Con el motor de docker corriendo, en el directorio raíz donde está el frontend
 docker-compose up -d
 ```
 
-### 6. Configuración de Keycloak
+### 6. Configuración de Keycloak (primera vez que se inicia el proyecto)
 
 #### Acceder a Keycloak a través de [http://localhost:8085](http://localhost:8085)
 
