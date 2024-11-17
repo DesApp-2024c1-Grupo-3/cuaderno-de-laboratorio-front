@@ -65,7 +65,7 @@ Contraseña: _K3ycl04k321!_
 
 Una vez dentro de Keycloak, crear un nuevo reino (Realm).
 
-![Crear_Nuevo_Realm](assets/crearNuevoRealm.gif)
+![Create_New_Realm](assets/createNewRealm.gif)
 
 #### Importar la configuración del archivo realm-export.json:
 
