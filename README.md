@@ -25,7 +25,7 @@ git clone https://github.com/DesApp-2024c1-Grupo-3/cuaderno-de-laboratorio-front
 
 ### 2. Cambiar a rama dev
 
-En el directorio donde está el frontend ejecutar el comando:
+En el directorio raíz donde está el frontend ejecutar el comando:
 
 ```bash
 git checkout dev
@@ -69,7 +69,7 @@ Una vez dentro de Keycloak, crear un nuevo reino (Realm).
 
 #### Importar la configuración del archivo realm-export.json:
 
-Dirigirse a Resource file y seleccionar el archivo [./Imports_Keycloak/realm-export.json](https://raw.githubusercontent.com/DesApp-2024c1-Grupo-3/cuaderno-de-laboratorio-front/refs/heads/dev/Imports_Keycloak/realm-export.json)
+Dirigirse a Resource file y seleccionar el archivo [Imports_Keycloak/realm-export.json](https://raw.githubusercontent.com/DesApp-2024c1-Grupo-3/cuaderno-de-laboratorio-front/refs/heads/dev/Imports_Keycloak/realm-export.json)
 
 <!-- Ver si el link anterior sirve para futuras actualizaciones del repo -->
 
@@ -81,7 +81,7 @@ Crear el reino con la configuración importada
 
 Navegar a la configuración del reino
 
-Ir a **Acciones -> Partial Import** y seleccionar el archivo [./Imports_Keycloak/cuaderno-de-lab-users-0.json](https://raw.githubusercontent.com/DesApp-2024c1-Grupo-3/cuaderno-de-laboratorio-front/refs/heads/dev/Imports_Keycloak/cuaderno-de-lab-users-0.json)
+Ir a **Acciones -> Partial Import** y seleccionar el archivo [Imports_Keycloak/cuaderno-de-lab-users-0.json](https://raw.githubusercontent.com/DesApp-2024c1-Grupo-3/cuaderno-de-laboratorio-front/refs/heads/dev/Imports_Keycloak/cuaderno-de-lab-users-0.json)
 
 <!-- Ver si el link anterior sirve para futuras actualizaciones del repo -->
 
