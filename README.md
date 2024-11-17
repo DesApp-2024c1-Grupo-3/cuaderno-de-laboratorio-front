@@ -1,4 +1,4 @@
-# Cuaderno de Laboratorio - Guía de Inicio Rápido - Frontend# Markdown
+# Cuaderno de Laboratorio - Guía de Inicio Rápido - Frontend
 
 ## **Requisitos previos**
 
@@ -33,7 +33,7 @@ git checkout dev
 
 ### 3. Instalar dependencias
 
-En el directorio donde está el frontend ejecutar el comando:
+En el directorio raíz donde está el frontend ejecutar el comando:
 
 ```bash
 npm install
@@ -41,11 +41,11 @@ npm install
 
 ### 4. Configirar archivo de variables de ambiente
 
-En el directorio donde está el frontend, localizar el archivo `.env.example` y renombrarlo a `.env`
+En la raíz del directorio donde está el frontend, localizar el archivo `.env.example` y renombrarlo a `.env`
 
 ### 5. Iniciar Docker-Compose
 
-Con el motor de docker corriendo, en el directorio donde está el frontend ejecutar el comando:
+Con el motor de docker corriendo, en el directorio raíz donde está el frontend ejecutar el comando:
 
 ```bash
 docker-compose up -d
@@ -69,7 +69,7 @@ Una vez dentro de Keycloak, crear un nuevo reino (Realm).
 
 #### Importar la configuración del archivo realm-export.json:
 
-Dirigirse a Resource file y seleccionar el archivo [realm-export.json](https://raw.githubusercontent.com/DesApp-2024c1-Grupo-3/cuaderno-de-laboratorio-front/refs/heads/dev/Imports_Keycloak/realm-export.json)
+Dirigirse a Resource file y seleccionar el archivo [./Imports_Keycloak/realm-export.json](https://raw.githubusercontent.com/DesApp-2024c1-Grupo-3/cuaderno-de-laboratorio-front/refs/heads/dev/Imports_Keycloak/realm-export.json)
 
 <!-- Ver si el link anterior sirve para futuras actualizaciones del repo -->
 
@@ -81,7 +81,7 @@ Crear el reino con la configuración importada
 
 Navegar a la configuración del reino
 
-Ir a **Acciones -> Partial Import** y seleccionar el archivo [cuaderno-de-lab-users-0.json](https://raw.githubusercontent.com/DesApp-2024c1-Grupo-3/cuaderno-de-laboratorio-front/refs/heads/dev/Imports_Keycloak/cuaderno-de-lab-users-0.json)
+Ir a **Acciones -> Partial Import** y seleccionar el archivo [./Imports_Keycloak/cuaderno-de-lab-users-0.json](https://raw.githubusercontent.com/DesApp-2024c1-Grupo-3/cuaderno-de-laboratorio-front/refs/heads/dev/Imports_Keycloak/cuaderno-de-lab-users-0.json)
 
 <!-- Ver si el link anterior sirve para futuras actualizaciones del repo -->
 
@@ -93,7 +93,7 @@ Importar
 
 ### 7. Iniciar el frontend
 
-En el directorio donde está el frontend ejecutar el comando:
+En el directorio raíz donde está el frontend ejecutar el comando:
 
 ```bash
 npm start
