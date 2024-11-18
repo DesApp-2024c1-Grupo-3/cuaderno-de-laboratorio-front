@@ -322,10 +322,19 @@ const TpEntrega = () => {
                 </Grid>
               )}
               {!comProfe && (
-                <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
-                  Subir archivos
-                  <input type="file" hidden multiple onChange={handleArchivoChange} />
-                </Button>
+                <>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  >
+                    Subir archivos
+                    <input type="file" hidden multiple onChange={handleArchivoChange} />
+                  </Button>
+                  <Typography variant="body2" color="red" mt={1}>
+                    Tamaño máximo de archivos a subir (16Mb)
+                  </Typography>
+                </>
               )}
               {archivos && archivos.map((archivo, index) => (
                 <Typography variant="body2" key={index}>{archivo.name}</Typography>

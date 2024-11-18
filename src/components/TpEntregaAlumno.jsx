@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle  
+import {
+  Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material';
 import { getAlumnoById } from '../services/Alumnos';
-import { crearCalificacion,
-         getComAlumnIndByCalifId,
-         postEliminarCalificacion 
+import {
+  crearCalificacion,
+  getComAlumnIndByCalifId,
+  postEliminarCalificacion
 } from '../services/Calificacion';
 import { getTpId } from '../services/tps';
-import { Header} from './General/HeaderAlum';
+import { Header } from './General/HeaderAlum';
 
 const TpEntrega = () => {
   const history = useHistory();
- 
-  const { alumnoId, tpId, idCurso} = useParams();
+
+  const { alumnoId, tpId, idCurso } = useParams();
   const [nota, setNota] = useState('');
   const [tp, setTp] = useState(null);
   const [alumno, setAlumno] = useState([]);
@@ -27,8 +29,8 @@ const TpEntrega = () => {
   const handleBack = () => {
     history.push(`/tpsAlumno/${idCurso}/${alumnoId}`);  // Cambia a la ruta que prefieras
   };
-  console.log("archivo", archivo); 
-  console.log("estoy  ", {idCurso},{alumnoId});
+  console.log("archivo", archivo);
+  console.log("estoy  ", { idCurso }, { alumnoId });
   // Función para convertir los archivos a objetos Blob y generar las URLs de descarga
   const convertirArchivos = (files, fileTypes, fileNames) => {
     if (!files || files.length === 0) return [];
@@ -56,15 +58,15 @@ const TpEntrega = () => {
         setAlumno(alumnoData);
         try {
           const califData = await getComAlumnIndByCalifId(alumnoId, tpId);
-          setComentarioProfe(califData );
+          setComentarioProfe(califData);
           setNota(califData.calificacion);
-              
-         
+
+
         } catch (error) {
           if (error.response && error.response.status === 404 || error.response.status === 500) {
             setComentarioProfe('');
           }
-        }  
+        }
         if (tpId) {
           const tpData = await getTpId(tpId);
           setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
@@ -76,15 +78,15 @@ const TpEntrega = () => {
         } else {
           console.error('tpId es undefined');
           setHasError(true);
-        }       
-              
+        }
+
       } catch (err) {
         setHasError(true);
       }
 
     }
     fetchTp();
-  }, [ alumnoId, tpId]);
+  }, [alumnoId, tpId]);
 
   const handleComentarioChange = (e) => setComentario(e.target.value);
   const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
@@ -92,30 +94,30 @@ const TpEntrega = () => {
   const handleSave = async () => {
     try {
       const formData = new FormData();
-      
+
       archivos.forEach((archivo, index) => {
         formData.append('file', archivo);
       });
-     
+
       formData.append('comentarioAlum', comentario);
       formData.append('tpId', tpId);
       formData.append('alumnoId', alumnoId);
 
       await crearCalificacion(formData);
       alert('Entrega realizada con éxito');
-     
+
       history.goBack();
     } catch (err) {
       console.error('Error al guardar', err);
     }
   };
-  
+
   const deleteCalificacion = async (id) => {
     try {
       await postEliminarCalificacion(id);
       alert(' eliminada con éxito');
       history.goBack();
-      } catch (error) {
+    } catch (error) {
       console.error('Error al eliminar la calificaion del alumno:', error);
     }
   };
@@ -130,7 +132,7 @@ const TpEntrega = () => {
     setOpen(false);
     window.location.reload();
   };
-  
+
   const formatFecha = (fecha) => {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     const date = new Date(fecha);
@@ -149,11 +151,11 @@ const TpEntrega = () => {
       </Grid>
     );
   };
-  
+
   const tpRendering = () => (
     <Box>
       <Header />
-      <Card sx={{ mb:2}}>
+      <Card sx={{ mb: 2 }}>
         <CardContent>
           <div>
             <SubHeader titulo="Título:" nombreTP={titulo} />
@@ -185,17 +187,17 @@ const TpEntrega = () => {
                       <>
                         {archivo.map((archivo, index) => (
                           <a key={index} href={archivo.url} download={archivo.nombre}>
-                            <br/>
+                            <br />
                             {archivo.nombre}
-                            <br/>
+                            <br />
                           </a>
-                          
+
                         ))}
                       </>
                     )}
-                    <br/> 
+                    <br />
                   </Grid>
-                </Grid>   
+                </Grid>
 
                 <Grid container alignItems="center">
                   <Grid item xs={3}>
@@ -213,20 +215,20 @@ const TpEntrega = () => {
             )}
           </div>
 
-          <Container 
+          <Container
             maxWidth="xl"
-            sx={{ 
-              mt: 1, 
-              mb: 1, 
-              border: 'solid', 
-              borderWidth: '10px 20px 20px 10px', 
+            sx={{
+              mt: 1,
+              mb: 1,
+              border: 'solid',
+              borderWidth: '10px 20px 20px 10px',
               borderColor: 'rgba(0, 0, 0, 0.08)',
-              borderRadius: '1%' 
-              }}
-            >
+              borderRadius: '1%'
+            }}
+          >
             <Typography variant="h6" component="div" gutterBottom>
-            Alumno
-            </Typography>  
+              Alumno
+            </Typography>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
@@ -240,7 +242,7 @@ const TpEntrega = () => {
                   {
                     alumno && (
                       <TableRow
-                        sx={{ backgroundColor:'rgba(0, 0, 0, 0.08)' }}
+                        sx={{ backgroundColor: 'rgba(0, 0, 0, 0.08)' }}
                       >
                         <TableCell align="center">{alumno.nombre} </TableCell>
                         <TableCell align="center">{alumno.apellido}</TableCell>
@@ -248,31 +250,41 @@ const TpEntrega = () => {
                       </TableRow>
                     )
                   }
-                </TableBody> 
+                </TableBody>
               </Table>
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
                 {!comProfe && ('Entrega de Trabajo practico')}
               </Typography>
-              {!comProfe &&( 
-                <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
-                  Subir archivos
-                  <input type="file" hidden multiple onChange={handleArchivoChange} />
-                </Button>)}
+              {!comProfe && (
+                <>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  >
+                    Subir archivos
+                    <input type="file" hidden multiple onChange={handleArchivoChange} />
+                  </Button>
+                  <Typography variant="body2" color="red" mt={1}>
+                    Tamaño máximo de archivos a subir (16Mb)
+                  </Typography>
+                </>
+              )}
               {archivos && archivos.map((archivo, index) => (
                 <Typography variant="body2" key={index}>{archivo.name}</Typography>
               ))}
               <Typography variant="h6">
-                {comProfe.comentarioAlum &&("Comentario Del Alumno: ") }
+                {comProfe.comentarioAlum && ("Comentario Del Alumno: ")}
                 <Typography marginLeft={2} variant="h6">
                   {comProfe.comentarioAlum}
                 </Typography>
               </Typography>
-              <br/>
+              <br />
             </Box>
             <Box mt={2}>
-             {!comProfe &&(nota && <TextField
+              {!comProfe && (nota && <TextField
                 label="Nota"
                 value={nota}
                 variant="outlined"
@@ -280,70 +292,68 @@ const TpEntrega = () => {
                 margin="normal"
               />)}
               {!comProfe && (
-              <TextField
-                label="Comentario"
-                value={comentario}
-                onChange={handleComentarioChange}
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                multiline
-                rows={4}
-            />)}
-            {comProfe.calificacion && ( 
-              <Grid container spacing={2} alignItems="center">              
-                <Grid item xs={12}>
-                  <Typography variant="h6" component="div" gutterBottom>
+                <TextField
+                  label="Comentario"
+                  value={comentario}
+                  onChange={handleComentarioChange}
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  multiline
+                  rows={4}
+                />)}
+              {comProfe.calificacion && (
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item xs={12}>
+                    <Typography variant="h6" component="div" gutterBottom>
                       Nota: {comProfe.calificacion}
-                  </Typography>
-                  <Typography variant="h6" component="div" gutterBottom>
-                      Devolucion del Profesor : 
-                    <Typography marginLeft={2} variant="h6">
-                      {comProfe.devolucionProf}
                     </Typography>
-                  </Typography>
+                    <Typography variant="h6" component="div" gutterBottom>
+                      Devolucion del Profesor :
+                      <Typography marginLeft={2} variant="h6">
+                        {comProfe.devolucionProf}
+                      </Typography>
+                    </Typography>
+                  </Grid>
                 </Grid>
-              </Grid> 
-            )}  
+              )}
             </Box>
           </Container>
         </CardContent>
         <Box p={2}>
 
-        {comProfe.calificacion ? ( 
-          console.log("estoy aca ", {idCurso},{alumnoId}),
-          <>
-            <Grid item>
-              <Button
-                onClick={handleBack}
-                variant="contained"
-                sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}S
-              >
-                Volver
-              </Button>
-            </Grid>
-          </> 
-        ) : (
-              comProfe ? (
-                console.log("estoy aca ", {idCurso},{alumnoId}),
-                <Grid container justifyContent="space-between" marginTop="20px">
+          {comProfe.calificacion ? (
+            <>
+              <Grid item>
+                <Button
+                  onClick={handleBack}
+                  variant="contained"
+                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }} S
+                >
+                  Volver
+                </Button>
+              </Grid>
+            </>
+          ) : (
+            comProfe ? (
+              <Grid container justifyContent="space-between" marginTop="20px">
                 <Grid item>
                   <Button
                     onClick={handleBack}
                     variant="contained"
-                    sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}S
+                    sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }} S
                   >
                     Volver
                   </Button>
                 </Grid>
                 <Grid item>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={handleClickOpen}
-                >
-                  Eliminar entrega
-                </Button>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={handleClickOpen}
+                  >
+                    Eliminar entrega
+                  </Button>
                 </Grid>
                 <Dialog
                   open={open}
@@ -351,32 +361,32 @@ const TpEntrega = () => {
                   aria-labelledby="alert-dialog-title"
                   aria-describedby="alert-dialog-description"
                 >
-                <DialogTitle id="alert-dialog-title">{"Confirmar Eliminación"}</DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    ¿Está seguro que desea eliminar esta entrega? Esta acción no se puede deshacer.
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose} color="primary">
-                    Cancelar
-                  </Button>
-                  <Button onClick={handleConfirmDelete} color="primary" autoFocus>
-                    Confirmar
-                  </Button>
-              </DialogActions>
-              </Dialog>
+                  <DialogTitle id="alert-dialog-title">{"Confirmar Eliminación"}</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      ¿Está seguro que desea eliminar esta entrega? Esta acción no se puede deshacer.
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                      Cancelar
+                    </Button>
+                    <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+                      Confirmar
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </Grid>
             ) : ('')
-            )}
-            <Grid container 
-              spacing={2} 
-              justifyContent="space-between"
-              marginTop='20px'
-            >
+          )}
+          <Grid container
+            spacing={2}
+            justifyContent="space-between"
+            marginTop='20px'
+          >
             {!comProfe && (
               <>
-                  <Grid item>
+                <Grid item>
                   <Button
                     onClick={handleBack}
                     variant="contained"
@@ -385,20 +395,20 @@ const TpEntrega = () => {
                     Volver
                   </Button>
                 </Grid>
-                  <Grid item>
+                <Grid item>
                   <Button
-                  variant="contained"
-                  sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={handleSave}
-                >
-                  Cargar TP
-                </Button>
+                    variant="contained"
+                    sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
+                    onClick={handleSave}
+                  >
+                    Cargar TP
+                  </Button>
                 </Grid>
-                </>
-                )}
+              </>
+            )}
           </Grid>
         </Box>
-      </Card>      
+      </Card>
     </Box>
   );
 
