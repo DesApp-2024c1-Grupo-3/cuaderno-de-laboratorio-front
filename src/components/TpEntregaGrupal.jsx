@@ -31,7 +31,7 @@ const TpEntrega = () => {
   const [hasError, setHasError] = useState(false);
   const [open, setOpen] = useState(false);//LOGICA PARA WARNING ELIMINACION
   const handleBack = () => {
-    history.goBack()
+    history.push(`/tpsAlumno/${idCurso}/${alumnoId}`);
     //history.push('/tpsAlumno/:idCurso/:alumnoId');  // Cambia a la ruta que prefieras
   };
 
@@ -357,7 +357,7 @@ const TpEntrega = () => {
             <>
               <Grid item>
                 <Button
-                  onClick={() => history.goBack()}
+                  onClick={() => history.push(`/tpsAlumno/${idCurso}/${alumnoId}`)}
                   variant="contained"
                   color="primary"
                   sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
@@ -374,7 +374,7 @@ const TpEntrega = () => {
                   <Button
                     variant="contained"
                     sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                    onClick={() => history.goBack()}
+                    onClick={() => history.push(`/tpsAlumno/${idCurso}/${alumnoId}`)}
                   >
                     Volver
                   </Button>
@@ -442,8 +442,8 @@ const TpEntrega = () => {
             )}
           </Grid>
         </Box>
-      </Card>
-    </Box>
+      </Card >
+    </Box >
   );
 
   const loadingRendering = () => <div>Cargando detalles de entrega...</div>;
