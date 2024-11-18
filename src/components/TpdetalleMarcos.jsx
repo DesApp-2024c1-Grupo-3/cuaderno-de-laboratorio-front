@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, NavLink } from 'react-router-dom';
 import {
   Card, Paper, Typography, TableRow, TableHead, TableContainer, TableCell,
   TableBody, Table, Grid, Box, Button, Container, CardContent
@@ -56,29 +56,29 @@ const TpDetalle = () => {
     if (!calificaciones || !Array.isArray(calificaciones)) {
       return 'No asignada';
     }
-  
+
     // Intentamos encontrar la calificación
     const calificacion = calificaciones.find(c =>
       tipo === 'alumno' ? c.alumnoId === id : c.grupoId === id
-    )??"" ;
+    ) ?? "";
     // Si existe una calificación válida que no es 'No asignada'
-    
+
     if (calificacion && calificacion.calificacion) {
-        return` ${calificacion.calificacion} / 10`;
-      }
+      return ` ${calificacion.calificacion} / 10`;
+    }
 
     // Si el estado es 'En marcha' o 'En evaluación' y no hay calificación (o entrega)
-    console.log('tp.estado ',calificacion );
+    console.log('tp.estado ', calificacion);
     if (!calificacion && (tp.estado === 'En marcha' || tp.estado === 'En evaluacion')) {
       return 'No entregado';
     }
-  
-    
-  
+
+
+
     // En cualquier otro caso
     return 'No asignada';
   };
-  
+
   const SubHeader = ({ titulo, nombreTP }) => {
     return (
       <Grid container justifyContent="center" alignItems="center" >
@@ -93,7 +93,7 @@ const TpDetalle = () => {
     const [year, month, day] = fechaHora.split('T')[0].split('-');
     return `${day}/${month}/${year}`;
   };
-  
+
 
   const handleCerrarTP = async () => {
     if (isTPClosed) {
@@ -125,7 +125,7 @@ const TpDetalle = () => {
       alert('Hubo un error al intentar cerrar el TP.');
     }
   }
-  
+
   const tpRendering = () => (
     <Box>
       <Header />
@@ -167,8 +167,9 @@ const TpDetalle = () => {
           ) : (
             <Grid container justifyContent="flex-end">
               <Grid item mb={1}>
-                <Button variant="contained" sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={() => history.goBack()}>
+                <Button variant="contained"
+                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  onClick={() => history.push(`/tps/${idCurso}/${profesorId}`)}>
                   Volver
                 </Button>
               </Grid>
@@ -229,7 +230,7 @@ const TpDetalle = () => {
                               borderRadius: '5%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/calificarGrupo/${grupo._id}/${profesorId}/${tpId} `)}
+                            onClick={() => history.push(`/calificarGrupo/${grupo._id}/${profesorId}/${tpId}/${idCurso}`)}
                           >
                             Ver
                           </Button>
@@ -256,7 +257,7 @@ const TpDetalle = () => {
                               borderRadius: '5%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/CalificarAlumno/${alumno._id}/${profesorId}/${tpId}`)}
+                            onClick={() => history.push(`/CalificarAlumno/${alumno._id}/${profesorId}/${tpId}/${idCurso}`)}
                           >
                             Ver
                           </Button>
@@ -329,7 +330,8 @@ const TpDetalle = () => {
         </CardContent>
         <Grid item mx={2} mb={2}>
           <Button
-            onClick={() => history.goBack()}
+            component={NavLink}
+            to={`/tps/${idCurso}/${profesorId}`}
             variant="contained"
             color="primary"
             sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}

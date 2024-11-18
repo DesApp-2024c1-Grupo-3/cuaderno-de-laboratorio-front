@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, CardContent, Container, Box, Grid, Table, TableBody, TableCell,
+import {
+  Button, Card, CardContent, Container, Box, Grid, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Typography, Paper, Alert
 } from '@mui/material';
 import { getDataFromBackend } from '../constants/curso';
@@ -9,7 +10,7 @@ import { useParams, NavLink } from 'react-router-dom';
 import { SubHeader } from './General/SubHeader';
 import { getProfesorPorId } from '../services/Profesor';
 
-import { Header} from './General/HeaderProf';
+import { Header } from './General/HeaderProf';
 
 
 //const profesorId = '669028aeb16ac395eec3432c'; //PARA BORRAR , LO DEJO PARA NO ROMPER NADA
@@ -78,7 +79,7 @@ export default function Comision() {
 
 
   const comisionRendering = () => (
-    
+
     <Box display="flex" flexDirection="column">
       <Header />
       <Card sx={{ mb: 2 }}>
@@ -121,7 +122,7 @@ export default function Comision() {
                         alignItems: 'center' // Centra verticalmente
                       }}>
 
-                        <Button 
+                        <Button
                           sx={{
                             backgroundColor: '#c5e1a5',
                             color: '#000000',
@@ -140,18 +141,7 @@ export default function Comision() {
             <div style={{ marginTop: '20px' }}></div>{/*SALTO DE LINEA*/}
           </Container>
         </CardContent>
-        <Grid container
-              marginTop='20px'
-              mx={2}
-              mb={2}
-            >
-              <Grid item>
-                <Button Button variant="contained" 
-                sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }} component={NavLink} to="/">
-                  Salir
-                </Button>
-              </Grid>
-            </Grid>
+
       </Card>
     </Box>
   );

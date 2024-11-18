@@ -9,13 +9,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { ModalCrearGrupos } from './ModalCrearGrupoBeta';
 import { ModalModificarGrupo } from './ModalModificarGrupoBeta';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, NavLink } from 'react-router-dom';
 import { getGrupoByCursoId, postEliminarGrupo } from '../../services/Grupo';
 import { SubHeader } from '../General/SubHeader';
 import { Header } from '../General/HeaderProf';
 
 const AdministrarGrupos = () => {
-  const { idCurso } = useParams();
+  const { idCurso, profesorId } = useParams();
   const history = useHistory();
   const [grupos, setGrupos] = useState([]);
   const [hasError, setHasError] = useState(false);
@@ -159,15 +159,19 @@ const AdministrarGrupos = () => {
           </Container>
         </CardContent>
         <Grid container p={2} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+
           <Grid item>
             <Button
               variant="contained"
               sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-              onClick={() => history.goBack()}
+              component={NavLink}
+              to={`/tps/${idCurso}/${profesorId}`}
             >
               Volver
             </Button>
           </Grid>
+
+
           <Grid item>
             <Button
               variant="contained"

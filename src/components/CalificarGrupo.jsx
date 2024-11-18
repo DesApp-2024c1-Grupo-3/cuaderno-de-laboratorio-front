@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Card, CardContent, Button, Typography, TextField, Container, Box, MenuItem, Grid,
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle  
- } from '@mui/material';
+import {
+  Card, CardContent, Button, Typography, TextField, Container, Box, MenuItem, Grid,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+} from '@mui/material';
 import { Header } from './General/HeaderProf';
 import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
 import { getTpId } from '../services/tps';
 import { getAlumnoById } from '../services/Alumnos';
-import { getComAlumnByCalifId, updateCalificacion, postEliminarCalificacion} from '../services/Calificacion';
+import { getComAlumnByCalifId, updateCalificacion, postEliminarCalificacion } from '../services/Calificacion';
 
 const TpEntrega = () => {
-  const { idEntregaGrupal, tpId } = useParams();
+  const { idEntregaGrupal, tpId, profesorId, idCurso } = useParams();
   const [tp, setTp] = useState(null);
   const [grupo, setGrupo] = useState(null);
   const [nota, setNota] = useState('');
@@ -23,53 +24,53 @@ const TpEntrega = () => {
   const [editMode, setEditMode] = useState(false);
 
   const history = useHistory();
-  
+
   useEffect(() => {
     async function fetchTp() {
       try {
-        
+
         const gruposData = await getGrupoPorId(idEntregaGrupal);
         setGrupo(gruposData);
-        
+
         if (tpId) {
           const tpData = await getTpId(tpId);
           setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
-          
+
         } else {
           console.error('tpId es undefined');
           setHasError(true);
         }
         try {
           const califData = await getComAlumnByCalifId(idEntregaGrupal, tpId);
-          setComentarioAlumno(califData );
+          setComentarioAlumno(califData);
           if (califData.file && califData.file.length > 0) {
             const archivos = califData.file.map((file, index) => {
-                
+
               if (file && file.data) {
                 // Convertimos el array de bytes a Uint8Array
                 const byteArray = new Uint8Array(file.data);
                 // Creamos el Blob
                 const blob = new Blob([byteArray], { type: califData.fileType[index] });
-                
+
                 // Generamos la URL del Blob
                 const url = URL.createObjectURL(blob);
-            
+
                 // Si no hay nombre en `fileName`, generamos un nombre por defecto
-                const nombreArchivo = califData.fileName[index]|| `archivo_${index + 1}.pdf`
-            
+                const nombreArchivo = califData.fileName[index] || `archivo_${index + 1}.pdf`
+
                 // Devolvemos el archivo con su URL y nombre
                 return {
                   url: url,
                   nombre: nombreArchivo,  // Nombre del archivo
                 };
               }
-            
+
               return null;
             }).filter(item => item !== null);  // Filtramos los elementos nulos
-            
+
             // Actualizamos el estado con los archivos procesados
             setArchivo(archivos);
-                   
+
           }
           //setNota(califData?.calificacion);
           if (tp?.estado === 'En evaluacion' && (!califData || !califData.calificacion)) {
@@ -80,7 +81,7 @@ const TpEntrega = () => {
 
           const alumnoEntregador = await getAlumnoById(califData.alumnoId);
           setEntrego(alumnoEntregador);
-        
+
         } catch (error) {
           if (error.response && error.response.status === 404 || error.response.status === 500) {
             setComentarioAlumno('');
@@ -92,7 +93,7 @@ const TpEntrega = () => {
     }
     fetchTp();
   }, [idEntregaGrupal, tpId]);
-  
+
 
   const handleNotaChange = (e) => {
     const value = e.target.value;
@@ -101,10 +102,10 @@ const TpEntrega = () => {
       setNota(value);
     }
   };
-  
-  
+
+
   const handleComentarioChange = (e) => setComentario(e.target.value);
-  
+
   const handleSave = async () => {
     const calificacionData = {
       devolucionProf: comentario,
@@ -121,7 +122,7 @@ const TpEntrega = () => {
       console.error('Error al guardar la calificación', err);
     }
   };
-  
+
   const handleEdit = () => {
     setEditMode(true);
   };
@@ -148,7 +149,7 @@ const TpEntrega = () => {
     const [year, month, day] = fechaHora.split('T')[0].split('-');
     return `${day}/${month}/${year}`;
   };
-  
+
 
   const SubHeader = ({ titulo, nombreTP }) => (
     <Grid container justifyContent="center" alignItems="center">
@@ -185,22 +186,22 @@ const TpEntrega = () => {
               </Grid>
 
               <Grid container spacing={2} alignItems="center">
-            <Grid item xs={3}>
-              <Typography variant="body1" color="textSecondary">
-                Fechas:
-              </Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography variant="body2" component="div">
-                Inicio: {formatFecha(tp.fechaInicio)}
-              </Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography variant="body2" component="div">
-                Fin: {formatFecha(tp.fechaFin)}
-              </Typography>
-            </Grid>
-          </Grid>
+                <Grid item xs={3}>
+                  <Typography variant="body1" color="textSecondary">
+                    Fechas:
+                  </Typography>
+                </Grid>
+                <Grid item xs={4}>
+                  <Typography variant="body2" component="div">
+                    Inicio: {formatFecha(tp.fechaInicio)}
+                  </Typography>
+                </Grid>
+                <Grid item xs={4}>
+                  <Typography variant="body2" component="div">
+                    Fin: {formatFecha(tp.fechaFin)}
+                  </Typography>
+                </Grid>
+              </Grid>
             </>
           )}
           <Container maxWidth="xl" sx={{ mt: 1, mb: 1, border: 'solid', borderWidth: '20px', borderColor: 'rgba(0, 0, 0, 0.08)', borderRadius: '1%' }}>
@@ -228,28 +229,28 @@ const TpEntrega = () => {
               </Table>
             </TableContainer>
             <Box mt={2}>
-            <Typography variant="h6" component="div" gutterBottom>
+              <Typography variant="h6" component="div" gutterBottom>
                 {comAlumno && entrego ? `Trabajo práctico entregado por ${entrego.apellido}, ${entrego.nombre}` : 'Documento no entregado. El trabajo practico no fue entregado'}
-                <br/>
-                {archivo && archivo.length > 0  && (
+                <br />
+                {archivo && archivo.length > 0 && (
                   <>
-                    Documento entregado: <span style={{ color: 'blue'}}>Descargar</span>
+                    Documento entregado: <span style={{ color: 'blue' }}>Descargar</span>
                   </>
                 )}
-            </Typography>
+              </Typography>
               {archivo && archivo.length > 0 && (
                 <>
                   {archivo.map((archivo, index) => (
                     <a key={index} href={archivo.url} download={archivo.nombre}>
-                       <br/>
-                       {archivo.nombre}
-                       <br/>
+                      <br />
+                      {archivo.nombre}
+                      <br />
                     </a>
-                    
+
                   ))}
                 </>
               )}
-              <br/>
+              <br />
               {comAlumno && (
                 <>
                   <Typography variant="h6">
@@ -258,7 +259,7 @@ const TpEntrega = () => {
                       {comAlumno.comentarioAlum}
                     </Typography>
                   </Typography>
-                  <br/>
+                  <br />
                 </>
               )}
             </Box>
@@ -275,112 +276,112 @@ const TpEntrega = () => {
                         </Grid>
                       )}
                       {comAlumno.devolucionProf && (
-                        <Grid item xs={8}>  
+                        <Grid item xs={8}>
                           <Typography variant="h6" component="div" gutterBottom>
                             Devolución: {comAlumno.devolucionProf}
                           </Typography>
                         </Grid>
                       )}
-                      </>
+                    </>
                   ) : (
                     <Typography variant="h6" component="div" gutterBottom>
                       Aun no se ha calificado.
                     </Typography>
                   )
-                ) : ('')}              
+                ) : ('')}
 
 
-              {(editMode) && (
-                <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12}>  
-                <TextField
-                    select
-                    label="Nota"
-                    value={nota}
-                    onChange={handleNotaChange}
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                  >
-                    {[...Array(10)].map((_, i) => (
-                      <MenuItem key={i + 1} value={i + 1}>
-                        {i + 1}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  <TextField
-                    label="Comentario"
-                    value={comentario}
-                    onChange={handleComentarioChange}
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    multiline
-                    rows={4}
-                    autoComplete='off'
-                  />
-                </Grid>
-                </Grid>
-              )}
+                {(editMode) && (
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12}>
+                      <TextField
+                        select
+                        label="Nota"
+                        value={nota}
+                        onChange={handleNotaChange}
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                      >
+                        {[...Array(10)].map((_, i) => (
+                          <MenuItem key={i + 1} value={i + 1}>
+                            {i + 1}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                      <TextField
+                        label="Comentario"
+                        value={comentario}
+                        onChange={handleComentarioChange}
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        multiline
+                        rows={4}
+                        autoComplete='off'
+                      />
+                    </Grid>
+                  </Grid>
+                )}
               </Grid>
             </Box>
           </Container>
         </CardContent>
         {!comAlumno && (
-                <>
-                  <Grid item mx={2}>
-                    <Button
-                      onClick={() => history.goBack()}
-                      variant="contained"
-                      color="primary"
-                      sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                    >
-                      Volver
-                    </Button>
-                  </Grid>
-                </>
-              )}    
-          <Box display="flex" justifyContent="space-between" p={2}>
-            <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              {comAlumno && !editMode &&  (
-                <>
-                  <Grid item>
-                    <Button
-                      onClick={() => history.goBack()}
-                      variant="contained"
-                      color="primary"
-                      sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                    >
-                      Volver
-                    </Button>
-                  </Grid>
+          <>
+            <Grid item mx={2}>
+              <Button
+                onClick={() => history.push(`/tp/${idCurso}/${profesorId}/${tpId}`)}
+                variant="contained"
+                color="primary"
+                sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+              >
+                Volver
+              </Button>
+            </Grid>
+          </>
+        )}
+        <Box display="flex" justifyContent="space-between" p={2}>
+          <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            {comAlumno && !editMode && (
+              <>
+                <Grid item>
+                  <Button
+                    onClick={() => history.push(`/tp/${idCurso}/${profesorId}/${tpId}`)}
+                    variant="contained"
+                    color="primary"
+                    sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  >
+                    Volver
+                  </Button>
+                </Grid>
 
-                  <Grid item>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={handleEdit}
-                      sx={{
-                        backgroundColor: '#c5e1a5',
-                        color: '#000000',
-                        '&:hover': { backgroundColor: '#b0d38a' }
-                      }}
-                    >
-                      Editar Calificación
-                    </Button>
-                  </Grid>
-                  <Grid item>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleEdit}
+                    sx={{
+                      backgroundColor: '#c5e1a5',
+                      color: '#000000',
+                      '&:hover': { backgroundColor: '#b0d38a' }
+                    }}
+                  >
+                    Editar Calificación
+                  </Button>
+                </Grid>
+                <Grid item>
                   <Button variant="contained" color="error" onClick={handleClickOpen}>
                     Eliminar Entrega
                   </Button>
                 </Grid>
-                </>
-              )}
-              {comAlumno && editMode && (
-                <>
+              </>
+            )}
+            {comAlumno && editMode && (
+              <>
                 <Grid item>
                   <Button
-                    onClick={() => history.goBack()}
+                    onClick={() => history.push(`/tp/${idCurso}/${profesorId}/${tpId}`)}
                     variant="contained"
                     color="primary"
                     sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
@@ -409,9 +410,9 @@ const TpEntrega = () => {
                   </Button>
                 </Grid>
               </>
-              )}
-            </Grid>
-          </Box>
+            )}
+          </Grid>
+        </Box>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Confirmación</DialogTitle>
           <DialogContent>

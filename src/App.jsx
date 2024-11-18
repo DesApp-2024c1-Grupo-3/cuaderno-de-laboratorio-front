@@ -69,8 +69,8 @@ const App = () => {
           <ProtectedRoute path="/crearTps/:idCurso/:profesorId" component={CrearTpsBeta} />
           <ProtectedRoute path="/Administrar_Grupos/:idCurso/:profesorId" component={AdministrarGrupos} />
           <ProtectedRoute path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />
-          <ProtectedRoute path="/calificarGrupo/:idEntregaGrupal/:profesorId/:tpId" component={CalificarGrupo} />
-          <ProtectedRoute path="/calificarAlumno/:idEntregaAlumno/:profesorId/:tpId" component={CalificarAlumno} />
+          <ProtectedRoute path="/calificarGrupo/:idEntregaGrupal/:profesorId/:tpId/:idCurso" component={CalificarGrupo} />
+          <ProtectedRoute path="/calificarAlumno/:idEntregaAlumno/:profesorId/:tpId/:idCurso" component={CalificarAlumno} />
           <ProtectedRoute path="/modificarTP/:idCurso/:profesorId/:tpId" component={TpModificar} />
 
           {/* Rutas protegidas para el alumno */}
@@ -85,7 +85,7 @@ const App = () => {
             <div>Página no encontrada</div>
           </Route>
         </Switch>
-        <Footer/>
+        <Footer />
       </Router>
     </div>
   );

@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useHistory, useParams } from 'react-router-dom';
-import { Button, Card, CardContent, Container, FormControl, FormLabel, RadioGroup, 
-  FormControlLabel, Radio, TextField, Box, Grid, Typography 
+import {
+  Button, Card, CardContent, Container, FormControl, FormLabel, RadioGroup,
+  FormControlLabel, Radio, TextField, Box, Grid, Typography
 } from '@mui/material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { getCursoById, crearTp as postCrearTp, crearTpMultipart } from '../services/tps';
 import ListaDeGrupos from './Profesores/ListaDeGrupos';
-import { Header} from './General/HeaderProf';
+import { Header } from './General/HeaderProf';
 
 const CrearTpsBeta = () => {
   const { idCurso, profesorId } = useParams();
@@ -41,7 +42,7 @@ const CrearTpsBeta = () => {
   const handleSave = async () => {
     try {
       const formData = new FormData();
-      
+
       archivos.forEach((archivo, index) => {
         formData.append('file', archivo);
       });
@@ -52,10 +53,10 @@ const CrearTpsBeta = () => {
       formData.append('grupos', JSON.stringify(tpData.grupo)); // Grupos seleccionados
       formData.append('consigna', tpData.consigna); // Consigna del trabajo
 
-      await crearTpMultipart( profesorId, idCurso, formData);
-        window.alert('Trabajo práctico creado correctamente');
-        history.goBack();
-      
+      await crearTpMultipart(profesorId, idCurso, formData);
+      window.alert('Trabajo práctico creado correctamente');
+      history.goBack();
+
     } catch (err) {
       console.error('Error al guardar', err);
     }
@@ -63,7 +64,7 @@ const CrearTpsBeta = () => {
   const handleConsignaChange = (value) => {
     setTpData((prev) => ({ ...prev, consigna: value }));
   };
-  
+
   const validarDatos = () => {
     if (!tpData.nombre || !tpData.fechaInicio || !tpData.fechaFin) {
       window.alert('Completa todos los campos obligatorios: Nombre, Fecha Inicio, Fecha Fin');
@@ -129,21 +130,21 @@ const CrearTpsBeta = () => {
           <Typography variant="h6" component="div" gutterBottom>
             Nuevo TP
           </Typography>
-          <Container 
+          <Container
             maxWidth="xl"
-            sx={{ 
-              mt: 1, 
-              mb: 1, 
-              border: 'solid', 
-              borderWidth: '10px 20px 20px 10px', 
+            sx={{
+              mt: 1,
+              mb: 1,
+              border: 'solid',
+              borderWidth: '10px 20px 20px 10px',
               borderColor: 'rgba(0, 0, 0, 0.08)',
-              borderRadius: '1%' 
-            }}           
+              borderRadius: '1%'
+            }}
           >
             <form>
               <Box component="div" sx={{}}>
                 <Typography variant="h6" gutterBottom>
-                   {dato ? dato.materia : 'Cargando...'}
+                  {dato ? dato.materia : 'Cargando...'}
                 </Typography>
                 <TextField
                   label="Nombre de Tp"
@@ -162,10 +163,10 @@ const CrearTpsBeta = () => {
                   style={{ marginBottom: '20px' }}
                   modules={{
                     toolbar: [
-                      [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
-                      [{size: []}],
+                      [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                      [{ size: [] }],
                       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                      [{'list': 'ordered'}, {'list': 'bullet'}],
+                      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                       ['link', 'image'],
                       ['clean']
                     ]
@@ -211,14 +212,14 @@ const CrearTpsBeta = () => {
                     <Typography variant="h6" component="div" gutterBottom>
                       {archivos && ('Subir Trabajo practico')}
                     </Typography>
-                    {archivos &&( <Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
-                        Subir archivos
-                        <input type="file" hidden multiple onChange={handleArchivoChange} />
-                      </Button>)}
+                    {archivos && (<Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
+                      Subir archivos
+                      <input type="file" hidden multiple onChange={handleArchivoChange} />
+                    </Button>)}
                     {archivos && archivos.map((archivo, index) => (
                       <Typography variant="body2" key={index}>{archivo.name}</Typography>
                     ))}
-                                     
+
                   </Grid>
                   <Grid item xs={5}>
                     <FormControl margin="normal" fullWidth>
@@ -245,31 +246,31 @@ const CrearTpsBeta = () => {
                     setGruposParaTrabajo={setGruposParaTrabajo}
                   />
                 )}
-                
+
               </Box>
             </form>
           </Container>
         </CardContent>
-          <Box 
-                  display="flex"
-                  justifyContent="space-between"
-                  p={2}  
-                >
-                  <Button
-                    variant="contained"
-                    sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                    component={NavLink}
-                    to={`/tps/${idCurso}/${profesorId}`}
-                  >Volver
-                  </Button>
-                  <Button
-                    variant="contained"
-                    sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
-                    onClick={handleSave}
-                    
-                  >Grabar TP
-                  </Button>
-                </Box>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          p={2}
+        >
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+            component={NavLink}
+            to={`/tps/${idCurso}/${profesorId}`}
+          >Volver
+          </Button>
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
+            onClick={handleSave}
+
+          >Grabar TP
+          </Button>
+        </Box>
       </Card>
     </Box>
   );

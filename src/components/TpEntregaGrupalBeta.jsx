@@ -390,7 +390,7 @@ const TpEntrega = () => {
             <>
               <Grid item>
                 <Button
-                  onClick={() => history.goBack()}
+                  onClick={() => history.push(`/tpsAlumno/${idCurso}/${alumnoId}`)}
                   variant="contained"
                   color="primary"
                   sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
