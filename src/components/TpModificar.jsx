@@ -98,7 +98,7 @@ const TpModificar = () => {
             try {
                 const response = await getTpId(tpId);
                 const tp = response.tp; // Acceder al objeto tp dentro del response
-                console.log('Grupo traido del tp:', tp.grupos)    
+                console.log('Grupo traido del tp:', tp.grupos)
                 setTpData({
                     nombre: tp?.nombre || '',
                     fechaInicio: tp?.fechaInicio ? tp.fechaInicio.split('T')[0] : '',
@@ -221,11 +221,11 @@ const TpModificar = () => {
                                             name="fechaFin"
                                             value={tpData.fechaFin}
                                             onChange={handleChange}
-                                            disabled={tpData.estado === 'Cerrado'} // Deshabilitado si el estado es 'Cerrado'
+                                            disabled={tpData.estado === 'Cerrado' || tpData.estado === 'En evaluacion'} // Deshabilitado si el estado es 'Cerrado'
                                         />
 
                                     </Grid>
-                                    
+
                                     <Grid item xs={5}>
                                         <FormControl margin="normal" fullWidth>
                                             <FormLabel>Grupal</FormLabel>

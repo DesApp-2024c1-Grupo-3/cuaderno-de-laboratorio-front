@@ -63,7 +63,7 @@ export default function Tps() {
     const [year, month, day] = fechaHora.split('T')[0].split('-');
     return `${day}/${month}/${year}`;
   };
-  
+
 
   const tpsRendering = () => (
     <Box display="flex" flexDirection="column">
@@ -86,7 +86,7 @@ export default function Tps() {
               {dato.materia} - {dato.comision}
             </Typography>
             <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)'}} aria-label="simple table">
+              <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     <TableCell style={{ width: '27%', fontSize: '18px', paddingLeft: '4%' }}>Nombre del TP</TableCell>
@@ -102,10 +102,10 @@ export default function Tps() {
                     <TableRow
                       key={tp._id}
                       sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
-                      
+
                     >
                       <TableCell align="center">{tp.nombre}</TableCell>
-                      <TableCell align="center">{tp.grupal === false ? 'Individual':'Grupal'}</TableCell>
+                      <TableCell align="center">{tp.grupal === false ? 'Individual' : 'Grupal'}</TableCell>
                       <TableCell align="center">{tp.estado || 'Desconocido'}</TableCell>
                       <TableCell align="center">{formatFecha(tp.fechaInicio)}</TableCell>
                       <TableCell align="center">{formatFecha(tp.fechaFin)}</TableCell>
@@ -126,21 +126,21 @@ export default function Tps() {
                         </Button>
                       </TableCell>
                       <TableCell align="center">
-                        {tp.estado !== 'Cerrado' && (
-                        <Button
-                          variant="contained"
-                          sx={{
-                            backgroundColor: '#ffb74d',
-                            color: '#000000',
-                            fontSize: '10px',
-                            borderRadius: '5%',
-                            marginRight: '5%',
-                            '&:hover': { backgroundColor: '#ffa726' }
-                          }}
-                          onClick={() => history.push(`/modificarTP/${idCurso}/${profesorId}/${tp._id}`)}
-                        >
-                          Modificar
-                        </Button>
+                        {(tp.estado === 'Futuro' || tp.estado === 'En marcha') && (
+                          <Button
+                            variant="contained"
+                            sx={{
+                              backgroundColor: '#ffb74d',
+                              color: '#000000',
+                              fontSize: '10px',
+                              borderRadius: '5%',
+                              marginRight: '5%',
+                              '&:hover': { backgroundColor: '#ffa726' }
+                            }}
+                            onClick={() => history.push(`/modificarTP/${idCurso}/${profesorId}/${tp._id}`)}
+                          >
+                            Modificar
+                          </Button>
                         )}
                       </TableCell>
                     </TableRow>
@@ -152,36 +152,36 @@ export default function Tps() {
           </Container>
         </CardContent>
         <Box display="flex" justifyContent="space-between" p={2}>
-        <Grid container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={handleVolver}
-                >
-                  Volver
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={handleAdministrarGrupo}
-                >
-                  Administrar Grupo
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={handleNuevoTp}
-                >
-                  Nuevo TP
-                </Button>
-              </Grid>
+          <Grid container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Grid item>
+              <Button
+                variant="contained"
+                sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                onClick={handleVolver}
+              >
+                Volver
+              </Button>
             </Grid>
-            </Box>
+            <Grid item>
+              <Button
+                variant="contained"
+                sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
+                onClick={handleAdministrarGrupo}
+              >
+                Administrar Grupo
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
+                onClick={handleNuevoTp}
+              >
+                Nuevo TP
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
       </Card>
     </Box>
   );
