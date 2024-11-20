@@ -18,6 +18,7 @@ const AlumnoTps = () => {
   const handleBack = () => {
     history.push(`/alumno/curso/${alumnoId}`);  // Cambia a la ruta que prefieras
   };
+  console.log("calificaciones:", calificaciones)
   useEffect(() => {
     async function fetchData() {
       try {
@@ -96,6 +97,23 @@ const AlumnoTps = () => {
     const fecha = fechaHora.split('T')[0];
     return fecha;
   };
+  const obtenerFechaActual = () => {
+    const hoy = new Date();
+    return hoy.toISOString().split('T')[0]; // Formato: YYYY-MM-DD
+  };
+  
+  const compararFechas = (fechaFin) => {
+    const fechaActual = obtenerFechaActual();
+    const fechaFinFormateada = formatFecha(fechaFin);
+  
+    if (fechaFinFormateada === fechaActual) {
+      return "La fecha es hoy";
+    } else if (fechaFinFormateada > fechaActual) {
+      return "La fecha es futura";
+    } else {
+      return "No entregada";
+    }
+  };
 
   return (
     <Box display="flex" flexDirection="column">
@@ -158,7 +176,7 @@ const AlumnoTps = () => {
                             }}
                             onClick={() => history.push(`/entregaAlumno/${alumnoId}/${tp._id}/${idCurso}`)}
                           >
-                            {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') ? 'Ver' : 'Ver'}{/* ARREGLAR*/}
+                            {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') ? 'Ver' : 'Agregar'}{/* ARREGLAR*/}
                           </Button>
                         ) : (
                           <Button
@@ -172,7 +190,7 @@ const AlumnoTps = () => {
                             }}
                             onClick={() => history.push(`/entregaGrupo/${alumnoId}/${tp._id}/${idCurso}`)}
                           >
-                            {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') ? 'Ver' : 'Ver'}{/* ARREGLAR*/}
+                            {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') ? 'Ver' : 'Agregar'}{/* ARREGLAR*/}
                           </Button>
                         )
                         }
