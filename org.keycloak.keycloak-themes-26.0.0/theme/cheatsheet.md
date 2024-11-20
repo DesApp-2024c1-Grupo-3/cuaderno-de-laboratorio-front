@@ -31,6 +31,7 @@ docker exec -u root -it e7c2e6e82234 /bin/bash
 # :destino (cointainer)
 
 docker cp C:\Users\Aguss\Desktop\PPS\cuaderno-de-laboratorio-front\org.keycloak.keycloak-themes-26.0.0\theme\Tema_UNAHUR e7c2e6e82234:/opt/keycloak/themes/Tema_UNAHUR
+docker cp C:\Users\Aguss\Desktop\PPS\cuaderno-de-laboratorio-front\org.keycloak.keycloak-themes-26.0.0\theme\tema_UNAHUR2 e7c2e6e82234:/opt/keycloak/themes/Tema_UNAHUR2
 
 # para ejecutar una orden al container
 
