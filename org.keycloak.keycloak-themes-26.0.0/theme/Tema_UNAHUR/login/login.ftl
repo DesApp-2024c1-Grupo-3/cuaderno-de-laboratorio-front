@@ -3,7 +3,7 @@
 
 <!-- Encabezado -->
 <div class="header">
-    <img src="../../assets/UNAHUR.png" alt="${msg("logoAlt")}" />
+    <img src=".resources/img/UNAHUR.png" alt="${msg("logoAlt")}" />
     <div class="header-title">${msg("labNotebookTitle")}</div>
 </div>
 
