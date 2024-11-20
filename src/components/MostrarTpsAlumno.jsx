@@ -80,16 +80,24 @@ const AlumnoTps = () => {
 
 
 
-  const getCalificacion = (idTp) => {
-    // Asegúrate de que calificaciones esté definido y sea un array antes de buscar
-    if (!calificaciones || !Array.isArray(calificaciones)) {
-      return 'No asignada';  // o un valor por defecto adecuado
+  const getCalificacion = (idTp, estado, comentarios) => {
+    if (!comentarios || !Array.isArray(comentarios)) {
+      return 'No asignada';
     }
-    const calificacion = calificaciones.find(c =>
-      c.tpId === idTp);
-    // Retorna la calificación si se encuentra, o un mensaje por defecto
-    return calificacion && calificacion.calificacion ? calificacion.calificacion : 'No asignada';
+  
+    // Verificar si existe un comentario para este TP
+    const comentario = comentarios.find(c => c.tpId === idTp);
+  
+    if (!comentario) {
+      // Si no hay comentario, retornar "No entregado" para estados distintos a "En marcha"
+      return estado !== 'En marcha' ? 'No entregado' : 'No asignada';
+    }
+  
+    // Si hay comentario, verificar la calificación
+    return comentario.calificacion || 'No asignada';
   };
+  
+  
 
   
   const formatFecha = (fechaHora) => {
@@ -142,8 +150,15 @@ const AlumnoTps = () => {
                       <TableCell align="center">{tp.grupal === false ? 'Individual' : 'Grupal'}</TableCell>
                       <TableCell align="center">{tp.estado}</TableCell>
                       <TableCell align="center">{formatFecha(tp.fechaFin)}</TableCell>
-                      <TableCell align="center">{getCalificacion(tp._id) !== 'No asignada' && tp.estado === 'Cerrado' ?
-                        `${getCalificacion(tp._id)} / 10` : 'No asignada'}</TableCell>
+                      <TableCell align="center">
+                        {getCalificacion(tp._id, tp.estado, calificaciones) === 'No entregado' ? 
+                          'No entregado' : 
+                          getCalificacion(tp._id, tp.estado, calificaciones) !== 'No asignada' && tp.estado === 'Cerrado' ? 
+                            `${getCalificacion(tp._id, tp.estado, calificaciones)} / 10` : 
+                            'No asignada'}
+                      </TableCell>
+
+
 
                       <TableCell align="center">
                         {!tp.grupal ? (
