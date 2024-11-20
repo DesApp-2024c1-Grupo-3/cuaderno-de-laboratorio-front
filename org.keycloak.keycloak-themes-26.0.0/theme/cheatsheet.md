@@ -20,7 +20,7 @@ docker exec -it e7c2e6e82234 bash
 
 # para ejecutar el bash en modo root
 
-docker exec -u root -it e7c2e6e82234 /bin/bash
+docker exec -u root -it 026584f2827c /bin/bash
 
 # copiar
 
@@ -30,8 +30,8 @@ docker exec -u root -it e7c2e6e82234 /bin/bash
 
 # :destino (cointainer)
 
-docker cp C:\Users\Aguss\Desktop\PPS\cuaderno-de-laboratorio-front\org.keycloak.keycloak-themes-26.0.0\theme\Tema_UNAHUR e7c2e6e82234:/opt/keycloak/themes/Tema_UNAHUR
-docker cp C:\Users\Aguss\Desktop\PPS\cuaderno-de-laboratorio-front\org.keycloak.keycloak-themes-26.0.0\theme\tema_UNAHUR2 e7c2e6e82234:/opt/keycloak/themes/Tema_UNAHUR2
+docker cp C:\Users\Aguss\Desktop\DesApp1C2024\cuaderno-de-laboratorio-front\org.keycloak.keycloak-themes-26.0.0\theme\Tema_UNAHUR 026584f2827c:/opt/keycloak/themes/Tema_UNAHUR
+docker cp C:\Users\Aguss\Desktop\DesApp1C2024\cuaderno-de-laboratorio-front\org.keycloak.keycloak-themes-26.0.0\theme\tema_UNAHUR2 17bcbcc5cae0:/opt/keycloak/themes/Tema_UNAHUR2
 
 # para ejecutar una orden al container
 
@@ -44,3 +44,9 @@ docker cp C:\Users\Aguss\Desktop\PPS\cuaderno-de-laboratorio-front\org.keycloak.
 # que directorio
 
 docker exec e7c2e6e82234 rm -rf /opt/keycloak/themes/mi-tema
+
+docker cp C:\Users\Aguss\Desktop\DesApp1C2024\cuaderno-de-laboratorio-front\org.keycloak.keycloak-themes-26.0.0\theme\Tema_UNAHUR 026584f2827c:/opt/keycloak/themes/Tema_UNAHUR
+docker exec -u root -it 026584f2827c /bin/bash
+rm -rf opt/keycloak/themes/Tema_UNAHUR/
+
+docker exec -u root 026584f2827c rm -rf opt/keycloak/themes/Tema_UNAHUR/
