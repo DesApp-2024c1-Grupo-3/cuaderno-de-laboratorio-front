@@ -104,6 +104,7 @@ const TpEntrega = () => {
         if (tpId) {
           const tpData = await getTpId(tpId);
           setTp(tpData.tp);
+          console.log(tpData.tp.estado);
         } else {
           console.error('tpId es undefined');
           setHasError(true);
@@ -289,11 +290,11 @@ const TpEntrega = () => {
 
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                {!comProfe
-                  ? 'Un solo integrante del grupo puede hacer la entrega'
+                {!comProfe && (tp.estado === 'En marcha')
+                  ? 'Un solo integrante del grupo puede hacer la entrega.'
                   : entrego
-                    ? `Trabajo práctico entregado por ${entrego.apellido}, ${entrego.nombre}`
-                    : 'Trabajo práctico entregado'
+                    ? `Trabajo práctico entregado por ${entrego.apellido}, ${entrego.nombre}.`
+                    : 'Trabajo práctico no entregado.'
                 }
               </Typography>
               {comProfe && (
@@ -321,7 +322,7 @@ const TpEntrega = () => {
                   </Grid>
                 </Grid>
               )}
-              {!comProfe && (
+              {!comProfe && (tp.estado === 'En marcha') && (
                 <>
                   <Button
                     variant="contained"
@@ -355,7 +356,7 @@ const TpEntrega = () => {
                 fullWidth
                 margin="normal"
               />)}
-              {!comProfe && (
+              {!comProfe && (tp.estado === 'En marcha') && (
                 <TextField
                   label="Comentario"
                   value={comentario}
@@ -461,16 +462,18 @@ const TpEntrega = () => {
                   >
                     Volver
                   </Button>
-                </Grid>
+                  </Grid>
+                {tp.estado === 'En marcha' && (
                 <Grid item>
                   <Button
                     variant="contained"
                     sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
                     onClick={handleSave}
-                  >
+                    >
                     Cargar TP
                   </Button>
                 </Grid>
+                  )}
               </>
             )}
           </Grid>
