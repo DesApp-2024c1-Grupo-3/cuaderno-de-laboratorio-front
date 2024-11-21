@@ -255,9 +255,12 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                {!comProfe && ('Entrega de Trabajo practico')}
+                {!comProfe && (tp.estado === 'En marcha')
+                  ? 'Entrega del trabajo práctico.'
+                  : 'Trabajo práctico no entregado.'
+                }
               </Typography>
-              {!comProfe && (
+              {!comProfe && (tp.estado === 'En marcha') && (
                 <>
                   <Button
                     variant="contained"
@@ -291,7 +294,7 @@ const TpEntrega = () => {
                 fullWidth
                 margin="normal"
               />)}
-              {!comProfe && (
+              {!comProfe && (tp.estado === 'En marcha') && (
                 <TextField
                   label="Comentario"
                   value={comentario}
@@ -390,11 +393,12 @@ const TpEntrega = () => {
                   <Button
                     onClick={handleBack}
                     variant="contained"
-                    color="primary"
+                    sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }} S
                   >
                     Volver
                   </Button>
                 </Grid>
+                {tp.estado === 'En marcha' && (
                 <Grid item>
                   <Button
                     variant="contained"
@@ -404,6 +408,7 @@ const TpEntrega = () => {
                     Cargar TP
                   </Button>
                 </Grid>
+                )}
               </>
             )}
           </Grid>
