@@ -18,6 +18,7 @@ const AlumnoTps = () => {
   const handleBack = () => {
     history.push(`/alumno/curso/${alumnoId}`);  // Cambia a la ruta que prefieras
   };
+  console.log("calificaciones:", calificaciones)
   useEffect(() => {
     async function fetchData() {
       try {
@@ -173,7 +174,7 @@ const AlumnoTps = () => {
                             }}
                             onClick={() => history.push(`/entregaAlumno/${alumnoId}/${tp._id}/${idCurso}`)}
                           >
-                            {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') ? 'Ver' : 'Ver'}{/* ARREGLAR*/}
+                            {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') ? 'Ver' : 'Agregar'}{/* ARREGLAR*/}
                           </Button>
                         ) : (
                           <Button
@@ -187,7 +188,7 @@ const AlumnoTps = () => {
                             }}
                             onClick={() => history.push(`/entregaGrupo/${alumnoId}/${tp._id}/${idCurso}`)}
                           >
-                            {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') ? 'Ver' : 'Ver'}{/* ARREGLAR*/}
+                            {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') ? 'Ver' : 'Agregar'}{/* ARREGLAR*/}
                           </Button>
                         )
                         }

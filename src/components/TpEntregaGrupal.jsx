@@ -75,7 +75,7 @@ const TpEntrega = () => {
                 }
 
                 return null;
-              }).filter(item => item !== null);  // Filtramos los elementos nulos
+              }).filter(item => item !== null);  // Filtramos los elementos nulosss
 
               setArchivo(archivos);
             }

@@ -28,7 +28,7 @@ const TpEntrega = () => {
   const [comentario, setComentario] = useState('');
   const [archivos, setArchivos] = useState([]);
   const [archivo, setArchivo] = useState(null);// descarga de archivos del buffer de subida del profesor
-  const [archivoCalif, setArchivoCalif] = useState(null);
+  const [archivoCalif, setArchivoCalif] = useState(null);// desgarga y vista del atp subido por el alumno
   const [hasError, setHasError] = useState(false);
   const [open, setOpen] = useState(false);//LOGICA PARA WARNING ELIMINACION
   const handleBack = () => {
@@ -72,19 +72,17 @@ const TpEntrega = () => {
           if (grupoEncontrado) {
             const tpData = await getTpId(tpId);
             setTp(tpData.tp);
-
+            
             // Convertir archivos solo si `tp.file` existe y tiene contenido
             if (tpData.tp.file && tpData.tp.file.length > 0) {
               const archivosConvertidos = convertirArchivos(tpData.tp.file, tpData.tp.fileType, tpData.tp.fileName);
               setArchivo(archivosConvertidos); // Guardar los archivos convertidos en el estado
-            }
-
+            }        
             try {
               const califData = await getComAlumnByCalifId(grupoEncontrado._id, tpId);
-              const fileEntregado = convertirArchivos(comProfe.file, comProfe.fileType, comProfe.fileName)
               setComentarioProfe(califData);
               setNota(califData.calificacion);
-              setArchivoCalif(fileEntregado)
+               
               // Asigna el alumno que hizo la entrega
               const alumnoEntregador = grupoEncontrado.alumnos.find(alumno => alumno._id === califData.alumnoId);
               setEntrego(alumnoEntregador);
@@ -117,6 +115,12 @@ const TpEntrega = () => {
     fetchTp();
   }, [tpId, alumnoId]);
 
+  useEffect(() => {
+    if (comProfe?.file && comProfe.fileType && comProfe.fileName) {
+      const archivosConvertidos = convertirArchivos(comProfe.file, comProfe.fileType, comProfe.fileName);
+      setArchivoCalif(archivosConvertidos);
+    }
+  }, [comProfe]);
   console.log(tpId)
   console.log("tp", archivos);
   const handleComentarioChange = (e) => setComentario(e.target.value);
