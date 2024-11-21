@@ -372,7 +372,7 @@ const TpEntrega = () => {
                   rows={4}
                 />)}
 
-              {comProfe.calificacion ? (
+              {comProfe.calificacion && (tp.estado === 'Cerrado') ? (
                 <Grid container spacing={2} alignItems="center">
                   <Grid item xs={12}>
                     <Typography variant="h6" component="div" gutterBottom>

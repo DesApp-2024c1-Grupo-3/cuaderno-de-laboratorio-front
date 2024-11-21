@@ -54,30 +54,37 @@ const TpDetalle = () => {
   const getCalificacion = (id, tipo) => {
     // Asegúrate de que calificaciones es un array válido
     if (!calificaciones || !Array.isArray(calificaciones)) {
-      return 'No asignada';
-    }
-
-    // Intentamos encontrar la calificación
-    const calificacion = calificaciones.find(c =>
-      tipo === 'alumno' ? c.alumnoId === id : c.grupoId === id
-    ) ?? "";
-    // Si existe una calificación válida que no es 'No asignada'
-
-    if (calificacion && calificacion.calificacion) {
-      return ` ${calificacion.calificacion} / 10`;
-    }
-
-    // Si el estado es 'En marcha' o 'En evaluación' y no hay calificación (o entrega)
-    console.log('tp.estado ', calificacion);
-    if (!calificacion && (tp.estado === 'En marcha' || tp.estado === 'En evaluacion')) {
       return 'No entregado';
     }
-
-
-
+  
+    // Buscar la calificación asociada al alumno o grupo
+    const calificacion = calificaciones.find(c =>
+      tipo === 'alumno' ? c.alumnoId === id : c.grupoId === id
+    );
+  
+    // Verificar si hay un comentario asociado a la calificación
+    const tieneComentario = calificacion && calificacion.comentario && calificacion.comentario.trim() !== '';
+  
+    // Si hay un comentario pero no hay calificación, marcar como "No asignada"
+    if (tieneComentario && !calificacion.calificacion) {
+      return 'No asignada';
+    }
+  
+    // Si hay una calificación válida, mostrarla
+    if (calificacion && calificacion.calificacion) {
+      return `${calificacion.calificacion} / 10`;
+    }
+  
+    // Si no hay comentario y el estado es 'En marcha', 'En evaluación' o 'Cerrado'
+    if (!tieneComentario && ['En marcha', 'En evaluacion', 'Cerrado'].includes(tp.estado)) {
+      return 'No entregado';
+    }
+  
     // En cualquier otro caso
     return 'No asignada';
   };
+  
+  
 
   const SubHeader = ({ titulo, nombreTP }) => {
     return (
