@@ -72,12 +72,12 @@ const TpEntrega = () => {
           if (grupoEncontrado) {
             const tpData = await getTpId(tpId);
             setTp(tpData.tp);
-            if (comProfe.file && comProfe.file.length > 0){
-              const fileEntregado = convertirArchivos(comProfe.file, comProfe.fileType, comProfe.fileName);
-              setArchivoCalif(fileEntregado)
-            }
+            
             // Convertir archivos solo si `tp.file` existe y tiene contenido
-                    
+            if (tpData.tp.file && tpData.tp.file.length > 0) {
+              const archivosConvertidos = convertirArchivos(tpData.tp.file, tpData.tp.fileType, tpData.tp.fileName);
+              setArchivo(archivosConvertidos); // Guardar los archivos convertidos en el estado
+            }        
             try {
               const califData = await getComAlumnByCalifId(grupoEncontrado._id, tpId);
               setComentarioProfe(califData);
