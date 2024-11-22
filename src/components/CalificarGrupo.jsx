@@ -29,7 +29,7 @@ const TpEntrega = () => {
     history.push(`/tpsAlumno/${idCurso}/${alumnoId}`);
     //history.push('/tpsAlumno/:idCurso/:alumnoId');  // Cambia a la ruta que prefieras
   };
-  c
+  
   const convertirArchivos = (files, fileTypes, fileNames) => {
     if (!files || files.length === 0) return [];
 
@@ -64,7 +64,6 @@ const TpEntrega = () => {
             const archivosConvertidos = convertirArchivos(tpData.tp.file, tpData.tp.fileType, tpData.tp.fileName);
             setTpSubido(archivosConvertidos); // Guardar los archivos convertidos en el estado
           } 
-
         } else {
           console.error('tpId es undefined');
           setHasError(true);
