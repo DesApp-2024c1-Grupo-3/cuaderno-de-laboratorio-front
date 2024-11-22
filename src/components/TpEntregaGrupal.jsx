@@ -16,8 +16,8 @@ import { Header } from './General/HeaderAlum';
 
 const TpEntrega = () => {
   const history = useHistory();
-
-
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const { alumnoId, tpId } = useParams();
   const [grupo, setGrupo] = useState([]);
   const [tp, setTp] = useState([]);
@@ -125,6 +125,20 @@ const TpEntrega = () => {
   const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
   const handleSave = async () => {
     try {
+      // Validación de número de archivos
+    if (archivos.length > 10) {
+      setModalMessage('No puedes subir más de 10 archivos.');
+      setModalOpen(true);
+      return;
+    }
+
+    // Validación de tamaño total de archivos
+    const totalSize = archivos.reduce((sum, archivo) => sum + archivo.size, 0);
+    if (totalSize > 16 * 1024 * 1024) { // 16MB en bytes
+      setModalMessage('El tamaño total de los archivos no puede superar los 16MB.');
+      setModalOpen(true);
+      return;
+    }
       const formData = new FormData();
       //formData.append('file', archivo);
       archivos.forEach((archivo, index) => {
@@ -183,6 +197,11 @@ const TpEntrega = () => {
   };
 
   //console.log(tp.estado);
+
+  // Función para cerrar el modal
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
   const entregaRendering = () => (
     <Box>
@@ -288,6 +307,35 @@ const TpEntrega = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+            <>
+    <Modal open={modalOpen} onClose={handleCloseModal}>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 400,
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 4,
+          borderRadius: '8px',
+        }}
+      >
+        <Typography variant="h6" component="h2">
+          Error
+        </Typography>
+        <Typography sx={{ mt: 2 }}>{modalMessage}</Typography>
+        <Button
+          variant="contained"
+          sx={{ mt: 3 }}
+          onClick={handleCloseModal}
+        >
+          Cerrar
+        </Button>
+      </Box>
+    </Modal>
+  </>
 
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>

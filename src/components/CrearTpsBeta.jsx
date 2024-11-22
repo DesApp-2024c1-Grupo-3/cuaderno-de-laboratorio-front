@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useHistory, useParams } from 'react-router-dom';
 import {
-  Button, Card, CardContent, Container, FormControl, FormLabel, RadioGroup,
+  Button, Card, CardContent, Container, FormControl, FormLabel, RadioGroup, Modal, 
   FormControlLabel, Radio, TextField, Box, Grid, Typography
 } from '@mui/material';
 import ReactQuill from 'react-quill';
@@ -11,6 +11,8 @@ import ListaDeGrupos from './Profesores/ListaDeGrupos';
 import { Header } from './General/HeaderProf';
 
 const CrearTpsBeta = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const { idCurso, profesorId } = useParams();
   const [dato, setDato] = useState(null);
   const [show, setShow] = useState(false);
@@ -41,6 +43,19 @@ const CrearTpsBeta = () => {
   console.log('Archivos:', archivos); // Depuración
   const handleSave = async () => {
     try {
+      if (archivos.length > 10) {
+        setModalMessage('No puedes subir más de 10 archivos.');
+        setModalOpen(true);
+        return;
+      }
+
+      // Validación de tamaño total de archivos
+      const totalSize = archivos.reduce((sum, archivo) => sum + archivo.size, 0);
+      if (totalSize > 16 * 1024 * 1024) { // 16MB en bytes
+        setModalMessage('El tamaño total de los archivos no puede superar los 16MB.');
+        setModalOpen(true);
+        return;
+      }
       const formData = new FormData();
 
       archivos.forEach((archivo, index) => {

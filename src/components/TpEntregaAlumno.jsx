@@ -30,7 +30,8 @@ const TpEntrega = () => {
     history.push(`/tpsAlumno/${idCurso}/${alumnoId}`);  // Cambia a la ruta que prefieras
   };
   console.log("archivo", archivo);
-  console.log("estoy  ", { idCurso }, { alumnoId });
+  console.log("Parametro de entradas" , { idCurso }, { tpId });
+  console.log("Trabajo Practico", tp);
   // Función para convertir los archivos a objetos Blob y generar las URLs de descarga
   const convertirArchivos = (files, fileTypes, fileNames) => {
     if (!files || files.length === 0) return [];
@@ -54,6 +55,7 @@ const TpEntrega = () => {
   useEffect(() => {
     async function fetchTp() {
       try {
+        console.log("Parametro" , { tpId });
         const alumnoData = await getAlumnoById(alumnoId);
         setAlumno(alumnoData);
         try {
@@ -68,9 +70,11 @@ const TpEntrega = () => {
           }
         }
         if (tpId) {
+          
           const tpData = await getTpId(tpId);
           setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
           // Convertir archivos solo si `tp.file` existe y tiene contenido
+          console.log("TPractico", tpData);
           if (tpData.tp.file && tpData.tp.file.length > 0) {
             const archivosConvertidos = convertirArchivos(tpData.tp.file, tpData.tp.fileType, tpData.tp.fileName);
             setArchivo(archivosConvertidos); // Guardar los archivos convertidos en el estado
@@ -136,7 +140,7 @@ const TpEntrega = () => {
   const formatFecha = (fecha) => {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     const date = new Date(fecha);
-    date.setDate(date.getDate() + 1); // Añade un día
+   // date.setDate(date.getDate() + 1); // Añade un día
     return date.toLocaleDateString('es-ES', options);
   };
   const titulo = tp ? `${tp.nombre}` : 'Cargando...';
@@ -255,12 +259,9 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                {!comProfe && (tp.estado === 'En marcha')
-                  ? 'Entrega del trabajo práctico.'
-                  : 'Trabajo práctico no entregado.'
-                }
+               
               </Typography>
-              {!comProfe && (tp.estado === 'En marcha') && (
+              {!comProfe && (
                 <>
                   <Button
                     variant="contained"
@@ -294,7 +295,7 @@ const TpEntrega = () => {
                 fullWidth
                 margin="normal"
               />)}
-              {!comProfe && (tp.estado === 'En marcha') && (
+              {!comProfe &&  (
                 <TextField
                   label="Comentario"
                   value={comentario}
@@ -305,7 +306,7 @@ const TpEntrega = () => {
                   multiline
                   rows={4}
                 />)}
-              {comProfe.calificacion && (tp.estado === 'Cerrado') && (
+              {comProfe.calificacion && (
                 <Grid container spacing={2} alignItems="center">
                   <Grid item xs={12}>
                     <Typography variant="h6" component="div" gutterBottom>
@@ -398,7 +399,7 @@ const TpEntrega = () => {
                     Volver
                   </Button>
                 </Grid>
-                {tp.estado === 'En marcha' && (
+               
                 <Grid item>
                   <Button
                     variant="contained"
@@ -408,7 +409,7 @@ const TpEntrega = () => {
                     Cargar TP
                   </Button>
                 </Grid>
-                )}
+                
               </>
             )}
           </Grid>
