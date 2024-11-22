@@ -71,6 +71,7 @@ const TpEntrega = () => {
           const tpData = await getTpId(tpId);
           setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
           // Convertir archivos solo si `tp.file` existe y tiene contenido
+          console.error('el estado es',tpData.tp.estado);
           if (tpData.tp.file && tpData.tp.file.length > 0) {
             const archivosConvertidos = convertirArchivos(tpData.tp.file, tpData.tp.fileType, tpData.tp.fileName);
             setArchivo(archivosConvertidos); // Guardar los archivos convertidos en el estado
@@ -255,12 +256,12 @@ const TpEntrega = () => {
             </TableContainer>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
-                {!comProfe && (tp.estado === 'En marcha')
+                {!comProfe && tp && tp.estado === "En marcha"  
                   ? 'Entrega del trabajo práctico.'
                   : 'Trabajo práctico no entregado.'
                 }
               </Typography>
-              {!comProfe && (tp.estado === 'En marcha') && (
+              {!comProfe && tp && tp.estado === "En marcha" && (
                 <>
                   <Button
                     variant="contained"
@@ -288,39 +289,41 @@ const TpEntrega = () => {
             </Box>
             <Box mt={2}>
               {!comProfe && (nota && <TextField
-                label="Nota"
-                value={nota}
+              label="Nota"
+              value={nota}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />)}
+            {!comProfe && (
+              <TextField
+                label="Comentario"
+                value={comentario}
+                onChange={handleComentarioChange}
                 variant="outlined"
                 fullWidth
                 margin="normal"
-              />)}
-              {!comProfe && (tp.estado === 'En marcha') && (
-                <TextField
-                  label="Comentario"
-                  value={comentario}
-                  onChange={handleComentarioChange}
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  multiline
-                  rows={4}
-                />)}
-              {comProfe.calificacion && (tp.estado === 'Cerrado') && (
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={12}>
-                    <Typography variant="h6" component="div" gutterBottom>
-                      Nota: {comProfe.calificacion}
+                multiline
+                rows={4}
+              />
+            )}
+            {tp && tp.estado === "Cerrado" && comProfe.calificacion && (
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={12}>
+                  <Typography variant="h6" component="div" gutterBottom>
+                    Nota: {comProfe.calificacion}
+                  </Typography>
+                  <Typography variant="h6" component="div" gutterBottom>
+                    Devolución del Profesor:
+                    <Typography marginLeft={2} variant="h6">
+                      {comProfe.devolucionProf}
                     </Typography>
-                    <Typography variant="h6" component="div" gutterBottom>
-                      Devolucion del Profesor :
-                      <Typography marginLeft={2} variant="h6">
-                        {comProfe.devolucionProf}
-                      </Typography>
-                    </Typography>
-                  </Grid>
+                  </Typography>
                 </Grid>
-              )}
-            </Box>
+              </Grid>
+            )}
+          </Box>
+
           </Container>
         </CardContent>
         <Box p={2}>
@@ -398,13 +401,13 @@ const TpEntrega = () => {
                     Volver
                   </Button>
                 </Grid>
-                {tp.estado === 'En marcha' && (
-                <Grid item>
+                {tp && tp.estado === "En marcha" && (
+                  <Grid item>
                   <Button
                     variant="contained"
                     sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
                     onClick={handleSave}
-                  >
+                    >
                     Cargar TP
                   </Button>
                 </Grid>
