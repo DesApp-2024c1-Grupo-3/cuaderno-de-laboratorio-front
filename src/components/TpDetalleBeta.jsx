@@ -12,6 +12,7 @@ import { Header } from './General/HeaderProf';
 
 
 const TpDetalle = () => {
+  
   const { idCurso, profesorId, tpId } = useParams();
   const [tp, setTp] = useState(null);
   const [curso, setCurso] = useState(null);

@@ -30,7 +30,8 @@ const TpEntrega = () => {
     history.push(`/tpsAlumno/${idCurso}/${alumnoId}`);  // Cambia a la ruta que prefieras
   };
   console.log("archivo", archivo);
-  console.log("estoy  ", { idCurso }, { alumnoId });
+  console.log("Parametro de entradas" , { idCurso }, { tpId });
+  console.log("Trabajo Practico", tp);
   // Función para convertir los archivos a objetos Blob y generar las URLs de descarga
   const convertirArchivos = (files, fileTypes, fileNames) => {
     if (!files || files.length === 0) return [];
@@ -54,6 +55,7 @@ const TpEntrega = () => {
   useEffect(() => {
     async function fetchTp() {
       try {
+        console.log("Parametro" , { tpId });
         const alumnoData = await getAlumnoById(alumnoId);
         setAlumno(alumnoData);
         try {
@@ -68,6 +70,7 @@ const TpEntrega = () => {
           }
         }
         if (tpId) {
+          
           const tpData = await getTpId(tpId);
           setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
           // Convertir archivos solo si `tp.file` existe y tiene contenido
@@ -137,7 +140,7 @@ const TpEntrega = () => {
   const formatFecha = (fecha) => {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     const date = new Date(fecha);
-    date.setDate(date.getDate() + 1); // Añade un día
+   // date.setDate(date.getDate() + 1); // Añade un día
     return date.toLocaleDateString('es-ES', options);
   };
   const titulo = tp ? `${tp.nombre}` : 'Cargando...';
@@ -413,7 +416,7 @@ const TpEntrega = () => {
                     Cargar TP
                   </Button>
                 </Grid>
-                )}
+                
               </>
             )}
           </Grid>

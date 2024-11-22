@@ -18,6 +18,7 @@ const AlumnoTps = () => {
   const handleBack = () => {
     history.push(`/alumno/curso/${alumnoId}`);  // Cambia a la ruta que prefieras
   };
+  console.log("alumnoId:", alumnoId)
   console.log("calificaciones:", calificaciones)
   useEffect(() => {
     async function fetchData() {
