@@ -76,6 +76,9 @@ const CrearTpsBeta = () => {
       console.error('Error al guardar', err);
     }
   };
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
   const handleConsignaChange = (value) => {
     setTpData((prev) => ({ ...prev, consigna: value }));
   };
@@ -141,6 +144,35 @@ const CrearTpsBeta = () => {
     <Box display="flex" flexDirection="column">
       <Header />
       <Card sx={{ mb: 2 }}>
+      <>
+              <Modal open={modalOpen} onClose={handleCloseModal}>
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 400,
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius: '8px',
+                  }}
+                >
+                  <Typography variant="h6" component="h2">
+                    Error
+                  </Typography>
+                  <Typography sx={{ mt: 2 }}>{modalMessage}</Typography>
+                  <Button
+                    variant="contained"
+                    sx={{ mt: 3 }}
+                    onClick={handleCloseModal}
+                  >
+                    Cerrar
+                  </Button>
+                </Box>
+              </Modal>
+            </>
         <CardContent>
           <Typography variant="h6" component="div" gutterBottom>
             Nuevo TP
