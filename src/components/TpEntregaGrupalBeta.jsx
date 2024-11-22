@@ -463,6 +463,7 @@ const TpEntrega = () => {
                     Volver
                   </Button>
                 </Grid>
+                {tp && tp.estado === "En marcha" && (
                 <Grid item xs={12} sm={6} container justifyContent="flex-end">
                   <Button
                     variant="contained"
@@ -472,6 +473,7 @@ const TpEntrega = () => {
                     Eliminar entrega
                   </Button>
                 </Grid>
+                 )}
                 <Dialog
                   open={open}
                   onClose={handleClose}

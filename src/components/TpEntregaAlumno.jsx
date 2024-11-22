@@ -347,7 +347,7 @@ const TpEntrega = () => {
               fullWidth
               margin="normal"
             />)}
-            {!comProfe && (
+            {!comProfe && tp && tp.estado === "En marcha" && (
               <TextField
                 label="Comentario"
                 value={comentario}
@@ -404,6 +404,7 @@ const TpEntrega = () => {
                     Volver
                   </Button>
                 </Grid>
+                {tp && tp.estado === "En marcha" && (
                 <Grid item>
                   <Button
                     variant="contained"
@@ -413,6 +414,7 @@ const TpEntrega = () => {
                     Eliminar entrega
                   </Button>
                 </Grid>
+                 )}
                 <Dialog
                   open={open}
                   onClose={handleClose}
