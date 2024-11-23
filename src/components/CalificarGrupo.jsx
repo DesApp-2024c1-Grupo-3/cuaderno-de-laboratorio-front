@@ -29,7 +29,7 @@ const TpEntrega = () => {
     history.push(`/tpsAlumno/${idCurso}/${alumnoId}`);
     //history.push('/tpsAlumno/:idCurso/:alumnoId');  // Cambia a la ruta que prefieras
   };
-  c
+  
   const convertirArchivos = (files, fileTypes, fileNames) => {
     if (!files || files.length === 0) return [];
 

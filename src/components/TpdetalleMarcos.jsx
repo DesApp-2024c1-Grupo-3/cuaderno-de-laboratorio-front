@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useHistory, useParams, NavLink } from 'react-router-dom';
 import {
   Card, Paper, Typography, TableRow, TableHead, TableContainer, TableCell,
-  TableBody, Table, Grid, Box, Button, Container, CardContent
+  TableBody, Table, Grid, Box, Button, Container, CardContent, Dialog, 
+  DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material';
 import { getAlumnosByCursoId } from '../services/Alumnos';
 import { getCalificacionesByTpId } from '../services/Calificacion';
@@ -18,6 +19,7 @@ const TpDetalle = () => {
   const [grupos, setGrupos] = useState([]);
   const [calificaciones, setCalificaciones] = useState([]);
   const [hasError, setHasError] = useState(false);
+  const [open, setOpen] = useState(false);
   const history = useHistory();
   // Verifica si el TP está cerrado
   const isTPClosed = tp && tp.estado === 'Cerrado';
@@ -28,6 +30,7 @@ const TpDetalle = () => {
         if (tpId) {
           const tpData = await getTpPorId(idCurso, tpId);
           setTp(tpData);
+          console.log('tp', tpData);
           const cursoData = await getCursoPorId(idCurso);
           setCurso(cursoData);
           const alumnos = await getAlumnosByCursoId(idCurso);
@@ -62,11 +65,8 @@ const TpDetalle = () => {
       tipo === 'alumno' ? c.alumnoId === id : c.grupoId === id
     );
   
-    // Verificar si hay un comentario asociado a la calificación
-    const tieneComentario = calificacion && calificacion.comentario && calificacion.comentario.trim() !== '';
-  
     // Si hay un comentario pero no hay calificación, marcar como "No asignada"
-    if (tieneComentario && !calificacion.calificacion) {
+    if (calificacion && !calificacion.calificacion) {
       return 'No asignada';
     }
   
@@ -76,7 +76,7 @@ const TpDetalle = () => {
     }
   
     // Si no hay comentario y el estado es 'En marcha', 'En evaluación' o 'Cerrado'
-    if (!tieneComentario && ['En marcha', 'En evaluacion', 'Cerrado'].includes(tp.estado)) {
+    if (!calificacion && ['En marcha', 'En evaluacion', 'Cerrado'].includes(tp.estado)) {
       return 'No entregado';
     }
   
@@ -108,15 +108,21 @@ const TpDetalle = () => {
       return;
     }
 
-    const alumnosSinNota = curso.alumnos.some(alumno => getCalificacion(alumno._id, 'alumno') === 'No asignada');
-    const gruposSinNota = tp.grupos.some(grupo => getCalificacion(grupo._id, 'grupo') === 'No asignada');
-    console.log(alumnosSinNota, gruposSinNota)
-    if (!alumnosSinNota) {
-      alert('No se puede cerrar el TP. Todos los alumnos deben tener una nota asignada.');
-      return;
-    }
-    if (!gruposSinNota) {
-      alert('No se puede cerrar el TP. Todos los grupos deben tener una nota asignada.');
+    // Verificar si hay calificaciones "No asignada" para cualquier alumno/grupo.
+    const alumnosSinNota = curso.alumnos.some(alumno => {
+      const calificacion = getCalificacion(alumno._id, 'alumno');
+      // Permite cerrar si la calificación es "No entregado", pero no si es "No asignada"
+      return calificacion === 'No asignada';
+    });
+
+    const gruposSinNota = tp.grupos.some(grupo => {
+      const calificacion = getCalificacion(grupo._id, 'grupo');
+      // Permite cerrar si la calificación es "No entregado", pero no si es "No asignada"
+      return calificacion === 'No asignada';
+    });
+
+    if (alumnosSinNota || gruposSinNota) {
+      alert('No se puede cerrar el TP. Todos los alumnos y grupos deben tener una calificación asignada.');
       return;
     }
 
@@ -132,6 +138,16 @@ const TpDetalle = () => {
       alert('Hubo un error al intentar cerrar el TP.');
     }
   }
+
+  
+  const handleClickOpen = () => setOpen(true);
+
+  const handleClose = () => setOpen(false);
+
+  const handleConfirmClose = async () => {
+    await handleCerrarTP();
+    setOpen(false);
+  };
 
   const tpRendering = () => (
     <Box>
@@ -313,12 +329,12 @@ const TpDetalle = () => {
                 </Grid>
               </div>
             )}
-
             <div style={{ marginTop: '20px', textAlign: 'center' }}>
+              {tp && tp.estado === "En evaluacion" && (
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={() => handleCerrarTP()}
+                onClick={() => handleClickOpen()}
                 style={{
                   backgroundColor: isTPClosed ? 'grey' : 'red',
                   color: 'white',
@@ -331,8 +347,8 @@ const TpDetalle = () => {
               >
                 Cerrar TP
               </Button>
+              )}
             </div>
-
           </Container>
         </CardContent>
         <Grid item mx={2} mb={2}>
@@ -346,6 +362,22 @@ const TpDetalle = () => {
             Volver
           </Button>
         </Grid>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Confirmación</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              ¿Estás seguro que quieres cerrar el trabajo práctico?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancelar
+            </Button>
+            <Button onClick={handleConfirmClose} color="primary">
+              Confirmar
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Card>
     </Box>
   );
