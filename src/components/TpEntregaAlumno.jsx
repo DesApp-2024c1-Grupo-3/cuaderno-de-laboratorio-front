@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import {
-  Card, CardContent, Button, Typography, TextField, Container, Box, Grid,
+  Card, CardContent, Button, Typography, TextField, Container, Box, Grid, Modal,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material';
 import { getAlumnoById } from '../services/Alumnos';
@@ -15,6 +15,8 @@ import { Header } from './General/HeaderAlum';
 
 const TpEntrega = () => {
   const history = useHistory();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const { alumnoId, tpId, idCurso } = useParams();
   const [nota, setNota] = useState('');
@@ -97,6 +99,19 @@ const TpEntrega = () => {
   console.log('Archivos:', archivos); // Depuración
   const handleSave = async () => {
     try {
+      if (archivos.length > 10) {
+        setModalMessage('No puedes subir más de 10 archivos.');
+        setModalOpen(true);
+        return;
+      }
+
+      // Validación de tamaño total de archivos
+      const totalSize = archivos.reduce((sum, archivo) => sum + archivo.size, 0);
+      if (totalSize > 16 * 1024 * 1024) { // 16MB en bytes
+        setModalMessage('El tamaño total de los archivos no puede superar los 16MB.');
+        setModalOpen(true);
+        return;
+      }
       const formData = new FormData();
 
       archivos.forEach((archivo, index) => {
@@ -155,7 +170,9 @@ const TpEntrega = () => {
       </Grid>
     );
   };
-
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
   const tpRendering = () => (
     <Box>
       <Header />
@@ -183,23 +200,26 @@ const TpEntrega = () => {
                   </Grid>
                 </Grid>
                 <Grid container alignItems="center">
-                  <Grid item xs={5}>
+                  <Grid item xs={3}>
                     <Typography variant="body1" color="textSecondary">
                       Descarga TP :
                     </Typography>
-                    {archivo && archivo.length > 0 && (
-                      <>
-                        {archivo.map((archivo, index) => (
-                          <a key={index} href={archivo.url} download={archivo.nombre}>
-                            <br />
-                            {archivo.nombre}
-                            <br />
-                          </a>
-
-                        ))}
-                      </>
-                    )}
-                    <br />
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Typography variant="body2" component="div">
+                      {archivo && archivo.length > 0 && (
+                        <>
+                          {archivo.map((archivo, index) => (
+                            <a key={index} href={archivo.url} download={archivo.nombre}>
+                              <br />
+                              {archivo.nombre}
+                              <br />
+                            </a>
+                          ))}
+                        </>
+                      )}
+                      <br />
+                    </Typography>
                   </Grid>
                 </Grid>
 
@@ -257,6 +277,35 @@ const TpEntrega = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+            <>
+              <Modal open={modalOpen} onClose={handleCloseModal}>
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 400,
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius: '8px',
+                  }}
+                >
+                  <Typography variant="h6" component="h2">
+                    Error
+                  </Typography>
+                  <Typography sx={{ mt: 2 }}>{modalMessage}</Typography>
+                  <Button
+                    variant="contained"
+                    sx={{ mt: 3 }}
+                    onClick={handleCloseModal}
+                  >
+                    Cerrar
+                  </Button>
+                </Box>
+              </Modal>
+            </>
             <Box mt={2}>
               <Typography variant="h6" component="div" gutterBottom>
                 {!comProfe && tp && tp.estado === "En marcha"  
@@ -416,7 +465,7 @@ const TpEntrega = () => {
                     Cargar TP
                   </Button>
                 </Grid>
-                 )}
+                )}
               </>
             )}
           </Grid>

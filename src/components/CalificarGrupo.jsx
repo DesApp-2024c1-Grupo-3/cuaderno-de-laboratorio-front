@@ -64,7 +64,6 @@ const TpEntrega = () => {
             const archivosConvertidos = convertirArchivos(tpData.tp.file, tpData.tp.fileType, tpData.tp.fileName);
             setTpSubido(archivosConvertidos); // Guardar los archivos convertidos en el estado
           } 
-
         } else {
           console.error('tpId es undefined');
           setHasError(true);

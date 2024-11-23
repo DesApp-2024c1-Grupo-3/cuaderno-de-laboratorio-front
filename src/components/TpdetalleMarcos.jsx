@@ -17,20 +17,43 @@ const TpDetalle = () => {
   const [curso, setCurso] = useState(null);
   const [alumnos, setAlumnos] = useState([]);
   const [grupos, setGrupos] = useState([]);
+  const [tpSubido, setTpSubido] = useState(null);
   const [calificaciones, setCalificaciones] = useState([]);
   const [hasError, setHasError] = useState(false);
   const [open, setOpen] = useState(false);
   const history = useHistory();
   // Verifica si el TP está cerrado
   const isTPClosed = tp && tp.estado === 'Cerrado';
+  const convertirArchivos = (files, fileTypes, fileNames) => {
+    if (!files || files.length === 0) return [];
 
+    return files.map((file, index) => {
+      if (file && file.data) {
+        // Convierte el array de bytes a Uint8Array
+        const byteArray = new Uint8Array(file.data);
+        // Crea el Blob con el tipo de archivo especificado
+        const blob = new Blob([byteArray], { type: fileTypes[index] });
+        // Genera la URL del Blob para descarga
+        const url = URL.createObjectURL(blob);
+        // Asigna un nombre por defecto si no hay uno
+        const nombreArchivo = fileNames[index] || `archivo_${index + 1}.pdf`;
+
+        return { url, nombre: nombreArchivo };
+      }
+      return null;
+    }).filter(item => item !== null); // Filtramos los elementos nulos
+  };
   useEffect(() => {
     async function fetchTp() {
       try {
         if (tpId) {
           const tpData = await getTpPorId(idCurso, tpId);
           setTp(tpData);
-          console.log('tp', tpData);
+          if (tpData.file && tpData.file.length > 0) {
+            const archivosConvertidos = convertirArchivos(tpData.file, tpData.fileType, tpData.fileName);
+            setTpSubido(archivosConvertidos); // Guardar los archivos convertidos en el estado
+          } 
+          console.log('Datos de tpData', tpData);
           const cursoData = await getCursoPorId(idCurso);
           setCurso(cursoData);
           const alumnos = await getAlumnosByCursoId(idCurso);
@@ -167,6 +190,29 @@ const TpDetalle = () => {
               </Typography>
             </Grid>
           </Grid>
+          <Grid container alignItems="center">
+                  <Grid item xs={3}>
+                    <Typography variant="body1" color="textSecondary">
+                      Descarga TP :
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Typography variant="body2" component="div">
+                      {tpSubido && tpSubido.length > 0 && (
+                        <>
+                          {tpSubido.map((archivo, index) => (
+                            <a key={index} href={archivo.url} download={archivo.nombre}>
+                              <br />
+                              {archivo.nombre}
+                              <br />
+                            </a>
+                          ))}
+                        </>
+                      )}
+                      <br />
+                    </Typography>
+                  </Grid>
+                </Grid>
 
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={3}>
