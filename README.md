@@ -38,7 +38,11 @@ npm install
 
 ### 4. Configurar archivo de variables de ambiente
 
-En la raíz del directorio donde está el frontend, localizar el archivo `.env.example` y renombrarlo a `.env`
+En el directorio raíz donde está el frontend ejecutar el comando:
+
+```bash
+cp .env.example .env
+```
 
 ### 5. Iniciar Docker-Compose
 
@@ -58,21 +62,11 @@ Usuario: _adminkc_
 
 Contraseña: _K3ycl04k321!_
 
-#### Crear un nuevo reino en Keycloak
+#### Ingresar al reino en Keycloak
 
-Una vez dentro de Keycloak, crear un nuevo reino (Realm).
+Una vez dentro de Keycloak, ingresar al reino (Realm).
 
-![Create_New_Realm](assets/createNewRealm.gif)
-
-#### Importar la configuración del archivo realm-export.json:
-
-Dirigirse a Resource file y seleccionar el archivo [Imports_Keycloak/realm-export.json](https://raw.githubusercontent.com/DesApp-2024c1-Grupo-3/cuaderno-de-laboratorio-front/refs/heads/dev/Imports_Keycloak/realm-export.json)
-
-<!-- Ver si el link anterior sirve para futuras actualizaciones del repo -->
-
-Crear el reino con la configuración importada
-
-![Import_Settings](assets/importSettings.gif)
+![Enter_Keycloak_Realm](assets/enterKeycloakRealm.gif)
 
 #### Importar usuarios a Keycloak
 
