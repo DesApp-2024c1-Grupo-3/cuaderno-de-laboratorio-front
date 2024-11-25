@@ -108,29 +108,16 @@ Todos los usuarios tienen la misma contraseña.
 | Alumno          | 10000001 | 1234       |
 | Alumno          | 10000002 | 1234       |
 | Alumno          | 10000003 | 1234       |
-| Alumno          | 10000004 | 1234       |
-| Alumno          | 10000005 | 1234       |
-| Alumno          | 10000006 | 1234       |
-| Alumno          | 10000007 | 1234       |
-| Alumno          | 10000008 | 1234       |
-| Alumno          | 10000009 | 1234       |
-| Alumno          | 10000010 | 1234       |
-| Alumno          | 10000011 | 1234       |
-| Alumno          | 10000012 | 1234       |
-| Alumno          | 10000013 | 1234       |
-| Alumno          | 10000014 | 1234       |
-| Alumno          | 10000015 | 1234       |
-| Alumno          | 10000016 | 1234       |
-| Alumno          | 10000017 | 1234       |
-| Alumno          | 10000018 | 1234       |
-| Alumno          | 10000019 | 1234       |
-| Alumno          | 10000020 | 1234       |
-| Alumno          | 10000021 | 1234       |
-| Alumno          | 10000022 | 1234       |
-| Alumno          | 10000023 | 1234       |
-| Alumno          | 10000024 | 1234       |
-| Alumno          | 10000025 | 1234       |
-| Alumno          | 10000026 | 1234       |
-| Alumno          | 10000027 | 1234       |
+| ...             | ...      | ...        |
 | Alumno          | 10000028 | 1234       |
 | Alumno          | 10000029 | 1234       |
+
+### Crear usuario nuevo en keycloak
+
+#### Ingresar al reino en Keycloak
+
+Una vez dentro de Keycloak, ingresar al reino (Realm).
+
+![Enter_Keycloak_Realm](assets/enterKeycloakRealm.gif)
+
+_continuar con procedimiento de marian_
