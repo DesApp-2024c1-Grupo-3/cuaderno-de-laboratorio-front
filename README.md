@@ -64,11 +64,11 @@ Contraseña: _K3ycl04k321!_
 
 #### Ingresar al reino en Keycloak
 
-Una vez dentro de Keycloak, ingresar al reino (Realm).
+Una vez dentro de Keycloak, ingresar al reino.
 
 ![Enter_Keycloak_Realm](assets/enterKeycloakRealm.gif)
 
-#### Importar usuarios a Keycloak
+#### Importar usuarios a Keycloak (Dentro del realm cuaderno-de-lab)
 
 Navegar a la configuración del reino
 
