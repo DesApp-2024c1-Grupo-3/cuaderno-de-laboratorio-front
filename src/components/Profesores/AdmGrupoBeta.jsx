@@ -16,7 +16,6 @@ import { Header } from '../General/HeaderProf';
 
 const AdministrarGrupos = () => {
   const { idCurso, profesorId } = useParams();
-  const history = useHistory();
   const [grupos, setGrupos] = useState([]);
   const [hasError, setHasError] = useState(false);
   const [show, setShow] = useState(false);

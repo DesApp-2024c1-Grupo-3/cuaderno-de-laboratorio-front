@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { Header } from './General/HeaderProf';
 import { getGrupoPorId, updateNotaEntrega, getArchivoEntrega } from '../services/Grupo';
-import { getTpId } from '../services/tps';
+import { getTpId, getGruposByTpId } from '../services/tps';
 import { getAlumnoById } from '../services/Alumnos';
 import { getComAlumnByCalifId, updateCalificacion, postEliminarCalificacion } from '../services/Calificacion';
 
@@ -14,6 +14,7 @@ const TpEntrega = () => {
   const { idEntregaGrupal, tpId, profesorId, idCurso } = useParams();
   const [tp, setTp] = useState(null);
   const [grupo, setGrupo] = useState(null);
+  const [grupoName, setGrupoName] = useState(null);
   const [nota, setNota] = useState('');
   const [comentario, setComentario] = useState('');
   const [comAlumno, setComentarioAlumno] = useState(null);
@@ -55,6 +56,11 @@ const TpEntrega = () => {
 
         const gruposData = await getGrupoPorId(idEntregaGrupal);
         setGrupo(gruposData);
+        const gruposN = await getGruposByTpId(tpId);
+        console.log(gruposN);
+        const grupoEncontrado = gruposN.find(grupo => grupo._id === idEntregaGrupal);
+        setGrupoName(grupoEncontrado);
+        console.log(grupoEncontrado.nombre);
 
         if (tpId) {
           const tpData = await getTpId(tpId);
@@ -257,7 +263,7 @@ const TpEntrega = () => {
           )}
           <Container maxWidth="xl" sx={{ mt: 1, mb: 1, border: 'solid', borderWidth: '20px', borderColor: 'rgba(0, 0, 0, 0.08)', borderRadius: '1%' }}>
             <Typography variant="h6" component="div" gutterBottom>
-              Tp Grupal
+              Tp Grupal - {grupoName?.nombre}
             </Typography>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">

@@ -258,7 +258,7 @@ const TpEntrega = () => {
             }}
           >
             <Typography variant="h6" component="div" gutterBottom>
-              Alumno
+              Tp individual
             </Typography>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
