@@ -120,4 +120,89 @@ Una vez dentro de Keycloak, ingresar al reino (Realm).
 
 ![Enter_Keycloak_Realm](assets/enterKeycloakRealm.gif)
 
-_continuar con procedimiento de marian_
+#### Crear un nuevo usuario
+
+- En el menú lateral, selecciona la opción **Users**.
+
+- Haz clic en el botón **Add User**.
+
+- Completa los campos básicos, como:
+
+  - **Username**: Nombre único obligatorio.
+  - **Email**: Opcional, pero útil para autenticación o notificaciones.
+  - **First name**: Nombre, opcional para más contexto.
+  - **Last name**: Apellido, opcional para más contexto.
+
+- Haz clic en **Create** para crear el usuario.
+
+![Create_User](assets/createUser.png)
+
+#### Configurar credenciales
+
+- Ve a la pestaña **Credentials**.
+
+- Haz clic en el botón **Set password**.
+
+![Set_Password](assets/setPassword.png)
+
+- Configure una contraseña para el usuario:
+
+  - Ingrese la contraseña.
+  - Marca la opción **Temporary** si quieres que el usuario deba cambiarla al iniciar sesión.
+  - Haga clic en **Save**.
+
+![Configure_Password](assets/configurePassword.png)
+
+#### Asignar roles o grupos (opcional)
+
+- Desde la pestaña **Role mapping** o **Groups** , puedes asignar permisos o agrupar al usuario.
+
+![Assing_Role](assets/assingRole.png)
+
+#### Generación de roles
+
+- Ir a la pestaña **Realm roles**.
+
+- Haz clic en el botón **Create role**.
+
+![Create_Role](assets/createRole.png)
+
+- Configure los campos del rol:
+  - **Role name**: Nombre único obligatorio.
+  - **Description**: Opcional, descripcion del rol.
+
+![Configure_Role](assets/configureRole.png)
+
+#### Establecer política de passwords
+
+- Ir a la pestaña **Authentification**.
+
+- Ir a la pestaña **Policies**.
+
+- Ir a la pestaña **Password policy**.
+
+- Haz clic en el desplegable **Add policy**.
+
+- Definir y configurar las politicas a aplicar.
+
+![Authentification_Add_Policy](assets/authentificationAddPolicy.png)
+
+**_Ejemplo_**
+
+Se ha establecido una longitud para las claves de 12 caracteres, al menos 1 mayúscula, 1 minúscula, un dígito numérico y un carácter especial.
+
+![Authentification_Example_Policy](assets/authentificationExamplePolicy.png)
+
+#### Login de usuario
+
+El usuario tiene permitido loguearse con su dni o su mail asociado.
+
+![Sign_In_Example](assets/signInExample.png)
+
+Cuando el usuario ingresa, debido a que marcamos como “Temporal” su password, debe cambiarlo y le aparece la siguiente pestaña:
+
+![Update_Password_Example](assets/updatePasswordExample.png)
+
+Al poner un password que no cumple con la política establecida, se le indica mediante un mensaje informativo cual es el motivo por el cual debe mejorar los datos ingresados (ver la próxima sección de configuración de política de passwords)
+
+![Error_Update_Password_Example](assets/errorUpdatePasswordExample.png)
