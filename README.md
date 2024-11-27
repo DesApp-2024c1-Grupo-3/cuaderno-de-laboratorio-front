@@ -96,7 +96,7 @@ npm start
 
 Contamos con un total de 2 profesores y 30 alumnos.
 
-Los alumnos tienen ID autoincrementales a partir del 10000000.
+Los alumnos tienen ID incrementales a partir del 10000000.
 
 Todos los usuarios tienen la misma contraseña.
 
@@ -169,7 +169,7 @@ Una vez dentro de Keycloak, ingresar al reino (Realm).
 
 - Configure los campos del rol:
   - **Role name**: Nombre único obligatorio.
-  - **Description**: Opcional, descripcion del rol.
+  - **Description**: Opcional, descripción del rol.
 
 ![Configure_Role](assets/configureRole.png)
 
@@ -183,7 +183,7 @@ Una vez dentro de Keycloak, ingresar al reino (Realm).
 
 - Haz clic en el desplegable **Add policy**.
 
-- Definir y configurar las politicas a aplicar.
+- Definir y configurar las políticas a aplicar.
 
 ![Authentification_Add_Policy](assets/authentificationAddPolicy.png)
 
@@ -213,9 +213,9 @@ Al poner un password que no cumple con la política establecida, se le indica me
 
 ### Funcionamiento
 
-Al momento de ejecutar `docker-compose up -d` a demas de crearse los contenedores, al contenedor de _Keycloak_ se le copia en la carpeta de temas la carpeta `Imports_Keycloak\Tema_UNAHUR` (actualmente es una copia del tema keycloak.v2) y se importa y crea el reino **cuaderno-de-lab**.
+Al momento de ejecutar `docker-compose up -d` además de crearse los contenedores, al contenedor de _Keycloak_ se le copia en la carpeta de temas la carpeta `Imports_Keycloak\Tema_UNAHUR` (actualmente es una copia del tema keycloak.v2) y se importa y crea el reino **cuaderno-de-lab**.
 
-### Seleccion de tema
+### Selección de tema
 
 - Una vez dentro de Keycloak, ingresar al reino (Realm).
 
@@ -229,11 +229,11 @@ Al momento de ejecutar `docker-compose up -d` a demas de crearse los contenedore
 
 - Seleccionar tema
 
-- Haz clic en el boton **Save**.
+- Haz clic en el botón **Save**.
 
 ![Select_Theme](assets/selectTheme.png)
 
-### Modificacion del tema_UNAHUR
+### Modificación del tema_UNAHUR
 
 Keycloak utiliza **FreeMarker**, un motor de plantillas basado en Java, para renderizar sus temas.
 Los temas en Keycloak están compuestos por archivos `.ftl` (archivos de plantilla de FreeMarker) que definen la estructura HTML.
@@ -268,14 +268,14 @@ docker cp <RutaAbsoluta>\cuaderno-de-laboratorio-front\Imports_Keycloak\Tema_UNA
 docker restart <ContainerID>
 ```
 
-### Seleccion de tema por defecto
+### Selección de tema por defecto
 
-Si deseas configurar un tema específico por defecto para un realm y evitar que se pueda cambiar desde la interfaz, edita el archivo `Imports_Keycloak\realm-export.json` y en la linea **722** agrega `"login_theme": "<TemaSeleccionado>"`.
-Para que actualize este parametro, se debe de **BORRAR CONTENEDOR Y VOLUMEN** de docker, y volver a levantarlos.
+Si deseas configurar un tema específico por defecto para un realm y evitar que se pueda cambiar desde la interfaz, edita el archivo `Imports_Keycloak\realm-export.json` y en la línea **722** agrega `"login_theme": "<TemaSeleccionado>"`.
+Para que actualice este parámetro, se debe de **BORRAR CONTENEDOR Y VOLUMEN** de docker, y volver a levantarlos.
 
 EJ: `"login_theme": "Tema_UNAHUR"`.
 
-### Documentacion de respaldo
+### Documentación de respaldo
 
 #### Creación de temas en Keycloak:
 
