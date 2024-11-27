@@ -17,7 +17,7 @@ const TpEntrega = () => {
   const history = useHistory();
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-
+  
   const { alumnoId, tpId, idCurso } = useParams();
   const [nota, setNota] = useState('');
   const [tp, setTp] = useState(null);
@@ -26,6 +26,7 @@ const TpEntrega = () => {
   const [comentario, setComentario] = useState('');
   const [archivos, setArchivos] = useState([]);
   const [archivo, setArchivo] = useState(null);// descarga de archivos del buffer de subida del profesor
+  const [archivoCalif, setArchivoCalif] = useState(null);// desgarga y vista del atp subido por el alumno
   const [hasError, setHasError] = useState(false);
   const [open, setOpen] = useState(false);//LOGICA PARA WARNING ELIMINACION
   const handleBack = () => {
@@ -93,6 +94,12 @@ const TpEntrega = () => {
     }
     fetchTp();
   }, [alumnoId, tpId]);
+  useEffect(() => {
+    if (comProfe?.file && comProfe.fileType && comProfe.fileName) {
+      const archivosConvertidos = convertirArchivos(comProfe.file, comProfe.fileType, comProfe.fileName);
+      setArchivoCalif(archivosConvertidos);
+    }
+  }, [comProfe]);
 
   const handleComentarioChange = (e) => setComentario(e.target.value);
   const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
@@ -155,7 +162,7 @@ const TpEntrega = () => {
   const formatFecha = (fecha) => {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     const date = new Date(fecha);
-   // date.setDate(date.getDate() + 1); // Añade un día
+    date.setDate(date.getDate() + 1); // Añade un día
     return date.toLocaleDateString('es-ES', options);
   };
   const titulo = tp ? `${tp.nombre}` : 'Cargando...';
@@ -313,6 +320,31 @@ const TpEntrega = () => {
                   : 'Trabajo práctico no entregado.'
                 }
               </Typography>
+              {comProfe && (
+                <Grid container alignItems="center">
+                  <Grid item xs={5}>
+                    <Typography variant="h6" component="div" gutterBottom>
+                      Descarga TP enviado :
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <Typography variant="body2" component="div">
+                      {archivoCalif && archivoCalif.length > 0 && (
+                        <>
+                          {archivoCalif.map((archivo, index) => (
+                            <a key={index} href={archivo.url} download={archivo.nombre}>
+                              <br />
+                              {archivo.nombre}
+                              <br />
+                            </a>
+                          ))}
+                        </>
+                      )}
+                      <br />
+                    </Typography>
+                  </Grid>
+                </Grid>
+              )}
               {!comProfe && tp && tp.estado === "En marcha" && (
                 <>
                   <Button
