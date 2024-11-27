@@ -206,3 +206,84 @@ Cuando el usuario ingresa, debido a que marcamos como “Temporal” su password
 Al poner un password que no cumple con la política establecida, se le indica mediante un mensaje informativo cual es el motivo por el cual debe mejorar los datos ingresados (ver la próxima sección de configuración de política de passwords)
 
 ![Error_Update_Password_Example](assets/errorUpdatePasswordExample.png)
+
+---
+
+## **Tema personalizado Keycloak**
+
+### Funcionamiento
+
+Al momento de ejecutar `docker-compose up -d` a demas de crearse los contenedores, al contenedor de _Keycloak_ se le copia en la carpeta de temas la carpeta `Imports_Keycloak\Tema_UNAHUR` (actualmente es una copia del tema keycloak.v2) y se importa y crea el reino **cuaderno-de-lab**.
+
+### Seleccion de tema
+
+- Una vez dentro de Keycloak, ingresar al reino (Realm).
+
+![Enter_Keycloak_Realm](assets/enterKeycloakRealm.gif)
+
+- Ir a la pestaña **Realm settings**.
+
+- Ir a la pestaña **Themes**.
+
+- Haz clic en el desplegable **Select login theme**.
+
+- Seleccionar tema
+
+- Haz clic en el boton **Save**.
+
+![Select_Theme](assets/selectTheme.png)
+
+### Modificacion del tema_UNAHUR
+
+Keycloak utiliza **FreeMarker**, un motor de plantillas basado en Java, para renderizar sus temas.
+Los temas en Keycloak están compuestos por archivos `.ftl` (archivos de plantilla de FreeMarker) que definen la estructura HTML.
+
+Para modificar el tema del login se debe modificar los archivos `Imports_Keycloak\Tema_UNAHUR\login\login.ftl` y `Imports_Keycloak\Tema_UNAHUR\login\resources\css\styles.css` (y los que sean necesarios).
+
+Una vez modificados se deben de **actualizar en el container**, para ello, con el **container corriendo**:
+
+1. identificar el contenedor
+
+```bash
+docker ps
+```
+
+2. eliminar carpeta del contenedor:
+
+```bash
+docker exec -u root <ContainerID> rm -rf opt/keycloak/themes/Tema_UNAHUR/
+```
+
+3. Copia la carpeta actualizada al contenedor:
+
+   **_Este comando necesita la ruta absoluta_**
+
+```bash
+docker cp <RutaAbsoluta>\cuaderno-de-laboratorio-front\Imports_Keycloak\Tema_UNAHUR <ContainerID>:/opt/keycloak/themes/Tema_UNAHUR
+```
+
+4. Reiniciar el container:
+
+```bash
+docker restart <ContainerID>
+```
+
+### Seleccion de tema por defecto
+
+Si deseas configurar un tema específico por defecto para un realm y evitar que se pueda cambiar desde la interfaz, edita el archivo `Imports_Keycloak\realm-export.json` y en la linea **722** agrega `"login_theme": "<TemaSeleccionado>"`.
+
+EJ: `"login_theme": "Tema_UNAHUR"`.
+
+### Documentacion de respaldo
+
+#### Creación de temas en Keycloak:
+
+- Aprende cómo crear y personalizar temas en Keycloak con la guía oficial:
+
+[https://www.keycloak.org/docs/26.0.0/server_development/#\_themes](https://www.keycloak.org/docs/26.0.0/server_development/#_themes)
+
+#### Página oficial de FreeMarker:
+
+- Para comprender más sobre el lenguaje de plantillas FreeMarker y sus capacidades, visita:
+
+[https://freemarker.apache.org/](https://freemarker.apache.org/)
