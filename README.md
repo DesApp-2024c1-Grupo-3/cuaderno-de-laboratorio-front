@@ -52,7 +52,7 @@ Con el motor de docker corriendo, en el directorio raíz donde está el frontend
 docker-compose up -d
 ```
 
-### 6. Configuración de Keycloak (primera vez que se inicia el proyecto)
+### 6. Configuración de Keycloak (primera vez que se inicia el docker o si se elimina el volumen del mismo)
 
 #### Acceder a Keycloak a través de [http://localhost:8085](http://localhost:8085)
 
@@ -271,6 +271,7 @@ docker restart <ContainerID>
 ### Seleccion de tema por defecto
 
 Si deseas configurar un tema específico por defecto para un realm y evitar que se pueda cambiar desde la interfaz, edita el archivo `Imports_Keycloak\realm-export.json` y en la linea **722** agrega `"login_theme": "<TemaSeleccionado>"`.
+Para que actualize este parametro, se debe de **BORRAR CONTENEDOR Y VOLUMEN** de docker, y volver a levantarlos.
 
 EJ: `"login_theme": "Tema_UNAHUR"`.
 
