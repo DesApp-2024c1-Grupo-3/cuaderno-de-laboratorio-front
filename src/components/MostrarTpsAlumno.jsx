@@ -67,8 +67,6 @@ const AlumnoTps = () => {
 
         });
 
-
-
         // Obtener calificaciones
         const califData = await getCalificaciones(alumnoId);
         setCalificaciones(califData);
@@ -82,21 +80,21 @@ const AlumnoTps = () => {
 
 
 
-  const getCalificacion = (idTp, estado, comentarios) => {
-    if (!comentarios || !Array.isArray(comentarios)) {
+  const getCalificacion = (idTp, estado, calificaciones) => {
+    if (!calificaciones || !Array.isArray(calificaciones)) {
       return 'No asignada';
     }
   
     // Verificar si existe un comentario para este TP
-    const comentario = comentarios.find(c => c.tpId === idTp);
+    const calificacion = calificaciones.find(c => c.tpId === idTp);
   
-    if (!comentario) {
+    if (!calificacion) {
       // Si no hay comentario, retornar "No entregado" para estados distintos a "En marcha"
-      return estado !== 'En marcha' ? 'No entregado' : 'No asignada';
+      return 'No entregado';
     }
   
     // Si hay comentario, verificar la calificación
-    return comentario.calificacion || 'No asignada';
+    return estado === 'Cerrado' ? calificacion.calificacion : 'No asignada';
   };
   
   
@@ -157,7 +155,7 @@ const AlumnoTps = () => {
                           'No entregado' : 
                           getCalificacion(tp._id, tp.estado, calificaciones) !== 'No asignada' && tp.estado === 'Cerrado' ? 
                             `${getCalificacion(tp._id, tp.estado, calificaciones)} / 10` : 
-                            'No asignada'}
+                            `${getCalificacion(tp._id, tp.estado, calificaciones)}`}
                       </TableCell>
 
 
@@ -175,7 +173,7 @@ const AlumnoTps = () => {
                             }}
                             onClick={() => history.push(`/entregaAlumno/${alumnoId}/${tp._id}/${idCurso}`)}
                           >
-                            {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') ? 'Ver' : 'Agregar'}{/* ARREGLAR*/}
+                            {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') || getCalificacion(tp._id, tp.estado, calificaciones) === 'No asignada' ? 'Ver' : 'Agregar'}
                           </Button>
                         ) : (
                           <Button
@@ -189,7 +187,7 @@ const AlumnoTps = () => {
                             }}
                             onClick={() => history.push(`/entregaGrupo/${alumnoId}/${tp._id}/${idCurso}`)}
                           >
-                            {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') ? 'Ver' : 'Agregar'}{/* ARREGLAR*/}
+                            {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') || getCalificacion(tp._id, tp.estado, calificaciones) === 'No asignada' ? 'Ver' : 'Agregar'}
                           </Button>
                         )
                         }

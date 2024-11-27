@@ -141,7 +141,7 @@ const TpEntrega = () => {
   const deleteCalificacion = async (id) => {
     try {
       await postEliminarCalificacion(id);
-      alert(' eliminada con éxito');
+      alert('Entrega eliminada con éxito');
       history.goBack();
     } catch (error) {
       console.error('Error al eliminar la calificaion del alumno:', error);
