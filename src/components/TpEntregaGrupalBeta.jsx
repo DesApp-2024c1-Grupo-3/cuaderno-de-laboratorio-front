@@ -374,6 +374,17 @@ const TpEntrega = () => {
               )}
               {!comProfe && (tp.estado === 'En marcha') && (
                 <>
+                <Typography variant="body2" color="red" mt={1}>
+                    Tamaño máximo de archivos a subir (16Mb)<br></br>
+                    Cantidad maxima de archivos 10 (Diez)   <br></br>
+                    Solo subir archivos con formato:          
+                      <ul>
+                        <li>application/pdf</li>
+                        <li>image/jpeg</li>                    
+                        <li>image/png</li>
+                        <li>application/vnd.openxmlformats-officedocument.wordprocessingml.document</li>
+                      </ul>
+                  </Typography>
                   <Button
                     variant="contained"
                     component="label"
@@ -382,9 +393,7 @@ const TpEntrega = () => {
                     Subir archivos
                     <input type="file" hidden multiple onChange={handleArchivoChange} />
                   </Button>
-                  <Typography variant="body2" color="red" mt={1}>
-                    Tamaño máximo de archivos a subir (16Mb)
-                  </Typography>
+                  
                 </>
               )}
               {archivos && archivos.map((archivo, index) => (
