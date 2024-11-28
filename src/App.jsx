@@ -5,18 +5,18 @@ import { Footer } from './components/General/Footer';
 import LogIn from './components/LogIn';
 
 //---------------------------Componentes Profesor---------------------------------------
-import ComisionBeta from './components/ComisionBeta';
-import TpsBeta from './components/TpsBeta';
-import CrearTpsBeta from './components/CrearTpsBeta';
-import AdministrarGrupos from './components/Profesores/AdmGrupoBeta';
-import TpDetalleBeta from './components/TpdetalleMarcos';
+import Comision from './components/Comision';
+import TpsProfesor from './components/TpsProfesor';
+import CrearTps from './components/CrearTps';
+import AdministrarGrupos from './components/Profesores/AdmGrupo';
+import TpDetalle from './components/TpDetalle';
 import TpModificar from './components/TpModificar';
 import CalificarGrupo from './components/CalificarGrupo';
 import CalificarAlumno from './components/CalificarAlumno';
 //---------------------------Componentes Alumno---------------------------------------
 import MostrarTpsAlumno from './components/MostrarTpsAlumno';
 import CursoAlumno from './components/CursoAlumno';
-import TpEntregaGrupal from './components/TpEntregaGrupalBeta';
+import TpEntregaGrupal from './components/TpEntregaGrupal';
 import TpEntregaAlumno from './components/TpEntregaAlumno';
 
 // Componente que protege las rutas
@@ -64,11 +64,11 @@ const App = () => {
           </Route>
 
           {/* Rutas protegidas para el profesor */}
-          <ProtectedRoute path="/comision/actual/:profesorId" component={ComisionBeta} />
-          <ProtectedRoute path="/tps/:idCurso/:profesorId" component={TpsBeta} />
-          <ProtectedRoute path="/crearTps/:idCurso/:profesorId" component={CrearTpsBeta} />
+          <ProtectedRoute path="/comision/actual/:profesorId" component={Comision} />
+          <ProtectedRoute path="/tps/:idCurso/:profesorId" component={TpsProfesor} />
+          <ProtectedRoute path="/crearTps/:idCurso/:profesorId" component={CrearTps} />
           <ProtectedRoute path="/Administrar_Grupos/:idCurso/:profesorId" component={AdministrarGrupos} />
-          <ProtectedRoute path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalleBeta} />
+          <ProtectedRoute path="/tp/:idCurso/:profesorId/:tpId" component={TpDetalle} />
           <ProtectedRoute path="/calificarGrupo/:idEntregaGrupal/:profesorId/:tpId/:idCurso" component={CalificarGrupo} />
           <ProtectedRoute path="/calificarAlumno/:idEntregaAlumno/:profesorId/:tpId/:idCurso" component={CalificarAlumno} />
           <ProtectedRoute path="/modificarTP/:idCurso/:profesorId/:tpId" component={TpModificar} />

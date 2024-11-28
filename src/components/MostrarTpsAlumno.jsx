@@ -16,18 +16,14 @@ const AlumnoTps = () => {
   const [calificaciones, setCalificaciones] = useState([]);
   
   const handleBack = () => {
-    history.push(`/alumno/curso/${alumnoId}`);  // Cambia a la ruta que prefieras
+    history.push(`/alumno/curso/${alumnoId}`);  
   };
-  console.log("alumnoId:", alumnoId)
-  console.log("calificaciones:", calificaciones)
   useEffect(() => {
     async function fetchData() {
       try {
         // Obtener los TPs y el curso
         const tpsData = await getTpsByCursoId(idCurso);
         const tpsDato = await getCursoById(idCurso);
-        console.log("tpsDatos:", tpsDato)
-        console.log("tpsData:", tpsData)
         setDato(tpsDato);
 
         // Filtrar los TPs que no estén en estado "Futuro"
@@ -78,8 +74,6 @@ const AlumnoTps = () => {
     fetchData();
   }, [idCurso, alumnoId]);
 
-
-
   const getCalificacion = (idTp, estado, calificaciones) => {
     if (!calificaciones || !Array.isArray(calificaciones)) {
       return 'No asignada';
@@ -96,9 +90,6 @@ const AlumnoTps = () => {
     // Si hay comentario, verificar la calificación
     return estado === 'Cerrado' ? calificacion.calificacion : 'No asignada';
   };
-  
-  
-
   
   const formatFecha = (fechaHora) => {
     const fecha = fechaHora.split('T')[0];
@@ -131,12 +122,12 @@ const AlumnoTps = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '4%' }}>Nombre del TP</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '7%' }}>Tipo</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '6%' }}>Estado</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '4.5%' }}>Finalización</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '7%' }}>Nota</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '2.5%' }}>Entrega</TableCell>
+                    <TableCell align="center" style={{ width: '20%', fontSize: '18px'}}>Nombre del TP</TableCell>
+                    <TableCell align="center" style={{ width: '20%', fontSize: '18px'}}>Tipo</TableCell>
+                    <TableCell align="center" style={{ width: '20%', fontSize: '18px'}}>Estado</TableCell>
+                    <TableCell align="center" style={{ width: '20%', fontSize: '18px'}}>Finalización</TableCell>
+                    <TableCell align="center" style={{ width: '20%', fontSize: '18px'}}>Nota</TableCell>
+                    <TableCell align="center" style={{ width: '20%', fontSize: '18px'}}>Entrega</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -157,9 +148,6 @@ const AlumnoTps = () => {
                             `${getCalificacion(tp._id, tp.estado, calificaciones)} / 10` : 
                             `${getCalificacion(tp._id, tp.estado, calificaciones)}`}
                       </TableCell>
-
-
-
                       <TableCell align="center">
                         {!tp.grupal ? (
                           <Button
@@ -189,8 +177,7 @@ const AlumnoTps = () => {
                           >
                             {(tp.estado === 'En evaluacion') || (tp.estado === 'Cerrado') || getCalificacion(tp._id, tp.estado, calificaciones) === 'No asignada' ? 'Ver' : 'Agregar'}
                           </Button>
-                        )
-                        }
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}

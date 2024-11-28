@@ -21,8 +21,6 @@ const AlumnoCursos = () => {
       try {
         const response = await getCursosByAlumnoIdWithAgreggate(alumnoId);
         setDato(response);
-
-        console.log(response)
       } catch (error) {
         console.error('Error al obtener los cursos:', error);
       }
@@ -57,9 +55,9 @@ const AlumnoCursos = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '13.5%' }}>Materia</TableCell>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '14%' }}>Curso</TableCell>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '12%' }}>Descripción</TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Materia</TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Curso</TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Descripción</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-
+import { useHistory, useParams, NavLink } from 'react-router-dom';
 import {
   Card, Paper, Typography, TableRow, TableHead, TableContainer, TableCell,
-  TableBody, Table, Grid, Box, Button, Container, CardContent
+  TableBody, Table, Grid, Box, Button, Container, CardContent, Dialog, 
+  DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material';
 import { getAlumnosByCursoId } from '../services/Alumnos';
 import { getCalificacionesByTpId } from '../services/Calificacion';
@@ -12,19 +12,18 @@ import { Header } from './General/HeaderProf';
 
 
 const TpDetalle = () => {
-  
   const { idCurso, profesorId, tpId } = useParams();
   const [tp, setTp] = useState(null);
   const [curso, setCurso] = useState(null);
   const [alumnos, setAlumnos] = useState([]);
-  const [tpSubido, setTpSubido] = useState(null);
   const [grupos, setGrupos] = useState([]);
+  const [tpSubido, setTpSubido] = useState(null);
   const [calificaciones, setCalificaciones] = useState([]);
   const [hasError, setHasError] = useState(false);
+  const [open, setOpen] = useState(false);
   const history = useHistory();
   // Verifica si el TP está cerrado
   const isTPClosed = tp && tp.estado === 'Cerrado';
-
   const convertirArchivos = (files, fileTypes, fileNames) => {
     if (!files || files.length === 0) return [];
 
@@ -49,28 +48,24 @@ const TpDetalle = () => {
       try {
         if (tpId) {
           const tpData = await getTpPorId(idCurso, tpId);
-          console.log("Fecha",tpData.fechaFin);
           setTp(tpData);
-          const cursoData = await getCursoPorId(idCurso);
-          if (tpData.tp.file && tpData.tp.file.length > 0) {
-            const archivosConvertidos = convertirArchivos(tpData.tp.file, tpData.tp.fileType, tpData.tp.fileName);
+          if (tpData.file && tpData.file.length > 0) {
+            const archivosConvertidos = convertirArchivos(tpData.file, tpData.fileType, tpData.fileName);
             setTpSubido(archivosConvertidos); // Guardar los archivos convertidos en el estado
           } 
-
+          const cursoData = await getCursoPorId(idCurso);
           setCurso(cursoData);
           const alumnos = await getAlumnosByCursoId(idCurso);
           setAlumnos(alumnos);
           const calificacionesData = await getCalificacionesByTpId(tpId);
           setCalificaciones(calificacionesData);
           if (tpData.grupal) {
-            // Suponiendo que tienes un servicio para obtener los grupos por TP
             const gruposData = await getGruposByTpId(tpId);
             setGrupos(gruposData);
           }
         } else {
           console.error('tpId es undefined');
           setHasError(true);
-          setCalificado(null);
         }
       } catch (err) {
         setHasError(true);
@@ -78,23 +73,37 @@ const TpDetalle = () => {
     }
     fetchTp();
   }, [idCurso, profesorId, tpId]);
- 
 
   const getCalificacion = (id, tipo) => {
-    // Asegúrate de que calificaciones esté definido y sea un array antes de buscar
+    // Asegúrate de que calificaciones es un array válido
     if (!calificaciones || !Array.isArray(calificaciones)) {
-      return 'No asignada';  // o un valor por defecto adecuado
+      return 'No entregado';
     }
-
-    // Busca la calificación basada en el tipo (alumno o grupo)
+  
+    // Buscar la calificación asociada al alumno o grupo
     const calificacion = calificaciones.find(c =>
       tipo === 'alumno' ? c.alumnoId === id : c.grupoId === id
     );
-
-    // Retorna la calificación si se encuentra, o un mensaje por defecto
-    return calificacion ? calificacion.calificacion : 'No asignada';
+  
+    // Si hay un comentario pero no hay calificación, marcar como "No asignada"
+    if (calificacion && !calificacion.calificacion) {
+      return 'No asignada';
+    }
+  
+    // Si hay una calificación válida, mostrarla
+    if (calificacion && calificacion.calificacion) {
+      return `${calificacion.calificacion} / 10`;
+    }
+  
+    // Si no hay comentario y el estado es 'En marcha', 'En evaluación' o 'Cerrado'
+    if (!calificacion && ['En marcha', 'En evaluacion', 'Cerrado'].includes(tp.estado)) {
+      return 'No entregado';
+    }
+  
+    // En cualquier otro caso
+    return 'No asignada';
   };
-
+  
   const SubHeader = ({ titulo, nombreTP }) => {
     return (
       <Grid container justifyContent="center" alignItems="center" >
@@ -105,11 +114,12 @@ const TpDetalle = () => {
       </Grid>
     );
   };
-  
+
   const formatFecha = (fechaHora) => {
-    const fecha = fechaHora.split('T')[0];
-    return fecha;
+    const [year, month, day] = fechaHora.split('T')[0].split('-');
+    return `${day}/${month}/${year}`;
   };
+
 
   const handleCerrarTP = async () => {
     if (isTPClosed) {
@@ -117,15 +127,19 @@ const TpDetalle = () => {
       return;
     }
 
-    const alumnosSinNota = curso.alumnos.some(alumno => getCalificacion(alumno._id, 'alumno') === 'No asignada');
-    const gruposSinNota = tp.grupos.some(grupo => getCalificacion(grupo._id, 'grupo') === 'No asignada');
-    console.log(alumnosSinNota, gruposSinNota)
-    if (!alumnosSinNota) {
-      alert('No se puede cerrar el TP. Todos los alumnos deben tener una nota asignada.');
-      return;
-    }
-    if (!gruposSinNota) {
-      alert('No se puede cerrar el TP. Todos los grupos deben tener una nota asignada.');
+    // Verificar si hay calificaciones "No asignada" para cualquier alumno/grupo.
+    const alumnosSinNota = curso.alumnos.some(alumno => {
+      const calificacion = getCalificacion(alumno._id, 'alumno');
+      return calificacion === 'No asignada';
+    });
+
+    const gruposSinNota = tp.grupos.some(grupo => {
+      const calificacion = getCalificacion(grupo._id, 'grupo');
+      return calificacion === 'No asignada';
+    });
+
+    if (alumnosSinNota || gruposSinNota) {
+      alert('No se puede cerrar el TP. Todos los alumnos o grupos deben tener una calificación asignada.');
       return;
     }
 
@@ -141,7 +155,16 @@ const TpDetalle = () => {
       alert('Hubo un error al intentar cerrar el TP.');
     }
   }
-  //const isTPClosed = tp.estado === 'Cerrado';
+
+  const handleClickOpen = () => setOpen(true);
+
+  const handleClose = () => setOpen(false);
+
+  const handleConfirmClose = async () => {
+    await handleCerrarTP();
+    setOpen(false);
+  };
+
   const tpRendering = () => (
     <Box>
       <Header />
@@ -160,7 +183,30 @@ const TpDetalle = () => {
               </Typography>
             </Grid>
           </Grid>
-         
+          <Grid container alignItems="center">
+                  <Grid item xs={3}>
+                    <Typography variant="body1" color="textSecondary">
+                      Descarga TP:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Typography variant="body2" component="div">
+                      {tpSubido && tpSubido.length > 0 && (
+                        <>
+                          {tpSubido.map((archivo, index) => (
+                            <a key={index} href={archivo.url} download={archivo.nombre}>
+                              <br />
+                              {archivo.nombre}
+                              <br />
+                            </a>
+                          ))}
+                        </>
+                      )}
+                      <br />
+                    </Typography>
+                  </Grid>
+                </Grid>
+
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={3}>
               <Typography variant="body1" color="textSecondary">
@@ -183,8 +229,9 @@ const TpDetalle = () => {
           ) : (
             <Grid container justifyContent="flex-end">
               <Grid item mb={1}>
-                <Button variant="contained" sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
-                  onClick={() => history.goBack()}>
+                <Button variant="contained"
+                  sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+                  onClick={() => history.push(`/tps/${idCurso}/${profesorId}`)}>
                   Volver
                 </Button>
               </Grid>
@@ -204,29 +251,28 @@ const TpDetalle = () => {
           >
             <Typography variant="h6" component="div" gutterBottom>
               {tp.grupal ? (
-                <Typography sx={{ fontSize: '1.2vw', fontWeight: 'bold' }}>Grupos</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Grupos</Typography>
               ) : (
-                <Typography sx={{ fontSize: '1.2vw', fontWeight: 'bold' }}>Alumnos</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Alumnos</Typography>
               )}
             </Typography>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '7%' }}>
+                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '8.5%' }}>
                       {tp.grupal ? (
                         <Typography sx={{ fontWeight: 'bold' }}>Nombre de grupo</Typography>
                       ) : (
                         <Typography sx={{ fontWeight: 'bold' }}>Nombre de alumno</Typography>
                       )}</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '9.5%' }}>Estado</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '9.5%' }}>Nota</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '9.2%' }}>Entrega</TableCell>
+                    <TableCell align="center" style={{ width: '20%', fontSize: '18px'}}>Estado</TableCell>
+                    <TableCell align="center" style={{ width: '20%', fontSize: '18px'}}>Nota</TableCell>
+                    <TableCell align="center" style={{ width: '20%', fontSize: '18px'}}>Entrega</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {tp.grupal ? (
-
                     grupos.map((grupo, index) => (
                       <TableRow
                         key={grupo.id}
@@ -234,8 +280,7 @@ const TpDetalle = () => {
                       >
                         <TableCell align="center">{grupo.nombre}</TableCell>
                         <TableCell align="center">{tp.estado}</TableCell>
-                        <TableCell align="center">{getCalificacion(grupo._id, 'grupo') !== 'No asignada' ?
-                          `${getCalificacion(grupo._id, 'grupo')} / 10` : 'No asignada'}</TableCell>
+                        <TableCell align="center">{getCalificacion(grupo._id, 'grupo')}</TableCell>
                         <TableCell align="center">
                           <Button
                             variant="contained"
@@ -246,7 +291,7 @@ const TpDetalle = () => {
                               borderRadius: '5%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/calificarGrupo/${grupo._id}/${profesorId}/${tpId} `)}
+                            onClick={() => history.push(`/calificarGrupo/${grupo._id}/${profesorId}/${tpId}/${idCurso}`)}
                           >
                             Ver
                           </Button>
@@ -255,15 +300,13 @@ const TpDetalle = () => {
                     ))
                   ) : (
                     alumnos.map((alumno, index) => (
-
                       <TableRow
                         key={alumno.id}
                         sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                       >
                         <TableCell align="center">{alumno.nombre} {alumno.apellido}</TableCell>
                         <TableCell align="center">{tp.estado}</TableCell>
-                        <TableCell align="center">{getCalificacion(alumno._id, 'alumno') !== 'No asignada' ?
-                          `${getCalificacion(alumno._id, 'alumno')} / 10` : 'No asignada'}</TableCell>
+                        <TableCell align="center">{getCalificacion(alumno._id, 'alumno')}</TableCell>
                         <TableCell align="center">
                           <Button
                             variant="contained"
@@ -274,7 +317,7 @@ const TpDetalle = () => {
                               borderRadius: '5%',
                               '&:hover': { backgroundColor: '#b0d38a' }
                             }}
-                            onClick={() => history.push(`/CalificarAlumno/${alumno._id}/${profesorId}/${tpId}`)}
+                            onClick={() => history.push(`/CalificarAlumno/${alumno._id}/${profesorId}/${tpId}/${idCurso}`)}
                           >
                             Ver
                           </Button>
@@ -304,7 +347,6 @@ const TpDetalle = () => {
                       </Grid>
                     </>
                   )}
-
                   {/* Mostrar la cantidad de grupos si existen */}
                   {tp.grupos.length > 0 && (
                     <>
@@ -323,12 +365,12 @@ const TpDetalle = () => {
                 </Grid>
               </div>
             )}
-
             <div style={{ marginTop: '20px', textAlign: 'center' }}>
+              {tp && tp.estado === "En evaluacion" && (
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={() => handleCerrarTP()}
+                onClick={() => handleClickOpen()}
                 style={{
                   backgroundColor: isTPClosed ? 'grey' : 'red',
                   color: 'white',
@@ -341,13 +383,14 @@ const TpDetalle = () => {
               >
                 Cerrar TP
               </Button>
+              )}
             </div>
-
           </Container>
         </CardContent>
         <Grid item mx={2} mb={2}>
           <Button
-            onClick={() => history.goBack()}
+            component={NavLink}
+            to={`/tps/${idCurso}/${profesorId}`}
             variant="contained"
             color="primary"
             sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
@@ -355,6 +398,22 @@ const TpDetalle = () => {
             Volver
           </Button>
         </Grid>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Confirmación</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              ¿Estás seguro que quieres cerrar el trabajo práctico?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancelar
+            </Button>
+            <Button onClick={handleConfirmClose} color="primary">
+              Confirmar
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Card>
     </Box>
   );

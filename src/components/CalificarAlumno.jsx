@@ -20,14 +20,13 @@ const TpEntrega = () => {
   const [tpSubido, setTpSubido] = useState(null);
   const [archivo, setArchivo] = useState('');
   const [hasError, setHasError] = useState(false);
-  const [open, setOpen] = useState(false);//LOGICA PARA WARNING ELIMINACION
+  const [open, setOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
 
   const history = useHistory();
   const handleBack = () => {
-    history.push(`/tpsAlumno/${idCurso}/${alumnoId}`);
-    //history.push('/tpsAlumno/:idCurso/:alumnoId');  // Cambia a la ruta que prefieras
+  history.push(`/tpsAlumno/${idCurso}/${alumnoId}`);
   };
   const convertirArchivos = (files, fileTypes, fileNames) => {
     if (!files || files.length === 0) return [];
@@ -55,12 +54,10 @@ const TpEntrega = () => {
         if (tpId) {
           const tpData = await getTpId(tpId);
           setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
-
           if (tpData.tp.file && tpData.tp.file.length > 0) {
             const archivosConvertidos = convertirArchivos(tpData.tp.file, tpData.tp.fileType, tpData.tp.fileName);
             setTpSubido(archivosConvertidos); // Guardar los archivos convertidos en el estado
-          } 
-
+          }
         } else {
           console.error('tpId es undefined');
           setHasError(true);
@@ -128,7 +125,7 @@ const TpEntrega = () => {
     try {
       await postEliminarCalificacion(id);
     } catch (error) {
-      console.error('Error al eliminar la calificaion del alumno:', error);
+      console.error('Error al eliminar la calificación del alumno:', error);
     }
   };
   const handleClickOpen = () => {//LOGICA PARA WARNING ELIMINACION
@@ -145,7 +142,6 @@ const TpEntrega = () => {
 
   const handleNotaChange = (e) => {
     const value = e.target.value;
-    // Permite tanto números como 'No entregado'
     if (value === '' || (Number(value) >= 1 && Number(value) <= 10)) {
       setNota(value);
     }
@@ -267,9 +263,9 @@ const TpEntrega = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '14%' }}>Nombre </TableCell>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '13.5%' }}>Apellido</TableCell>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '15%' }}>Dni</TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Nombre </TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Apellido</TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Dni</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -291,7 +287,7 @@ const TpEntrega = () => {
               <Typography variant="h6" component="div" gutterBottom>
                 {archivo && archivo.length > 0 ? (
                   <>
-                    Documento entregado: <span style={{ color: 'blue' }}>Descargar</span>
+                    Documento entregado:
                   </>
                 ) : (
                   'Documento no entregado. El trabajo práctico no fue entregado'

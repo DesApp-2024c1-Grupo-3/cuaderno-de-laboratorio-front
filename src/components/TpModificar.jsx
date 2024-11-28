@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { getTpId, updateTp } from '../services/tps'; // Asegúrate de importar el servicio adecuado
+import { getTpId, updateTp } from '../services/tps'; 
 import ListaDeGrupos from './Profesores/ListaDeGrupos';
 import { Header } from './General/HeaderProf';
 
@@ -50,7 +50,6 @@ const TpModificar = () => {
     };
 
     const agregarGrupo = () => {
-        console.log('Grupos seleccionados:', gruposParaTrabajo); // Verifica que los grupos estén actualizados
         setTpData((prev) => ({ ...prev, grupo: gruposParaTrabajo }));
     };
 
@@ -60,9 +59,7 @@ const TpModificar = () => {
             return;
         }
         try {
-            console.log('Datos antes de actualizar:', tpData); // Verifica que tpData tiene los grupos correctos
             const response = await updateTp(tpId, tpData);
-
             if (response.status === 200) {
                 window.alert('Trabajo práctico actualizado correctamente');
                 history.goBack();
@@ -98,7 +95,6 @@ const TpModificar = () => {
             try {
                 const response = await getTpId(tpId);
                 const tp = response.tp; // Acceder al objeto tp dentro del response
-                console.log('Grupo traido del tp:', tp.grupos)
                 setTpData({
                     nombre: tp?.nombre || '',
                     fechaInicio: tp?.fechaInicio ? tp.fechaInicio.split('T')[0] : '',
@@ -162,14 +158,13 @@ const TpModificar = () => {
                                     onChange={handleChange}
                                 />
                                 <FormLabel>Descripción</FormLabel>
-                                {/* Proximamente cambiar estado Entregado por Cerrado */}
                                 <ReactQuill
                                     ref={quillRef}
                                     value={tpData.consigna}
                                     onChange={tpData.estado === 'Entregado' ? () => { } : handleConsignaChange} // No permite cambios si el estado es 'Cerrado'
                                     style={{
                                         marginBottom: '20px',
-                                        backgroundColor: tpData.estado === 'Entregado' ? '#f0f0f0' : 'white', // Fondo grisáceo si está cerrado
+                                        backgroundColor: tpData.estado === 'Entregado' ? '#f0f0f0' : 'white',
                                         pointerEvents: tpData.estado === 'Entregado' ? 'none' : 'auto' // Evita interacción en cerrado
                                     }}
                                     modules={{
@@ -208,7 +203,6 @@ const TpModificar = () => {
                                             disabled={tpData.estado !== 'Futuro'} // Solo editable si el estado es 'Futuro'
                                         />
                                     </Grid>
-                                    {/* Proximamente cambiar estado Entregado por Cerrado */}
                                     <Grid item xs={6}>
                                         <TextField
                                             label="Fecha fin"

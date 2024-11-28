@@ -32,9 +32,6 @@ const TpEntrega = () => {
   const handleBack = () => {
     history.push(`/tpsAlumno/${idCurso}/${alumnoId}`);  // Cambia a la ruta que prefieras
   };
-  console.log("archivo", archivo);
-  console.log("Parametro de entradas" , { idCurso }, { tpId });
-  console.log("Trabajo Practico", tp);
   // Función para convertir los archivos a objetos Blob y generar las URLs de descarga
   const convertirArchivos = (files, fileTypes, fileNames) => {
     if (!files || files.length === 0) return [];
@@ -58,15 +55,12 @@ const TpEntrega = () => {
   useEffect(() => {
     async function fetchTp() {
       try {
-        console.log("Parametro" , { tpId });
         const alumnoData = await getAlumnoById(alumnoId);
         setAlumno(alumnoData);
         try {
           const califData = await getComAlumnIndByCalifId(alumnoId, tpId);
           setComentarioProfe(califData);
           setNota(califData.calificacion);
-
-
         } catch (error) {
           if (error.response && error.response.status === 404 || error.response.status === 500) {
             setComentarioProfe('');
@@ -75,9 +69,7 @@ const TpEntrega = () => {
         if (tpId) {
           
           const tpData = await getTpId(tpId);
-          setTp(tpData.tp); // Asigna tpData.tp directamente al estado tp
-          // Convertir archivos solo si `tp.file` existe y tiene contenido
-          console.error('el estado es',tpData.tp.estado);
+          setTp(tpData.tp);
           if (tpData.tp.file && tpData.tp.file.length > 0) {
             const archivosConvertidos = convertirArchivos(tpData.tp.file, tpData.tp.fileType, tpData.tp.fileName);
             setArchivo(archivosConvertidos); // Guardar los archivos convertidos en el estado
@@ -90,7 +82,6 @@ const TpEntrega = () => {
       } catch (err) {
         setHasError(true);
       }
-
     }
     fetchTp();
   }, [alumnoId, tpId]);
@@ -103,7 +94,6 @@ const TpEntrega = () => {
 
   const handleComentarioChange = (e) => setComentario(e.target.value);
   const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
-  console.log('Archivos:', archivos); // Depuración
   const handleSave = async () => {
     try {
       if (archivos.length > 10) {
@@ -144,7 +134,7 @@ const TpEntrega = () => {
       alert('Entrega eliminada con éxito');
       history.goBack();
     } catch (error) {
-      console.error('Error al eliminar la calificaion del alumno:', error);
+      console.error('Error al eliminar la calificaion del alumno', error);
     }
   };
   const handleClickOpen = () => {//LOGICA PARA WARNING ELIMINACION
@@ -209,7 +199,7 @@ const TpEntrega = () => {
                 <Grid container alignItems="center">
                   <Grid item xs={3}>
                     <Typography variant="body1" color="textSecondary">
-                      Descarga TP :
+                      Descarga TP:
                     </Typography>
                   </Grid>
                   <Grid item xs={9}>
@@ -264,9 +254,9 @@ const TpEntrega = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '14%' }}>Nombre </TableCell>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '13.5%' }}>Apellido</TableCell>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '15%' }}>Dni</TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Nombre </TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Apellido</TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Dni</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -324,7 +314,7 @@ const TpEntrega = () => {
                 <Grid container alignItems="center">
                   <Grid item xs={5}>
                     <Typography variant="h6" component="div" gutterBottom>
-                      Descarga TP enviado :
+                      Descarga TP enviado:
                     </Typography>
                   </Grid>
                   <Grid item xs={5}>
@@ -352,10 +342,10 @@ const TpEntrega = () => {
                     Cantidad maxima de archivos 10 (Diez)   <br></br>
                     Solo subir archivos con formato:          
                       <ul>
-                        <li>application/pdf</li>
-                        <li>image/jpeg</li>                    
-                        <li>image/png</li>
-                        <li>application/vnd.openxmlformats-officedocument.wordprocessingml.document</li>
+                        <li>PDF</li>
+                        <li>JPEG</li>                    
+                        <li>PNG</li>
+                        <li>DOCX</li>
                       </ul>
                   </Typography>
                   <Button
@@ -366,7 +356,6 @@ const TpEntrega = () => {
                     Subir archivos
                     <input type="file" hidden multiple onChange={handleArchivoChange} />
                   </Button>
-                
                 </>
               )}
               {archivos && archivos.map((archivo, index) => (
@@ -420,7 +409,6 @@ const TpEntrega = () => {
           </Container>
         </CardContent>
         <Box p={2}>
-
           {comProfe.calificacion ? (
             <>
               <Grid item>

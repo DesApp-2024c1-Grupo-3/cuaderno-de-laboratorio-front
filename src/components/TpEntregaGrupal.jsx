@@ -14,7 +14,7 @@ import {
 import { getTpId } from '../services/tps';
 import { Header } from './General/HeaderAlum';
 
-const TpEntrega = () => {
+const TpEntregaGrupal = () => {
   const history = useHistory();
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
@@ -29,15 +29,12 @@ const TpEntrega = () => {
   const [comentario, setComentario] = useState('');
   const [archivos, setArchivos] = useState([]);
   const [archivo, setArchivo] = useState(null);// descarga de archivos del buffer de subida del profesor
-  const [archivoCalif, setArchivoCalif] = useState(null);// desgarga y vista del atp subido por el alumno
+  const [archivoCalif, setArchivoCalif] = useState(null);// desgarga y vista del tp subido por el alumno
   const [hasError, setHasError] = useState(false);
   const [open, setOpen] = useState(false);//LOGICA PARA WARNING ELIMINACION
   const handleBack = () => {
     history.push(`/tpsAlumno/${idCurso}/${alumnoId}`);  // Cambia a la ruta que prefieras
   };
-
-  console.log("File entrega", archivoCalif);
-  console.log("comProfe", comProfe);
   // Función para convertir los archivos a objetos Blob y generar las URLs de descarga
   const convertirArchivos = (files, fileTypes, fileNames) => {
     if (!files || files.length === 0) return [];
@@ -67,9 +64,8 @@ const TpEntrega = () => {
 
         if (grupos) {
           const grupoEncontrado = grupos.find(grupo =>
-            grupo.alumnos.some(alumno => alumno._id === alumnoId)
+          grupo.alumnos.some(alumno => alumno._id === alumnoId)
           );
-
           if (grupoEncontrado) {
             const tpData = await getTpId(tpId);
             setTp(tpData.tp);
@@ -103,7 +99,6 @@ const TpEntrega = () => {
         if (tpId) {
           const tpData = await getTpId(tpId);
           setTp(tpData.tp);
-          console.log("Estados",tpData.tp);
         } else {
           console.error('tpId es undefined');
           setHasError(true);
@@ -122,8 +117,6 @@ const TpEntrega = () => {
       setArchivoCalif(archivosConvertidos);
     }
   }, [comProfe]);
-  console.log(tpId)
-  console.log("tp", archivos);
   const handleComentarioChange = (e) => setComentario(e.target.value);
   const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
   const handleSave = async () => {
@@ -287,9 +280,9 @@ const TpEntrega = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '14%' }}>Nombre </TableCell>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '13.5%' }}>Apellido</TableCell>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '15%' }}>Dni</TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Nombre </TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Apellido</TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Dni</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -302,7 +295,6 @@ const TpEntrega = () => {
                         <TableCell align="center">{integrante.nombre}</TableCell>
                         <TableCell align="center">{integrante.apellido}</TableCell>
                         <TableCell align="center">{integrante.dni}</TableCell>
-
                       </TableRow>
                     ))
                   }
@@ -351,7 +343,7 @@ const TpEntrega = () => {
                 <Grid container alignItems="center">
                   <Grid item xs={5}>
                     <Typography variant="h6" component="div" gutterBottom>
-                      Descarga TP enviado :
+                      Descarga TP enviado:
                     </Typography>
                   </Grid>
                   <Grid item xs={5}>
@@ -379,10 +371,10 @@ const TpEntrega = () => {
                     Cantidad maxima de archivos 10 (Diez)   <br></br>
                     Solo subir archivos con formato:          
                       <ul>
-                        <li>application/pdf</li>
-                        <li>image/jpeg</li>                    
-                        <li>image/png</li>
-                        <li>application/vnd.openxmlformats-officedocument.wordprocessingml.document</li>
+                        <li>PDF</li>
+                        <li>JPEG</li>                    
+                        <li>PNG</li>
+                        <li>DOCX</li>
                       </ul>
                   </Typography>
                   <Button
@@ -434,7 +426,7 @@ const TpEntrega = () => {
                       Nota: {comProfe.calificacion}
                     </Typography>
                     <Typography variant="h6" component="div" gutterBottom>
-                      Devolucion del Profesor :
+                      Devolucion del Profesor:
                       <Typography marginLeft={2} variant="h6">
                         {comProfe.devolucionProf}
                       </Typography>
@@ -461,7 +453,6 @@ const TpEntrega = () => {
             </>
           ) : (
             comProfe ? (
-
               <Grid container justifyContent="space-between" marginTop="20px">
                 <Grid item>
                   <Button
@@ -550,4 +541,4 @@ const TpEntrega = () => {
   return hasError ? errorRendering() : !grupo ? loadingRendering() : entregaRendering();
 };
 
-export default TpEntrega;
+export default TpEntregaGrupal;

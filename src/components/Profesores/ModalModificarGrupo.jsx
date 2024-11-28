@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Box, Container, Typography, Divider, TextField, FormControl, Button, Autocomplete } from '@mui/material';
 import PropTypes from 'prop-types';
-import { getGrupoByCursoId, updateGrupo } from '../../services/Grupo';
+import { upDateGrupo, getGrupoByCursoId } from '../../services/Grupo';
 import { getAlumnosByCursoId } from '../../services/Alumnos';
 
-export const ModalModificarGrupo = ({ show, closeModal, idCurso, actualizarListaGrupos }) => {
+export const ModalModificarGrupo = ({ show, closeModal, idCurso, grupoParaModificar, actualizarListaGrupos }) => {
   const [listAlumnos, setListAlumnos] = useState([]);
-  const [hasError, setHasError] = useState(false);
+
   const [nombreGrupo, setNombreGrupo] = useState('');
   const [grupoData, setGrupoData] = useState({
     nombre: '',
     alumnos: [],
   });
-  const [selectedGrupo, setSelectedGrupo] = useState([]);
-  const [gruposDeCurso, setGruposDeCurso] = useState([]);
+  console.log(listAlumnos)
 
   const resetModal = () => {
     setNombreGrupo('');
@@ -21,7 +20,6 @@ export const ModalModificarGrupo = ({ show, closeModal, idCurso, actualizarLista
       nombre: '',
       alumnos: [],
     });
-    setSelectedGrupo(null);
   };
 
   const onClose = () => {
@@ -34,150 +32,111 @@ export const ModalModificarGrupo = ({ show, closeModal, idCurso, actualizarLista
     setNombreGrupo(nombreG);
     setGrupoData({ ...grupoData, nombre: nombreG });
   };
-
-  const handleChangeAlumnos = (event, value) => {
-    setGrupoData({ ...grupoData, alumnos: value });
+  
+  
+  const handleChangeAlumnos = (event, values) => {
+    setGrupoData({
+      ...grupoData,
+      alumnos: values.map((alumno) => alumno._id),
+    });
   };
 
-  const validarDatos = () => {
-    return grupoData.nombre !== '' && grupoData.alumnos.length > 0;
-  };
-
-  const modificarGrupo = async () => {
+  const updateGrupoSubmit = async () => {
     try {
-      const response = await updateGrupo(selectedGrupo._id, grupoData, idCurso);
-      if (response.status === 200) {
-        window.alert('Grupo modificado correctamente');
-        actualizarListaGrupos();
-        onClose();
-      } else {
-        console.error('Error al modificar grupo');
-      }
+      await upDateGrupo(grupoParaModificar._id, grupoData);
+      await actualizarListaGrupos();
+      onClose();
     } catch (error) {
-      console.error('Error en la solicitud:', error);
-      window.alert('Error en la solicitud');
+      console.error('Error al actualizar el grupo:', error);
     }
   };
-  const fetchGrupos = async () => {
-    try {
-      const grupos = await getGrupoByCursoId(idCurso);
-      console.log("Son alumnos en grupos:",grupos)
-      setGruposDeCurso(grupos);
 
-    } catch (err) {
-      console.log('Ocurrió este error:', err);
-      setHasError(true);
-    }
-  };
   const fetchAlumnos = async () => {
     try {
-      const alumnos = await getAlumnosByCursoId(idCurso);
-      console.log("Son alumnos en grupos:",alumnos)
-      const alumnosEnGrupos = gruposDeCurso.flatMap(grupo => grupo.alumnos.map(alumno => alumno._id)); // trae a todos los alumnos que tienen grupo
-      console.log("Son alumnos en grupos:",alumnosEnGrupos)
-      const alumnosDisponibles = alumnos.filter(alumno => !alumnosEnGrupos.includes(alumno._id));// trae solo los alumnos que no tienen
+      const alumnos = await getAlumnosByCursoId(idCurso); // Trae todos los alumnos del curso
+      const gruposActualizados = await getGrupoByCursoId(idCurso);
+      const alumnosEnGrupos = gruposActualizados.flatMap(grupo => grupo.alumnos.map(alumno => alumno._id)); // Trae a todos los alumnos que tienen grupo
+      const alumnosDisponibles = alumnos.filter(alumno =>
+        !alumnosEnGrupos.includes(alumno._id) || grupoParaModificar.alumnos.some(grupoAlumno => grupoAlumno._id === alumno._id)
+      ); // Trae solo los alumnos que no tienen grupo o que ya están en el grupo que se está modificando
       setListAlumnos(alumnosDisponibles);
-    } catch (err) {
-      console.log('Ocurrió este error:', err);
-      setHasError(true);
+    
+    } catch (error) {
+      console.error('Error al obtener la lista de alumnos:', error);
     }
   };
-
   
-
-  const handleGrupoChange = (event, value) => {
-    setSelectedGrupo(value);
-    if (value) {
-      setNombreGrupo(value.nombre);
-      setGrupoData({
-        nombre: value.nombre,
-        alumnos: value.alumnos,
-      });
-      fetchAlumnos(); // Llamar a fetchAlumnos después de seleccionar un grupo
-    } else {
-      resetModal();
-    }
-  };
 
   useEffect(() => {
     if (show) {
-      fetchGrupos();
+      fetchAlumnos();
+      setNombreGrupo(grupoParaModificar.nombre);
+      setGrupoData({
+        nombre: grupoParaModificar.nombre,
+        alumnos: grupoParaModificar.alumnos.map(alumno => alumno._id),
+      });
     }
   }, [show]);
 
   return (
-    <Modal open={show} onClose={onClose}>
-      <Box
+    <Modal
+      open={show}
+      onClose={onClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Container
+        maxWidth="xl"
         sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 600,
-          bgcolor: 'background.paper',
-          border: '2px solid #000',
-          boxShadow: 24,
-          p: 4,
-          borderRadius: 2,
+          mt: 4,
+          mb: 4,
+          border: 'solid',
+          borderWidth: '10px 20px 20px 10px',
+          borderColor: 'rgba(0, 0, 0, 0.08)',
+          borderRadius: '1%',
+          bgcolor: 'white',
         }}
       >
-        <Container>
-          <Typography variant="h6">Modificar Grupo</Typography>
-          <Divider sx={{ my: 2 }} />
-        </Container>
-        <Container>
-          <FormControl fullWidth sx={{ mb: 2 }}>
+        <Typography variant="h6" gutterBottom>
+          Modificar Grupo
+        </Typography>
+        <Divider />
+        <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+          <TextField
+            name="nombre"
+            margin="normal"
+            type="text"
+            value={nombreGrupo}
+            onChange={guardarNombre}
+            placeholder="Nombre del Grupo"
+            required
+            sx={{ marginBottom: '20px', width: '50%' }}
+          />
+          <FormControl fullWidth>
             <Autocomplete
-              options={gruposDeCurso}
-              getOptionLabel={(option) => option.nombre}
-              onChange={handleGrupoChange}
-              renderInput={(params) => (
-                <TextField {...params} label="Seleccione un grupo" variant="outlined" />
-              )}
+              multiple
+              options={ listAlumnos }
+              getOptionLabel={(option) => `${option.nombre} ${option.apellido}`}
+              value= {listAlumnos.filter(alumno => grupoData.alumnos.includes(alumno._id))}
+              onChange={handleChangeAlumnos}
+            
+              renderInput={(params) => <TextField {...params} label="Alumnos" placeholder="Seleccione los alumnos" />}
             />
           </FormControl>
-        </Container>
-        {selectedGrupo && (
-          <>
-            <Container>
-              <TextField
-                fullWidth
-                label="Nombre del Grupo"
-                variant="outlined"
-                value={nombreGrupo}
-                onChange={guardarNombre}
-                sx={{ mb: 2 }}
-              />
-            </Container>
-            <Container>
-              <FormControl fullWidth>
-                <Autocomplete
-                  multiple
-                  options={listAlumnos}
-                  getOptionLabel={(option) => `${option.nombre} ${option.apellido}`}
-                  value={grupoData.alumnos}
-                  onChange={handleChangeAlumnos}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Lista de Alumnos" variant="outlined" />
-                  )}
-                  sx={{ mb: 2 }}
-                />
-              </FormControl>
-            </Container>
-            <Container>
-              <Button onClick={onClose} sx={{ mr: 2 }}>Cerrar</Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={modificarGrupo}
-                disabled={!validarDatos()}
-              >
-                Modificar
-              </Button>
-            </Container>
-          </>
-        )}
-      </Box>
+          <Button
+            variant="contained"
+            sx={{
+              marginTop: '20px',
+              backgroundColor: '#c5e1a5',
+              color: '#000000',
+              '&:hover': { backgroundColor: '#b0d38a' },
+            }}
+            onClick={updateGrupoSubmit}
+          >
+            Guardar cambios
+          </Button>
+        </Box>
+      </Container>
     </Modal>
   );
 };
@@ -187,4 +146,5 @@ ModalModificarGrupo.propTypes = {
   closeModal: PropTypes.func.isRequired,
   idCurso: PropTypes.string.isRequired,
   actualizarListaGrupos: PropTypes.func.isRequired,
+  grupoParaModificar: PropTypes.object.isRequired,
 };

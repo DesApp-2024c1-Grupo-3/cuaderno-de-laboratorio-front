@@ -40,7 +40,6 @@ const CrearTpsBeta = () => {
     }
   };
   const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
-  console.log('Archivos:', archivos); // Depuración
   const handleSave = async () => {
     try {
       if (archivos.length > 10) {
@@ -118,7 +117,6 @@ const CrearTpsBeta = () => {
     const fetchData = async () => {
       try {
         const tpsDato = await getCursoById(idCurso);
-        console.log("Datos obtenidos:", tpsDato); // Verifica la estructura de los datos obtenidos
         setDato(tpsDato);
       } catch (error) {
         console.error('Error fetching data:', error);

@@ -5,7 +5,6 @@ import { Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-// Define los estilos utilizando @emotion/styled
 const FixedHeader = styled.div`
   
   display: flex;  
@@ -30,10 +29,6 @@ const Title = styled.p`
   text-align: center;
 `;
 
-//const profesorId = '6685d8cbf85876c72749555e';
-
-
-
 export const Header = () => {
 
     const [profesor, setProfesor] = useState([]);
@@ -44,7 +39,6 @@ export const Header = () => {
         
   
         try {
-          // Agregar el ID del profesor según la información que tengas en tu base de datos local.
           const data = await getProfesorPorId(profesorId);
           setProfesor(data);
   

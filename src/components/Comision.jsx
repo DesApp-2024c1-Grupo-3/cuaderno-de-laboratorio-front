@@ -103,9 +103,9 @@ export default function Comision() {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ width: '40%', fontSize: '18px' }}>Materia</TableCell>
-                    <TableCell sx={{ width: '40%', fontSize: '18px' }}>Comision</TableCell>
-                    <TableCell sx={{ width: '40%', fontSize: '18px' }}>Trabajos Practicos</TableCell>
+                    <TableCell align="center" sx={{ width: '33%', fontSize: '18px' }}>Materia</TableCell>
+                    <TableCell align="center" sx={{ width: '33%', fontSize: '18px' }}>Comision</TableCell>
+                    <TableCell align="center" sx={{ width: '33%', fontSize: '18px' }}>Trabajos Practicos</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -114,9 +114,9 @@ export default function Comision() {
                       key={it._id}
                       sx={{ backgroundColor: index % 2 === 0 ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)' }}
                     >
-                      <TableCell>{it.materia.nombre}</TableCell>
-                      <TableCell>{it.comision}</TableCell>
-                      <TableCell sx={{
+                      <TableCell align="center">{it.materia.nombre}</TableCell>
+                      <TableCell align="center">{it.comision}</TableCell>
+                      <TableCell align="center" sx={{
                         display: 'flex',
                         justifyContent: 'center', // Centra horizontalmente
                         alignItems: 'center' // Centra verticalmente

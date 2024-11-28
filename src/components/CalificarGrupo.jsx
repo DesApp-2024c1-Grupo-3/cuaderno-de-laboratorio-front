@@ -28,7 +28,6 @@ const TpEntrega = () => {
   const history = useHistory();
   const handleBack = () => {
     history.push(`/tpsAlumno/${idCurso}/${alumnoId}`);
-    //history.push('/tpsAlumno/:idCurso/:alumnoId');  // Cambia a la ruta que prefieras
   };
   
   const convertirArchivos = (files, fileTypes, fileNames) => {
@@ -57,10 +56,8 @@ const TpEntrega = () => {
         const gruposData = await getGrupoPorId(idEntregaGrupal);
         setGrupo(gruposData);
         const gruposN = await getGruposByTpId(tpId);
-        console.log(gruposN);
         const grupoEncontrado = gruposN.find(grupo => grupo._id === idEntregaGrupal);
         setGrupoName(grupoEncontrado);
-        console.log(grupoEncontrado.nombre);
 
         if (tpId) {
           const tpData = await getTpId(tpId);
@@ -106,7 +103,6 @@ const TpEntrega = () => {
             setArchivo(archivos);
 
           }
-          //setNota(califData?.calificacion);
           if (tp?.estado === 'En evaluacion' && (!califData || !califData.calificacion)) {
             setNota('No entregado');
           } else {
@@ -131,7 +127,6 @@ const TpEntrega = () => {
 
   const handleNotaChange = (e) => {
     const value = e.target.value;
-    // Permite tanto números como 'No entregado'
     if (value === '' || (Number(value) >= 1 && Number(value) <= 10)) {
       setNota(value);
     }
@@ -166,7 +161,7 @@ const TpEntrega = () => {
       await postEliminarCalificacion(id);
       window.location.reload();
     } catch (error) {
-      console.error('Error al eliminar la calificación:', error);
+      console.error('Error al eliminar la calificación', error);
     }
   };
 
@@ -269,9 +264,9 @@ const TpEntrega = () => {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '14%' }}>Nombre </TableCell>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '13.5%' }}>Apellido</TableCell>
-                    <TableCell style={{ width: '33%', fontSize: '18px', paddingLeft: '15%' }}>Dni</TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Nombre </TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Apellido</TableCell>
+                    <TableCell align="center" style={{ width: '33%', fontSize: '18px'}}>Dni</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -291,7 +286,7 @@ const TpEntrega = () => {
                 <br />
                 {archivo && archivo.length > 0 && (
                   <>
-                    Documento entregado: <span style={{ color: 'blue' }}>Descargar</span>
+                    Documento entregado:
                   </>
                 )}
               </Typography>

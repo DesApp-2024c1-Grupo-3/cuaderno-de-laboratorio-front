@@ -89,12 +89,12 @@ export default function Tps() {
               <Table sx={{ minWidth: 650, backgroundColor: 'rgba(0, 0, 0, 0.08)' }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '27%', fontSize: '18px', paddingLeft: '4%' }}>Nombre del TP</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '6%' }}>Tipo</TableCell>
-                    <TableCell style={{ width: '15%', fontSize: '18px', paddingLeft: '3.5%' }}>Estado</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '5%' }}>Inicio</TableCell>
-                    <TableCell style={{ width: '25%', fontSize: '18px', paddingLeft: '3%' }}>Finalización</TableCell>
-                    <TableCell style={{ width: '20%', fontSize: '18px', paddingLeft: '7%' }}>Detalles</TableCell>
+                    <TableCell align="center" style={{ width: '27%', fontSize: '18px'}}>Nombre del TP</TableCell>
+                    <TableCell align="center" style={{ width: '20%', fontSize: '18px'}}>Tipo</TableCell>
+                    <TableCell align="center" style={{ width: '15%', fontSize: '18px'}}>Estado</TableCell>
+                    <TableCell align="center" style={{ width: '20%', fontSize: '18px'}}>Inicio</TableCell>
+                    <TableCell align="center" style={{ width: '25%', fontSize: '18px'}}>Finalización</TableCell>
+                    <TableCell align="center" style={{ width: '20%', fontSize: '18px', paddingLeft: '5%' }}>Detalles</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

@@ -7,8 +7,8 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { ModalCrearGrupos } from './ModalCrearGrupoBeta';
-import { ModalModificarGrupo } from './ModalModificarGrupoBeta';
+import { ModalCrearGrupos } from './ModalCrearGrupo';
+import { ModalModificarGrupo } from './ModalModificarGrupo';
 import { useParams, useHistory, NavLink } from 'react-router-dom';
 import { getGrupoByCursoId, postEliminarGrupo } from '../../services/Grupo';
 import { SubHeader } from '../General/SubHeader';

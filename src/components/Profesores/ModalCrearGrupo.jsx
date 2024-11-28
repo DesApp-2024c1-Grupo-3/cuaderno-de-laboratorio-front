@@ -155,5 +155,4 @@ ModalCrearGrupos.propTypes = {
   show: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   idCurso: PropTypes.string.isRequired,
- // actualizarListaGrupos: PropTypes.func.isRequired,
 };
