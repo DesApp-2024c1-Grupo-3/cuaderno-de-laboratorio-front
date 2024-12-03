@@ -122,39 +122,47 @@ const TpDetalle = () => {
 
 
   const handleCerrarTP = async () => {
+    // Verificar si ya está cerrado
     if (isTPClosed) {
       alert('El TP ya está cerrado.');
       return;
     }
-
-    // Verificar si hay calificaciones "No asignada" para cualquier alumno/grupo.
-    const alumnosSinNota = curso.alumnos.some(alumno => {
-      const calificacion = getCalificacion(alumno._id, 'alumno');
-      return calificacion === 'No asignada';
-    });
-
-    const gruposSinNota = tp.grupos.some(grupo => {
-      const calificacion = getCalificacion(grupo._id, 'grupo');
-      return calificacion === 'No asignada';
-    });
-
-    if (alumnosSinNota || gruposSinNota) {
-      alert('No se puede cerrar el TP. Todos los alumnos o grupos deben tener una calificación asignada.');
+  
+    // Validar existencia de datos antes de proceder
+    if (!curso || !tp) {
+      alert('Datos incompletos. No se puede cerrar el TP.');
       return;
     }
-
+  
     try {
+      // Verificar si hay alumnos o grupos sin calificación
+      const alumnosSinNota = tp.grupal
+        ? false // Si es grupal, no validamos alumnos
+        : alumnos.some(alumno => getCalificacion(alumno._id, 'alumno') === 'No asignada');
+  
+      const gruposSinNota = tp.grupal
+        ? grupos.some(grupo => getCalificacion(grupo._id, 'grupo') === 'No asignada')
+        : false;
+  
+      if (alumnosSinNota || gruposSinNota) {
+        alert('No se puede cerrar el TP. Todos los alumnos o grupos deben tener una calificación asignada.');
+        return;
+      }
+  
+      // Llamar al servicio para cerrar el TP
       const response = await cerrarTp(tpId);
       if (response.status === 200) {
         alert('El TP ha sido cerrado exitosamente.');
-        history.goBack();
+        history.goBack(); // Redirige a la página anterior
       } else {
         alert('Hubo un error al intentar cerrar el TP.');
       }
     } catch (error) {
+      console.error('Error al cerrar el TP:', error);
       alert('Hubo un error al intentar cerrar el TP.');
     }
-  }
+  };
+  
 
   const handleClickOpen = () => setOpen(true);
 
