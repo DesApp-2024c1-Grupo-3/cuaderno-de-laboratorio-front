@@ -2,10 +2,12 @@
 
 ## **Requisitos previos**
 
-1. **Node.js** (versión < 18)  
+1. **Node.js** (versión < 18) _OBLIGATORIO_
+
    Descárgalo desde [Node.js Official Website](https://nodejs.org/).
 
-2. **Docker y Docker Compose**  
+2. **Docker y Docker Compose** _OBLIGATORIO_
+
    Instálalos desde [Docker Official Website](https://www.docker.com/).
 
 ---
@@ -20,15 +22,7 @@ Navegar al directorio donde va a estar el frontend y ejecutar el comando:
 git clone https://github.com/DesApp-2024c1-Grupo-3/cuaderno-de-laboratorio-front.git
 ```
 
-### 2. Cambiar a rama dev
-
-En el directorio raíz donde está el frontend ejecutar el comando:
-
-```bash
-git checkout dev
-```
-
-### 3. Instalar dependencias
+### 2. Instalar dependencias
 
 En el directorio raíz donde está el frontend ejecutar el comando:
 
@@ -36,7 +30,7 @@ En el directorio raíz donde está el frontend ejecutar el comando:
 npm install
 ```
 
-### 4. Configurar archivo de variables de ambiente
+### 3. Configurar archivo de variables de ambiente
 
 En el directorio raíz donde está el frontend ejecutar el comando:
 
@@ -44,7 +38,7 @@ En el directorio raíz donde está el frontend ejecutar el comando:
 cp .env.example .env
 ```
 
-### 5. Iniciar Docker-Compose
+### 4. Iniciar Docker-Compose
 
 Con el motor de docker corriendo, en el directorio raíz donde está el frontend ejecutar el comando:
 
@@ -52,7 +46,7 @@ Con el motor de docker corriendo, en el directorio raíz donde está el frontend
 docker-compose up -d
 ```
 
-### 6. Configuración de Keycloak (primera vez que se inicia el docker o si se elimina el volumen del mismo)
+### 5. Configuración de Keycloak (primera vez que se inicia el docker o si se elimina el volumen del mismo)
 
 #### Acceder a Keycloak a través de [http://localhost:8085](http://localhost:8085)
 
@@ -82,7 +76,7 @@ Importar
 
 ![Import_Users](assets/importusers.gif)
 
-### 7. Iniciar el frontend
+### 6. Iniciar el frontend
 
 En el directorio raíz donde está el frontend ejecutar el comando:
 
