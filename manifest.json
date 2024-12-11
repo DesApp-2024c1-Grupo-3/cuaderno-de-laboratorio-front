@@ -1,0 +1,16 @@
+{
+    "name": "UNAHUR | CUADERNO DE LABORATORIO",
+    "short_name": "CuadernoLab",
+    "description": "UNAHUR | Cuaderno de laboratorio para la gestión académica",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#0f4a73",
+    "icons": [
+      {
+        "src": "https://unahur.edu.ar/wp-content/uploads/2021/03/favicon-100x100.png",
+        "sizes": "32x32",
+        "type": "image/png"
+      }
+    ]
+  }  

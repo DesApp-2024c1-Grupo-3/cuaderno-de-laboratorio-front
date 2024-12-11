@@ -1,52 +1,42 @@
-import { makeStyles } from "@material-ui/core";
+import styled from '@emotion/styled';
 
-const useStyles = makeStyles(() => ({
-    root: {
-        marginBottom: '0px',
-    },
-    fixedFooter: {
-        display: 'flex',
-        height: '50px',
-        fontSize: '18px',
-        bottom: '0',
-        left: '0',
-        width: '100%',
-        color: 'white',
-        backgroundColor: '#424242',
-        textAlign: 'center',
-        alignItems: 'center',
-        justifyContent: '',
-        // fontFamily: 'inika',
-        overflow: 'hidden',
-    },
-    centeredElement: {
-        flex: '1',
-        display: 'flex',
-        justifyContent: 'center',
-        paddingLeft: '0%',
-        paddingRight: '15%',
-    }
-}));
+const FixedFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  color: white;
+  background-color: #424242;
+  text-align: center;
+  padding: 0 10px;
+  font: small-caps normal 13px/150% Roboto;
+  left:0;
+  bottom:0;
+  right:0;
+`;
+
+const CenteredElement = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+`;
 
 export const Footer = () => {
-    const classes = useStyles();
     return (
-        <footer>
-            <div className={classes.fixedFooter}>
-                <p style={{ marginLeft: '10px' }}>
-                    Origone 151 | Chuquisaca | Malvinas Argentinas
-                </p>
+        <FixedFooter>
+            <p style={{ marginLeft: '10px' }}>
+                Origone 151 | Chuquisaca | Malvinas Argentinas
+            </p>
 
-                <div className={classes.centeredElement}>
-                    <p>
-                        UNaHur
-                    </p>
-                </div>
-
-                <p style={{ marginRight: '10px' }}>
-                    Contacto
+            <CenteredElement>
+                <p>
+                    UNAHUR
                 </p>
-            </div>
-        </footer>
+            </CenteredElement>
+
+            <p style={{ marginRight: '10px' }}>
+                Contacto
+            </p>
+        </FixedFooter>
     )
 }

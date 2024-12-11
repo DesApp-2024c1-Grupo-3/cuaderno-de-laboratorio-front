@@ -1,5 +1,7 @@
-import { Link, makeStyles, SvgIcon, Typography } from '@material-ui/core';
 import React from 'react';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
+import SvgIcon from '@mui/material/SvgIcon';
 
 function LightBulbIcon(props) {
   return (
@@ -9,21 +11,13 @@ function LightBulbIcon(props) {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    margin: theme.spacing(6, 0, 3),
-  },
-  lightBulb: {
-    verticalAlign: 'middle',
-    marginRight: theme.spacing(1),
-  },
-}));
-
 export default function ProTip() {
-  const classes = useStyles();
   return (
-    <Typography className={classes.root} color="textSecondary">
-      <LightBulbIcon className={classes.lightBulb} />
+    <Typography
+      sx={{ margin: '24px 0 16px', color: 'rgba(0, 0, 0, 0.54)' }}
+      variant="body2"
+    >
+      <LightBulbIcon sx={{ verticalAlign: 'middle', marginRight: '8px' }} />
       Pro tip: Podés leer la{' '}
       <Link href="https://github.com/unahur-desapp/react-recoil-app-seed">
         documentación

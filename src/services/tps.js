@@ -1,14 +1,26 @@
-import { getJsonFromApi, postJsonToApi, deleteFromApi } from './utils';
-
+import {
+  postMultipartToApi,
+  getJsonFromApi,
+  postJsonToApi,
+  deleteFromApi,
+  putJsonToApi,
+} from './utils';
+export async function crearTpMultipart(profesorId, idCurso, body) {
+  const apiResponse = await postMultipartToApi(
+    `tpNuevo/profesor/${profesorId}/curso/${idCurso}`,
+    body
+  );
+  return apiResponse;
+}
 export async function getTodosLosTps() {
   const apiResponse = await getJsonFromApi('usuarios');
   return apiResponse.data;
 }
-/*
-export async function getTpPorId(id) {
-  const apiResponse = await getJsonFromApi(`usuarios/${id}`);
-  return apiResponse.data;
-}*/
+
+export async function getGruposByTpId(id) {
+  const apiResponse = await getJsonFromApi(`tp/${id}/grupos`);
+  return apiResponse.grupos;
+}
 
 export async function getTpPorId(idCurso, tpId) {
   try {
@@ -55,6 +67,12 @@ export async function getTpsByCursoId(id) {
   return apiResponse.tps;
 }
 
+// Creada para traer los datos del curso
+export async function getCursoById(id) {
+  const apiResponse = await getJsonFromApi(`curso/${id}`);
+  return apiResponse;
+}
+
 export async function crearTp(idCurso, profesorId, body) {
   const apiResponse = await postJsonToApi(
     `profesor/${profesorId}/curso/${idCurso}/tp`,
@@ -72,6 +90,52 @@ export async function deleteTp(tpId) {
       console.log('Tp eliminado exitosamente');
     } else {
       console.error('Error al eliminar Tp');
+      // Manejo de errores según sea necesario
+    }
+    return response;
+  } catch (error) {
+    console.error('Error en la solicitud:', error);
+    // Manejo de errores según sea necesario
+  }
+}
+
+// Creada para traer los datos del tp
+export async function getTpId(id) {
+  const apiResponse = await getJsonFromApi(`tps/${id}`);
+  return apiResponse;
+}
+
+export async function updateTp(tpId, body) {
+  try {
+    const response = await putJsonToApi(`tp/${tpId}`, body);
+    console.log(response.status);
+    if (response.status === 200) {
+      // Actualización exitosa
+      console.log('Trabajo práctico actualizado exitosamente');
+    } else {
+      console.error('Error al actualizar trabajo práctico');
+      // Manejo de errores según sea necesario
+    }
+    return response;
+  } catch (error) {
+    console.error('Error en la solicitud:', error);
+    // Manejo de errores según sea necesario
+  }
+}
+export async function cerrarTp(tpId) {
+  try {
+    // Crear el cuerpo de la solicitud con el nuevo estado
+    const body = { estado: 'Cerrado' };
+
+    // Enviar la solicitud al backend para actualizar el estado del TP
+    const response = await putJsonToApi(`tp/${tpId}`, body);
+
+    // Verificar el estado de la respuesta
+    if (response.status === 200) {
+      // Actualización exitosa
+      console.log('Trabajo práctico cerrado exitosamente');
+    } else {
+      console.error('Error al cerrar trabajo práctico');
       // Manejo de errores según sea necesario
     }
     return response;

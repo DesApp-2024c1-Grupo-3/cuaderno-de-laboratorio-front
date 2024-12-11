@@ -1,54 +1,22 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { NavLink, useHistory, useParams } from 'react-router-dom';
 import {
-  Button,
-  Card,
-  CardContent,
-  Container,
-  makeStyles,
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  TextField,
-} from '@material-ui/core';
+  Button, Card, CardContent, Container, FormControl, FormLabel, RadioGroup, Modal, 
+  FormControlLabel, Radio, TextField, Box, Grid, Typography
+} from '@mui/material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { SubHeader } from './General/SubHeader';
-import { crearTp as postCrearTp } from '../services/tps';
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { getCursoById, crearTp as postCrearTp, crearTpMultipart } from '../services/tps';
 import ListaDeGrupos from './Profesores/ListaDeGrupos';
-import { useEffect } from 'react';
+import { Header } from './General/HeaderProf';
 
-const useStyles = makeStyles(() => ({
-  card: {},
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    margin: 'auto',
-  },
-  conteinerButton: {
-    // ... (resto de estilos)
-  },
-  quillContainer: {
-    marginTop: 16,
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'left',
-    marginTop: 16,
-  },
-  button: {
-    marginLeft: 8,
-  },
-}));
-
-export default function CrearTps() {
-  const classes = useStyles();
+const CrearTpsBeta = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const { idCurso, profesorId } = useParams();
+  const [dato, setDato] = useState(null);
   const [show, setShow] = useState(false);
+  const [archivos, setArchivos] = useState([]);
   const [gruposParaTrabajo, setGruposParaTrabajo] = useState([]);
   const [tpData, setTpData] = useState({
     nombre: '',
@@ -57,21 +25,61 @@ export default function CrearTps() {
     grupal: false,
     grupo: [],
     consigna: '',
+    cuatrimestre: false,
   });
+  const history = useHistory();
+  const quillRef = useRef(null); // Asegúrate de que quillRef esté definido correctamente
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-
     if (name === 'grupal') {
-      setTpData({ ...tpData, [name]: value === 'true' });
+      setTpData((prev) => ({ ...prev, [name]: value === 'true' }));
       setShow(value === 'true');
     } else {
-      setTpData({ ...tpData, [name]: value });
+      setTpData((prev) => ({ ...prev, [name]: value }));
     }
   };
+  const handleArchivoChange = (e) => setArchivos(Array.from(e.target.files));
+  const handleSave = async () => {
+    try {
+      if (archivos.length > 10) {
+        setModalMessage('No puedes subir más de 10 archivos.');
+        setModalOpen(true);
+        return;
+      }
 
+      // Validación de tamaño total de archivos
+      const totalSize = archivos.reduce((sum, archivo) => sum + archivo.size, 0);
+      if (totalSize > 16 * 1024 * 1024) { // 16MB en bytes
+        setModalMessage('El tamaño total de los archivos no puede superar los 16MB.');
+        setModalOpen(true);
+        return;
+      }
+      const formData = new FormData();
+
+      archivos.forEach((archivo, index) => {
+        formData.append('file', archivo);
+      });
+      formData.append('nombre', tpData.nombre); // Nombre del TP
+      formData.append('fechaInicio', tpData.fechaInicio); // Fecha de inicio
+      formData.append('fechaFin', tpData.fechaFin); // Fecha de fin
+      formData.append('grupal', tpData.grupal); // Si es grupal
+      formData.append('grupos', JSON.stringify(tpData.grupo)); // Grupos seleccionados
+      formData.append('consigna', tpData.consigna); // Consigna del trabajo
+
+      await crearTpMultipart(profesorId, idCurso, formData);
+      window.alert('Trabajo práctico creado correctamente');
+      history.goBack();
+
+    } catch (err) {
+      console.error('Error al guardar', err);
+    }
+  };
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
   const handleConsignaChange = (value) => {
-    setTpData({ ...tpData, consigna: value });
+    setTpData((prev) => ({ ...prev, consigna: value }));
   };
 
   const validarDatos = () => {
@@ -83,20 +91,19 @@ export default function CrearTps() {
   };
 
   const agregarGrupo = () => {
-    setTpData({ ...tpData, grupo: gruposParaTrabajo });
+    setTpData((prev) => ({ ...prev, grupo: gruposParaTrabajo }));
   };
 
   const crearTp = async () => {
     agregarGrupo();
-
     if (!validarDatos()) {
       return;
     }
-
     try {
       const response = await postCrearTp(idCurso, profesorId, tpData);
       if (response.status === 201) {
         window.alert('Trabajo práctico creado correctamente');
+        history.goBack();
       } else {
         console.error('Error al crear TP');
       }
@@ -107,43 +114,122 @@ export default function CrearTps() {
   };
 
   useEffect(() => {
-    setShow(tpData.grupal);
-  }, [tpData]);
+    const fetchData = async () => {
+      try {
+        const tpsDato = await getCursoById(idCurso);
+        setDato(tpsDato);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [idCurso]);
 
   useEffect(() => {
     agregarGrupo();
-  }, [gruposParaTrabajo, setGruposParaTrabajo]);
+  }, [gruposParaTrabajo]);
+
+  useEffect(() => {
+    if (quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      editor.root.setAttribute('autocorrect', 'off');
+      editor.root.setAttribute('spellcheck', 'false');
+    }
+  }, []);
 
   return (
-    <>
-      <Card className={classes.card}>
-        <CardContent>
-          <SubHeader titulo={'Crear Tps'} />
-          <form className={classes.form}>
-            <Container>
-              <Container style={{ display: 'flex' }}>
-                <Container
-                  style={{ width: '50%', margin: '2% 0%' }}
-                  maxWidth="l"
-                  className={classes.conteinerButton}
+    <Box display="flex" flexDirection="column">
+      <Header />
+      <Card sx={{ mb: 2 }}>
+      <>
+              <Modal open={modalOpen} onClose={handleCloseModal}>
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 400,
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius: '8px',
+                  }}
                 >
-                  <Container>
+                  <Typography variant="h6" component="h2">
+                    Error
+                  </Typography>
+                  <Typography sx={{ mt: 2 }}>{modalMessage}</Typography>
+                  <Button
+                    variant="contained"
+                    sx={{ mt: 3 }}
+                    onClick={handleCloseModal}
+                  >
+                    Cerrar
+                  </Button>
+                </Box>
+              </Modal>
+            </>
+        <CardContent>
+          <Typography variant="h6" component="div" gutterBottom>
+            Nuevo TP
+          </Typography>
+          <Container
+            maxWidth="xl"
+            sx={{
+              mt: 1,
+              mb: 1,
+              border: 'solid',
+              borderWidth: '10px 20px 20px 10px',
+              borderColor: 'rgba(0, 0, 0, 0.08)',
+              borderRadius: '1%'
+            }}
+          >
+            <form>
+              <Box component="div" sx={{}}>
+                <Typography variant="h6" gutterBottom>
+                  {dato ? dato.materia : 'Cargando...'}
+                </Typography>
+                <TextField
+                  label="Nombre de Tp"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  name="nombre"
+                  value={tpData.nombre}
+                  onChange={handleChange}
+                />
+                <FormLabel>Descripcion</FormLabel>
+                <ReactQuill
+                  ref={quillRef}
+                  value={tpData.consigna}
+                  onChange={handleConsignaChange}
+                  style={{ marginBottom: '20px' }}
+                  modules={{
+                    toolbar: [
+                      [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                      [{ size: [] }],
+                      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                      ['link', 'image'],
+                      ['clean']
+                    ]
+                  }}
+                  formats={[
+                    'header', 'font', 'size',
+                    'bold', 'italic', 'underline', 'strike', 'blockquote',
+                    'list', 'bullet',
+                    'link', 'image'
+                  ]}
+                />
+                <Grid container spacing={5}>
+                  <Grid item xs={6}>
                     <TextField
-                      id="outlined-basic"
-                      label="Nombre de Tp"
-                      variant="outlined"
-                      name="nombre"
-                      value={tpData.nombre}
-                      onChange={handleChange}
-                    />
-                  </Container>
-                  <br />
-                  <Container>
-                    <TextField
-                      id="date"
                       label="Fecha inicio"
                       type="date"
-                      sx={{ width: 220 }}
+                      fullWidth
+                      margin="normal"
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -151,13 +237,13 @@ export default function CrearTps() {
                       value={tpData.fechaInicio}
                       onChange={handleChange}
                     />
-                    <br />
-                    <br />
+                  </Grid>
+                  <Grid item xs={6}>
                     <TextField
-                      id="date"
                       label="Fecha fin"
                       type="date"
-                      sx={{ width: 220 }}
+                      fullWidth
+                      margin="normal"
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -165,14 +251,26 @@ export default function CrearTps() {
                       value={tpData.fechaFin}
                       onChange={handleChange}
                     />
-                  </Container>
-                  <br />
-                  <Container>
-                    <FormControl>
-                      <FormLabel id="demo-row-radio-buttons-group-label">Grupal</FormLabel>
+                  </Grid>
+                  <Grid item xs={5}>
+
+                    <Typography variant="h6" component="div" gutterBottom>
+                      {archivos && ('Subir Trabajo practico')}
+                    </Typography>
+                    {archivos && (<Button variant="contained" component="label" sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}>
+                      Subir archivos
+                      <input type="file" hidden multiple onChange={handleArchivoChange} />
+                    </Button>)}
+                    {archivos && archivos.map((archivo, index) => (
+                      <Typography variant="body2" key={index}>{archivo.name}</Typography>
+                    ))}
+
+                  </Grid>
+                  <Grid item xs={5}>
+                    <FormControl margin="normal" fullWidth>
+                      <FormLabel>Grupal</FormLabel>
                       <RadioGroup
                         row
-                        aria-labelledby="demo-row-radio-buttons-group-label"
                         name="grupal"
                         value={tpData.grupal.toString()}
                         onChange={handleChange}
@@ -181,57 +279,46 @@ export default function CrearTps() {
                         <FormControlLabel value="false" control={<Radio />} label="No" />
                       </RadioGroup>
                     </FormControl>
-                  </Container>
-                </Container>
-                <Container
-                  style={{
-                    width: '50%',
-                    padding: '2% 0%',
-                    display: show ? 'block' : 'none',
-                  }}
-                >
+                  </Grid>
+                  <Grid item xs={5}>
+                  </Grid>
+                </Grid>
+                {show && (
                   <ListaDeGrupos
                     idCurso={idCurso}
                     show={show}
                     closeModal={() => setShow(false)}
                     setGruposParaTrabajo={setGruposParaTrabajo}
-                  ></ListaDeGrupos>
-                </Container>
-              </Container>
-              <br />
-              <Container className={classes.quillContainer}>
-                <FormLabel>Consigna</FormLabel>
-                <ReactQuill
-                  value={tpData.consigna}
-                  onChange={(value) => handleConsignaChange(value)}
-                />
-              </Container>
-              <Container id="botones" className={classes.buttonContainer}>
-                <Button
-                  color="primary"
-                  component={NavLink}
-                  to={`/tps/${idCurso}/${profesorId}`}
-                  key="botonVolver"
-                  className={classes.button}
-                >
-                  Volver
-                </Button>
-                <Button
-                  variant="contained"
-                  component={NavLink}
-                  to={`/Administrar_Grupos/${idCurso}`}
-                  className={classes.button}
-                >
-                  Administar Grupos
-                </Button>
-                <Button variant="contained" onClick={() => crearTp()} className={classes.button}>
-                  Crear TP
-                </Button>
-              </Container>
-            </Container>
-          </form>
+                  />
+                )}
+
+              </Box>
+            </form>
+          </Container>
         </CardContent>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          p={2}
+        >
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', '&:hover': { backgroundColor: '#b0d38a' } }}
+            component={NavLink}
+            to={`/tps/${idCurso}/${profesorId}`}
+          >Volver
+          </Button>
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: '#c5e1a5', color: '#000000', '&:hover': { backgroundColor: '#b0d38a' } }}
+            onClick={handleSave}
+
+          >Grabar TP
+          </Button>
+        </Box>
       </Card>
-    </>
+    </Box>
   );
-}
+};
+
+export default CrearTpsBeta;

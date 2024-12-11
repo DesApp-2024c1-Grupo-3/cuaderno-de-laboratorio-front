@@ -1,4 +1,9 @@
-import { deleteFromApi, getJsonFromApi, postJsonToApi } from './utils';
+import {
+  deleteFromApi,
+  getJsonFromApi,
+  postJsonToApi,
+  putJsonToApi,
+} from './utils';
 
 export async function getTodosLosGrupos() {
   const apiResponse = await getJsonFromApi('grupos/');
@@ -15,7 +20,7 @@ export async function getGrupoByCursoId(id) {
 
 export async function getGrupoPorId(id) {
   const apiResponse = await getJsonFromApi(`grupo/${id}`);
-  return apiResponse.grupo;
+  return apiResponse.alumnos;
 }
 
 export async function postCrearGrupo(data, idCurso) {
@@ -26,5 +31,27 @@ export async function postEliminarGrupo(id) {
   console.log('ID GRUPO: ', id);
   const apiResponse = await deleteFromApi(`grupo/${id}`);
   console.log('Delete grupo; ', apiResponse);
+  return apiResponse;
+}
+
+export async function getArchivoEntrega(id) {
+  const apiResponse = await getJsonFromApi(`grupo/${id}`);
+  return apiResponse.alumnos;
+}
+
+export async function updateNotaEntrega(id) {
+  const apiResponse = await getJsonFromApi(`grupo/${id}`);
+  return apiResponse.alumnos;
+}
+export async function updateGrupo(id, idGrupo, idCurso) {
+  const apiResponse = await getJsonFromApi(
+    `curso/${id}/${idCurso}/grupo/${idGrupo}`
+  );
+
+  return apiResponse.grupos;
+}
+export async function upDateGrupo(grupoId, grupoData) {
+  const apiResponse = await putJsonToApi(`grupo/${grupoId}`, grupoData);
+
   return apiResponse;
 }

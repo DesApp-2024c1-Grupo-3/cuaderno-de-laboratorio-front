@@ -1,135 +1,284 @@
-# Repositorio semilla: aplicación React :seedling:
+# Cuaderno de Laboratorio - Guía de Inicio Rápido - Frontend
 
-> Este repositorio es un fork de [otro que está en la organización surprograma](https://github.com/surprograma/react-recoil-app-seed).  
-> El original es uno de los repositorios que se usan en la serie de videos **Tu primera aplicación full stack: NodeJS + React**, [disponible en YouTube](https://www.youtube.com/playlist?list=PL7q-McYJyHlgVGQIRYVKl381twyJ4XM_h).  
-> Mirar estos videos es una muy buena forma de entender un poco más sobre las tecnologías que van a usarse. :smiley:
->
-> A continuación, transcribimos los comentarios del repo de surprograma, con algunas modificaciones y agregados que (creo) pueden venir bien en el contexto de la materia.
+## **Requisitos previos**
 
-¡Bienvenida/o! En este repositorio encontrarás una plantilla (de las infinitas posibles) para crear una aplicación web con React. Las principales tecnologías que utilizamos son:
+1. **Node.js** (versión < 18) _OBLIGATORIO_
 
-- [React](https://reactjs.org/): framework para construir interfaces de usuario.
-- [React Router](https://reactrouter.com/): paquete para manejar las distintas páginas que va a incluir la aplicación.
-- [Material UI](https://material-ui.com/): sistema de componentes visuales para React.
-- [Jest](https://jestjs.io/): framework para escribir tests.
+   Descárgalo desde [Node.js Official Website](https://nodejs.org/).
 
-Esta plantilla también incorpora al paquete [Recoil](https://recoiljs.org/), que sirve para manejar estado en React.  
-Vamos a hablar sobre cuándo usar (o no) Recoil, y cómo hacerlo. Se puede arrancar "sin Recoil", al menos hasta estar más fluidos con React.
+2. **Docker y Docker Compose** _OBLIGATORIO_
 
-Para crear un proyecto siguiendo esta plantilla, lo único que tenés que hacer es clickear en el botón que dice `Use this template`. ¡Y no te olvides de cambiarle el nombre en el `package.json`!
+   Instálalos desde [Docker Official Website](https://www.docker.com/).
 
-:information_source: Este proyecto fue creado con [Create React App](https://create-react-app.dev/), y por lo tanto toda la documentación del sitio oficial también puede consultarse para saber más.
+---
 
-## :point_up: Prerrequisitos - para instalar antes de empezar
+## **Pasos para el despliegue**
 
-Vas a necesitar un IDE o al menos un editor de texto que coloree la sintaxis. Recomendamos utilizar [Visual Studio Code](https://code.visualstudio.com/) - que se lleva muy bien con proyectos JavaScript - enriquecido con los siguientes plugins:
+### 1. Clonar el repositorio del Frontend
 
-- [ESlint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-- [Test Explorer UI](https://marketplace.visualstudio.com/items?itemName=hbenl.vscode-test-explorer)
-- [Jest Test Explorer](https://marketplace.visualstudio.com/items?itemName=kavod-io.vscode-jest-test-adapter)
+Navegar al directorio donde va a estar el frontend y ejecutar el comando:
 
-Para ejecutar el código es necesario tener NodeJS en su versión 14 (`lts/fermium`). Para instalarlo recomendamos utilizar el manejador de versiones [`nvm`](https://github.com/nvm-sh/nvm), aunque también podés hacerlo manualmente siguiendo las instrucciones adecuadas para tu sistema operativo.
+```bash
+git clone https://github.com/DesApp-2024c1-Grupo-3/cuaderno-de-laboratorio-front.git
+```
 
-El ejemplo viene preparado para ser ejecutado junto a una API, que puede crearse desde [este repositorio](https://github.com/unahur-desapp/nodejs-api-seed).
+### 2. Instalar dependencias
 
-## :ballot_box_with_check: Configuración inicial del proyecto
+En el directorio raíz donde está el frontend ejecutar el comando:
 
-Asumiendo que ya configuraste todos los prerrequisitos, estos son los comandos que deberías ejecutar la primera vez que trabajes en el proyecto:
-
-```shell
-# Copia las variables de entorno necesarias para interactuar con la API.
-cp .env.example .env
-
-# Instala las dependencias Node del proyecto.
+```bash
 npm install
 ```
 
-## Usando el repo para armar mi app
+### 3. Configurar archivo de variables de ambiente
 
-### Estilo de programación
+En el directorio raíz donde está el frontend ejecutar el comando:
 
-Se recomienda **muy fuertemente** usar componentes funcionales, así están definidas las páginas de ejemplo.  
-Hay que aprender cómo usar Hooks, para eso (empezar por) mirar la [doc de React al respecto](https://reactjs.org/docs/hooks-intro.html).
-
-### Estilos CSS
-
-Creo que el tiempo que le dediquen a estudiar Material UI está muy bien invertido. Chusmeen y prueben.  
-Para aplicar estilos propios, fíjense el uso de `makeStyles` en las páginas de ejemplo. Usen `style` poco y nada.
-
-> **Nota**  
-> En el listado se incluye el link a los datos de un usuario en dos formas distintas, para que se vea cómo queda con el `Link` de `react-router` "pelado", y (mucho más lindo) usando componentes de Material UI.
-
-### Relación con el (o los) backend
-
-Como se ve en el ejemplo, no hace falta meter backend al principio, y se puede incorporar más adelante de una forma que no cambia mucho el código.  
-Para esto, conviene focalizar el acceso al backend en hooks `useEffect` específicos.
-
-En el ejemplo también se muestra que pueden definirse servicios de acceso al backend, que devuelvan datos fijos. Y después se van cambiando por los reales.
-
-**Atención**  
-Es importante que no haya llamados al backend, o referencias a las URL, fuera de la carpeta `services`.
-
-> **Nota**  
-> Para que funcione con backend, hay que cambiar la constante `getDataFromBackend` en `src\constants\constants.js`. El backend es exactamente el del template para backend. Este frontend se banca que no haya backend, aparece una indicación en la pantalla.
-
-> **Otra nota**  
-> En el ejemplo se puede elegir con o sin backend sólo para facilitar la experimentación; esto no hace falta hacerlo en los proyectos de ustedes.
-
-### Cómo agregar mis páginas
-
-Creo que al menos al principio, conviene dejar los componentes que están para tenerlos de referencia.  
-Por suerte, React Router hace fácil agregar nuevas páginas. Para eso, alcanza con
-
-- Crear un nuevo componente, dentro de `components`. Vale crear subcarpetas de `components` para organizarnos.
-- Agregar una `Route` en `/src/App.js`, cuyo contenido sea el componente recién creado.
-- Fin.
-
-En el mismo `/src/App.js` se muestra cómo hacer para dejar una parte de la página fija, que no dependa de las rutas. Esto puede servir para armar un menú. Obvio que esta es una de las _mil_ opciones para armar un menú.
-
-### Variables de entorno
-
-Create React App incorpora [dotenv](https://github.com/motdotla/dotenv).
-Por eso se indica de copiar el `.env.example` como `.env`.
-El paquete `dotenv` lee ese archivo y lo incorpora igual que si hubieran definido las variables de entorno por línea de comandos.  
-Miren el ejemplo de cómo se accede al backend en `services/utils.js`; se usa `process.env` directamente.
-
-Los detalles de cómo funciona el uso de variables de entorno se pueden leer en [la doc de Create React App al respecto](https://create-react-app.dev/docs/adding-custom-environment-variables/).
-
-**OJO**  
-_solamente_ mira variables de entorno que empiecen con `REACT_APP`.
-
-**Nota**  
-Vale absolutamente encapsular el acceso a las variables de entorno en un `config.js`, como está hecho en el template de backend.  
-La diferencia es que en este proyecto no se necesita incorporar `dotenv`, porque ya lo hace Create React App.
-
-## :file_folder: Estructura de directorios
-
-Breve descripción de qué se puede encontrar en cada uno de los directorios del proyecto:
-
-```shell
-├── public                  # Index, favicon y otros archivos comunes
-└── src
-    ├── components          # Componentes de React - versión "sin Recoil"
-    ├── components-recoil   # Componentes de React - versión "con Recoil"
-    ├── state               # Selectores y átomos de Recoil
-    └── services            # funciones de acceso a un backend
+```bash
+cp .env.example .env
 ```
 
-## :woman_technologist: :man_technologist: Comandos útiles para el día a día
+### 4. Iniciar Docker-Compose
 
-A continuación, algunos comandos necesarios para el desarrollo diario en este proyecto.
+Con el motor de docker corriendo, en el directorio raíz donde está el frontend ejecutar el comando:
 
-### Código
+```bash
+docker-compose up -d
+```
 
-```shell
-# Levanta el proyecto y recarga automáticamente si hay cambios.
+### 5. Configuración de Keycloak (primera vez que se inicia el docker o si se elimina el volumen del mismo)
+
+#### Acceder a Keycloak a través de [http://localhost:8085](http://localhost:8085)
+
+Ingresar al sistema con las siguientes credenciales:
+
+Usuario: _adminkc_
+
+Contraseña: _K3ycl04k321!_
+
+#### Ingresar al reino en Keycloak
+
+Una vez dentro de Keycloak, ingresar al reino.
+
+![Enter_Keycloak_Realm](assets/enterKeycloakRealm.gif)
+
+#### Importar usuarios a Keycloak (Dentro del realm cuaderno-de-lab)
+
+Navegar a la configuración del reino
+
+Ir a **Acciones -> Partial Import** y seleccionar el archivo [Imports_Keycloak/cuaderno-de-lab-users-0.json](https://raw.githubusercontent.com/DesApp-2024c1-Grupo-3/cuaderno-de-laboratorio-front/refs/heads/dev/Imports_Keycloak/cuaderno-de-lab-users-0.json)
+
+<!-- Ver si el link anterior sirve para futuras actualizaciones del repo -->
+
+Seleccionar el **checkbox** de los usuarios
+
+Importar
+
+![Import_Users](assets/importusers.gif)
+
+### 6. Iniciar el frontend
+
+En el directorio raíz donde está el frontend ejecutar el comando:
+
+```bash
 npm start
-
-# Ejecuta los tests y se queda esperando por cambios.
-npm test
 ```
 
-## :rocket: Despliegue
+---
 
-Para publicar en Heroku, seguir esta guía: https://blog.heroku.com/deploying-react-with-zero-configuration.
+## **Usuarios**
+
+Contamos con un total de 2 profesores y 30 alumnos.
+
+Los alumnos tienen ID incrementales a partir del 10000000.
+
+Todos los usuarios tienen la misma contraseña.
+
+| Tipo de usuario | Usuario  | Contraseña |
+| --------------- | -------- | ---------- |
+| Profesor        | 12345678 | 1234       |
+| Profesor        | 87654321 | 1234       |
+| Alumno          | 10000000 | 1234       |
+| Alumno          | 10000001 | 1234       |
+| Alumno          | 10000002 | 1234       |
+| Alumno          | 10000003 | 1234       |
+| ...             | ...      | ...        |
+| Alumno          | 10000028 | 1234       |
+| Alumno          | 10000029 | 1234       |
+
+### Crear usuario nuevo en keycloak
+
+#### Ingresar al reino en Keycloak
+
+Una vez dentro de Keycloak, ingresar al reino (Realm).
+
+![Enter_Keycloak_Realm](assets/enterKeycloakRealm.gif)
+
+#### Crear un nuevo usuario
+
+- En el menú lateral, selecciona la opción **Users**.
+
+- Haz clic en el botón **Add User**.
+
+- Completa los campos básicos, como:
+
+  - **Username**: Nombre único obligatorio.
+  - **Email**: Opcional, pero útil para autenticación o notificaciones.
+  - **First name**: Nombre, opcional para más contexto.
+  - **Last name**: Apellido, opcional para más contexto.
+
+- Haz clic en **Create** para crear el usuario.
+
+![Create_User](assets/createUser.png)
+
+#### Configurar credenciales
+
+- Ve a la pestaña **Credentials**.
+
+- Haz clic en el botón **Set password**.
+
+![Set_Password](assets/setPassword.png)
+
+- Configure una contraseña para el usuario:
+
+  - Ingrese la contraseña.
+  - Marca la opción **Temporary** si quieres que el usuario deba cambiarla al iniciar sesión.
+  - Haga clic en **Save**.
+
+![Configure_Password](assets/configurePassword.png)
+
+#### Asignar roles o grupos (opcional)
+
+- Desde la pestaña **Role mapping** o **Groups** , puedes asignar permisos o agrupar al usuario.
+
+![Assing_Role](assets/assingRole.png)
+
+#### Generación de roles
+
+- Ir a la pestaña **Realm roles**.
+
+- Haz clic en el botón **Create role**.
+
+![Create_Role](assets/createRole.png)
+
+- Configure los campos del rol:
+  - **Role name**: Nombre único obligatorio.
+  - **Description**: Opcional, descripción del rol.
+
+![Configure_Role](assets/configureRole.png)
+
+#### Establecer política de passwords
+
+- Ir a la pestaña **Authentification**.
+
+- Ir a la pestaña **Policies**.
+
+- Ir a la pestaña **Password policy**.
+
+- Haz clic en el desplegable **Add policy**.
+
+- Definir y configurar las políticas a aplicar.
+
+![Authentification_Add_Policy](assets/authentificationAddPolicy.png)
+
+**_Ejemplo_**
+
+Se ha establecido una longitud para las claves de 12 caracteres, al menos 1 mayúscula, 1 minúscula, un dígito numérico y un carácter especial.
+
+![Authentification_Example_Policy](assets/authentificationExamplePolicy.png)
+
+#### Login de usuario
+
+El usuario tiene permitido loguearse con su dni o su mail asociado.
+
+![Sign_In_Example](assets/signInExample.png)
+
+Cuando el usuario ingresa, debido a que marcamos como “Temporal” su password, debe cambiarlo y le aparece la siguiente pestaña:
+
+![Update_Password_Example](assets/updatePasswordExample.png)
+
+Al poner un password que no cumple con la política establecida, se le indica mediante un mensaje informativo cual es el motivo por el cual debe mejorar los datos ingresados (ver la próxima sección de configuración de política de passwords)
+
+![Error_Update_Password_Example](assets/errorUpdatePasswordExample.png)
+
+---
+
+## **Tema personalizado Keycloak**
+
+### Funcionamiento
+
+Al momento de ejecutar `docker-compose up -d` además de crearse los contenedores, al contenedor de _Keycloak_ se le copia en la carpeta de temas la carpeta `Imports_Keycloak\Tema_UNAHUR` (actualmente es una copia del tema keycloak.v2) y se importa y crea el reino **cuaderno-de-lab**.
+
+### Selección de tema
+
+- Una vez dentro de Keycloak, ingresar al reino (Realm).
+
+![Enter_Keycloak_Realm](assets/enterKeycloakRealm.gif)
+
+- Ir a la pestaña **Realm settings**.
+
+- Ir a la pestaña **Themes**.
+
+- Haz clic en el desplegable **Select login theme**.
+
+- Seleccionar tema
+
+- Haz clic en el botón **Save**.
+
+![Select_Theme](assets/selectTheme.png)
+
+### Modificación del tema_UNAHUR
+
+Keycloak utiliza **FreeMarker**, un motor de plantillas basado en Java, para renderizar sus temas.
+Los temas en Keycloak están compuestos por archivos `.ftl` (archivos de plantilla de FreeMarker) que definen la estructura HTML.
+
+Para modificar el tema del login se debe modificar los archivos `Imports_Keycloak\Tema_UNAHUR\login\login.ftl` y `Imports_Keycloak\Tema_UNAHUR\login\resources\css\styles.css` (y los que sean necesarios).
+
+Una vez modificados se deben de **actualizar en el container**, para ello, con el **container corriendo**:
+
+1. identificar el contenedor
+
+```bash
+docker ps
+```
+
+2. eliminar carpeta del contenedor:
+
+```bash
+docker exec -u root <ContainerID> rm -rf opt/keycloak/themes/Tema_UNAHUR/
+```
+
+3. Copia la carpeta actualizada al contenedor:
+
+   **_Este comando necesita la ruta absoluta_**
+
+```bash
+docker cp <RutaAbsoluta>\cuaderno-de-laboratorio-front\Imports_Keycloak\Tema_UNAHUR <ContainerID>:/opt/keycloak/themes/Tema_UNAHUR
+```
+
+4. Reiniciar el container:
+
+```bash
+docker restart <ContainerID>
+```
+
+### Selección de tema por defecto
+
+Si deseas configurar un tema específico por defecto para un realm y evitar que se pueda cambiar desde la interfaz, edita el archivo `Imports_Keycloak\realm-export.json` y en la línea **722** agrega `"login_theme": "<TemaSeleccionado>"`.
+Para que actualice este parámetro, se debe de **BORRAR CONTENEDOR Y VOLUMEN** de docker, y volver a levantarlos.
+
+EJ: `"login_theme": "Tema_UNAHUR"`.
+
+### Documentación de respaldo
+
+#### Creación de temas en Keycloak:
+
+- Aprende cómo crear y personalizar temas en Keycloak con la guía oficial:
+
+[https://www.keycloak.org/docs/26.0.0/server_development/#\_themes](https://www.keycloak.org/docs/26.0.0/server_development/#_themes)
+
+#### Página oficial de FreeMarker:
+
+- Para comprender más sobre el lenguaje de plantillas FreeMarker y sus capacidades, visita:
+
+[https://freemarker.apache.org/](https://freemarker.apache.org/)
